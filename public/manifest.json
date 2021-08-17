@@ -1,0 +1,30 @@
+{
+  "theme_color": "#1975ff",
+  "background_color": "#F6F8FB",
+  "display": "standalone",
+  "start_url": ".",
+  "short_name": "Tokyo Free White",
+  "name": "Tokyo Free White React Admin Dashboard",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
