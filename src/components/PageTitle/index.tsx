@@ -9,7 +9,6 @@ interface PageTitleProps {
     docs?: string;
 }
 
-
 const PageTitle: FC<PageTitleProps> = ({
     heading = '',
     subHeading = '',

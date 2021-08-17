@@ -16,7 +16,7 @@ import SendTwoToneIcon from '@material-ui/icons/SendTwoTone';
 
 const DividerWrapper = experimentalStyled(Divider)(
   ({ theme }) => `
-        height: 40px;
+        height: 40px !important;
         margin: 0 ${theme.spacing(2)};
         align-self: center;
 `

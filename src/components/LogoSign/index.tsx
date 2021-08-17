@@ -2,7 +2,6 @@ import { Box, Tooltip } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { experimentalStyled } from '@material-ui/core/styles';
 
-
 const LogoWrapper = experimentalStyled(Link)(
   ({ theme }) => `
         color: ${theme.palette.text.primary};
@@ -72,7 +71,6 @@ const LogoSignInner = experimentalStyled(Box)(
 );
 
 function Logo() {
-
 
   return (
     <Tooltip title="Tokyo Free White React Admin Dashboard" arrow>

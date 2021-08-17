@@ -86,6 +86,7 @@ const TabsContainerWrapper = experimentalStyled(Box)(
                 }
             }
 
+            &.Mui-selected:hover,
             &.Mui-selected {
                 color: ${theme.colors.alpha.black[100]};
             }
@@ -197,7 +198,7 @@ function SidebarContent() {
 
       <Box mt={2}>
         {currentTab === 'all' && (
-          <List component="div">
+          <List disablePadding component="div">
             <ListItemWrapper selected>
               <ListItemAvatar>
                 <Avatar src="/static/images/avatars/1.jpg" />
@@ -283,7 +284,7 @@ function SidebarContent() {
           </List>
         )}
         {currentTab === 'unread' && (
-          <List component="div">
+          <List disablePadding component="div">
             <ListItemWrapper>
               <ListItemAvatar>
                 <Avatar src="/static/images/avatars/1.jpg" />
@@ -331,7 +332,7 @@ function SidebarContent() {
           </List>
         )}
         {currentTab === 'archived' && (
-          <Box py={3}>
+          <Box pb={3}>
             <Divider sx={{ mb: 3 }} />
             <AvatarSuccess>
               <CheckTwoToneIcon />

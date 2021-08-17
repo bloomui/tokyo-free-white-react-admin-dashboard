@@ -7,7 +7,7 @@
     "name": "BloomUI.com",
     "url": "https://bloomui.com"
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "@emotion/react": "11.4.0",
     "@emotion/styled": "11.3.0",

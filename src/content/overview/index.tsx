@@ -16,7 +16,6 @@ const OverviewWrapper = experimentalStyled(Box)(
 
 function Overview() {
 
-
   return (
     <OverviewWrapper>
       <Helmet>

@@ -78,7 +78,6 @@ const TsAvatar = experimentalStyled(Box)(
 
 function Hero() {
 
-
   return (
     <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
       <Grid spacing={{ xs: 6, md: 10 }} justifyContent="center" alignItems="center" container>
@@ -125,7 +124,7 @@ function Hero() {
             </Grid>
             <Grid item md={6}>
               <TsAvatar>
-                <img src="/static/images/logo/typescript.svg" alt="Javascript" />
+                <img src="/static/images/logo/typescript.svg" alt="Typescript" />
               </TsAvatar>
               <Typography variant="h4">
                 <Box sx={{ pb: 2 }}><b>Built with Typescript</b></Box><Typography component="span" variant="subtitle2"> - Tokyo Free White features a modern technology stack and is built with React + Typescript.</Typography>

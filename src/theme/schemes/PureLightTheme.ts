@@ -741,7 +741,7 @@ export const PureLightTheme = createTheme({
           height: 38,
           minHeight: 38,
           borderRadius: 6,
-          border: '1px solid ' + colors.primary.dark,
+          border: '1px solid ' + colors.primary.dark
         },
         scrollableX: {
           overflow: 'visible !important'

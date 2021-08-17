@@ -40,7 +40,6 @@ const Avatars = Loader(lazy(() => import('src/content/pages/Components/Avatars')
 const Cards = Loader(lazy(() => import('src/content/pages/Components/Cards')));
 const Forms = Loader(lazy(() => import('src/content/pages/Components/Forms')));
 
-
 // Status
 
 const Status404 = Loader(lazy(() => import('src/content/pages/Status/Status404')));
