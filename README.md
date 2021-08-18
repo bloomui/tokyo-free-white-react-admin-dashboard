@@ -1,10 +1,10 @@
 <p align="center">
     <a href="https://bloomui.com" title="BloomUI.com">
-        <img src="https://bloomui.s3.us-east-2.amazonaws.com/tokyo-logo.png" alt="Tokyo Free White React Admin Dashboard">
+        <img src="https://bloomui.s3.us-east-2.amazonaws.com/tokyo-logo.png" alt="Tokyo Free White Typescript React Admin Dashboard">
     </a>
 </p>
 <h1 align="center">
-    <b>Tokyo Free White React Admin Dashboard</b>
+    <b>Tokyo Free White Typescript React Admin Dashboard</b>
     <br>
     <a href="https://twitter.com/intent/tweet?url=https://bloomui.com&text=I like this React admin dashboard">
         <img src="https://img.shields.io/twitter/url/http/shields.io.svg?style=social" />
