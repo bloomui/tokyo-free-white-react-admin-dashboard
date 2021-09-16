@@ -10,9 +10,28 @@ import { MenuFilterInput } from "src/globalTypes";
 import { useSimpleQuery } from "src/utilities/apollo";
 
 const MenusData = gql`
-query Menus ($input: MenuFilterInput) {
+query Menus ($input: MenuFilterInput, $name: String) {
   allSeasons
   allThemes
+  menus (name: $name) {
+    id
+    periodenddate
+    periodstartdate
+    name
+    season
+    rating
+    theme
+    courses {
+      course {
+        id
+        courseType
+      }
+      dishes {
+        id
+        name
+      }
+    }
+  }
   filterMenus (input: $input) {
     id
     periodenddate
@@ -80,8 +99,10 @@ mutation AddMenu ($input: AddMenuInput!, $courses: [AddCourseToDishesInput!]) {
 
 export const useMenuQuery = ({
   input,
+  name,
 }: {
   input: MenuFilterInput | null;
+  name: string
 }) => {
 
   const { loading, data, error } = useSimpleQuery<
@@ -90,6 +111,7 @@ export const useMenuQuery = ({
   >(MenusData, {
     variables: {
       input: input,
+      name: name
     },
   });
   return { loading, data, error};

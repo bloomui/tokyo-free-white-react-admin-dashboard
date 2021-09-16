@@ -16,30 +16,9 @@ import { MenuFilter } from 'src/content/pages/MyChefsbase/Menus/filtermenus';
 import { MenuPage } from 'src/content/pages/MyChefsbase/Menus';
 import { DishPage } from 'src/content/pages/MyChefsbase/Dishes';
 
-function DashboardCrypto() {
+function MyChefsBase() {
   const [value, setValue] = useState(0);
   const [page, setPage] = useState<number>(0);
-
-  const initialMenuValues: MenuFilterInput = {
-    name: '',
-    offset: 0,
-    limit: 0,
-    themes: [],
-    seasons: [],
-    periodstartdate: '',
-    periodenddate: '',
-    recipes: [],
-    dishes: [],
-    ingredients: [],
-    products: [],
-    rating: 0
-  }
-  const [ input, setInput] = useState<MenuFilterInput>(initialMenuValues);
-
-    const { loading, data } = useMenuQuery({
-      input: input,
-      });
-  
       
   let content;
 
@@ -110,7 +89,6 @@ function DashboardCrypto() {
           label={`Favorieten`}
         />
       </Tabs>
-      <Box height={3}>{loading && <LinearProgress />}</Box>
       {content}
           </Grid>
           {/* <Grid item lg={8} xs={12}>
@@ -129,5 +107,5 @@ function DashboardCrypto() {
   );
 }
 
-export default DashboardCrypto;
+export default MyChefsBase;
 

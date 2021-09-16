@@ -1,7 +1,9 @@
-import { Grid, InputBase } from "@material-ui/core"
 import React from "react"
 import { BiSearchAlt2 } from "react-icons/bi"
 import { BlackColor } from "../layout/Colors"
+import { TextField, Box, Grid, InputBase, InputAdornment } from "@material-ui/core";
+import SearchIcon from "@material-ui/icons/Search";
+import { Loader } from "./Loader"
 
 export const SearchInputField = ({ name, handleSubmit, handleChange }: { name: string, handleSubmit: () => void, handleChange: () => void }) => {
     return (
@@ -23,3 +25,43 @@ export const SearchInputField = ({ name, handleSubmit, handleChange }: { name: s
             </form>
     )
 }
+
+export const SearchDirect = ({
+  placeholder, 
+  value, 
+  onChange, 
+  isLoading
+}: {
+  value: string,
+  placeholder: string, 
+  onChange: (e: string) => void, 
+  isLoading: boolean
+}) => {
+
+  return (
+    <Box
+    display="flex"
+    width="400px"
+    alignItems="center"
+    flexDirection="column"
+    >
+    <TextField
+    fullWidth
+    placeholder={placeholder}
+    onChange={(e) => onChange(e.target.value)}
+    InputProps={{
+    startAdornment:
+    (
+    <InputAdornment position="start">
+    <SearchIcon/>
+    </InputAdornment>
+        ),
+    }}>
+    {value}
+    </TextField>
+    <Loader
+    loading={isLoading}
+    />
+    </Box>
+  )
+  }

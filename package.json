@@ -16,6 +16,7 @@
     "@material-ui/icons": "^5.0.0-beta.1",
     "@material-ui/lab": "5.0.0-alpha.41",
     "@material-ui/styles": "5.0.0-beta.2",
+    "@mui/material": "^5.0.0",
     "@types/nprogress": "0.2.0",
     "@types/react": "17.0.15",
     "@types/react-dom": "17.0.9",

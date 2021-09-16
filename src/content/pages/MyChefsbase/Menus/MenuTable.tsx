@@ -20,12 +20,57 @@ import {
   import { VscStarFull, VscStarEmpty, VscTrash, VscAdd, VscSearch, VscEdit } from "react-icons/vsc";
   import { useMutation } from "@apollo/client";
 import { KitchenType } from "src/globalTypes";
+import { SearchDirect } from "src/components/search/SearchInputField";
+import Checkbox from "@mui/material/Checkbox";
+import { MenuDialog } from "./menuDialog";
+import { UpdateMenuDialog } from "./menuDialog/UpdateMenu";
   
+interface EnhancedTableProps {
+    numSelected: number;
+    onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    rowCount: number;
+  }
+
+  const headCells: string[] = [
+      "Naam", "seizoen", "thema", "vanaf", "tot", "rating"
+  ]
+
+function EnhancedTableHead(props: EnhancedTableProps) {
+    const { onSelectAllClick, numSelected, rowCount } = props;
+  
+    return (
+      <TableHead>
+        <TableRow>
+          <TableCell padding="checkbox">
+            <Checkbox
+              color="primary"
+              indeterminate={numSelected > 0 && numSelected < rowCount}
+              checked={rowCount > 0 && numSelected === rowCount}
+              onChange={onSelectAllClick}
+              inputProps={{
+                'aria-label': 'select all desserts',
+              }}
+            />
+          </TableCell>
+          {headCells.map((headCell) => (
+            <TableCell
+            >{headCell}
+            </TableCell>
+          ))}
+        </TableRow>
+      </TableHead>
+    );
+  }
+
   export const MenuTable = ({
+    name,
+    setName,
     data, 
     page, 
     setPage,
   }: {
+      name: string;
+    setName: React.Dispatch<React.SetStateAction<string>>;
     data: Menus; 
     page: number; 
     setPage: (newPage: number) => void;
@@ -39,7 +84,42 @@ import { KitchenType } from "src/globalTypes";
     ) => {
       setPage(newPage as number);
     };
-  
+    const [selected, setSelected] = React.useState<readonly string[]>([]);
+
+    let menus;
+    if (name != null) menus = data.menus;
+     else menus = data.filterMenus
+    
+     console.log(menus)
+    const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.checked) {
+          const newSelecteds = menus.map((menu) => menu.name);
+          setSelected(newSelecteds);
+          return;
+        }
+        setSelected([]);
+      };
+
+      const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
+        const selectedIndex = selected.indexOf(name);
+        let newSelected: readonly string[] = [];
+    
+        if (selectedIndex === -1) {
+          newSelected = newSelected.concat(selected, name);
+        } else if (selectedIndex === 0) {
+          newSelected = newSelected.concat(selected.slice(1));
+        } else if (selectedIndex === selected.length - 1) {
+          newSelected = newSelected.concat(selected.slice(0, -1));
+        } else if (selectedIndex > 0) {
+          newSelected = newSelected.concat(
+            selected.slice(0, selectedIndex),
+            selected.slice(selectedIndex + 1),
+          );
+        }
+    
+        setSelected(newSelected);
+      };
+
     const [open, setOpen] = React.useState(false);
     const [openUpdate, setOpenUpdate] = React.useState(false)
     const [openAddMenu, setOpenAddMenu] = useState(false)
@@ -52,9 +132,12 @@ import { KitchenType } from "src/globalTypes";
     const { add } = useAddToFavorites({
       onCompleted: () => window.location.reload(),
     });
+    const isSelected = (name: string) => selected.indexOf(name) !== -1;
+
     
     return (
         <>
+                <SearchDirect placeholder="Zoek Menu" value={name} onChange={setName} isLoading={false}/>
                 <TableContainer component={Paper}>
                 <Button color="secondary" variant="contained" onClick={() => setOpenAddMenu(true)}>
                     <Grid 
@@ -66,31 +149,49 @@ import { KitchenType } from "src/globalTypes";
                       </Grid> 
                   </Button>
               <Table >
-              <TableHead>
-              <TableRow>
-                <TableCell>Menu naam</TableCell>
-                <TableCell align="center">seizoen</TableCell>
-                <TableCell align="center">Thema</TableCell>
-                <TableCell align="center" colSpan={2}>Periode</TableCell>
-                <TableCell align="center">Rating</TableCell>
-                <TableCell align="center">Acties</TableCell>
-              </TableRow>
-              </TableHead>
+              <EnhancedTableHead
+              numSelected={selected.length}
+              onSelectAllClick={handleSelectAllClick}
+              rowCount={menus.length}
+            />
             <TableBody>
-            {data && data.filterMenus && data.filterMenus.map((menu) => (
-              menu? (
-                <>
-              <TableRow>
-                <TableCell 
-                style={{ cursor: 'pointer' }}
-                onClick={() => setOpen(true)}
-                >{menu.name}</TableCell>
-                <TableCell align="center">{menu.season}</TableCell>
-                <TableCell align="center">{menu.theme}</TableCell>
-                <TableCell align="center">{menu.periodstartdate}</TableCell>
-                <TableCell align="center">{menu.periodenddate}</TableCell>
-                <TableCell align="center">{menu.rating}</TableCell>
-                <TableCell 
+            {menus.map((menu, index) => {
+                const isItemSelected = isSelected(menu.name);
+                const labelId = `enhanced-table-checkbox-${index}`;
+                return (
+                    <>
+                    <TableRow
+                    hover
+                    onClick={(event) => handleClick(event, menu.name)}
+                    role="checkbox"
+                    aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={menu.name}
+                    selected={isItemSelected}
+                  >
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        color="primary"
+                        checked={isItemSelected}
+                        inputProps={{
+                          'aria-labelledby': labelId,
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      padding="none"
+                    >
+                      {menu.name}
+                    </TableCell>
+                    <TableCell align="right">{menu.season}</TableCell>
+                    <TableCell align="right">{menu.theme}</TableCell>
+                    <TableCell align="right">{menu.periodstartdate}</TableCell>
+                    <TableCell align="right">{menu.periodenddate}</TableCell>
+                    <TableCell align="right">{menu.rating}</TableCell>
+                    <TableCell 
                 align="center"
                 >
                   <>
@@ -118,36 +219,29 @@ import { KitchenType } from "src/globalTypes";
                   </Grid>
                   </>
                 </TableCell>
-              </TableRow>
-              {/* <MenuDialog
+                  </TableRow>
+                 <MenuDialog
               setOpenUpdateDialog={() => setOpenUpdate(true)}
               menu={menu}
               open={open}
               onClose={() => setOpen(false)}
-              /> */}
-              {/* <UpdateMenuDialog 
+              />
+              <UpdateMenuDialog 
                 allDishes={data.dishes}
                  menu={menu}
                  open={openUpdate}
                  onClose={() => setOpenUpdate(false)}
-                 /> */}
+                 /> 
                  <AreYouSureDelete
                  open={areYouSureDelete}
                  id={menu.id}
                  kitchenType={KitchenType.Menu}
                  onClose={() => setAreYouSureDelete(false)}
                  />
-              </>
-            ): <TableRow>
-              Geen menu's beschikbaar
-            </TableRow>
-            ))}
+                 </>
+                )
+            })}
             </TableBody>
-            {/* <AddMenuDialog 
-                allDishes={data.dishes}
-                 open={openAddMenu}
-                 onClose={() => setOpenAddMenu(false)}
-                 /> */}
                    </Table>
                    </TableContainer>
                    <TablePagination

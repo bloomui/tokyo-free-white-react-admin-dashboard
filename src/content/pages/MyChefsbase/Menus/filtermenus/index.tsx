@@ -13,23 +13,9 @@ import { Search } from "./components/search";
 import { Seasons } from "./components/seasons";
 import { Suppliers } from "./components/suppliers";
 import { Themes } from "./components/themes";
-
-export const initialValues: MenuFilterInput = {
-    name: '',
-    offset: 0,
-    limit: 0,
-    themes: [],
-    seasons: [],
-    periodstartdate: '',
-    periodenddate: '',
-    recipes: [],
-    dishes: [],
-    ingredients: [],
-    products: [],
-    rating: 0
-  }
   
   export  const MenuFilter = ({
+    initialValues,
     products,
     suppliers,
     themes,
@@ -39,6 +25,7 @@ export const initialValues: MenuFilterInput = {
     ingredients,
     onChange,
   }: {
+    initialValues: MenuFilterInput;
     themes: string[] | null;
     seasons: string[] | null;
     suppliers: Menus_suppliers[] | null;
