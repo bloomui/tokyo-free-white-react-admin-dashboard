@@ -19,7 +19,7 @@ function Overview() {
   return (
     <OverviewWrapper>
       <Helmet>
-        <title>Tokyo Free White React Admin Dashboard</title>
+        <title>My Chefsbase, the resource base for topchefs!</title>
       </Helmet>
       <Container maxWidth="lg">
         <Box display="flex" justifyContent="center" py={5} alignItems="center">
