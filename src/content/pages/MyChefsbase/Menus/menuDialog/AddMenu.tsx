@@ -5,20 +5,21 @@ import React from "react";
 import { FormField } from "src/components/form/FormField";
 import { AddCourseToDishesInput, AddMenuInput } from "src/globalTypes";
 import { composeValidators, mustBeDate, required } from "src/utilities/formikValidators";
-import { useAddMenu, useUpdateMenu } from "../api";
+import { useAddMenu, useAllDishesQuery, useUpdateMenu } from "../api";
 import { Rating1, RatingLabels } from "../filtermenus/components/rating";
-import { Menus_dishes, Menus_filterMenus } from "../types/Menus";
+import { AllDishes_dishes } from "../types/AllDishes";
+import { Menus_dishes, } from "../types/Menus";
 import { UpdateMenuVariables } from "../types/UpdateMenu"
 
 export const AddMenuDialog = ({
-    allDishes,
     open,
     onClose,
 }: {
-    allDishes: Menus_dishes[] | null,
     open: boolean,
     onClose: () => void
 }) => {
+  const {data} = useAllDishesQuery()
+
 
     const { addMenu, loading, error } = useAddMenu({
         onCompleted: () => window.location.reload(),
@@ -113,13 +114,13 @@ export const AddMenuDialog = ({
                        value={courseToDishes.coursetype}
                        onChange={handleChange}
                         />
-                        {allDishes && (
+                        {data && (
                             <Autocomplete
                             multiple
                             id="tags-standard"
-                            options={allDishes.map((option) => (option))}
+                            options={data.dishes.map((option) => (option))}
                             getOptionLabel={(option) => option.name}
-                            onChange={(event,  values: Menus_dishes[]) => setFieldValue(`courses.${index}.dishes`, values.map((option) => option.id))}
+                            onChange={(event,  values: AllDishes_dishes[]) => setFieldValue(`courses.${index}.dishes`, values.map((option) => option.id))}
                             renderInput={(params) => (
                             <TextField
                  {...params}

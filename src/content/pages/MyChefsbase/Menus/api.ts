@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import { useRef } from "react";
 import { useMutation } from "@apollo/client";
-import { Menus, MenusVariables } from "./types/Menus";
+import { Menus } from "./types/Menus";
 import { Delete, DeleteVariables } from "./types/Delete";
 import { addToFavorites, addToFavoritesVariables } from "./types/addToFavorites";
 import { UpdateMenu, UpdateMenuVariables } from "./types/UpdateMenu";
@@ -10,11 +10,20 @@ import { MenuFilterInput } from "src/globalTypes";
 import { useSimpleQuery } from "src/utilities/apollo";
 import { DeleteMultiple, DeleteMultipleVariables } from "./types/DeleteMultiple";
 import { addToFavoritesMultiple, addToFavoritesMultipleVariables } from "./types/addToFavoritesMultiple";
+import { FilterMenus, FilterMenusVariables } from "./types/FilterMenus";
+import { AllDishes } from "./types/AllDishes";
 
-const MenusData = gql`
-query Menus ($input: MenuFilterInput) {
-  allSeasons
-  allThemes
+const AllDishQuery = gql`
+ query AllDishes {
+   dishes {
+     id
+     name
+   }
+ }
+`;
+
+const FilterMenuQuery = gql`
+query FilterMenus ($input: MenuFilterInput) {
   filterMenus (input: $input) {
     id
     periodenddate
@@ -34,6 +43,13 @@ query Menus ($input: MenuFilterInput) {
       }
     }
   }
+}
+`;
+
+export const MenusData = gql`
+query Menus {
+  allSeasons
+  allThemes
   suppliers {
     id
     name
@@ -92,20 +108,36 @@ mutation AddMenu ($input: AddMenuInput!, $courses: [AddCourseToDishesInput!]) {
   addMenu(input: $input, courses: $courses)
 }`;
 
-export const useMenuQuery = ({
+export const useFilterMenuQuery = ({
   input,
 }: {
   input: MenuFilterInput | null;
 }) => {
 
   const { loading, data, error } = useSimpleQuery<
-  Menus,
-  MenusVariables
-  >(MenusData, {
+  FilterMenus,
+  FilterMenusVariables
+  >(FilterMenuQuery, {
     variables: {
       input: input,
     },
   });
+  return { loading, data, error};
+};
+
+export const useMenuQuery = () => {
+
+  const { loading, data, error } = useSimpleQuery<
+  Menus
+  >(MenusData);
+  return { loading, data, error};
+};
+
+export const useAllDishesQuery = () => {
+
+  const { loading, data, error } = useSimpleQuery<
+  AllDishes
+  >(AllDishQuery);
   return { loading, data, error};
 };
 

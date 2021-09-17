@@ -1,7 +1,7 @@
 import { Dialog, DialogTitle, DialogContent, Card, CardActionArea, Grid, Typography, TableContainer, TableBody, TableCell, TableHead, TableRow, List, ListItem, Button, DialogActions } from "@material-ui/core"
 import React from "react"
 import { useState } from "react"
-import { Menus_filterMenus, Menus_filterMenus_courses} from "../types/Menus"
+import { FilterMenus_filterMenus, FilterMenus_filterMenus_courses } from "../types/FilterMenus"
 import { UpdateMenuDialog } from "./UpdateMenu"
 
 export const MenuDialog = ({
@@ -11,7 +11,7 @@ export const MenuDialog = ({
     setOpenUpdateDialog,
 }: {
     setOpenUpdateDialog: () => void;
-    menu: Menus_filterMenus;
+    menu: FilterMenus_filterMenus;
     open: boolean;
     onClose: () => void
 }) => {
@@ -64,7 +64,7 @@ export const MenuDialog = ({
     )
 }
 
-export const ItemCourses = ({title, item}: {title: string, item: Menus_filterMenus_courses []| null;}) => {
+export const ItemCourses = ({title, item}: {title: string, item: FilterMenus_filterMenus_courses []| null;}) => {
     const size = item?.length
     return (
         <>

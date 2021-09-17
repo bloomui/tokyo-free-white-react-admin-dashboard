@@ -14,7 +14,6 @@ import {
       Typography,
     } from "@material-ui/core";
     import React, { useState } from "react";
-  import { Menus, Menus_filterMenus } from "./types/Menus";
   import StarRateTwoToneIcon from '@material-ui/icons/StarRateTwoTone';
   import { useAddToFavorites, useAddToFavoritesMultiple, useDelete, useDeleteMultiple, useMenuQuery } from "./api";
   import { VscStarFull, VscStarEmpty, VscTrash, VscAdd, VscSearch, VscEdit } from "react-icons/vsc";
@@ -26,6 +25,7 @@ import { MenuDialog } from "./menuDialog";
 import { UpdateMenuDialog } from "./menuDialog/UpdateMenu";
 import { AreYouSureDelete } from "./filtermenus/components/AreYouSureDelete";
 import { AddMenuDialog } from "./menuDialog/AddMenu";
+import { FilterMenus } from "./types/FilterMenus";
   
 interface EnhancedTableProps {
     numSelected: number;
@@ -69,7 +69,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     page, 
     setPage,
   }: {
-    data: Menus; 
+    data: FilterMenus; 
     page: number; 
     setPage: (newPage: number) => void;
     }) => {
@@ -214,7 +214,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
               onClose={() => setOpen(false)}
               />
               <UpdateMenuDialog 
-                allDishes={data.dishes}
                  menu={menu}
                  open={openUpdate}
                  onClose={() => setOpenUpdate(false)}
@@ -251,7 +250,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     }) => {
         const numSelected = selected.length
 
-        const {removeMultiple, error, loading} = useDeleteMultiple({
+        const {removeMultiple } = useDeleteMultiple({
             onCompleted: () => window.location.reload(),
           });
 

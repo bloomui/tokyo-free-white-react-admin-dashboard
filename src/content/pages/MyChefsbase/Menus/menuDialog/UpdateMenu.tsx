@@ -1,3 +1,4 @@
+import { useQuery } from "@apollo/client";
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from "@material-ui/core";
 import { Autocomplete, Rating } from "@material-ui/lab";
 import { Formik } from "formik";
@@ -5,22 +6,22 @@ import React from "react";
 import { FormField } from "src/components/form/FormField";
 import { CourseToDishesInput, MenuInput } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
-import { useUpdateMenu } from "../api";
+import { useAllDishesQuery, useUpdateMenu } from "../api";
 import { Rating1, RatingLabels } from "../filtermenus/components/rating";
-import { Menus_dishes, Menus_filterMenus } from "../types/Menus";
+import { FilterMenus, FilterMenus_filterMenus } from "../types/FilterMenus";
+import { Menus_dishes } from "../types/Menus";
 import { UpdateMenuVariables } from "../types/UpdateMenu"
 
 export const UpdateMenuDialog = ({
-    allDishes,
     menu,
     open,
     onClose,
 }: {
-    allDishes: Menus_dishes[] | null,
-    menu: Menus_filterMenus,
+    menu: FilterMenus_filterMenus,
     open: boolean,
     onClose: () => void
 }) => {
+  const {data} = useAllDishesQuery()
 
     const { updateMenu, loading, error } = useUpdateMenu({
         onCompleted: () => window.location.reload(),
@@ -105,13 +106,13 @@ export const UpdateMenuDialog = ({
                 {menu.courses?.map((course, index) => (
                     <>
                     {course.course.courseType}
-                    {allDishes && (
+                    {data && (
                         <>
                         <Autocomplete
                 multiple
                 id="tags-standard"
                 defaultValue={course.dishes}
-                options={allDishes.map((option) => (option))}
+                options={data.dishes.map((option) => (option))}
                 getOptionLabel={(option) => option.name}
                 onChange={(event,  values) => setFieldValue(`courses.${index}.dishes`, values.map((option) => option))}
                 renderInput={(params) => (
