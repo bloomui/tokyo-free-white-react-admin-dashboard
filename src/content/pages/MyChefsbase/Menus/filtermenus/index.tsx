@@ -1,5 +1,6 @@
-import { Paper, Grid, Button } from "@material-ui/core";
+import { Paper, Grid, Button, Dialog, DialogActions, DialogTitle, DialogContent } from "@material-ui/core";
 import { Formik, Form } from "formik";
+import { StringValueNode } from "graphql";
 import React from "react";
 import { MenuFilterInput } from "src/globalTypes";
 import { Menus_suppliers, Menus_recipes, Menus_dishes, Menus_ingredients, Menus_products } from "../types/Menus";
@@ -13,8 +14,10 @@ import { Search } from "./components/search";
 import { Seasons } from "./components/seasons";
 import { Suppliers } from "./components/suppliers";
 import { Themes } from "./components/themes";
-  
-  export  const MenuFilter = ({
+
+  export  const MenuFilterDialog = ({
+    name,
+    onClose,
     initialValues,
     products,
     suppliers,
@@ -25,6 +28,8 @@ import { Themes } from "./components/themes";
     ingredients,
     onChange,
   }: {
+    name: string;
+    onClose: () => void;
     initialValues: MenuFilterInput;
     themes: string[] | null;
     seasons: string[] | null;
@@ -36,18 +41,19 @@ import { Themes } from "./components/themes";
     onChange: (values: MenuFilterInput) => void;
   }) => {
     return (
-      <>
       <Formik
         initialValues={initialValues}
         onSubmit={(values) => {
          alert(JSON.stringify(values, null, 2));
          onChange(values)
         }}
-        render={({ setFieldValue, handleSubmit }) => (
-          <Form >
-           <Grid container spacing={2} xs={12}>
+        >
+        {({ setFieldValue, submitForm }) => {
+          return (
+            <>
+                  <Grid container spacing={2} xs={12}>
          <Grid key={0} item xs={3}>
-           <Search setFieldValue={setFieldValue}/>
+           <Search placeholder={name} setFieldValue={setFieldValue}/>
            </Grid>
              <Grid key={1} item xs={3}>
            <Rating1 
@@ -93,16 +99,20 @@ import { Themes } from "./components/themes";
             setFieldValue={setFieldValue} />
             </Grid>         
             </Grid>
-            <Grid item>
-           <div>
-           <Button onClick={() => handleSubmit} variant="contained" fullWidth type="submit" color="secondary" >
-           <span>Zoek Menu's</span>
-                 </Button>
-         </div>
-         </Grid>
-          </Form>
-          )}
-          />
-          </>
+                <Button variant="contained" onClick={onClose}>
+                  Terug
+                </Button>
+                <Button
+                  disabled={false}
+                  onClick={() => submitForm()}
+                  color="secondary"
+                  variant="contained" 
+                >
+                  Zoeken
+                </Button>
+              </>
+          )
+        }}
+        </Formik>
           )
         }

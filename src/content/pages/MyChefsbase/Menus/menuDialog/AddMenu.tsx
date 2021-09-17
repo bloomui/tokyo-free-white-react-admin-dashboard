@@ -119,7 +119,7 @@ export const AddMenuDialog = ({
                             id="tags-standard"
                             options={allDishes.map((option) => (option))}
                             getOptionLabel={(option) => option.name}
-                            onChange={(event,  values) => setFieldValue(`courses.${index}.dishes`, values.map((option) => option))}
+                            onChange={(event,  values: Menus_dishes[]) => setFieldValue(`courses.${index}.dishes`, values.map((option) => option.id))}
                             renderInput={(params) => (
                             <TextField
                  {...params}

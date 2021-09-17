@@ -9,36 +9,6 @@ import { MenuFilterInput } from "./../../../../../globalTypes";
 // GraphQL query operation: Menus
 // ====================================================
 
-export interface Menus_menus_courses_course {
-  __typename: "Course";
-  id: string;
-  courseType: string;
-}
-
-export interface Menus_menus_courses_dishes {
-  __typename: "Dish";
-  id: string;
-  name: string;
-}
-
-export interface Menus_menus_courses {
-  __typename: "CourseToDishes";
-  course: Menus_menus_courses_course;
-  dishes: Menus_menus_courses_dishes[];
-}
-
-export interface Menus_menus {
-  __typename: "NewMenu";
-  id: string;
-  periodenddate: string | null;
-  periodstartdate: string | null;
-  name: string;
-  season: string | null;
-  rating: number | null;
-  theme: string | null;
-  courses: Menus_menus_courses[] | null;
-}
-
 export interface Menus_filterMenus_courses_course {
   __typename: "Course";
   id: string;
@@ -102,7 +72,6 @@ export interface Menus_dishes {
 export interface Menus {
   allSeasons: string[] | null;
   allThemes: string[] | null;
-  menus: Menus_menus[] | null;
   filterMenus: Menus_filterMenus[] | null;
   suppliers: Menus_suppliers[] | null;
   products: Menus_products[] | null;
@@ -113,5 +82,4 @@ export interface Menus {
 
 export interface MenusVariables {
   input?: MenuFilterInput | null;
-  name?: string | null;
 }

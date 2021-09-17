@@ -21,8 +21,8 @@ export const Ingredients = ({
 multiple
 id="tags-standard"
 options={ingredients.map((option) => (option))}
-getOptionLabel={(option) => option? option.name : ""}
-onChange={(event,  values) => setFieldValue("ingredients", values.map((option) => option? option : ""))}
+getOptionLabel={(option) => option.name}
+onChange={(event,  values: Menus_ingredients[]) => setFieldValue("ingredients", values.map((option) => option.id))}
 renderInput={(params) => (
                  <TextField
                  {...params}

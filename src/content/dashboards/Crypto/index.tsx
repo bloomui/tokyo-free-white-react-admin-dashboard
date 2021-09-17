@@ -1,18 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Tab, Tabs, Box, Container, Grid, LinearProgress, Typography } from '@material-ui/core';
+import { Tab, Tabs, Box, Container, Grid, } from '@material-ui/core';
 import Footer from 'src/components/Footer';
-
-import AccountBalance from './AccountBalance';
-import Wallets from './Wallets';
-import AccountSecurity from './AccountSecurity';
-import WatchList from './WatchList';
 import React, { useState } from 'react';
-import { MenuTable } from 'src/content/pages/MyChefsbase/Menus/MenuTable';
-import { useMenuQuery } from 'src/content/pages/MyChefsbase/Menus/api';
-import { MenuFilterInput } from 'src/globalTypes';
-import { MenuFilter } from 'src/content/pages/MyChefsbase/Menus/filtermenus';
 import { MenuPage } from 'src/content/pages/MyChefsbase/Menus';
 import { DishPage } from 'src/content/pages/MyChefsbase/Dishes';
 

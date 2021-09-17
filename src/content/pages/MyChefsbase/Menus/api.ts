@@ -8,30 +8,13 @@ import { UpdateMenu, UpdateMenuVariables } from "./types/UpdateMenu";
 import { AddMenu, AddMenuVariables } from "./types/AddMenu";
 import { MenuFilterInput } from "src/globalTypes";
 import { useSimpleQuery } from "src/utilities/apollo";
+import { DeleteMultiple, DeleteMultipleVariables } from "./types/DeleteMultiple";
+import { addToFavoritesMultiple, addToFavoritesMultipleVariables } from "./types/addToFavoritesMultiple";
 
 const MenusData = gql`
-query Menus ($input: MenuFilterInput, $name: String) {
+query Menus ($input: MenuFilterInput) {
   allSeasons
   allThemes
-  menus (name: $name) {
-    id
-    periodenddate
-    periodstartdate
-    name
-    season
-    rating
-    theme
-    courses {
-      course {
-        id
-        courseType
-      }
-      dishes {
-        id
-        name
-      }
-    }
-  }
   filterMenus (input: $input) {
     id
     periodenddate
@@ -86,6 +69,18 @@ mutation Delete ($id: String!, $kitchenType: KitchenType!) {
 }
 `;
 
+export const DeleteMultipleMutation = gql`
+mutation DeleteMultiple ($ids: [String!]!, $kitchenType: KitchenType!) {
+  deleteMultiple (ids: $ids, kitchenType: $kitchenType)
+}
+`;
+
+export const AddtoFavoritesMultipleMutation = gql`
+mutation addToFavoritesMultiple ($ids: [String!]!, $kitchenType: KitchenType!) {
+  addToFavoritesMultiple (ids: $ids, kitchenType: $kitchenType)
+}
+`;
+
 export const AddtoFavoritesMutation = gql`
 mutation addToFavorites ($id: String!, $kitchenType: KitchenType!) {
   addToFavorites (id: $id, kitchenType: $kitchenType)
@@ -99,10 +94,8 @@ mutation AddMenu ($input: AddMenuInput!, $courses: [AddCourseToDishesInput!]) {
 
 export const useMenuQuery = ({
   input,
-  name,
 }: {
   input: MenuFilterInput | null;
-  name: string
 }) => {
 
   const { loading, data, error } = useSimpleQuery<
@@ -111,7 +104,6 @@ export const useMenuQuery = ({
   >(MenusData, {
     variables: {
       input: input,
-      name: name
     },
   });
   return { loading, data, error};
@@ -150,6 +142,44 @@ export const useDelete = ({
 
   return {
     remove,
+    loading,
+    error,
+  };
+};
+
+export const useDeleteMultiple = ({
+  onCompleted
+}: {
+  onCompleted: () => void;
+}) => {
+  const [removeMultiple, { loading, error }] = useMutation<
+    DeleteMultiple,
+    DeleteMultipleVariables
+  >(DeleteMultipleMutation, {
+    onCompleted: () => onCompleted(),
+  });
+
+  return {
+    removeMultiple,
+    loading,
+    error,
+  };
+};
+
+export const useAddToFavoritesMultiple = ({
+  onCompleted
+}: {
+  onCompleted: () => void;
+}) => {
+  const [addMultiple, { loading, error }] = useMutation<
+    addToFavoritesMultiple,
+    addToFavoritesMultipleVariables
+  >(AddtoFavoritesMultipleMutation, {
+    onCompleted: () => onCompleted(),
+  });
+
+  return {
+    addMultiple,
     loading,
     error,
   };

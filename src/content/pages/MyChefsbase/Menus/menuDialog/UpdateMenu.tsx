@@ -98,7 +98,7 @@ export const UpdateMenuDialog = ({
                 />
                 Rating:
                 <Rating1
-                updateField="rating"
+                updateField="input.rating"
                 setFieldValue={setFieldValue}
                 />
                 Gangen:

@@ -1,11 +1,20 @@
 import React from "react"
 import { BiSearchAlt2 } from "react-icons/bi"
 import { BlackColor } from "../layout/Colors"
-import { TextField, Box, Grid, InputBase, InputAdornment } from "@material-ui/core";
+import { TextField, Box, Grid, InputBase, InputAdornment, OutlinedInput, Button } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { Loader } from "./Loader"
+import { FaFilter } from "react-icons/fa";
 
-export const SearchInputField = ({ name, handleSubmit, handleChange }: { name: string, handleSubmit: () => void, handleChange: () => void }) => {
+export const SearchInputField = ({ 
+  name, 
+  handleSubmit, 
+  handleChange 
+}: { 
+  name: string, 
+  handleSubmit: () => void, 
+  handleChange: () => void 
+}) => {
     return (
         <form onSubmit={handleSubmit}>
             <Grid container spacing={1}>
@@ -30,7 +39,7 @@ export const SearchDirect = ({
   placeholder, 
   value, 
   onChange, 
-  isLoading
+  isLoading,
 }: {
   value: string,
   placeholder: string, 
@@ -45,6 +54,18 @@ export const SearchDirect = ({
     alignItems="center"
     flexDirection="column"
     >
+      {/* <OutlinedInput
+        fullWidth
+        placeholder={placeholder}
+        id="outlined-adornment-weight"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        startAdornment={
+        <InputAdornment position="start">
+        <SearchIcon />
+        </InputAdornment>
+        }
+          /> */}
     <TextField
     fullWidth
     placeholder={placeholder}

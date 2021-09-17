@@ -21,7 +21,7 @@ multiple
 id="tags-standard"
 options={suppliers.map((option) => (option))}
 getOptionLabel={(option) => option? option.name : ""}
-onChange={(event,  values) => setFieldValue("suppliers", values.map((option) => option? option : ""))}
+onChange={(event,  values: Menus_suppliers[]) => setFieldValue("suppliers", values.map((option) => option.id))}
 renderInput={(params) => (
                  <TextField
                  {...params}

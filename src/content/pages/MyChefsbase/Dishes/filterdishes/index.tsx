@@ -57,7 +57,7 @@ export const initialValues: DishFilterInput = {
           <Form >
            <Grid container spacing={2} xs={12}>
          <Grid key={0} item xs={3}>
-           <Search setFieldValue={setFieldValue}/>
+           <Search placeholder={null} setFieldValue={setFieldValue}/>
            </Grid>
              <Grid key={1} item xs={3}>
            <Rating1 

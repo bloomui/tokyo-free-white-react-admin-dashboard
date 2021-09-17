@@ -21,7 +21,7 @@ multiple
 id="tags-standard"
 options={dishes.map((option) => (option))}
 getOptionLabel={(option) => option? option.name : ""}
-onChange={(event,  values) => setFieldValue("dishes", values.map((option) => option? option: ""))}
+onChange={(event,  values: Menus_dishes[]) => setFieldValue("dishes", values.map((option) => option.id))}
 renderInput={(params) => (
                  <TextField
                  {...params}

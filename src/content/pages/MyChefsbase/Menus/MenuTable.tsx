@@ -1,8 +1,6 @@
 import {
-    Button,
-    Dialog,
-    DialogContent,
     Grid,
+    IconButton,
       Paper,
       Table,
       TableBody,
@@ -11,12 +9,14 @@ import {
       TableHead,
       TablePagination,
       TableRow,
+      Toolbar,
+      Tooltip,
       Typography,
     } from "@material-ui/core";
     import React, { useState } from "react";
   import { Menus, Menus_filterMenus } from "./types/Menus";
   import StarRateTwoToneIcon from '@material-ui/icons/StarRateTwoTone';
-  import { useAddToFavorites, useDelete, useMenuQuery } from "./api";
+  import { useAddToFavorites, useAddToFavoritesMultiple, useDelete, useDeleteMultiple, useMenuQuery } from "./api";
   import { VscStarFull, VscStarEmpty, VscTrash, VscAdd, VscSearch, VscEdit } from "react-icons/vsc";
   import { useMutation } from "@apollo/client";
 import { KitchenType } from "src/globalTypes";
@@ -24,6 +24,8 @@ import { SearchDirect } from "src/components/search/SearchInputField";
 import Checkbox from "@mui/material/Checkbox";
 import { MenuDialog } from "./menuDialog";
 import { UpdateMenuDialog } from "./menuDialog/UpdateMenu";
+import { AreYouSureDelete } from "./filtermenus/components/AreYouSureDelete";
+import { AddMenuDialog } from "./menuDialog/AddMenu";
   
 interface EnhancedTableProps {
     numSelected: number;
@@ -32,7 +34,7 @@ interface EnhancedTableProps {
   }
 
   const headCells: string[] = [
-      "Naam", "seizoen", "thema", "vanaf", "tot", "rating"
+      "Naam", "seizoen", "thema", "vanaf", "tot", "rating", "acties"
   ]
 
 function EnhancedTableHead(props: EnhancedTableProps) {
@@ -63,49 +65,36 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   }
 
   export const MenuTable = ({
-    name,
-    setName,
     data, 
     page, 
     setPage,
   }: {
-      name: string;
-    setName: React.Dispatch<React.SetStateAction<string>>;
     data: Menus; 
     page: number; 
     setPage: (newPage: number) => void;
     }) => {
     
+    // TablePagination
     const [pageNumber, setPageNumber] = React.useState(0);
-  
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const handleChangePage = (
       event: any,
       newPage: React.SetStateAction<number>
     ) => {
       setPage(newPage as number);
     };
-    const [selected, setSelected] = React.useState<readonly string[]>([]);
-
-    let menus;
-    if (name != null) menus = data.menus;
-     else menus = data.filterMenus
-    
-     console.log(menus)
-    const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.checked) {
-          const newSelecteds = menus.map((menu) => menu.name);
-          setSelected(newSelecteds);
-          return;
-        }
-        setSelected([]);
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPageNumber(0);
       };
-
-      const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-        const selectedIndex = selected.indexOf(name);
+    // Checkboxes
+    const [selected, setSelected] = React.useState<readonly string[]>([]);
+    const handleClick = (event: React.MouseEvent<unknown>, id: string) => {
+        const selectedIndex = selected.indexOf(id);
         let newSelected: readonly string[] = [];
     
         if (selectedIndex === -1) {
-          newSelected = newSelected.concat(selected, name);
+          newSelected = newSelected.concat(selected, id);
         } else if (selectedIndex === 0) {
           newSelected = newSelected.concat(selected.slice(1));
         } else if (selectedIndex === selected.length - 1) {
@@ -119,35 +108,33 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     
         setSelected(newSelected);
       };
+    const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.checked) {
+          const newSelecteds = menus.map((menu) => menu.id);
+          setSelected(newSelecteds);
+          return;
+        }
+        setSelected([]);
+    };
+    const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
+    // Dialogs
     const [open, setOpen] = React.useState(false);
     const [openUpdate, setOpenUpdate] = React.useState(false)
-    const [openAddMenu, setOpenAddMenu] = useState(false)
     const [areYouSureDelete, setAreYouSureDelete] = useState<boolean>(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setRowsPerPage(parseInt(event.target.value, 10));
-      setPageNumber(0);
-    };
+
+    // Menu Data
+    let menus = data.filterMenus
+    
+     //Add to Favorites Mutation
     const { add } = useAddToFavorites({
       onCompleted: () => window.location.reload(),
     });
-    const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
-    
     return (
         <>
-                <SearchDirect placeholder="Zoek Menu" value={name} onChange={setName} isLoading={false}/>
+                      <EnhancedTableToolbar selected={selected.map((item) => String(item))} />
                 <TableContainer component={Paper}>
-                <Button color="secondary" variant="contained" onClick={() => setOpenAddMenu(true)}>
-                    <Grid 
-                    onClick={() => setOpenAddMenu(true)}
-                    container xs={12}>
-                      <Grid item xs={12}>
-                      <Typography><span><VscAdd /> Nieuw menu</span></Typography>
-                      </Grid>
-                      </Grid> 
-                  </Button>
               <Table >
               <EnhancedTableHead
               numSelected={selected.length}
@@ -156,17 +143,17 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             />
             <TableBody>
             {menus.map((menu, index) => {
-                const isItemSelected = isSelected(menu.name);
+                const isItemSelected = isSelected(menu.id);
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
                     <>
                     <TableRow
                     hover
-                    onClick={(event) => handleClick(event, menu.name)}
+                    onClick={(event) => handleClick(event, menu.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
-                    key={menu.name}
+                    key={menu.id}
                     selected={isItemSelected}
                   >
                     <TableCell padding="checkbox">
@@ -186,11 +173,11 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                     >
                       {menu.name}
                     </TableCell>
-                    <TableCell align="right">{menu.season}</TableCell>
-                    <TableCell align="right">{menu.theme}</TableCell>
-                    <TableCell align="right">{menu.periodstartdate}</TableCell>
-                    <TableCell align="right">{menu.periodenddate}</TableCell>
-                    <TableCell align="right">{menu.rating}</TableCell>
+                    <TableCell align="left">{menu.season}</TableCell>
+                    <TableCell align="left">{menu.theme}</TableCell>
+                    <TableCell align="left">{menu.periodstartdate}</TableCell>
+                    <TableCell align="left">{menu.periodenddate}</TableCell>
+                    <TableCell align="left">{menu.rating}</TableCell>
                     <TableCell 
                 align="center"
                 >
@@ -257,44 +244,64 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     )
   }
   
-  export const AreYouSureDelete = ({
-    id,
-    kitchenType,
-    open,
-    onClose,
-  }: {
-    id: string;
-    kitchenType: KitchenType;
-    open: boolean;
-    onClose: () => void;
-  }) => {
-    const {remove, error, loading} = useDelete({
-      onCompleted: () => {}
-    });
+  const EnhancedTableToolbar = ({
+      selected
+  }:{
+      selected: string[]
+    }) => {
+        const numSelected = selected.length
+
+        const {removeMultiple, error, loading} = useDeleteMultiple({
+            onCompleted: () => window.location.reload(),
+          });
+
+          const { addMultiple } = useAddToFavoritesMultiple({
+            onCompleted: () => window.location.reload(),
+          });
+        
     return (
-      <Dialog open={open}>
-        <DialogContent>
-          Weet u zeker dat u dit item wilt verwijderen?
-        </DialogContent>
-        <Grid container xs={12}>
-          <Grid item xs={6}>
-          <Button
-          onClick={() => remove({
-            variables: {
-              id: id,
-              kitchenType: kitchenType
-            }
-          })}>
-          Ja
-        </Button>
+      <Toolbar
+      >
+        {numSelected > 0 ? (
+          <Typography
+            sx={{ flex: '1 1 100%' }}
+            color="inherit"
+            variant="subtitle1"
+            component="div"
+          >
+            {numSelected} geselecteerd
+          </Typography>
+        ) : (<></>)}
+        {numSelected > 0 ? (
+            <Grid container xs={12}>
+                <Grid item xs={6} onClick={() => {
+                    removeMultiple({variables: {
+                        ids: selected,
+                        kitchenType: KitchenType.Menu
+                    }});
+                }
+              }>
+          <Tooltip title="Verwijderen">
+            <IconButton>
+              <VscTrash />
+            </IconButton>
+          </Tooltip>
           </Grid>
-          <Grid item xs={6}>
-          <Button 
-          onClick={onClose}>
-          Nee, ga terug
-        </Button>
-          </Grid>
+          <Grid item xs={6} onClick={() => {
+                    addMultiple({variables: {
+                        ids: selected,
+                        kitchenType: KitchenType.Menu
+                    }});
+                }
+              }>
+          <Tooltip title="Toevoegen aan favorieten">
+          <IconButton>
+            <VscStarFull />
+          </IconButton>
+        </Tooltip>
         </Grid>
-      </Dialog>
-    )
-  }
+        </Grid>
+        ) : (<></>)}
+      </Toolbar>
+    );
+  };

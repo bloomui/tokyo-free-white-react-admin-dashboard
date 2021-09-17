@@ -3,8 +3,10 @@ import Autocomplete from "@material-ui/lab/Autocomplete"
 import React from "react"
 
 export const Search = ({
+    placeholder,
     setFieldValue
   }: {
+    placeholder: string | null;
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void
   }) => {
     return (
@@ -14,7 +16,7 @@ export const Search = ({
    <Typography>Zoek op naam:</Typography>
  <TextField
       fullWidth
-      placeholder="search"
+      placeholder={placeholder}
       onChange={(e) => setFieldValue("name", e.target.value)}
     />
     </Grid>

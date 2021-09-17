@@ -24,7 +24,7 @@ import { AddDishDialog } from "./dishDialogs/AddDishDialog";
 import { useAddToFavorites } from "../Menus/api";
 import { LightGreenColor } from "src/components/layout/Colors";
 import { KitchenType } from "src/globalTypes";
-import { AreYouSureDelete } from "../Menus/MenuTable";
+import { AreYouSureDelete } from "../Menus/filtermenus/components/AreYouSureDelete";
 
 export const DishTable = ({
     data, 
