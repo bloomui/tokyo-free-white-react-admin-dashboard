@@ -6,6 +6,8 @@ import SidebarLayout from 'src/layouts/SidebarLayout';
 import BaseLayout from 'src/layouts/BaseLayout';
 
 import SuspenseLoader from 'src/components/SuspenseLoader';
+import SignInForm from './content/pages/SignIn';
+import SignUpForm from './content/pages/SignUp';
 
 const Loader = (Component) => (props) => (
   <Suspense fallback={<SuspenseLoader />}>
@@ -47,6 +49,61 @@ const Status500 = Loader(lazy(() => import('src/content/pages/Status/Status500')
 const StatusComingSoon = Loader(lazy(() => import('src/content/pages/Status/ComingSoon')));
 const StatusMaintenance = Loader(lazy(() => import('src/content/pages/Status/Maintenance')));
 
+export const Router: PartialRouteObject[] = [
+  {
+    path: '*',
+    element: <BaseLayout />,
+    children: [
+      {
+        path: '/',
+        element: <Overview />
+      },
+      {
+        path: 'overview',
+        element: (
+          <Navigate
+            to="/"
+            replace
+          />
+        )
+      },
+      {
+        path: 'status',
+        children: [
+          {
+            path: '/',
+            element: (
+              <Navigate
+                to="404"
+                replace
+              />
+            )
+          },
+          {
+            path: '404',
+            element: <Status404 />
+          },
+          {
+            path: '500',
+            element: <Status500 />
+          },
+          {
+            path: 'maintenance',
+            element: <StatusMaintenance />
+          },
+          {
+            path: 'coming-soon',
+            element: <StatusComingSoon />
+          },
+        ]
+      },
+      {
+        path: '*',
+        element: <Status404 />
+      },
+    ]
+  },
+]
 
 const routes: PartialRouteObject[] = [
   {
@@ -56,6 +113,19 @@ const routes: PartialRouteObject[] = [
       {
         path: '/',
         element: <Overview />
+      },
+      {
+        path: 'authenticate',
+        children:[
+          {
+            path: 'signin',
+            element: <SignInForm />
+          },
+          {
+            path: 'signup',
+            element: <SignUpForm />
+          },
+        ]
       },
       {
         path: 'overview',

@@ -10,19 +10,19 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import { experimentalStyled } from '@material-ui/core/styles';
 
-const TypographyH1 = experimentalStyled(Typography)(
+export const TypographyH1 = experimentalStyled(Typography)(
   ({ theme }) => `
     font-size: ${theme.typography.pxToRem(50)};
 `
 );
 
-const TypographyH2 = experimentalStyled(Typography)(
+export const TypographyH2 = experimentalStyled(Typography)(
   ({ theme }) => `
     font-size: ${theme.typography.pxToRem(17)};
 `
 );
 
-const LabelWrapper = experimentalStyled(Box)(
+export const LabelWrapper = experimentalStyled(Box)(
   ({ theme }) => `
     background-color: ${theme.colors.success.main};
     color: ${theme.palette.success.contrastText};
@@ -33,46 +33,6 @@ const LabelWrapper = experimentalStyled(Box)(
     font-size: ${theme.typography.pxToRem(11)};
     padding: ${theme.spacing(.5)} ${theme.spacing(1.5)};
     margin-bottom: ${theme.spacing(2)};
-`
-);
-
-const MuiAvatar = experimentalStyled(Box)(
-  ({ theme }) => `
-    width: ${theme.spacing(8)};
-    height: ${theme.spacing(8)};
-    border-radius: ${theme.general.borderRadius};
-    background-color: #e5f7ff;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto ${theme.spacing(2)};
-
-    img {
-      width: 60%;
-      height: 60%;
-      display: block;
-    }
-`
-);
-
-const TsAvatar = experimentalStyled(Box)(
-  ({ theme }) => `
-    width: ${theme.spacing(8)};
-    height: ${theme.spacing(8)};
-    border-radius: ${theme.general.borderRadius};
-    background-color: #dfebf6;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto ${theme.spacing(2)};
-
-    img {
-      width: 60%;
-      height: 60%;
-      display: block;
-    }
 `
 );
 
@@ -94,16 +54,31 @@ function Hero() {
           > 
           Getting the best out of every chef!
           </TypographyH2>
+          <Grid container spacing={2} xs={12}>
+          <Grid item xs={5}>
           <Button
+          fullWidth
             component={RouterLink}
-            to="/dashboards/crypto"
+            to="/authenticate/signin"
             size="large"
             variant="contained"
           >
             Log In
           </Button> 
-          
+          </Grid>
+          <Grid item xs={5}>
           <Button
+            fullWidth
+            component={RouterLink}
+            to="/authenticate/signup"
+            size="large"
+            variant="contained"
+          >
+            Sign Up
+          </Button> 
+          </Grid>
+          </Grid>
+          {/* <Button
             sx={{ ml: 2 }}
             component="a"
             target="_blank"
@@ -113,7 +88,7 @@ function Hero() {
             variant="text"
           >
             Sign Up!
-          </Button>
+          </Button> */}
         </Grid>
       </Grid>
     </Container>
