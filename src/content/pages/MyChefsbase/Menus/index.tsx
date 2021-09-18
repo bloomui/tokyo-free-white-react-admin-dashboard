@@ -2,29 +2,15 @@ import { useQuery } from "@apollo/client";
 import {
     Box,
     LinearProgress,
-    Grid,
-    Button,
-    Card,
-    CardActions,
-    CardContent,
-    Collapse,
-    Typography,
-    IconButton,
-    IconButtonProps,
-    styled,
   } from "@material-ui/core";
-  import TablePagination from '@material-ui/core/TablePagination';
 import React, { useState } from "react";
-import { FaFilter } from "react-icons/fa";
-import { VscAdd } from "react-icons/vsc";
 import { LoadingScreen } from "src/components/layout";
-import { SearchDirect } from "src/components/search/SearchInputField";
 import { MenuFilterInput } from "src/globalTypes";
 import { MenusData, useFilterMenuQuery, useMenuQuery } from "./api";
 import { MenuFilterDialog } from "./filtermenus";
 import { initialMenuValues } from "./filtermenus/components/initialMenuValues";
 import { AddMenuDialog } from "./menuDialog/AddMenu";
-import { MenuTable } from "./MenuTable";
+import { MenuTable } from "./components/MenuTable";
   
   export const MenuPage = ({
     page,
@@ -53,8 +39,6 @@ import { MenuTable } from "./MenuTable";
         </>
       );
     }
-    console.log(openAddMenu)
-
   
     return (
       <>

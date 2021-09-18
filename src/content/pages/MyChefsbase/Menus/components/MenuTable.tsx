@@ -14,18 +14,14 @@ import {
       Typography,
     } from "@material-ui/core";
     import React, { useState } from "react";
-  import StarRateTwoToneIcon from '@material-ui/icons/StarRateTwoTone';
-  import { useAddToFavorites, useAddToFavoritesMultiple, useDelete, useDeleteMultiple, useMenuQuery } from "./api";
+  import { useAddToFavorites, useAddToFavoritesMultiple, useDelete, useDeleteMultiple, useMenuQuery } from "../api";
   import { VscStarFull, VscStarEmpty, VscTrash, VscAdd, VscSearch, VscEdit } from "react-icons/vsc";
-  import { useMutation } from "@apollo/client";
 import { KitchenType } from "src/globalTypes";
-import { SearchDirect } from "src/components/search/SearchInputField";
 import Checkbox from "@mui/material/Checkbox";
-import { MenuDialog } from "./menuDialog";
-import { UpdateMenuDialog } from "./menuDialog/UpdateMenu";
-import { AreYouSureDelete } from "./filtermenus/components/AreYouSureDelete";
-import { AddMenuDialog } from "./menuDialog/AddMenu";
-import { FilterMenus } from "./types/FilterMenus";
+import { MenuDialog } from "../menuDialog";
+import { UpdateMenuDialog } from "../menuDialog/UpdateMenu";
+import { AreYouSureDelete } from "../filtermenus/components/AreYouSureDelete";
+import { FilterMenus } from "../types/FilterMenus";
   
 interface EnhancedTableProps {
     numSelected: number;
