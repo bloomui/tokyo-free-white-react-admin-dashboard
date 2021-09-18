@@ -15,6 +15,7 @@ import RedeemTwoToneIcon from '@material-ui/icons/RedeemTwoTone';
 import SettingsTwoToneIcon from '@material-ui/icons/SettingsTwoTone';
 import TrafficTwoToneIcon from '@material-ui/icons/TrafficTwoTone';
 import VerifiedUserTwoToneIcon from '@material-ui/icons/VerifiedUserTwoTone';
+import { FaDatabase } from "react-icons/fa"
 
 export interface MenuItem {
   link?: string;
@@ -41,15 +42,15 @@ const menuItems: MenuItems[] = [
     ]
   },
   {
-    heading: 'Dashboards',
+    heading: 'MyChefsbase',
     items: [
       {
-        name: 'Crypto',
+        name: 'Chefsbase',
         link: '/dashboards/crypto',
-        icon: BrightnessLowTwoToneIcon
+        icon: FaDatabase
       },
       {
-        name: 'Messenger',
+        name: 'Inventaris',
         icon: MmsTwoToneIcon,
         link: '/dashboards/messenger'
       },
@@ -59,12 +60,12 @@ const menuItems: MenuItems[] = [
     heading: 'Management',
     items: [
       {
-        name: 'Transactions',
+        name: 'Bestellingen',
         icon: TableChartTwoToneIcon,
         link: '/management/transactions'
       },
       {
-        name: 'User Profile',
+        name: 'Account',
         icon: AccountCircleTwoToneIcon,
         link: '/management/profile',
         items: [
