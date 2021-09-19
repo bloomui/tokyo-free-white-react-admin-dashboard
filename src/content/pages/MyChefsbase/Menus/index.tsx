@@ -6,11 +6,11 @@ import {
 import React, { useState } from "react";
 import { LoadingScreen } from "src/components/layout";
 import { MenuFilterInput } from "src/globalTypes";
-import { MenusData, useFilterMenuQuery, useMenuQuery } from "./api";
-import { MenuFilterDialog } from "./filtermenus";
+import { useFilterMenuQuery } from "./api";
 import { initialMenuValues } from "./filtermenus/components/initialMenuValues";
 import { AddMenuDialog } from "./menuDialog/AddMenu";
 import { MenuTable } from "./components/MenuTable";
+import { TopPartMenuPage } from "./components/TopPartMenuPage";
   
   export const MenuPage = ({
     page,
@@ -54,35 +54,3 @@ import { MenuTable } from "./components/MenuTable";
       </>
     );
   };
-
-  export const TopPartMenuPage = ({
-      setOpenAddMenu,
-      setInput,
-  }: {
-    setOpenAddMenu: () => void;
-    setInput: (values: MenuFilterInput) => void;
-  }) => {
-    const [ openFilterInputDialog, setOpenFilterInputDialog] = React.useState(false)
-    const [name, setName] = useState()
-
-    const { loading, data, error } = useQuery(MenusData)
-    if (loading) return <LoadingScreen />;
-    if (error) return <LoadingScreen />;
-
-    return (
-        <MenuFilterDialog
-        setOpenAddMenu={setOpenAddMenu}
-        name={name}
-        onClose={() => setOpenFilterInputDialog(false)}
-        initialValues={initialMenuValues}
-        suppliers={data.suppliers}
-        products={data.products}
-        dishes={data.dishes}
-        recipes={data.recipes}
-        ingredients={data.ingredients}
-        themes={data.allThemes}
-        seasons={data.allSeasons}
-        onChange={(values) => setInput(values)}
-        />
-    )
-  }

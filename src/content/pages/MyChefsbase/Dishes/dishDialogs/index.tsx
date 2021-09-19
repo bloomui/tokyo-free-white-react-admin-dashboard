@@ -1,8 +1,7 @@
 import { Dialog, DialogTitle, DialogContent, Card, CardActionArea, Grid, Typography, TableContainer, TableBody, TableCell, TableHead, TableRow, List, ListItem, Button, DialogActions } from "@material-ui/core"
 import React from "react"
-import { useState } from "react"
 import { ItemInt, ItemString } from "../../Menus/menuDialog"
-import { Dishes_filterDishes, Dishes_filterDishes_method, Dishes_filterDishes_recipes } from "../types/Dishes"
+import { FilterDishes_filterDishes, FilterDishes_filterDishes_method, FilterDishes_filterDishes_recipes } from "../types/FilterDishes"
 
 export const DishDialog = ({
     dish,
@@ -11,7 +10,7 @@ export const DishDialog = ({
     setOpenUpdateDialog,
 }: {
     setOpenUpdateDialog: () => void;
-    dish: Dishes_filterDishes;
+    dish: FilterDishes_filterDishes;
     open: boolean;
     onClose: () => void
 }) => {
@@ -26,7 +25,7 @@ export const DishDialog = ({
                   Terug
                 </Button>
                 <Button variant="contained" onClick={() => setOpenUpdateDialog()}>
-                  Menu aanpassen
+                  Gerecht aanpassen
                 </Button>
               </DialogActions>
               <DialogContent>
@@ -56,13 +55,12 @@ export const DishDialog = ({
                   </Card>
               </DialogContent>
             </>
-
             )}
         </Dialog>
     )
 }
 
-export const ItemMethods = ({title, item}: {title: string, item: Dishes_filterDishes_method []| null;}) => {
+export const ItemMethods = ({title, item}: {title: string, item: FilterDishes_filterDishes_method []| null;}) => {
     return (
         <>
         <Grid key={0} item xs={12}>
@@ -96,7 +94,7 @@ export const ItemMethods = ({title, item}: {title: string, item: Dishes_filterDi
     )
 }
 
-export const ItemRecipes = ({title, item}: {title: string, item: Dishes_filterDishes_recipes []| null;}) => {
+export const ItemRecipes = ({title, item}: {title: string, item: FilterDishes_filterDishes_recipes []| null;}) => {
     return (
         <>
         <Grid key={0} item xs={12}>

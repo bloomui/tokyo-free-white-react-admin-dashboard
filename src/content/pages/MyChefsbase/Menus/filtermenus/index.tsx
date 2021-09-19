@@ -22,7 +22,6 @@ import { Themes } from "./components/themes";
 
   export const MenuFilterDialog = ({
     setOpenAddMenu,
-    name,
     onClose,
     initialValues,
     products,
@@ -35,7 +34,6 @@ import { Themes } from "./components/themes";
     onChange,
   }: {
     setOpenAddMenu: () => void;
-    name: string;
     onClose: () => void;
     initialValues: MenuFilterInput;
     themes: string[] | null;
@@ -49,12 +47,6 @@ import { Themes } from "./components/themes";
   }) => {
 
     const [ openFilterInputDialog, setOpenFilterInputDialog] = React.useState(false)
-    const [name1, setName] = useState()
-
-    const { loading, data, error } = useQuery(MenusData)
-    if (loading) return <LoadingScreen />;
-    if (error) return <LoadingScreen />;
-
 
     return (
       <Card>
@@ -70,7 +62,7 @@ import { Themes } from "./components/themes";
       <Grid container xs={12}>
             <CardActions disableSpacing>
             <Grid key={0} item>
-           <Search placeholder={name} setFieldValue={setFieldValue}/>
+           <Search placeholder="Zoek Menu" setFieldValue={setFieldValue}/>
            </Grid>
         <Grid key={1} item>
             <ExpandMore
@@ -150,7 +142,7 @@ import { Themes } from "./components/themes";
           )
         }
 
-        const AutoSubmitToken = () => {
+  export const AutoSubmitToken = () => {
           const { values, submitForm } = useFormikContext();
           React.useEffect(() => {
           if (true) {
@@ -160,11 +152,11 @@ import { Themes } from "./components/themes";
           return null;
           };
 
-          interface ExpandMoreProps extends IconButtonProps {
+export interface ExpandMoreProps extends IconButtonProps {
             expand: boolean;
           }
           
-          const ExpandMore = styled((props: ExpandMoreProps) => {
+export const ExpandMore = styled((props: ExpandMoreProps) => {
             const { expand, ...other } = props;
             return <IconButton {...other} />;
           })(({ theme, expand }) => ({

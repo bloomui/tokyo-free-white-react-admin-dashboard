@@ -4,14 +4,23 @@ import { useMutation } from "@apollo/client";
 import { AddDish, AddDishVariables } from "./types/AddDish";
 import { DishFilterInput } from "src/globalTypes";
 import { useSimpleQuery } from "src/utilities/apollo";
-import { Dishes, DishesVariables } from "./types/Dishes";
+import { Dishes } from "./types/Dishes";
 import { UpdateDish, UpdateDishVariables } from "./types/UpdateDish";
+import { AllRecipes } from "./types/AllRecipes";
+import { FilterDishes } from "./types/FilterDishes";
 
-const DishesData = gql`
-query Dishes ($input: DishFilterInput) {
-  allThemes
-  allTypes
-  filterDishes (input: $input) {
+const AllRecipesQuery = gql`
+ query AllRecipes {
+   recipes {
+     id
+     name
+   }
+ }
+`;
+
+export const FilterDishesQuery = gql`
+query FilterDishes ($input: DishFilterInput) {
+    filterDishes (input: $input) {
     id
     comment
     name
@@ -32,6 +41,12 @@ query Dishes ($input: DishFilterInput) {
       }
     }
   }
+}`;
+
+export const DishesData = gql`
+query Dishes {
+  allThemes
+  allTypes
   suppliers {
     id
     name
@@ -66,16 +81,23 @@ mutation AddDish ($input: AddDishInput!, $recipes: [QuantityToId!], $method: [St
   addDish(input: $input, recipes: $recipes, method: $method)
 }`;
 
-export const useDishQuery = ({
+export const useAllRecipesQuery = () => {
+
+    const { loading, data, error } = useSimpleQuery<
+    AllRecipes
+    >(AllRecipesQuery);
+    return { loading, data, error};
+  };
+
+export const useFilterDishesQuery = ({
   input,
 }: {
   input: DishFilterInput | null;
 }) => {
 
   const { loading, data, error } = useSimpleQuery<
-  Dishes,
-  DishesVariables
-  >(DishesData, {
+  FilterDishes
+    >(FilterDishesQuery, {
     variables: {
       input: input,
     },

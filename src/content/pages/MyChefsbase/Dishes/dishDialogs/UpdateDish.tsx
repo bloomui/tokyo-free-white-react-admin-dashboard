@@ -6,21 +6,21 @@ import { FormField } from "src/components/form/FormField";
 import { DishInput, QuantityToId, StepToMethodInput } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
-import { useUpdateDish } from "../api";
-import { Dishes_filterDishes, Dishes_recipes } from "../types/Dishes";
+import { useAllRecipesQuery, useUpdateDish } from "../api";
+import { FilterDishes, FilterDishes_filterDishes } from "../types/FilterDishes";
 import { UpdateDishVariables } from "../types/UpdateDish";
 
 export const UpdateDishDialog = ({
-    allRecipes,
     dish,
     open,
     onClose,
 }: {
-    allRecipes: Dishes_recipes[] | null,
-    dish: Dishes_filterDishes,
+    dish: FilterDishes_filterDishes,
     open: boolean,
     onClose: () => void
 }) => {
+  const {data} = useAllRecipesQuery()
+
 
     const { updateDish, loading, error } = useUpdateDish({
         onCompleted: () => window.location.reload(),
@@ -104,12 +104,12 @@ const formState : UpdateDishVariables = {
                 {dish.recipes?.map((quantityToRecipe, index) => (
                     <>
                     {quantityToRecipe.recipe.name}
-                    {allRecipes && (
+                    {data && (
                         <>
                         <Autocomplete
                 multiple
                 id="tags-standard"
-                options={allRecipes.map((option) => (option))}
+                options={data.recipes.map((option) => (option))}
                 getOptionLabel={(option) => option.name}
                 onChange={(event,  values) => setFieldValue(`recipes.${index}.id`, values.map((option) => option))}
                 renderInput={(params) => (

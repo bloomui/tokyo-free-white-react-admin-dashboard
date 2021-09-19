@@ -15,7 +15,6 @@ export const MenuDialog = ({
     open: boolean;
     onClose: () => void
 }) => {
-    console.log(menu.rating)
 
     return (
         <Dialog open={open} onClose={onClose}>

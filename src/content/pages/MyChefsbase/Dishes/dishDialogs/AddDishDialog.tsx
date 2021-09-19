@@ -6,19 +6,18 @@ import { FormikSelect } from "src/components/form/FormikSelect";
 import { AddDishInput, QuantityToId, StepToMethodInput } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
-import { useAddDish, useUpdateDish } from "../api";
+import { useAddDish, useAllRecipesQuery, useUpdateDish } from "../api";
 import { AddDishVariables } from "../types/AddDish";
-import { Dishes_filterDishes, Dishes_recipes } from "../types/Dishes";
 
 export const AddDishDialog = ({
-    allRecipes,
     open,
     onClose,
 }: {
-    allRecipes: Dishes_recipes[] | null,
     open: boolean,
     onClose: () => void
 }) => {
+
+  const {data} = useAllRecipesQuery()
 
     const [stepHere, setStep] = useState(1)
 
@@ -108,7 +107,7 @@ const formState : AddDishVariables = {
                 name="recipes"
                 render={arrayHelpers => (
                 <div>
-                    {allRecipes && (
+                    {data && (
                         <>
 
                  {values.recipes?.map((quantityToRecipe, index) => (
@@ -117,7 +116,7 @@ const formState : AddDishVariables = {
                          title="Recept"
                          name={`recipes.${index}.id`}
                          >
-                             {allRecipes.map((recipe) => (
+                             {data.recipes.map((recipe) => (
                       <MenuItem key={recipe.id} value={recipe.id}>
                         {recipe.name}
                       </MenuItem>
