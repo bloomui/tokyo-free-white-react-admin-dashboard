@@ -17,17 +17,18 @@ export const UpdateMenuDialog = ({
     open,
     onClose,
 }: {
-    menu: FilterMenus_filterMenus,
+    menu: FilterMenus_filterMenus | null,
     open: boolean,
     onClose: () => void
 }) => {
+  
   const {data} = useAllDishesQuery()
 
     const { updateMenu, loading, error } = useUpdateMenu({
         onCompleted: () => window.location.reload(),
       });
 
-    const formInput: MenuInput = {
+    const formInput: MenuInput = menu? {
         id: menu.id,
         name: menu.name,
         rating: menu.rating,
@@ -35,7 +36,8 @@ export const UpdateMenuDialog = ({
         theme: menu.theme,
         periodstartdate: menu.periodstartdate,
         periodenddate: menu.periodenddate,
-    }
+    }: null
+    
     const formcourses: CourseToDishesInput[] | null = menu? (menu.courses? (menu.courses.map((course) => (
         {
             courseid: course.course.id,

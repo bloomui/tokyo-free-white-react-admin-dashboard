@@ -21,7 +21,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { MenuDialog } from "../menuDialog";
 import { UpdateMenuDialog } from "../menuDialog/UpdateMenu";
 import { AreYouSureDelete } from "../filtermenus/components/AreYouSureDelete";
-import { FilterMenus } from "../types/FilterMenus";
+import { FilterMenus, FilterMenus_filterMenus } from "../types/FilterMenus";
   
 export interface EnhancedTableProps {
     numSelected: number;
@@ -119,6 +119,8 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
     const [open, setOpen] = React.useState(false);
     const [openUpdate, setOpenUpdate] = React.useState(false)
     const [areYouSureDelete, setAreYouSureDelete] = useState<boolean>(false);
+    const [id, setId] = React.useState<string>()
+    const [menu, setMenu] = React.useState<FilterMenus_filterMenus>()
 
     // Menu Data
     let menus = data.filterMenus
@@ -169,7 +171,10 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
                     scope="row"
                     padding="none" 
                     style={{ cursor: 'pointer' }}
-                    onClick={() => setOpen(true)}
+                    onClick={() => {
+                      setId(menu.id);
+                      setOpen(true)}
+                    }
                     >{menu.name}</TableCell>
                     <TableCell align="left">{menu.season}</TableCell>
                     <TableCell align="left">{menu.theme}</TableCell>
@@ -183,12 +188,18 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
                   <Grid container xs={12}>
                     <Grid item xs={4}>
                   <VscEdit  
-                  onClick={() => setOpenUpdate(true)}
+                  onClick={() => {
+                    setMenu(menu);
+                    setOpenUpdate(true)
+                  }}
                   style={{ cursor: 'pointer' }}/>
                   </Grid>
                   <Grid item xs={4}>
                   <VscTrash 
-                  onClick={() => setAreYouSureDelete(true)}
+                  onClick={() => {
+                    setId(menu.id);
+                    setAreYouSureDelete(true)
+                  }}
                   style={{ cursor: 'pointer' }}/>
                   </Grid>
                   <Grid item xs={4}>
@@ -205,23 +216,6 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
                   </>
                 </TableCell>
                   </TableRow>
-                 <MenuDialog
-              setOpenUpdateDialog={() => setOpenUpdate(true)}
-              id={menu.id}
-              open={open}
-              onClose={() => setOpen(false)}
-              />
-              <UpdateMenuDialog 
-                 menu={menu}
-                 open={openUpdate}
-                 onClose={() => setOpenUpdate(false)}
-                 /> 
-                 <AreYouSureDelete
-                 open={areYouSureDelete}
-                 id={menu.id}
-                 kitchenType={KitchenType.Menu}
-                 onClose={() => setAreYouSureDelete(false)}
-                 />
                  </>
                 )
             })}
@@ -237,6 +231,30 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
+            {id &&  (
+              <>
+              <MenuDialog
+              setId={() => setId(id)}
+              setOpenUpdateDialog={() => setOpenUpdate(true)}
+              id={id}
+              open={open}
+              onClose={() => setOpen(false)}
+              />
+              <AreYouSureDelete
+                 open={areYouSureDelete}
+                 id={id}
+                 kitchenType={KitchenType.Menu}
+                 onClose={() => setAreYouSureDelete(false)}
+                 />
+              </>
+            )}
+            {menu && (
+              <UpdateMenuDialog 
+                 menu={menu}
+                 open={openUpdate}
+                 onClose={() => setOpenUpdate(false)}
+                 /> 
+            )}
                 </>
     )
   }

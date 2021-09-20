@@ -15,7 +15,7 @@ import { AllDishes } from "./types/AllDishes";
 import { menu, menuVariables } from "./types/menu";
 
 const getMenuQuery = gql`
- query menu ($id: String) {
+ query menu ($id: String!) {
    menu (id: $id) {
     id
     name
@@ -150,11 +150,7 @@ export const useFilterMenuQuery = ({
   return { loading, data, error};
 };
 
-export const useGetMenuQuery = ({
-  id,
-}: {
-  id: string;
-}) => {
+export const useGetMenuQuery = (id: string) => {
 
   const { loading, data, error } = useSimpleQuery<
   menu,
