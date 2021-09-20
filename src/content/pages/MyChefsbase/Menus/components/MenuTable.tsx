@@ -207,7 +207,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
                   </TableRow>
                  <MenuDialog
               setOpenUpdateDialog={() => setOpenUpdate(true)}
-              menu={menu}
+              id={menu.id}
               open={open}
               onClose={() => setOpen(false)}
               />

@@ -1,21 +1,30 @@
 import { Dialog, DialogTitle, DialogContent, Card, CardActionArea, Grid, Typography, TableContainer, TableBody, TableCell, TableHead, TableRow, List, ListItem, Button, DialogActions } from "@material-ui/core"
 import React from "react"
 import { useState } from "react"
+import { LoadingScreen } from "src/components/layout"
+import { useGetMenuQuery } from "../api"
 import { FilterMenus_filterMenus, FilterMenus_filterMenus_courses } from "../types/FilterMenus"
 import { UpdateMenuDialog } from "./UpdateMenu"
 
 export const MenuDialog = ({
-    menu,
+    id,
     open,
     onClose,
     setOpenUpdateDialog,
 }: {
     setOpenUpdateDialog: () => void;
-    menu: FilterMenus_filterMenus;
+    id: string;
     open: boolean;
     onClose: () => void
 }) => {
 
+    const { data, loading, error } = useGetMenuQuery({id: id})
+
+    if (loading) return <LoadingScreen/>
+    if (error) return <LoadingScreen/>
+
+    let menu = data.menu
+    
     return (
         <Dialog open={open} onClose={onClose}>
             {menu && (
