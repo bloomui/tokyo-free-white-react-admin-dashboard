@@ -48,7 +48,7 @@ function RecentActivity() {
               </Typography>
               <Typography variant="h2">485</Typography>
             </Box>
-            <Box>
+            {/* <Box>
               <Typography
                 gutterBottom
                 variant="caption"
@@ -57,12 +57,12 @@ function RecentActivity() {
                 Failed
               </Typography>
               <Typography variant="h2">8</Typography>
-            </Box>
+            </Box> */}
           </Box>
         </Box>
       </Box>
       <Divider />
-      <Box px={2} py={4} display="flex" alignItems="flex-start">
+      {/* <Box px={2} py={4} display="flex" alignItems="flex-start">
         <AvatarPrimary>
           <FavoriteTwoToneIcon />
         </AvatarPrimary>
@@ -124,7 +124,7 @@ function RecentActivity() {
             </Box>
           </Box>
         </Box>
-      </Box>
+      </Box> */}
     </Card>
   );
 }

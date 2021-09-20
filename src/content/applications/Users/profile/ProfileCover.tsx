@@ -91,11 +91,9 @@ const ProfileCover = ({ user }) => {
         </Tooltip>
         <Box>
           <Typography variant="h3" component="h3" gutterBottom>
-            Profile for {user.name}
+            Profiel van {user.name}
           </Typography>
-          <Typography variant="subtitle2">
-            This is a profile page. Easy to modify, always blazing fast
-          </Typography>
+          
         </Box>
       </Box>
       <CardCover>
@@ -108,7 +106,7 @@ const ProfileCover = ({ user }) => {
               variant="contained"
               component="span"
             >
-              Change cover
+              Wijzig achtergrond
             </Button>
           </label>
         </CardCoverAction>
@@ -142,28 +140,6 @@ const ProfileCover = ({ user }) => {
           alignItems="center"
           justifyContent="space-between"
         >
-          <Box>
-            <Button size="small" variant="contained">
-              Follow
-            </Button>
-            <Button size="small" sx={{ mx: 1 }} variant="outlined">
-              View website
-            </Button>
-            <IconButton color="primary" sx={{ p: 0.5 }}>
-              <MoreHorizTwoToneIcon />
-            </IconButton>
-          </Box>
-          <Button
-            sx={{ mt: { xs: 2, md: 0 } }}
-            size="small"
-            variant="text"
-            endIcon={<ArrowForwardTwoToneIcon />}
-          >
-            See all {' '}
-            {user.followers}
-            {' '}
-            connections
-          </Button>
         </Box>
       </Box>
     </>
