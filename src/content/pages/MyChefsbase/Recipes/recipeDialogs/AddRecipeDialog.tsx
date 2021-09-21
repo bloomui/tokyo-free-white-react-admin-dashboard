@@ -1,95 +1,80 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, TextField, Typography } from "@material-ui/core";
-import { Autocomplete, Rating } from "@material-ui/lab";
 import { FieldArray, Formik } from "formik";
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { FormField } from "src/components/form/FormField";
 import { FormikSelect } from "src/components/form/FormikSelect";
-import { DishInput, QuantityToId, StepToMethodInput } from "src/globalTypes";
+import { AddDishInput, AddRecipeInput, QuantityToId, StepToMethodInput } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
-import { useAllRecipesQuery, useUpdateDish } from "../api";
-import { FilterDishes, FilterDishes_filterDishes } from "../types/FilterDishes";
-import { UpdateDishVariables } from "../types/UpdateDish";
+import { useAddRecipe, useAllIngredientsQuery } from "../api";
+import { AddRecipeVariables } from "../types/AddRecipe";
 
-export const UpdateDishDialog = ({
-    dish,
+export const AddRecipeDialog = ({
     open,
     onClose,
 }: {
-    dish: FilterDishes_filterDishes,
     open: boolean,
     onClose: () => void
 }) => {
-  const {data} = useAllRecipesQuery()
 
+  const {data} = useAllIngredientsQuery()
 
-    const { updateDish, loading, error } = useUpdateDish({
-        onCompleted: () => window.location.reload(),
+    const [stepHere, setStep] = useState(1)
+
+    const { addRecipe, loading, error } = useAddRecipe({
+        onCompleted: () => {window.location.reload()},
       });
-      const [stepHere, setStep] = useState(1)
 
-
-    const formInput: DishInput = {
-        id: dish.id,
-        name: dish.name,
-        rating: dish.rating,
-        comment: dish.comment,
-        theme: dish.theme,
+    const formInput: AddRecipeInput = {
+        name: '',
+        rating: 0,
+        type: '',
     }
-    const emptyStep: StepToMethodInput = {
-      step: stepHere,
-      method: ''
-      }
-    const formRecipes: QuantityToId[] | null = (dish.recipes? (dish.recipes.map((quantityToRecipe) => (
-            {
-                quantity: quantityToRecipe.quantity.quantity,
-                unit: quantityToRecipe.quantity.unit,
-                id: quantityToRecipe.recipe.id,
-            }
-    )
-    )) : null)
-
-    const formMethods: StepToMethodInput[] | null = (dish.method? (dish.method.map((method) => (
-        {
-            step: method.step,
-            method: method.method,
+    const emptyIngredientEntry: QuantityToId = {
+        quantity: 0,
+        unit: '',
+        id: '',
         }
-)
-)) : null)
+    const emptyStep: StepToMethodInput = {
+            step: stepHere,
+            method: ''
+            }
+    
+    const formIngredients: QuantityToId[] | null = [emptyIngredientEntry]
+        
+    const formMethods: StepToMethodInput[] | null = [
+        emptyStep
+    ]
 
-const formState : UpdateDishVariables = {
+const formState : AddRecipeVariables = {
         input: formInput,
-        recipes: formRecipes,
+        ingredients: formIngredients,
         method: formMethods
     }
-
 
     return (
     <Dialog open={open} onClose={onClose}>
       <Formik
         initialValues={formState}
         onSubmit={(values) => {
-          updateDish({
+          addRecipe({
             variables: {
                 method: values.method,
-                recipes: values.recipes,
+                ingredients: values.ingredients,
                 input: {
-                id: dish.id,
+                type: values.input.type,
                 name: values.input.name,
-                rating: values.input.rating,
-                comment: values.input.comment,
-                theme: values.input.theme,
+                rating: values.input.rating
               },
             },
           });
         }}
       >
-        {({ submitForm, setFieldValue, handleChange }) => {
+        {({ values, handleChange, submitForm, setFieldValue }) => {
           return (
             <>
-              <DialogTitle style={{ fontWeight: 600 }} id="form-dialog-title">
-                Gerecht Aanpassen
+              <DialogTitle id="form-dialog-title">
+                Voeg Recept toe
               </DialogTitle>
               <DialogContent>
                 <FormField
@@ -102,6 +87,10 @@ const formState : UpdateDishVariables = {
                   label="Opmerking"
                 />
                 <FormField
+                  name="input.type"
+                  label="Type"
+                />
+                <FormField
                   name="input.theme"
                   label="Thema"
                 />
@@ -109,48 +98,69 @@ const formState : UpdateDishVariables = {
                 updateField="input.rating"
                 setFieldValue={setFieldValue}
                 />
-                Recepten:
-                {dish.recipes?.map((quantityToRecipe, index) => (
-                    <>
-                    {quantityToRecipe.recipe.name}
+                Ingredienten:
+                <FieldArray
+                name="ingredients"
+                render={arrayHelpers => (
+                <div>
                     {data && (
                         <>
-                        <FormikSelect
-                        title="Recept"
-                        name={`recipes.${index}.id`}
-                        >
-                          {data.recipes.map((recipe) => (
-                          <MenuItem key={recipe.id} value={recipe.id}>
-                            {recipe.name}
-                            </MenuItem>
-                            ))}
-                            </FormikSelect>
-                <TextField
+
+                 {values.ingredients?.map((quantityToIngredient, index) => (
+                     <div key={index}>
+                         <FormikSelect 
+                         title="Ingredient"
+                         name={`ingredients.${index}.id`}
+                         >
+                             {data.ingredients.map((ingredient) => (
+                      <MenuItem key={ingredient.id} value={ingredient.id}>
+                        {ingredient.name}
+                      </MenuItem>
+                    ))}
+                             </FormikSelect>
+                        <TextField
                         fullWidth
-                        id={`recipes.${index}.quantity`}
-                        name={`recipes.${index}.quantity`}
+                        id={`ingredients.${index}.quantity`}
+                        name={`ingredients.${index}.quantity`}
                        label="Hoeveelheid"
-                       value={quantityToRecipe.quantity.quantity}
+                       value={quantityToIngredient.quantity}
                        onChange={handleChange}
                         />
                         <TextField
                         fullWidth
-                        id={`recipes.${index}.unit`}
-                        name={`recipes.${index}.unit`}
+                        id={`ingredients.${index}.unit`}
+                        name={`ingredients.${index}.unit`}
                        label="Eenheid"
-                       value={quantityToRecipe.quantity.unit}
+                       value={quantityToIngredient.unit}
                        onChange={handleChange}
                         />
-                        </>
+                            <Button
+                            variant="contained" 
+                            color="secondary"
+                        style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
+                         onClick={() => arrayHelpers.remove(index)}>
+                        -
+                       </Button>
+                       <Button
+                       variant="contained" 
+                       color="secondary"
+                        style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
+                         onClick={() => arrayHelpers.push(emptyIngredientEntry)}>
+                        +
+                       </Button>
+                     </div>
+                   ))}
+                   </>
                     )}
-                    </>
-                ))}
-                    Methode
-                    <FieldArray
+                </div>
+                )}
+                />
+                Method:
+                <FieldArray
                 name="method"
                 render={arrayHelpers => (
                 <div>
-                 {dish.method?.map((stepToMethod, index)=> (
+                 {values.method?.map((stepToMethod, index)=> (
                      <div key={stepToMethod.step}>
                          <TextField
                         fullWidth
@@ -188,7 +198,7 @@ const formState : UpdateDishVariables = {
                    ))}
                    </div>
                 )}
-                /> 
+                />
                 {error && (
                   <Typography color="error">
                     Er is een fout opgetreden, probeer het opnieuw.

@@ -159,7 +159,7 @@ const formState : AddDishVariables = {
                 </div>
                 )}
                 />
-                Method:
+                Methode:
                 <FieldArray
                 name="method"
                 render={arrayHelpers => (

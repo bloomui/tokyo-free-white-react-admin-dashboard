@@ -6,6 +6,7 @@ import Footer from 'src/components/Footer';
 import React, { useState } from 'react';
 import { MenuPage } from 'src/content/pages/MyChefsbase/Menus';
 import { DishPage } from 'src/content/pages/MyChefsbase/Dishes';
+import { RecipePage } from 'src/content/pages/MyChefsbase/Recipes';
 
 function MyChefsBase() {
   const [value, setValue] = useState(0);
@@ -22,7 +23,7 @@ function MyChefsBase() {
       content = <DishPage  page={page} setPage={setPage}/>;
       break;
     case 2:
-      content = <Box>Recepten</Box>;
+      content = <RecipePage  page={page} setPage={setPage}/>;
       break;
     case 3:
       content = <Box>Ingrediënten</Box>;

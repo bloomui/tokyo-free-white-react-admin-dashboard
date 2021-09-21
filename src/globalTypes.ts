@@ -39,6 +39,12 @@ export interface AddMenuInput {
   periodenddate?: string | null;
 }
 
+export interface AddRecipeInput {
+  name: string;
+  rating?: number | null;
+  type?: string | null;
+}
+
 export interface CourseToDishesInput {
   courseid: string;
   coursetype: string;
@@ -46,6 +52,7 @@ export interface CourseToDishesInput {
 }
 
 export interface DishFilterInput {
+  suppliers?: string[] | null;
   products?: string[] | null;
   ingredients?: string[] | null;
   recipes?: string[] | null;
@@ -100,6 +107,26 @@ export interface QuantityToId {
   id: string;
   quantity: number;
   unit: string;
+}
+
+export interface RecipeFilterInput {
+  suppliers?: string[] | null;
+  products?: string[] | null;
+  ingredients?: string[] | null;
+  dishes?: string[] | null;
+  rating?: number | null;
+  menus?: string[] | null;
+  types?: string[] | null;
+  offset?: number | null;
+  limit?: number | null;
+  name?: string | null;
+}
+
+export interface RecipeInput {
+  id: string;
+  name: string;
+  rating?: number | null;
+  type?: string | null;
 }
 
 export interface StepToMethodInput {

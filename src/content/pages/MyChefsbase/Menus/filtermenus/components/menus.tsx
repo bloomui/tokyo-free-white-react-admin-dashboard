@@ -15,7 +15,7 @@ export const Menus = ({
       <>
   <Grid container spacing={2} xs={12}>
  <Grid key={0} item>
-   <Typography>Zoek op menu'ss:</Typography>
+   <Typography>Zoek op menu's:</Typography>
    {menus && (
     <Autocomplete
 multiple
