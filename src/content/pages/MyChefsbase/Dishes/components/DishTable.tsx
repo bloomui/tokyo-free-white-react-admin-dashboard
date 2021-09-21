@@ -27,7 +27,7 @@ import { LightGreenColor } from "src/components/layout/Colors";
 import { KitchenType } from "src/globalTypes";
 import { AreYouSureDelete } from "../../Menus/filtermenus/components/AreYouSureDelete";
 import { EnhancedTableHead, EnhancedTableToolbar } from "../../Menus/components/MenuTable";
-import { FilterDishes } from "../types/FilterDishes";
+import { FilterDishes, FilterDishes_filterDishes } from "../types/FilterDishes";
 
 const headCellsDishes: string[] = [
   "Naam", "thema", "opmerking", "rating", "acties"
@@ -91,6 +91,8 @@ export const DishTable = ({
     const [open, setOpen] = React.useState(false);
     const [openUpdate, setOpenUpdate] = React.useState(false)
     const [areYouSureDelete, setAreYouSureDelete] = useState<boolean>(false);
+    const [id, setId] = React.useState<string>()
+    const [dish, setDish] = React.useState<FilterDishes_filterDishes>()
 
     // Menu Data
     let dishes = data.filterDishes
@@ -153,13 +155,19 @@ headCells={headCellsDishes}
                   <>
                   <Grid container xs={12}>
                     <Grid item xs={4}>
-                  <VscEdit  
-                  onClick={() => setOpenUpdate(true)}
+                    <VscEdit  
+                  onClick={() => {
+                    setDish(dish);
+                    setOpenUpdate(true)
+                  }}
                   style={{ cursor: 'pointer' }}/>
                   </Grid>
                   <Grid item xs={4}>
                   <VscTrash 
-                  onClick={() => setAreYouSureDelete(true)}
+                  onClick={() => {
+                    setId(dish.id);
+                    setAreYouSureDelete(true)
+                  }}
                   style={{ cursor: 'pointer' }}/>
                   </Grid>
                   <Grid item xs={4}>
@@ -176,23 +184,6 @@ headCells={headCellsDishes}
                   </>
                 </TableCell>
                   </TableRow>
-                 <DishDialog
-              setOpenUpdateDialog={() => setOpenUpdate(true)}
-              dish={dish}
-              open={open}
-              onClose={() => setOpen(false)}
-              />
-              <UpdateDishDialog 
-                 dish={dish}
-                 open={openUpdate}
-                 onClose={() => setOpenUpdate(false)}
-                 /> 
-                 <AreYouSureDelete
-                 open={areYouSureDelete}
-                 id={dish.id}
-                 kitchenType={KitchenType.Dish}
-                 onClose={() => setAreYouSureDelete(false)}
-                 />
                  </>
                 )
             })}
@@ -208,6 +199,30 @@ headCells={headCellsDishes}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
+            {id &&  (
+              <>
+              <DishDialog
+              setId={() => setId(id)}
+              setOpenUpdateDialog={() => setOpenUpdate(true)}
+              id={id}
+              open={open}
+              onClose={() => setOpen(false)}
+              />
+              <AreYouSureDelete
+                 open={areYouSureDelete}
+                 id={id}
+                 kitchenType={KitchenType.Dish}
+                 onClose={() => setAreYouSureDelete(false)}
+                 />
+              </>
+            )}
+            {dish && (
+              <UpdateDishDialog 
+                 dish={dish}
+                 open={openUpdate}
+                 onClose={() => setOpenUpdate(false)}
+                 /> 
+            )}
                 </>
     )
   }

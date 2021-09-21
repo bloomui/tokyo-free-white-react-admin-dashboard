@@ -42,5 +42,5 @@ export interface menu {
 }
 
 export interface menuVariables {
-  id?: string | null;
+  id: string;
 }

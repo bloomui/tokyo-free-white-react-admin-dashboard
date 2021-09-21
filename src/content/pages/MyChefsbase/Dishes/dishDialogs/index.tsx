@@ -1,19 +1,30 @@
 import { Dialog, DialogTitle, DialogContent, Card, CardActionArea, Grid, Typography, TableContainer, TableBody, TableCell, TableHead, TableRow, List, ListItem, Button, DialogActions } from "@material-ui/core"
 import React from "react"
+import { LoadingScreen } from "src/components/layout"
 import { ItemInt, ItemString } from "../../Menus/menuDialog"
+import { useGetDishQuery } from "../api"
 import { FilterDishes_filterDishes, FilterDishes_filterDishes_method, FilterDishes_filterDishes_recipes } from "../types/FilterDishes"
 
 export const DishDialog = ({
-    dish,
+    setId,
+    id,
     open,
     onClose,
     setOpenUpdateDialog,
 }: {
+    id: string;
+    setId: () => void;
     setOpenUpdateDialog: () => void;
-    dish: FilterDishes_filterDishes;
     open: boolean;
     onClose: () => void
 }) => {
+
+    const { data, loading, error } = useGetDishQuery(id)
+
+    if (loading) return <LoadingScreen/>
+    if (error) return <LoadingScreen/>
+
+    let dish = data.dish
 
     return (
         <Dialog open={open} onClose={onClose}>
@@ -24,7 +35,10 @@ export const DishDialog = ({
                 <Button variant="contained" onClick={onClose}>
                   Terug
                 </Button>
-                <Button variant="contained" onClick={() => setOpenUpdateDialog()}>
+                <Button variant="contained" onClick={() => {
+                        setId();
+                        setOpenUpdateDialog()
+                }}>
                   Gerecht aanpassen
                 </Button>
               </DialogActions>

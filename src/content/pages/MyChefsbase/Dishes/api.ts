@@ -8,6 +8,45 @@ import { Dishes } from "./types/Dishes";
 import { UpdateDish, UpdateDishVariables } from "./types/UpdateDish";
 import { AllRecipes } from "./types/AllRecipes";
 import { FilterDishes } from "./types/FilterDishes";
+import { dish, dishVariables } from "./types/dish";
+
+const getDishQuery = gql`
+ query dish ($id: String!) {
+   dish (id: $id) {
+    id
+    comment
+    name
+    rating
+    theme
+    method {
+        step 
+        method
+    }
+    recipes {
+      quantity {
+        quantity
+        unit
+      }
+      recipe {
+        id
+        name
+      }
+    }
+  }
+}`;
+
+export const useGetDishQuery = (id: string) => {
+
+    const { loading, data, error } = useSimpleQuery<
+    dish,
+    dishVariables
+    >(getDishQuery, {
+      variables: {
+        id: id,
+      },
+    });
+    return { loading, data, error};
+  };
 
 const AllRecipesQuery = gql`
  query AllRecipes {
