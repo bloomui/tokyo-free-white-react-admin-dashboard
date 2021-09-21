@@ -200,7 +200,6 @@ headCells={headCellsDishes}
               <>
               <RecipeDialog
               setId={() => setId(id)}
-              setOpenUpdateDialog={() => setOpenUpdate(true)}
               id={id}
               open={open}
               onClose={() => setOpen(false)}

@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, TextField, Typography } from "@material-ui/core";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Table, TableCell, TableRow, TextField, Typography } from "@material-ui/core";
 import { Autocomplete, Rating } from "@material-ui/lab";
 import { FieldArray, Formik } from "formik";
 import React, { useState } from "react";
@@ -64,6 +64,8 @@ const formState : UpdateRecipeVariables = {
         method: formMethods
     }
 
+    const methodSize = recipe.method.length
+
     return (
     <Dialog open={open} onClose={onClose}>
       <Formik
@@ -83,7 +85,7 @@ const formState : UpdateRecipeVariables = {
           });
         }}
       >
-        {({ submitForm, setFieldValue, handleChange }) => {
+        {({ values, submitForm, setFieldValue, handleChange }) => {
           return (
             <>
               <DialogTitle style={{ fontWeight: 600 }} id="form-dialog-title">
@@ -103,11 +105,16 @@ const formState : UpdateRecipeVariables = {
                 updateField="input.rating"
                 setFieldValue={setFieldValue}
                 />
-                Ingredienten:
-                {recipe.ingredients?.map((quantityToIngr, index) => (
+                <Grid container xs={12}>
+                    <Grid item xs={12}>
+                    Ingredienten:
+                    <Table>
+                    {values.ingredients?.map((quantityToIngr, index) => (
                     <>
                     {data && (
+                        <TableRow>
                         <>
+                        <TableCell>
                         <FormikSelect
                         title="Ingredient"
                         name={`ingredients.${index}.id`}
@@ -118,70 +125,92 @@ const formState : UpdateRecipeVariables = {
                             </MenuItem>
                             ))}
                             </FormikSelect>
-                <TextField
-                        fullWidth
+                            </TableCell>
+                            <TableCell>
+                                <TextField
                         id={`ingredients.${index}.quantity`}
                         name={`ingredients.${index}.quantity`}
                        label="Hoeveelheid"
-                       value={quantityToIngr.quantity.quantity}
+                       value={quantityToIngr.quantity}
                        onChange={handleChange}
                         />
+                        </TableCell>
+                        <TableCell>
                         <TextField
-                        fullWidth
                         id={`ingredients.${index}.unit`}
                         name={`ingredients.${index}.unit`}
                        label="Eenheid"
-                       value={quantityToIngr.quantity.unit}
+                       value={quantityToIngr.unit}
                        onChange={handleChange}
                         />
+                        </TableCell>
                         </>
+                        </TableRow>
                     )}
                     </>
                     ))}
+                    </Table>
+                
+                    </Grid>
+                <Grid item xs={12}>
+                
                 Methode
                 <FieldArray
                 name="method"
                 render={arrayHelpers => (
                 <div>
-                 {recipe.method?.map((stepToMethod, index)=> (
+                    <Table>
+                 {values.method?.map((stepToMethod, index)=> (
                      <div key={stepToMethod.step}>
+                         <TableRow>
+                             <TableCell>
                          <TextField
-                        fullWidth
                         id={`method.${index}.step`}
                         name={`method.${index}.step`}
                        label="Stap"
                        value={stepToMethod.step}
                        onChange={handleChange}
                         />
+                        </TableCell>
+                        <TableCell>
                         <TextField
-                        fullWidth
                         id={`method.${index}.method`}
                         name={`method.${index}.method`}
                        label="Methode"
                        value={stepToMethod.method}
                        onChange={handleChange}
                         />
-                            <Button
+                        </TableCell>
+                        <TableCell>
+                        <Button
                             variant="contained" 
                             color="secondary"
                         style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
                          onClick={() => arrayHelpers.remove(index)}>
                         -
                        </Button>
+                        </TableCell>
+                        </TableRow>
+                        </div>
+                        ))}
+                        <TableRow>
+                            <>
                        <Button
                        variant="contained" 
                        color="secondary"
                         style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
                          onClick={() => {
-                         setStep(stepHere + 1)
                          arrayHelpers.push(emptyStep)}}>
                         +
                         </Button>
-                     </div>
-                   ))}
+                        </>
+                        </TableRow>
+                   </Table>
                    </div>
                 )}
-                /> 
+                />
+                </Grid>
+                </Grid> 
                 {error && (
                   <Typography color="error">
                     Er is een fout opgetreden, probeer het opnieuw.

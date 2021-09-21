@@ -1,26 +1,27 @@
 import { Dialog, DialogTitle, DialogContent, Card, CardActionArea, Grid, Typography, TableContainer, TableBody, TableCell, TableHead, TableRow, List, ListItem, Button, DialogActions } from "@material-ui/core"
-import React from "react"
+import React, { useState } from "react"
 import { LoadingScreen } from "src/components/layout"
 import { FilterDishes_filterDishes_method, FilterDishes_filterDishes_recipes } from "../../Dishes/types/FilterDishes"
 import { ItemString, ItemInt } from "../../Menus/menuDialog"
 import { useGetRecipeQuery } from "../api"
 import { FilterRecipes_filterRecipes_ingredients } from "../types/FilterRecipes"
+import { UpdateRecipeDialog } from "./UpdateRecipeDialog"
 
 export const RecipeDialog = ({
     setId,
     id,
     open,
     onClose,
-    setOpenUpdateDialog,
 }: {
     id: string;
     setId: () => void;
-    setOpenUpdateDialog: () => void;
     open: boolean;
     onClose: () => void
 }) => {
 
     const { data, loading, error } = useGetRecipeQuery(id)
+
+    const [openUpdateDialog, setUpdateDialog] = useState(false)
 
     if (loading) return <LoadingScreen/>
     if (error) return <LoadingScreen/>
@@ -28,6 +29,7 @@ export const RecipeDialog = ({
     let recipe = data.recipe
 
     return (
+        <>
         <Dialog open={open} onClose={onClose}>
             {recipe && (
              <>
@@ -38,7 +40,8 @@ export const RecipeDialog = ({
                 </Button>
                 <Button variant="contained" onClick={() => {
                         setId();
-                        setOpenUpdateDialog()
+                        setUpdateDialog(true);
+                        onClose()
                 }}>
                   Recept aanpassen
                 </Button>
@@ -68,6 +71,12 @@ export const RecipeDialog = ({
             </>
             )}
         </Dialog>
+        <UpdateRecipeDialog
+        recipe={recipe}
+        open={openUpdateDialog}
+        onClose={() => setUpdateDialog(false)}
+        />
+        </>
     )
 }
 

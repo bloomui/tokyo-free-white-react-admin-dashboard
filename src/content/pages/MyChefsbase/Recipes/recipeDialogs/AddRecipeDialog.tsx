@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, TextField, Typography } from "@material-ui/core";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Table, TableCell, TableRow, TextField, Typography } from "@material-ui/core";
 import { FieldArray, Formik } from "formik";
 import React, { useState } from "react";
 import { FormField } from "src/components/form/FormField";
@@ -105,9 +105,12 @@ const formState : AddRecipeVariables = {
                 <div>
                     {data && (
                         <>
-
+                        <Table>
                  {values.ingredients?.map((quantityToIngredient, index) => (
+                     <>
+                     <TableRow>
                      <div key={index}>
+                         <TableCell>
                          <FormikSelect 
                          title="Ingredient"
                          name={`ingredients.${index}.id`}
@@ -118,6 +121,8 @@ const formState : AddRecipeVariables = {
                       </MenuItem>
                     ))}
                              </FormikSelect>
+                             </TableCell>
+                             <TableCell>
                         <TextField
                         fullWidth
                         id={`ingredients.${index}.quantity`}
@@ -126,6 +131,8 @@ const formState : AddRecipeVariables = {
                        value={quantityToIngredient.quantity}
                        onChange={handleChange}
                         />
+                        </TableCell>
+                        <TableCell>
                         <TextField
                         fullWidth
                         id={`ingredients.${index}.unit`}
@@ -134,6 +141,8 @@ const formState : AddRecipeVariables = {
                        value={quantityToIngredient.unit}
                        onChange={handleChange}
                         />
+                        </TableCell>
+                        <TableCell>
                             <Button
                             variant="contained" 
                             color="secondary"
@@ -141,15 +150,21 @@ const formState : AddRecipeVariables = {
                          onClick={() => arrayHelpers.remove(index)}>
                         -
                        </Button>
-                       <Button
+                       </TableCell>
+                     </div>
+                     </TableRow>
+                     <TableRow>
+                         <Button
                        variant="contained" 
                        color="secondary"
                         style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
                          onClick={() => arrayHelpers.push(emptyIngredientEntry)}>
                         +
                        </Button>
-                     </div>
+                     </TableRow>
+                     </>
                    ))}
+                   </Table>
                    </>
                     )}
                 </div>
@@ -160,31 +175,42 @@ const formState : AddRecipeVariables = {
                 name="method"
                 render={arrayHelpers => (
                 <div>
+                    <Table>
                  {values.method?.map((stepToMethod, index)=> (
+                     <TableRow>
                      <div key={stepToMethod.step}>
+                         <TableCell>
                          <TextField
-                        fullWidth
                         id={`method.${index}.step`}
                         name={`method.${index}.step`}
                        label="Stap"
                        value={stepToMethod.step}
                        onChange={handleChange}
                         />
+                        </TableCell>
+                        <TableCell>
                         <TextField
-                        fullWidth
                         id={`method.${index}.method`}
                         name={`method.${index}.method`}
                        label="Methode"
                        value={stepToMethod.method}
                        onChange={handleChange}
                         />
-                            <Button
+                        </TableCell>
+                        <TableCell>
+                        <Button
                             variant="contained" 
                             color="secondary"
                         style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
                          onClick={() => arrayHelpers.remove(index)}>
                         -
                        </Button>
+                        </TableCell>
+                            
+                     </div>
+                     </TableRow>
+                   ))}
+                   <TableRow>
                        <Button
                        variant="contained" 
                        color="secondary"
@@ -194,8 +220,8 @@ const formState : AddRecipeVariables = {
                          arrayHelpers.push(emptyStep)}}>
                         +
                        </Button>
-                     </div>
-                   ))}
+                   </TableRow>
+                   </Table>
                    </div>
                 )}
                 />

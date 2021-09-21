@@ -37,7 +37,8 @@ export const DishDialog = ({
                 </Button>
                 <Button variant="contained" onClick={() => {
                         setId();
-                        setOpenUpdateDialog()
+                        setOpenUpdateDialog();
+                        // onClose()
                 }}>
                   Gerecht aanpassen
                 </Button>
