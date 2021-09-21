@@ -122,9 +122,6 @@ export const initialRecipeValues: RecipeFilterInput = {
             setFieldValue={setFieldValue} />
             </Grid>
             </Grid>
-            <Button variant="contained" onClick={onClose}>
-                  Terug
-                </Button>
               </CardContent>
               </Collapse>
               <AutoSubmitToken />

@@ -30,6 +30,11 @@ export interface AddDishInput {
   comment?: string | null;
 }
 
+export interface AddIngredientInput {
+  name: string;
+  rating?: number | null;
+}
+
 export interface AddMenuInput {
   name: string;
   rating?: number | null;
@@ -39,10 +44,24 @@ export interface AddMenuInput {
   periodenddate?: string | null;
 }
 
+export interface AddProductInput {
+  name: string;
+  price?: number | null;
+  brand?: string | null;
+  rating?: number | null;
+  origin?: string | null;
+}
+
 export interface AddRecipeInput {
   name: string;
   rating?: number | null;
   type?: string | null;
+}
+
+export interface AddSupplierInput {
+  name: string;
+  email?: string | null;
+  rating?: number | null;
 }
 
 export interface CourseToDishesInput {
@@ -76,6 +95,24 @@ export interface DishInput {
   comment?: string | null;
 }
 
+export interface IngredientFilterInput {
+  suppliers?: string[] | null;
+  products?: string[] | null;
+  recipes?: string[] | null;
+  dishes?: string[] | null;
+  rating?: number | null;
+  menus?: string[] | null;
+  offset?: number | null;
+  limit?: number | null;
+  name?: string | null;
+}
+
+export interface IngredientInput {
+  id: string;
+  name: string;
+  rating?: number | null;
+}
+
 export interface MenuFilterInput {
   suppliers?: string[] | null;
   products?: string[] | null;
@@ -101,6 +138,31 @@ export interface MenuInput {
   theme?: string | null;
   periodstartdate?: string | null;
   periodenddate?: string | null;
+}
+
+export interface ProductFilterInput {
+  suppliers?: string[] | null;
+  ingredients?: string[] | null;
+  recipes?: string[] | null;
+  dishes?: string[] | null;
+  brands?: string[] | null;
+  origins?: string[] | null;
+  maxPrice?: number | null;
+  minPrice?: number | null;
+  rating?: number | null;
+  menus?: string[] | null;
+  offset?: number | null;
+  limit?: number | null;
+  name?: string | null;
+}
+
+export interface ProductInput {
+  id: string;
+  name: string;
+  price?: number | null;
+  brand?: string | null;
+  rating?: number | null;
+  origin?: string | null;
 }
 
 export interface QuantityToId {
@@ -132,6 +194,19 @@ export interface RecipeInput {
 export interface StepToMethodInput {
   step: number;
   method: string;
+}
+
+export interface SupplierFilterInput {
+  products?: string[] | null;
+  ingredients?: string[] | null;
+  dishes?: string[] | null;
+  rating?: number | null;
+  menus?: string[] | null;
+  types?: string[] | null;
+  offset?: number | null;
+  limit?: number | null;
+  name?: string | null;
+  recipes?: string[] | null;
 }
 
 //==============================================================

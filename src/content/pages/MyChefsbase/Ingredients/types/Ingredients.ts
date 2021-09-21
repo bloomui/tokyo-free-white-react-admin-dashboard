@@ -4,44 +4,43 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: Recipes
+// GraphQL query operation: Ingredients
 // ====================================================
 
-export interface Recipes_suppliers {
+export interface Ingredients_suppliers {
   __typename: "Supplier";
   id: string;
   name: string;
 }
 
-export interface Recipes_products {
+export interface Ingredients_products {
   __typename: "Product";
   id: string;
   name: string;
 }
 
-export interface Recipes_ingredients {
-  __typename: "Ingredient";
+export interface Ingredients_recipes {
+  __typename: "Recipe";
   id: string;
   name: string;
 }
 
-export interface Recipes_dishes {
+export interface Ingredients_dishes {
   __typename: "Dish";
   id: string;
   name: string;
 }
 
-export interface Recipes_menus {
+export interface Ingredients_menus {
   __typename: "NewMenu";
   id: string;
   name: string;
 }
 
-export interface Recipes {
-  allTypes: string[] | null;
-  suppliers: Recipes_suppliers[] | null;
-  products: Recipes_products[] | null;
-  ingredients: Recipes_ingredients[] | null;
-  dishes: Recipes_dishes[] | null;
-  menus: Recipes_menus[] | null;
+export interface Ingredients {
+  suppliers: Ingredients_suppliers[] | null;
+  products: Ingredients_products[] | null;
+  recipes: Ingredients_recipes[] | null;
+  dishes: Ingredients_dishes[] | null;
+  menus: Ingredients_menus[] | null;
 }

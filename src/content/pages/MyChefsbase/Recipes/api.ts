@@ -81,7 +81,6 @@ query FilterRecipes ($input: RecipeFilterInput) {
 
 export const RecipesData = gql`
 query Recipes {
-  allThemes
   allTypes
   suppliers {
     id
