@@ -79,8 +79,8 @@ const formState : UpdateDishVariables = {
         {({ submitForm, setFieldValue }) => {
           return (
             <>
-              <DialogTitle id="form-dialog-title">
-                Menu Update
+              <DialogTitle style={{ fontWeight: 600 }} id="form-dialog-title">
+                Gerecht Aanpassen
               </DialogTitle>
               <DialogContent>
                 <FormField

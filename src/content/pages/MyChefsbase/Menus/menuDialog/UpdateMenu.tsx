@@ -37,7 +37,7 @@ export const UpdateMenuDialog = ({
         periodstartdate: menu.periodstartdate,
         periodenddate: menu.periodenddate,
     }: null
-    
+
     const formcourses: CourseToDishesInput[] | null = menu? (menu.courses? (menu.courses.map((course) => (
         {
             courseid: course.course.id,
@@ -74,8 +74,8 @@ export const UpdateMenuDialog = ({
         {({ submitForm, setFieldValue }) => {
           return (
             <>
-              <DialogTitle id="form-dialog-title">
-                Menu Update
+              <DialogTitle style={{ fontWeight: 600 }} id="form-dialog-title">
+                Menu Aanpassen
               </DialogTitle>
               <DialogContent>
                 <FormField

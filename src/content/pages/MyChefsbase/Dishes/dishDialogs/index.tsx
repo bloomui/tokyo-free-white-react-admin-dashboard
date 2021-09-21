@@ -30,7 +30,7 @@ export const DishDialog = ({
         <Dialog open={open} onClose={onClose}>
             {dish && (
              <>
-                <DialogTitle id="form-dialog-title">Gerecht: {dish.name}</DialogTitle>
+                <DialogTitle style={{ fontWeight: 600 }} id="form-dialog-title">Gerecht: {dish.name}</DialogTitle>
                 <DialogActions>
                 <Button variant="contained" onClick={onClose}>
                   Terug
@@ -78,7 +78,7 @@ export const ItemMethods = ({title, item}: {title: string, item: FilterDishes_fi
     return (
         <>
         <Grid key={0} item xs={12}>
-        <Typography>{title}</Typography>
+        <Typography style={{ fontWeight: 600 }}>{title}</Typography>
         </Grid> 
         <Grid key={1} item xs={12}>
                 <TableContainer>
@@ -112,7 +112,7 @@ export const ItemRecipes = ({title, item}: {title: string, item: FilterDishes_fi
     return (
         <>
         <Grid key={0} item xs={12}>
-        <Typography>{title}</Typography>
+        <Typography style={{ fontWeight: 600 }}>{title}</Typography>
         </Grid> 
         <Grid key={1} item xs={12}>
                 <TableContainer>

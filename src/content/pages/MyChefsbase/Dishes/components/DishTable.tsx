@@ -144,7 +144,10 @@ headCells={headCellsDishes}
                     scope="row"
                     padding="none"
                     style={{ cursor: 'pointer' }}
-                    onClick={() => setOpen(true)}
+                    onClick={() => {
+                      setId(dish.id);
+                      setOpen(true)
+                    }}
                     >{dish.name}</TableCell>
                     <TableCell align="left">{dish.theme}</TableCell>
                     <TableCell align="left">{dish.comment}</TableCell>

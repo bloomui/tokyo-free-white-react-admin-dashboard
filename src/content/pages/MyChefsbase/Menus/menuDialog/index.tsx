@@ -31,7 +31,7 @@ export const MenuDialog = ({
         <Dialog open={open} onClose={onClose}>
             {menu && (
              <>
-                <DialogTitle id="form-dialog-title">Menu: {menu.name}</DialogTitle>
+                <DialogTitle style={{ fontWeight: 600 }} id="form-dialog-title">Menu: {menu.name}</DialogTitle>
                 <DialogActions>
                 <Button variant="contained" onClick={onClose}>
                   Terug
