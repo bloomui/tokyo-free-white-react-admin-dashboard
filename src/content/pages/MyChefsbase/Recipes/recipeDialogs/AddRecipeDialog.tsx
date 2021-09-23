@@ -83,16 +83,8 @@ const formState : AddRecipeVariables = {
                   validator={composeValidators(required)}
                 />
                 <FormField
-                  name="input.comment"
-                  label="Opmerking"
-                />
-                <FormField
                   name="input.type"
                   label="Type"
-                />
-                <FormField
-                  name="input.theme"
-                  label="Thema"
                 />
                 <Rating1
                 updateField="input.rating"

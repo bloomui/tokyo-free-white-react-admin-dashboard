@@ -20,20 +20,20 @@ import { useAddToFavorites } from "../../Menus/api";
 import { KitchenType } from "src/globalTypes";
 import { AreYouSureDelete } from "../../Menus/filtermenus/components/AreYouSureDelete";
 import { EnhancedTableHead, EnhancedTableToolbar } from "../../Menus/components/MenuTable";
-import { FilterRecipes, FilterRecipes_filterRecipes } from "../types/FilterRecipes";
-import { RecipeDialog } from "../recipeDialogs";
-import { UpdateRecipeDialog } from "../recipeDialogs/UpdateRecipeDialog";
+import { FilterIngredients, FilterIngredients_filterIngredients } from "../types/FilterIngredients";
+import { IngredientDialog } from "../ingredientDialogs";
+import { UpdateIngredientDialog } from "../ingredientDialogs/UpdateIngredientDialog";
 
-const headCellsRecipes: string[] = [
-  "Naam", "type", "rating", "acties"
+const headCellsIngredients: string[] = [
+  "Naam", "rating", "acties"
 ]
 
-export const RecipeTable = ({
+export const IngredientTable = ({
     data, 
     page, 
     setPage,
   }: {
-    data: FilterRecipes; 
+    data: FilterIngredients; 
     page: number; 
     setPage: (newPage: number) => void;
     }) => {
@@ -74,7 +74,7 @@ export const RecipeTable = ({
       };
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
-          const newSelecteds = recipes.map((recipe) => recipe.id);
+          const newSelecteds = ingredients.map((ingredient) => ingredient.id);
           setSelected(newSelecteds);
           return;
         }
@@ -87,10 +87,10 @@ export const RecipeTable = ({
     const [openUpdate, setOpenUpdate] = React.useState(false)
     const [areYouSureDelete, setAreYouSureDelete] = useState<boolean>(false);
     const [id, setId] = React.useState<string>()
-    const [recipe, setRecipe] = React.useState<FilterRecipes_filterRecipes>()
+    const [ingredient, setIngredient] = React.useState<FilterIngredients_filterIngredients>()
 
-    // recipe Data
-    let recipes = data.filterRecipes
+    // ingredient Data
+    let ingredients = data.filterIngredients
     
      //Add to Favorites Mutation
     const { add } = useAddToFavorites({
@@ -106,22 +106,22 @@ export const RecipeTable = ({
 <EnhancedTableHead
 numSelected={selected.length}
 onSelectAllClick={handleSelectAllClick}
-rowCount={recipes.length}
-headCells={headCellsRecipes}
+rowCount={ingredients.length}
+headCells={headCellsIngredients}
 />
 <TableBody>
-{recipes.map((recipe, index) => {
-                const isItemSelected = isSelected(recipe.id);
+{ingredients.map((ingredient, index) => {
+                const isItemSelected = isSelected(ingredient.id);
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
                     <>
                     <TableRow
                     hover
-                    onClick={(event) => handleClick(event, recipe.id)}
+                    onClick={(event) => handleClick(event, ingredient.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
-                    key={recipe.id}
+                    key={ingredient.id}
                     selected={isItemSelected}
                   >
                     <TableCell padding="checkbox">
@@ -140,12 +140,11 @@ headCells={headCellsRecipes}
                     padding="none"
                     style={{ cursor: 'pointer' }}
                     onClick={() => {
-                      setId(recipe.id);
+                      setId(ingredient.id);
                       setOpen(true)
                     }}
-                    >{recipe.name}</TableCell>
-                    <TableCell align="left">{recipe.type}</TableCell>
-                    <TableCell align="left">{recipe.rating}</TableCell>
+                    >{ingredient.name}</TableCell>
+                    <TableCell align="left">{ingredient.rating}</TableCell>
                     <TableCell 
                 align="center"
                 >
@@ -154,7 +153,7 @@ headCells={headCellsRecipes}
                     <Grid item xs={4}>
                     <VscEdit  
                   onClick={() => {
-                    setRecipe(recipe);
+                    setIngredient(ingredient);
                     setOpenUpdate(true)
                   }}
                   style={{ cursor: 'pointer' }}/>
@@ -162,7 +161,7 @@ headCells={headCellsRecipes}
                   <Grid item xs={4}>
                   <VscTrash 
                   onClick={() => {
-                    setId(recipe.id);
+                    setId(ingredient.id);
                     setAreYouSureDelete(true)
                   }}
                   style={{ cursor: 'pointer' }}/>
@@ -170,8 +169,8 @@ headCells={headCellsRecipes}
                   <Grid item xs={4}>
                   <VscStarEmpty onClick={() => {
                     add({variables: {
-                      id: recipe.id,
-                      kitchenType: KitchenType.Recipe
+                      id: ingredient.id,
+                      kitchenType: KitchenType.Ingredient
                     }});
                   }
                 }
@@ -190,7 +189,7 @@ headCells={headCellsRecipes}
                    <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={data? (data.filterRecipes? (data.filterRecipes.length) : 1000) : 1000}
+              count={data? (data.filterIngredients? (data.filterIngredients.length) : 1000) : 1000}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
@@ -198,7 +197,7 @@ headCells={headCellsRecipes}
             />
             {id &&  (
               <>
-              <RecipeDialog
+              <IngredientDialog
               setId={() => setId(id)}
               id={id}
               open={open}
@@ -207,14 +206,14 @@ headCells={headCellsRecipes}
               <AreYouSureDelete
                  open={areYouSureDelete}
                  id={id}
-                 kitchenType={KitchenType.Recipe}
+                 kitchenType={KitchenType.Ingredient}
                  onClose={() => setAreYouSureDelete(false)}
                  />
               </>
             )}
-            {recipe && (
-              <UpdateRecipeDialog 
-                 recipe={recipe}
+            {ingredient && (
+              <UpdateIngredientDialog 
+                 ingredient={ingredient}
                  open={openUpdate}
                  onClose={() => setOpenUpdate(false)}
                  /> 
