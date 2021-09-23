@@ -3,13 +3,14 @@ import { FieldArray, Formik } from "formik";
 import React, { useState } from "react";
 import { FormField } from "src/components/form/FormField";
 import { FormikSelect } from "src/components/form/FormikSelect";
-import { AddDishInput, AddIngredientInput, AddRecipeInput, QuantityToId, StepToMethodInput } from "src/globalTypes";
+import { AddProductInput, AddSupplierInput } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
-import { useAddIngredient, useAllProductsQuery } from "../api";
-import { AddIngredientVariables } from "../types/AddIngredient";
+import { useAllSuppliersQuery } from "../../Products/api";
+import { useAddSupplier } from "../api";
+import { AddSupplierVariables } from "../types/AddSupplier";
 
-export const AddIngredientDialog = ({
+export const AddSupplierDialog = ({
     open,
     onClose,
 }: {
@@ -17,21 +18,21 @@ export const AddIngredientDialog = ({
     onClose: () => void
 }) => {
 
-  const {data} = useAllProductsQuery()
+  const {data} = useAllSuppliersQuery()
 
     const [stepHere, setStep] = useState(1)
 
-    const { addIngredient, loading, error } = useAddIngredient({
+    const { addSupplier, loading, error } = useAddSupplier({
         onCompleted: () => {window.location.reload()},
       });
 
-    const formInput: AddIngredientInput = {
+    const formInput: AddSupplierInput = {
+        email: '',
         name: '',
         rating: 0,
     }
-const formState : AddIngredientVariables = {
+const formState : AddSupplierVariables = {
         input: formInput,
-        products: [],
     }
 
     return (
@@ -39,12 +40,11 @@ const formState : AddIngredientVariables = {
       <Formik
         initialValues={formState}
         onSubmit={(values) => {
-          addIngredient({
+          addSupplier({
             variables: {
-                products: values.products,
                 input: {
                 name: values.input.name,
-                rating: values.input.rating
+                email: values.input.email,
               },
             },
           });
@@ -54,7 +54,7 @@ const formState : AddIngredientVariables = {
           return (
             <>
               <DialogTitle id="form-dialog-title">
-                Voeg Ingredient toe
+                Voeg Leverancier toe
               </DialogTitle>
               <DialogContent>
                 <FormField
@@ -66,32 +66,10 @@ const formState : AddIngredientVariables = {
                 updateField="input.rating"
                 setFieldValue={setFieldValue}
                 />
-                Producten:
-                <FieldArray
-                name="products"
-                render={arrayHelpers => (
-                <div>
-                    {data && (
-                        <>
-
-                 {values.products?.map((product, index) => (
-                     <div key={index}>
-                         <FormikSelect 
-                         title="Product"
-                         name={`products.${index}.id`}
-                         >
-                             {data.products.map((product) => (
-                      <MenuItem key={product.id} value={product.id}>
-                        {product.name}
-                      </MenuItem>
-                    ))}
-                             </FormikSelect>
-                     </div>
-                   ))}
-                   </>
-                    )}
-                </div>
-                )}
+                <FormField
+                  name="input.email"
+                  label="Email"
+                  validator={composeValidators(required)}
                 />
                 {error && (
                   <Typography color="error">

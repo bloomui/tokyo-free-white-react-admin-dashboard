@@ -1,60 +1,73 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Table, TableCell, TableRow, TextField, Typography } from "@material-ui/core";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Table, TableCell, TableRow, TextField, Typography } from "@material-ui/core";
+import { Autocomplete, Rating } from "@material-ui/lab";
 import { FieldArray, Formik } from "formik";
 import React, { useState } from "react";
 import { FormField } from "src/components/form/FormField";
 import { FormikSelect } from "src/components/form/FormikSelect";
-import { AddDishInput, AddIngredientInput, AddRecipeInput, QuantityToId, StepToMethodInput } from "src/globalTypes";
+import { RecipeInput, QuantityToId, StepToMethodInput, DishInput, AddIngredientInput, IngredientInput, ProductInput } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
+import { initialValues } from "../../Dishes/filterdishes";
+import { UpdateDishVariables } from "../../Dishes/types/UpdateDish";
+import { useAllProductsQuery } from "../../Ingredients/api";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
-import { useAddIngredient, useAllProductsQuery } from "../api";
-import { AddIngredientVariables } from "../types/AddIngredient";
+import { useAllSuppliersQuery, useUpdateProduct } from "../api";
+import { FilterProducts_filterProducts } from "../types/FilterProducts";
+import { UpdateProductVariables } from "../types/UpdateProduct";
 
-export const AddIngredientDialog = ({
+export const UpdateProductDialog = ({
+  product,
     open,
     onClose,
 }: {
+  product: FilterProducts_filterProducts,
     open: boolean,
     onClose: () => void
 }) => {
+  const {data} = useAllSuppliersQuery()
 
-  const {data} = useAllProductsQuery()
 
-    const [stepHere, setStep] = useState(1)
-
-    const { addIngredient, loading, error } = useAddIngredient({
-        onCompleted: () => {window.location.reload()},
+    const { updateProduct, loading, error } = useUpdateProduct({
+        onCompleted: () => window.location.reload(),
       });
 
-    const formInput: AddIngredientInput = {
-        name: '',
-        rating: 0,
-    }
-const formState : AddIngredientVariables = {
-        input: formInput,
-        products: [],
-    }
+const formInput: ProductInput = {
+  price: 0,
+  brand: '',
+  origin: '',
+  id: '',
+  name: '',
+  rating: 0,
+}
+const formState : UpdateProductVariables = {
+  input: formInput,
+  suppliers: [],
+}
 
     return (
     <Dialog open={open} onClose={onClose}>
       <Formik
         initialValues={formState}
         onSubmit={(values) => {
-          addIngredient({
+          updateProduct({
             variables: {
-                products: values.products,
+                suppliers: values.suppliers,
                 input: {
+                  brand: values.input.brand,
+                  origin: values.input.origin,
+                  price: values.input.price,
+                id: product.id,
                 name: values.input.name,
-                rating: values.input.rating
+                rating: values.input.rating,
               },
             },
           });
         }}
       >
-        {({ values, handleChange, submitForm, setFieldValue }) => {
+        {({ values, submitForm, setFieldValue, handleChange }) => {
           return (
             <>
-              <DialogTitle id="form-dialog-title">
-                Voeg Ingredient toe
+              <DialogTitle style={{ fontWeight: 600 }} id="form-dialog-title">
+                Ingredient Aanpassen
               </DialogTitle>
               <DialogContent>
                 <FormField
@@ -66,23 +79,25 @@ const formState : AddIngredientVariables = {
                 updateField="input.rating"
                 setFieldValue={setFieldValue}
                 />
-                Producten:
+                <Grid container xs={12}>
+                    <Grid item xs={12}>
+                    Leveranciers:
                 <FieldArray
-                name="products"
+                name="suppliers"
                 render={arrayHelpers => (
                 <div>
                     {data && (
                         <>
 
-                 {values.products?.map((product, index) => (
+                 {values.suppliers?.map((supplier, index) => (
                      <div key={index}>
                          <FormikSelect 
-                         title="Product"
-                         name={`products.${index}.id`}
+                         title="Leverancier"
+                         name={`suppliers.${index}.id`}
                          >
-                             {data.products.map((product) => (
-                      <MenuItem key={product.id} value={product.id}>
-                        {product.name}
+                             {data.suppliers.map((supplier) => (
+                      <MenuItem key={supplier.id} value={supplier.id}>
+                        {supplier.name}
                       </MenuItem>
                     ))}
                              </FormikSelect>
@@ -93,6 +108,8 @@ const formState : AddIngredientVariables = {
                 </div>
                 )}
                 />
+                </Grid>
+                </Grid> 
                 {error && (
                   <Typography color="error">
                     Er is een fout opgetreden, probeer het opnieuw.

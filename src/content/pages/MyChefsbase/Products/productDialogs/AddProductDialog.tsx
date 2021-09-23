@@ -3,13 +3,13 @@ import { FieldArray, Formik } from "formik";
 import React, { useState } from "react";
 import { FormField } from "src/components/form/FormField";
 import { FormikSelect } from "src/components/form/FormikSelect";
-import { AddDishInput, AddIngredientInput, AddRecipeInput, QuantityToId, StepToMethodInput } from "src/globalTypes";
+import { AddProductInput } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
-import { useAddIngredient, useAllProductsQuery } from "../api";
-import { AddIngredientVariables } from "../types/AddIngredient";
+import { useAddProduct, useAllSuppliersQuery } from "../api";
+import { AddProductVariables } from "../types/AddProduct";
 
-export const AddIngredientDialog = ({
+export const AddProductDialog = ({
     open,
     onClose,
 }: {
@@ -17,21 +17,23 @@ export const AddIngredientDialog = ({
     onClose: () => void
 }) => {
 
-  const {data} = useAllProductsQuery()
+  const {data} = useAllSuppliersQuery()
 
     const [stepHere, setStep] = useState(1)
 
-    const { addIngredient, loading, error } = useAddIngredient({
+    const { addProduct, loading, error } = useAddProduct({
         onCompleted: () => {window.location.reload()},
       });
 
-    const formInput: AddIngredientInput = {
+    const formInput: AddProductInput = {
+        brand: '',
+        origin: '',
         name: '',
         rating: 0,
     }
-const formState : AddIngredientVariables = {
+const formState : AddProductVariables = {
         input: formInput,
-        products: [],
+        suppliers: [],
     }
 
     return (
@@ -39,11 +41,13 @@ const formState : AddIngredientVariables = {
       <Formik
         initialValues={formState}
         onSubmit={(values) => {
-          addIngredient({
+          addProduct({
             variables: {
-                products: values.products,
+                suppliers: values.suppliers,
                 input: {
                 name: values.input.name,
+                brand: values.input.brand,
+                origin: values.input.origin,
                 rating: values.input.rating
               },
             },
@@ -54,7 +58,7 @@ const formState : AddIngredientVariables = {
           return (
             <>
               <DialogTitle id="form-dialog-title">
-                Voeg Ingredient toe
+                Voeg Product toe
               </DialogTitle>
               <DialogContent>
                 <FormField
@@ -66,23 +70,38 @@ const formState : AddIngredientVariables = {
                 updateField="input.rating"
                 setFieldValue={setFieldValue}
                 />
-                Producten:
+                <FormField
+                  name="input.price"
+                  label="Prijs"
+                  validator={composeValidators(required)}
+                />
+                <FormField
+                  name="input.brand"
+                  label="Merk"
+                  validator={composeValidators(required)}
+                />
+                <FormField
+                  name="input.origin"
+                  label="Herkomst"
+                  validator={composeValidators(required)}
+                />
+                Leveranciers:
                 <FieldArray
-                name="products"
+                name="suppliers"
                 render={arrayHelpers => (
                 <div>
                     {data && (
                         <>
 
-                 {values.products?.map((product, index) => (
+                 {values.suppliers?.map((supplier, index) => (
                      <div key={index}>
                          <FormikSelect 
-                         title="Product"
-                         name={`products.${index}.id`}
+                         title="Leverancier"
+                         name={`suppliers.${index}.id`}
                          >
-                             {data.products.map((product) => (
-                      <MenuItem key={product.id} value={product.id}>
-                        {product.name}
+                             {data.suppliers.map((supplier) => (
+                      <MenuItem key={supplier.id} value={supplier.id}>
+                        {supplier.name}
                       </MenuItem>
                     ))}
                              </FormikSelect>

@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { ProductInput } from "./../../../../../globalTypes";
+import { SupplierInput } from "./../../../../../globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: UpdateSupplier
@@ -14,5 +14,5 @@ export interface UpdateSupplier {
 }
 
 export interface UpdateSupplierVariables {
-  input: ProductInput;
+  input: SupplierInput;
 }

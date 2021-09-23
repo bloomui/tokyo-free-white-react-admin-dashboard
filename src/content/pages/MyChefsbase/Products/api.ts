@@ -63,6 +63,8 @@ query FilterProducts ($input: ProductFilterInput) {
 
 export const ProductsData = gql`
 query Products {
+  allBrands
+  allOrigins
   suppliers {
     id
     name
@@ -105,7 +107,7 @@ export const useAllSuppliersQuery = () => {
     return { loading, data, error};
   };
 
-export const useFilterIngredientsQuery = ({
+export const useFilterProductsQuery = ({
   input,
 }: {
   input: ProductFilterInput | null;

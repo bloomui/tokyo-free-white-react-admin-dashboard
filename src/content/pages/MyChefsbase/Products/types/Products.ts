@@ -38,6 +38,8 @@ export interface Products_menus {
 }
 
 export interface Products {
+  allBrands: string[] | null;
+  allOrigins: string[] | null;
   suppliers: Products_suppliers[] | null;
   ingredients: Products_ingredients[] | null;
   recipes: Products_recipes[] | null;

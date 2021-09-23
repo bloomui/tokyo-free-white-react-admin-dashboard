@@ -17,7 +17,7 @@ const getSupplierQuery = gql`
 }
 }`;
 
-export const useGetProductQuery = (id: string) => {
+export const useGetSupplierQuery = (id: string) => {
 
     const { loading, data, error } = useSimpleQuery<
     supplier,
@@ -66,7 +66,7 @@ query Suppliers {
 `;
 
 export const UpdateSupplierMutation = gql`
-mutation UpdateSupplier ($input: ProductInput!) {
+mutation UpdateSupplier ($input: SupplierInput!) {
     updateSupplier (input: $input)
 }
 `;
@@ -76,7 +76,7 @@ mutation AddSupplier ($input: AddSupplierInput!) {
   addSupplier(input: $input)
 }`;
 
-export const useFilterIngredientsQuery = ({
+export const useFilterSuppliersQuery = ({
   input,
 }: {
   input: SupplierFilterInput | null;

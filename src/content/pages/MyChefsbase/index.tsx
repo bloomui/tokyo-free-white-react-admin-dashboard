@@ -8,6 +8,8 @@ import { DishPage } from 'src/content/pages/MyChefsbase/Dishes';
 import { RecipePage } from 'src/content/pages/MyChefsbase/Recipes';
 import PageHeader from 'src/components/pageHeader/PageHeader';
 import { IngredientPage } from './Ingredients';
+import { SupplierPage } from './Suppliers';
+import { ProductPage } from './Products';
 
 function MyChefsBase() {
   const [value, setValue] = useState(0);
@@ -30,10 +32,10 @@ function MyChefsBase() {
       content = <IngredientPage  page={page} setPage={setPage}/>;
     break;
     case 3:
-      content = <Box>Producten</Box>;
+      content = <ProductPage  page={page} setPage={setPage}/>;
     break;
     case 3:
-      content = <Box>Leveranciers</Box>;
+      content = <SupplierPage  page={page} setPage={setPage}/>;
     break;
     default:
         content = <Box>Favorieten</Box>;

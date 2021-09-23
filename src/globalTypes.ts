@@ -209,6 +209,13 @@ export interface SupplierFilterInput {
   recipes?: string[] | null;
 }
 
+export interface SupplierInput {
+  id: string;
+  name: string;
+  email?: string | null;
+  rating?: number | null;
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================
