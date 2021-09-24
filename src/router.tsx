@@ -8,6 +8,7 @@ import BaseLayout from 'src/layouts/BaseLayout';
 import SuspenseLoader from 'src/components/SuspenseLoader';
 import SignInForm from './content/pages/SignIn';
 import SignUpForm from './content/pages/SignUp';
+import MyChefsBase from './content/pages/MyChefsbase';
 
 const Loader = (Component) => (props) => (
   <Suspense fallback={<SuspenseLoader />}>
@@ -173,7 +174,7 @@ const routes: PartialRouteObject[] = [
     ]
   },
   {
-    path: 'dashboards',
+    path: 'mychefsbase',
     element: (
       <SidebarLayout />
     ),
@@ -182,19 +183,23 @@ const routes: PartialRouteObject[] = [
         path: '/',
         element: (
           <Navigate
-            to="/dashboards/crypto"
+            to="/mychefsbase/chefsbase"
             replace
           />
         )
       },
       {
-        path: 'crypto',
-        element: <Crypto />
+        path: 'chefsbase',
+        element: <MyChefsBase />
       },
       {
-        path: 'messenger',
-        element: <Messenger />
-      }
+        path: 'inventaris',
+        element: <StatusComingSoon />
+      },
+      {
+        path: 'orders',
+        element: <StatusComingSoon />
+      },
     ]
   },
   {

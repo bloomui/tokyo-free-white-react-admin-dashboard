@@ -8,9 +8,11 @@ import { RecipeInput, QuantityToId, StepToMethodInput, DishInput, AddIngredientI
 import { composeValidators, required } from "src/utilities/formikValidators";
 import { initialValues } from "../../Dishes/filterdishes";
 import { UpdateDishVariables } from "../../Dishes/types/UpdateDish";
+import { Products } from "../../Menus/filtermenus/components/products";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
 import { useAllProductsQuery, useUpdateIngredient } from "../api";
 import { AddIngredientVariables } from "../types/AddIngredient";
+import { allProducts_products } from "../types/AllProducts";
 import { FilterIngredients_filterIngredients } from "../types/FilterIngredients";
 import { UpdateIngredient, UpdateIngredientVariables } from "../types/UpdateIngredient";
 
@@ -24,7 +26,6 @@ export const UpdateIngredientDialog = ({
     onClose: () => void
 }) => {
   const {data} = useAllProductsQuery()
-
 
     const { updateIngredient, loading, error } = useUpdateIngredient({
         onCompleted: () => window.location.reload(),
@@ -76,31 +77,22 @@ const formState : UpdateIngredientVariables = {
                 <Grid container xs={12}>
                     <Grid item xs={12}>
                     Producten:
-                <FieldArray
-                name="products"
-                render={arrayHelpers => (
-                        <>
-                 {values.products?.map((product, index) => (
-                   <>
-                   {data && (
-                     <div key={index}>
-                         <FormikSelect 
-                         title="Product"
-                         name={`products.${index}.id`}
-                         >
-                             {data.products.map((product) => (
-                      <MenuItem key={product.id} value={product.id}>
-                        {product.name}
-                      </MenuItem>
-                    ))}
-                             </FormikSelect>
-                     </div>
-                   )}
-                   </>
-                   ))}
-                   </>
-                    )}
+                    {data.products && (
+                    <Autocomplete
+                    multiple
+                    id="tags-standard"
+                    options={data.products.map((option) => (option))}
+                    getOptionLabel={(option) => option? option.name : ""}
+                    onChange={(event,  values: allProducts_products[]) => setFieldValue("products", values.map((option) => option.id))}
+                    renderInput={(params) => (
+                 <TextField
+                 {...params}
+                 fullWidth
+                label="Producten"
                 />
+                )}
+                />
+                )}
                 </Grid>
                 </Grid> 
                 {error && (

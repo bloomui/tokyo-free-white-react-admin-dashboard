@@ -31,39 +31,39 @@ export interface MenuItems {
 }
 
 const menuItems: MenuItems[] = [
-  {
-    heading: '',
-    items: [
-      {
-        name: 'Overview',
-        link: '/overview',
-        icon: DesignServicesTwoToneIcon
-      }
-    ]
-  },
+  // {
+  //   heading: '',
+  //   items: [
+  //     {
+  //       name: 'Overview',
+  //       link: '/overview',
+  //       icon: DesignServicesTwoToneIcon
+  //     }
+  //   ]
+  // },
   {
     heading: 'MyChefsbase',
     items: [
       {
         name: 'Chefsbase',
-        link: '/dashboards/crypto',
+        link: '/mychefsbase/chefsbase',
         icon: FaDatabase
       },
       {
         name: 'Inventaris',
         icon: MmsTwoToneIcon,
-        link: '/dashboards/messenger'
+        link: '/mychefsbase/inventaris'
+      },
+      {
+        name: 'Bestellingen',
+        icon: TableChartTwoToneIcon,
+        link: '/mychefsbase/orders'
       },
     ]
   },
   {
-    heading: 'Management',
+    heading: 'Account',
     items: [
-      {
-        name: 'Bestellingen',
-        icon: TableChartTwoToneIcon,
-        link: '/management/transactions'
-      },
       {
         name: 'Account',
         icon: AccountCircleTwoToneIcon,
@@ -73,10 +73,6 @@ const menuItems: MenuItems[] = [
             name: 'Profile Details',
             link: '/management/profile/details'
           },
-          {
-            name: 'User Settings',
-            link: '/management/profile/settings'
-          }
         ]
       }
     ]

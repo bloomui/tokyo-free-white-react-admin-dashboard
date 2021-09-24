@@ -78,11 +78,26 @@ export const ItemProducts = ({title, item}: {title: string, item: FilterIngredie
         <Grid key={0} item xs={12}>
         <Typography style={{ fontWeight: 600 }}>{title}</Typography>
         </Grid> 
+        <Grid key={1} item xs={12}>
+                <TableContainer>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell align="center">Product Opties</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
                     {item && item.map((product) => (
-                <Grid item xs={12}>
-                                <Typography align="center">- {product.name}</Typography>
-                            </Grid>
+                <>
+                        <TableRow>
+                            <TableCell align="center">
+                            {product.name}
+                            </TableCell>
+                        </TableRow>
+                        </>
                     ))}
+                    </TableBody>
+                </TableContainer>
+            </Grid>
             </>
     )
 }
