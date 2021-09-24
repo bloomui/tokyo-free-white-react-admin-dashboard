@@ -6,8 +6,10 @@ import {
 import React, { useState } from "react";
 import { LoadingScreen } from "src/components/layout";
 import { DishFilterInput } from "src/globalTypes";
-import { useDishQuery } from "./api";
-import { DishTable } from "./DishTable";
+import { useFilterDishesQuery } from "./api";
+import { DishTable } from "./components/DishTable";
+import { TopPartDishPage } from "./components/TopPartDishPage";
+import { AddDishDialog } from "./dishDialogs/AddDishDialog";
 import { DishFilter, initialValues } from "./filterdishes";
   
   export const DishPage = ({
@@ -17,9 +19,10 @@ import { DishFilter, initialValues } from "./filterdishes";
     page: number;
     setPage: (newPage: number) => void;
   }) => {
+    const [openAddDish, setOpenAddDish] = useState(false)
     const [ input, setInput] = useState<DishFilterInput>(initialValues);
 
-    const { loading, data } = useDishQuery({
+    const { loading, data } = useFilterDishesQuery({
       input: input,
       });
   
@@ -28,35 +31,26 @@ import { DishFilter, initialValues } from "./filterdishes";
     else if (data) {
       content = (
         <>
-        <Grid container spacing={2} xs={12}>
-        <Grid key={0} item xs={12}>
-        <DishFilter
-        suppliers={data.suppliers}
-        products={data.products}
-        menus={data.menus}
-        recipes={data.recipes}
-        ingredients={data.ingredients}
-        themes={data.allThemes}
-        types={data.allTypes}
-        onChange={(values) => setInput(values)}
-        />
-        </Grid>
-        <Grid key={1} item xs={12}>
         <DishTable
         data={data}
         page={page}
         setPage={setPage}
         />
-        </Grid>
-        </Grid>
         </>
       );
     }
   
     return (
       <>
-          <Box height={3}>{loading && <LinearProgress />}</Box>
+      <TopPartDishPage
+          setOpenAddDish={() => setOpenAddDish(true)} 
+          setInput={(values) => setInput(values)}/>
+        <Box height={3}>{loading && <LinearProgress />}</Box>
         {content}
+        <AddDishDialog 
+                  open={openAddDish}
+                  onClose={() => setOpenAddDish(false)}
+                  />
       </>
     );
   };

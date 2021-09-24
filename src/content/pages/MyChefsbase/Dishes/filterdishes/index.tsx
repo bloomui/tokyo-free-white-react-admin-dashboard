@@ -1,7 +1,11 @@
-import { Paper, Grid, Button } from "@material-ui/core";
+import { useQuery } from "@apollo/client";
+import { Paper, Grid, Button, CardActions, Collapse, CardContent, Card } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import React from "react";
+import { FaFilter } from "react-icons/fa";
+import { LoadingScreen } from "src/components/layout";
 import { DishFilterInput } from "src/globalTypes";
+import { AutoSubmitToken, ExpandMore } from "../../Menus/filtermenus";
 import { Ingredients } from "../../Menus/filtermenus/components/ingredients";
 import { Menus } from "../../Menus/filtermenus/components/menus";
 import { Products } from "../../Menus/filtermenus/components/products";
@@ -11,10 +15,12 @@ import { Search } from "../../Menus/filtermenus/components/search";
 import { Suppliers } from "../../Menus/filtermenus/components/suppliers";
 import { Themes } from "../../Menus/filtermenus/components/themes";
 import { Types } from "../../Menus/filtermenus/components/types";
+import { DishesData } from "../api";
 import { Dishes_ingredients, Dishes_menus, Dishes_products, Dishes_recipes, Dishes_suppliers } from "../types/Dishes";
 
 
 export const initialValues: DishFilterInput = {
+    suppliers: [],
     themes: [],
     recipes: [],
     ingredients: [],
@@ -27,6 +33,8 @@ export const initialValues: DishFilterInput = {
   }
   
   export const DishFilter = ({
+    setOpenAddDish,
+    onClose,
     products,
     suppliers,
     themes,
@@ -36,6 +44,8 @@ export const initialValues: DishFilterInput = {
     ingredients,
     onChange,
   }: {
+    setOpenAddDish: () => void;
+    onClose: () => void;
     types: string[] | null;
     themes: string[] | null;
     suppliers: Dishes_suppliers[] | null;
@@ -45,20 +55,45 @@ export const initialValues: DishFilterInput = {
     products: Dishes_products[] | null;
     onChange: (values: DishFilterInput) => void;
   }) => {
+
+    const [ openFilterInputDialog, setOpenFilterInputDialog] = React.useState(false)
+
     return (
-      <>
-      <Formik
+      <Card>
+        <Formik
         initialValues={initialValues}
         onSubmit={(values) => {
-         alert(JSON.stringify(values, null, 2));
          onChange(values)
         }}
-        render={({ setFieldValue, handleSubmit }) => (
-          <Form >
-           <Grid container spacing={2} xs={12}>
-         <Grid key={0} item xs={3}>
-           <Search placeholder={null} setFieldValue={setFieldValue}/>
+        >
+        {({ setFieldValue, submitForm }) => {
+          return (
+            <>
+           <Grid container xs={12}>
+            <CardActions disableSpacing>
+            <Grid key={0} item>
+           <Search placeholder="Zoek Gerecht" setFieldValue={setFieldValue}/>
            </Grid>
+        <Grid key={1} item>
+            <ExpandMore
+          expand={openFilterInputDialog}
+          onClick={() => setOpenFilterInputDialog(!openFilterInputDialog)}
+          aria-expanded={openFilterInputDialog}
+          aria-label="Geavanceerd zoeken"
+        >
+          <FaFilter/>
+        </ExpandMore>
+        </Grid>
+        <Grid key={2} item>
+        <Button fullWidth color="secondary" variant="contained" onClick={setOpenAddDish}>
+                      <span> Nieuw gerecht</span>
+                  </Button>
+        </Grid>
+      </CardActions>
+      </Grid>
+      <Collapse in={openFilterInputDialog} timeout="auto" unmountOnExit>
+        <CardContent>   
+                  <Grid container spacing={2} xs={12}>
              <Grid key={1} item xs={3}>
            <Rating1 
            updateField="rating"
@@ -104,16 +139,13 @@ export const initialValues: DishFilterInput = {
             setFieldValue={setFieldValue} />
             </Grid>
             </Grid>
-            <Grid key={10} item>
-           <div>
-           <Button onClick={() => handleSubmit} variant="contained" fullWidth type="submit" color="secondary" >
-           <span>Zoek Gerechten</span>
-                 </Button>
-                  </div>
-         </Grid>
-          </Form>
-          )}
-          />
-          </>
+              </CardContent>
+              </Collapse>
+              <AutoSubmitToken />
+              </>
+          )
+        }}
+      </Formik>
+      </Card>
           )
         }

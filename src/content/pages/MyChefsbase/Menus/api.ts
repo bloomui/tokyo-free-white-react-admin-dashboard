@@ -12,6 +12,31 @@ import { DeleteMultiple, DeleteMultipleVariables } from "./types/DeleteMultiple"
 import { addToFavoritesMultiple, addToFavoritesMultipleVariables } from "./types/addToFavoritesMultiple";
 import { FilterMenus, FilterMenusVariables } from "./types/FilterMenus";
 import { AllDishes } from "./types/AllDishes";
+import { menu, menuVariables } from "./types/menu";
+
+const getMenuQuery = gql`
+ query menu ($id: String!) {
+   menu (id: $id) {
+    id
+    name
+    rating
+    season
+    theme
+    periodstartdate
+    periodenddate
+    courses {
+      course {
+        id
+        courseType
+      }
+      dishes {
+        id
+        name
+      }
+    }
+   }
+ }
+`;
 
 const AllDishQuery = gql`
  query AllDishes {
@@ -120,6 +145,19 @@ export const useFilterMenuQuery = ({
   >(FilterMenuQuery, {
     variables: {
       input: input,
+    },
+  });
+  return { loading, data, error};
+};
+
+export const useGetMenuQuery = (id: string) => {
+
+  const { loading, data, error } = useSimpleQuery<
+  menu,
+  menuVariables
+  >(getMenuQuery, {
+    variables: {
+      id: id,
     },
   });
   return { loading, data, error};

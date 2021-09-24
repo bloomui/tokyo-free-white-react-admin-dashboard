@@ -1,32 +1,45 @@
 import { Dialog, DialogTitle, DialogContent, Card, CardActionArea, Grid, Typography, TableContainer, TableBody, TableCell, TableHead, TableRow, List, ListItem, Button, DialogActions } from "@material-ui/core"
 import React from "react"
 import { useState } from "react"
+import { LoadingScreen } from "src/components/layout"
+import { useGetMenuQuery } from "../api"
 import { FilterMenus_filterMenus, FilterMenus_filterMenus_courses } from "../types/FilterMenus"
 import { UpdateMenuDialog } from "./UpdateMenu"
 
 export const MenuDialog = ({
-    menu,
+    setId,
+    id,
     open,
     onClose,
     setOpenUpdateDialog,
 }: {
+    setId: () => void;
     setOpenUpdateDialog: () => void;
-    menu: FilterMenus_filterMenus;
+    id: string;
     open: boolean;
     onClose: () => void
 }) => {
-    console.log(menu.rating)
+
+    const { data, loading, error } = useGetMenuQuery(id)
+
+    if (loading) return <LoadingScreen/>
+    if (error) return <LoadingScreen/>
+
+    let menu = data.menu
 
     return (
         <Dialog open={open} onClose={onClose}>
             {menu && (
              <>
-                <DialogTitle id="form-dialog-title">Menu: {menu.name}</DialogTitle>
+                <DialogTitle style={{ fontWeight: 600 }} id="form-dialog-title">Menu: {menu.name}</DialogTitle>
                 <DialogActions>
                 <Button variant="contained" onClick={onClose}>
                   Terug
                 </Button>
-                <Button variant="contained" onClick={() => setOpenUpdateDialog()}>
+                <Button variant="contained" onClick={() => {
+                    setId();
+                    setOpenUpdateDialog()
+                }}>
                   Menu aanpassen
                 </Button>
               </DialogActions>
@@ -50,7 +63,7 @@ export const MenuDialog = ({
                       startdate={menu.periodstartdate}
                       enddate={menu.periodenddate}
                       />
-                      <ItemCourses
+                      <ItemCourses2
                       title="Gangen"
                       item={menu.courses}
                       />
@@ -64,45 +77,22 @@ export const MenuDialog = ({
     )
 }
 
-export const ItemCourses = ({title, item}: {title: string, item: FilterMenus_filterMenus_courses []| null;}) => {
-    const size = item?.length
+export const ItemCourses2 = ({title, item}: {title: string, item: FilterMenus_filterMenus_courses []| null;}) => {
     return (
         <>
         <Grid key={0} item xs={12}>
-        <Typography>{title}</Typography>
+        <Typography style={{ fontWeight: 600 }}>{title}</Typography>
         </Grid> 
-        <Grid key={1} item xs={12}>
-                <TableContainer>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Gang</TableCell>
-                            <TableCell>Gerechten</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
                     {item && item.map((course) => (
-                <>
-                        <TableRow>
-                            <TableCell align="left">
-                            {course?.course?.courseType}
-                            </TableCell>
-                            <TableCell align="left">
-                            <List>
-                            {course?.dishes?.map((dish) => (
+                <Grid item xs={12}>
+                    <Typography style={{ fontWeight: 600 }} align="center">{course.course.courseType}</Typography>
+                            {course.dishes.map((dish) => (
                                 <>
-                                <ListItem key={dish?.id}>
-                                - {dish?.name}
-                                </ListItem>
+                                <Typography align="center">- {dish.name}</Typography>
                                 </>
                             ))}
-                            </List>
-                            </TableCell>
-                        </TableRow>
-                        </>
+                            </Grid>
                     ))}
-                    </TableBody>
-                </TableContainer>
-            </Grid>
             </>
     )
 }
@@ -111,7 +101,7 @@ export const ItemString = ({title, item}: {title: string, item: string | null}) 
     return (
         <>
         <Grid key={0} item xs={3}>
-        <Typography>{title}</Typography>
+        <Typography style={{ fontWeight: 600 }}>{title}</Typography>
         </Grid>  
         <Grid key={1} item xs={9}>
         {item? item : "Geen "+ title + "bekend"}
@@ -124,7 +114,7 @@ export const ItemInt = ({title, item}: {title: string, item: number | null}) => 
     return (
         <>
         <Grid key={0} item xs={3}>
-        <Typography>{title}</Typography>
+        <Typography style={{ fontWeight: 600 }}>{title}</Typography>
         </Grid>  
         <Grid key={1} item xs={9}>
         {item}
@@ -137,7 +127,7 @@ export const ItemPeriod = ({title, startdate, enddate}: {title: string, startdat
     return (
         <>
         <Grid key={0} item xs={3}>
-        <Typography>{title}</Typography>
+        <Typography style={{ fontWeight: 600 }}>{title}</Typography>
         </Grid>  
         <Grid key={1} item xs={9}>
         Vanaf {startdate? startdate : "Geen "+ startdate + "bekend"} tot {enddate? enddate : "Geen "+ enddate + "bekend"}

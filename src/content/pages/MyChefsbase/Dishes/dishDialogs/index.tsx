@@ -1,32 +1,46 @@
 import { Dialog, DialogTitle, DialogContent, Card, CardActionArea, Grid, Typography, TableContainer, TableBody, TableCell, TableHead, TableRow, List, ListItem, Button, DialogActions } from "@material-ui/core"
 import React from "react"
-import { useState } from "react"
+import { LoadingScreen } from "src/components/layout"
 import { ItemInt, ItemString } from "../../Menus/menuDialog"
-import { Dishes_filterDishes, Dishes_filterDishes_method, Dishes_filterDishes_recipes } from "../types/Dishes"
+import { useGetDishQuery } from "../api"
+import { FilterDishes_filterDishes, FilterDishes_filterDishes_method, FilterDishes_filterDishes_recipes } from "../types/FilterDishes"
 
 export const DishDialog = ({
-    dish,
+    setId,
+    id,
     open,
     onClose,
     setOpenUpdateDialog,
 }: {
+    id: string;
+    setId: () => void;
     setOpenUpdateDialog: () => void;
-    dish: Dishes_filterDishes;
     open: boolean;
     onClose: () => void
 }) => {
+
+    const { data, loading, error } = useGetDishQuery(id)
+
+    if (loading) return <LoadingScreen/>
+    if (error) return <LoadingScreen/>
+
+    let dish = data.dish
 
     return (
         <Dialog open={open} onClose={onClose}>
             {dish && (
              <>
-                <DialogTitle id="form-dialog-title">Gerecht: {dish.name}</DialogTitle>
+                <DialogTitle style={{ fontWeight: 600 }} id="form-dialog-title">Gerecht: {dish.name}</DialogTitle>
                 <DialogActions>
                 <Button variant="contained" onClick={onClose}>
                   Terug
                 </Button>
-                <Button variant="contained" onClick={() => setOpenUpdateDialog()}>
-                  Menu aanpassen
+                <Button variant="contained" onClick={() => {
+                        setId();
+                        setOpenUpdateDialog();
+                        // onClose()
+                }}>
+                  Gerecht aanpassen
                 </Button>
               </DialogActions>
               <DialogContent>
@@ -56,17 +70,16 @@ export const DishDialog = ({
                   </Card>
               </DialogContent>
             </>
-
             )}
         </Dialog>
     )
 }
 
-export const ItemMethods = ({title, item}: {title: string, item: Dishes_filterDishes_method []| null;}) => {
+export const ItemMethods = ({title, item}: {title: string, item: FilterDishes_filterDishes_method []| null;}) => {
     return (
         <>
         <Grid key={0} item xs={12}>
-        <Typography>{title}</Typography>
+        <Typography style={{ fontWeight: 600 }}>{title}</Typography>
         </Grid> 
         <Grid key={1} item xs={12}>
                 <TableContainer>
@@ -96,11 +109,11 @@ export const ItemMethods = ({title, item}: {title: string, item: Dishes_filterDi
     )
 }
 
-export const ItemRecipes = ({title, item}: {title: string, item: Dishes_filterDishes_recipes []| null;}) => {
+export const ItemRecipes = ({title, item}: {title: string, item: FilterDishes_filterDishes_recipes []| null;}) => {
     return (
         <>
         <Grid key={0} item xs={12}>
-        <Typography>{title}</Typography>
+        <Typography style={{ fontWeight: 600 }}>{title}</Typography>
         </Grid> 
         <Grid key={1} item xs={12}>
                 <TableContainer>

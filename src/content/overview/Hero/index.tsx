@@ -55,7 +55,7 @@ function Hero() {
           Getting the best out of every chef!
           </TypographyH2>
           <Grid container spacing={2} xs={12}>
-          <Grid item xs={5}>
+          <Grid item xs={6}>
           <Button
           fullWidth
             component={RouterLink}
@@ -66,7 +66,7 @@ function Hero() {
             Log In
           </Button> 
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={6}>
           <Button
             fullWidth
             component={RouterLink}
