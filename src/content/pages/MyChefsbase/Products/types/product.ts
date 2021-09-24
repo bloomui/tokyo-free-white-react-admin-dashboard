@@ -18,6 +18,7 @@ export interface product_product {
   id: string;
   name: string;
   rating: number | null;
+  price: number | null;
   brand: string | null;
   origin: string | null;
   suppliers: product_product_suppliers[] | null;

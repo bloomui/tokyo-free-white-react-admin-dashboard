@@ -25,7 +25,7 @@ import { ProductDialog } from "../productDialogs";
 import { UpdateProductDialog } from "../productDialogs/updateProductDialog";
 
 const headCellsProducts: string[] = [
-  "Naam", "rating", "afkomst", "merk", "acties"
+  "Naam", "prijs", "afkomst", "merk", "rating", "acties"
 ]
 
 export const ProductTable = ({
@@ -144,6 +144,9 @@ headCells={headCellsProducts}
                       setOpen(true)
                     }}
                     >{product.name}</TableCell>
+                    <TableCell align="left">€{product.price}</TableCell>
+                    <TableCell align="left">{product.origin}</TableCell>
+                    <TableCell align="left">{product.brand}</TableCell>
                     <TableCell align="left">{product.rating}</TableCell>
                     <TableCell 
                 align="center"

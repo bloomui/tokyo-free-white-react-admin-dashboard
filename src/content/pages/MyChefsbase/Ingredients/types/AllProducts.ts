@@ -4,15 +4,15 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: AllProducts
+// GraphQL query operation: allProducts
 // ====================================================
 
-export interface AllProducts_products {
+export interface allProducts_products {
   __typename: "Product";
   id: string;
   name: string;
 }
 
-export interface AllProducts {
-  products: AllProducts_products[] | null;
+export interface allProducts {
+  products: allProducts_products[] | null;
 }

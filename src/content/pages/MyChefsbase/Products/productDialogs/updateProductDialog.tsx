@@ -29,17 +29,38 @@ export const UpdateProductDialog = ({
     const { updateProduct, loading, error } = useUpdateProduct({
         onCompleted: () => window.location.reload(),
       });
+type ProductFormInput = {
+  price: string,
+  brand: string,
+  origin: string,
+  id: string,
+  name: string,
+  rating: string,
+}
 
-const formInput: ProductInput = {
-  price: 0,
+const formInput: ProductFormInput = {
+  price: '',
   brand: '',
   origin: '',
   id: '',
   name: '',
-  rating: 0,
+  rating: '',
 }
+
+const mapProductInput = (formInput: ProductFormInput) => {
+  const mapped: ProductInput = {
+    price: Number(formInput.price),
+    brand: formInput.brand,
+    origin: formInput.origin,
+    id: formInput.id,
+    name: formInput.name,
+    rating: Number(formInput.rating)
+  }
+  return mapped
+}
+
 const formState : UpdateProductVariables = {
-  input: formInput,
+  input: mapProductInput(formInput),
   suppliers: [],
 }
 

@@ -65,7 +65,7 @@ export const initialSupplierValues: SupplierFilterInput = {
            <Grid container xs={12}>
             <CardActions disableSpacing>
             <Grid key={0} item>
-           <Search placeholder="Zoek Recept" setFieldValue={setFieldValue}/>
+           <Search placeholder="Zoek leverancier" setFieldValue={setFieldValue}/>
            </Grid>
         <Grid key={1} item>
             <ExpandMore
@@ -93,33 +93,28 @@ export const initialSupplierValues: SupplierFilterInput = {
            setFieldValue={setFieldValue}/>
            </Grid>
            <Grid key={2} item xs={3}>
-              <Ingredients 
+           <Products
+            products={products}
+            setFieldValue={setFieldValue} />
+            </Grid>
+            <Grid item xs={3}>
+            <Ingredients 
               ingredients={ingredients}
               setFieldValue={setFieldValue} />
-          </Grid>
-          <Grid key={3} item xs={3}>
+              </Grid>
+            <Grid item xs={3}>
             <Recipes 
             recipes={recipes}
             setFieldValue={setFieldValue} />
             </Grid>
-            <Grid key={4} item xs={3}>
-            <Recipes 
-            recipes={recipes}
-            setFieldValue={setFieldValue} />
-            </Grid>
-            <Grid key={5} item xs={3}>
+            <Grid item xs={3}>
             <Dishes 
             dishes={dishes}
             setFieldValue={setFieldValue} />
             </Grid>
-            <Grid key={6} item xs={3}>
+            <Grid item xs={3}>
             <Menus 
             menus={menus}
-            setFieldValue={setFieldValue} />
-            </Grid>
-            <Grid key={7} item xs={3}>
-            <Products
-            products={products}
             setFieldValue={setFieldValue} />
             </Grid>
             </Grid>

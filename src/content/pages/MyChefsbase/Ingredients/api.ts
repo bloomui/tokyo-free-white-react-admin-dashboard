@@ -3,10 +3,10 @@ import { useMutation } from "@apollo/client";
 import { IngredientFilterInput } from "src/globalTypes";
 import { useSimpleQuery } from "src/utilities/apollo";
 import { AddIngredient, AddIngredientVariables } from "./types/AddIngredient";
-import { AllProducts } from "./types/AllProducts";
 import { FilterIngredients } from "./types/FilterIngredients";
 import { ingredient, ingredientVariables } from "./types/ingredient";
 import { UpdateIngredient, UpdateIngredientVariables } from "./types/UpdateIngredient";
+import { allProducts } from "./types/AllProducts";
 
 const getIngredientQuery = gql`
  query ingredient ($id: String!) {
@@ -35,7 +35,7 @@ export const useGetIngredientQuery = (id: string) => {
   };
 
 const AllProductsQuery = gql`
- query AllProducts {
+ query allProducts {
    products {
      id
      name
@@ -95,7 +95,7 @@ mutation AddIngredient ($input: AddIngredientInput!, $products: [String!]) {
 export const useAllProductsQuery = () => {
 
     const { loading, data, error } = useSimpleQuery<
-    AllProducts
+    allProducts
     >(AllProductsQuery);
     return { loading, data, error};
   };

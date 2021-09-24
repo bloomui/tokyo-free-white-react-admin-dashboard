@@ -29,7 +29,7 @@ renderInput={(params) => (
                  <TextField
                  {...params}
                  fullWidth
-                label="Seizoenen"
+                label={title}
                 />
   )}
   />

@@ -31,10 +31,10 @@ function MyChefsBase() {
     case 3:
       content = <IngredientPage  page={page} setPage={setPage}/>;
     break;
-    case 3:
+    case 4:
       content = <ProductPage  page={page} setPage={setPage}/>;
     break;
-    case 3:
+    case 5:
       content = <SupplierPage  page={page} setPage={setPage}/>;
     break;
     default:

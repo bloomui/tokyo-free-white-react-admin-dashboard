@@ -20,6 +20,7 @@ export interface FilterProducts_filterProducts {
   id: string;
   name: string;
   rating: number | null;
+  price: number | null;
   brand: string | null;
   origin: string | null;
   suppliers: FilterProducts_filterProducts_suppliers[] | null;

@@ -25,7 +25,7 @@ import { UpdateSupplierDialog } from "../supplierDialogs/updateProductDialog";
 import { FilterSuppliers, FilterSuppliers_filterSuppliers } from "../types/FilterSuppliers";
 
 const headCellsSuppliers: string[] = [
-  "Naam", "rating", "email", "acties"
+  "Naam", "email", "rating", "acties"
 ]
 
 export const SupplierTable = ({
@@ -144,6 +144,7 @@ headCells={headCellsSuppliers}
                       setOpen(true)
                     }}
                     >{supplier.name}</TableCell>
+                    <TableCell align="left">{supplier.email}</TableCell>
                     <TableCell align="left">{supplier.rating}</TableCell>
                     <TableCell 
                 align="center"

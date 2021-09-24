@@ -77,17 +77,16 @@ const formState : UpdateIngredientVariables = {
                     <Grid item xs={12}>
                     Producten:
                 <FieldArray
-                name="recipes"
+                name="products"
                 render={arrayHelpers => (
-                <div>
-                    {data && (
                         <>
-
                  {values.products?.map((product, index) => (
+                   <>
+                   {data && (
                      <div key={index}>
                          <FormikSelect 
-                         title="Recept"
-                         name={`recipes.${index}.id`}
+                         title="Product"
+                         name={`products.${index}.id`}
                          >
                              {data.products.map((product) => (
                       <MenuItem key={product.id} value={product.id}>
@@ -96,11 +95,11 @@ const formState : UpdateIngredientVariables = {
                     ))}
                              </FormikSelect>
                      </div>
+                   )}
+                   </>
                    ))}
                    </>
                     )}
-                </div>
-                )}
                 />
                 </Grid>
                 </Grid> 

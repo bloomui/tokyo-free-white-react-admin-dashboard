@@ -8,7 +8,7 @@ import { Dishes } from "../../Menus/filtermenus/components/dishes";
 import { Ingredients } from "../../Menus/filtermenus/components/ingredients";
 import { Menus } from "../../Menus/filtermenus/components/menus";
 import { Prices } from "../../Menus/filtermenus/components/prices";
-import { Products } from "../../Menus/filtermenus/components/products";
+import { Brands } from "../../Menus/filtermenus/components/seasons";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
 import { Recipes } from "../../Menus/filtermenus/components/recipes";
 import { Search } from "../../Menus/filtermenus/components/search";
@@ -19,18 +19,49 @@ import { initialRecipeValues } from "../../Recipes/filterrecipes";
 import { Products_suppliers, Products_dishes, Products_menus, Products_recipes, Products_ingredients } from "../types/Products";
 
 
-export const initialProductValues: ProductFilterInput = {
+export type ProductFilterFormInput = {
+    dishes: string[],
+    suppliers: string[],
+    recipes: string[],
+    ingredients: string[],
+    rating: string,
+    menus: string[],
+    name: string,
+    brands: string[],
+    origins: string[],
+    maxPrice: string,
+    minPrice: string,
+}
+
+export const mapFormToInput = (form: ProductFilterFormInput) => {
+  const mapped: ProductFilterInput = {
+    dishes: form.dishes,
+    suppliers: form.suppliers,
+    recipes: form.recipes,
+    ingredients: form.ingredients,
+    rating: Number(form.rating),
+    menus: form.menus,
+    name: form.name,
+    brands: form.brands,
+    origins: form.origins,
+    maxPrice: Number(form.maxPrice),
+    minPrice: Number(form.minPrice),
+  }
+  return mapped
+}
+
+export const initialProductValues: ProductFilterFormInput = {
     dishes: [],
     suppliers: [],
     recipes: [],
     ingredients: [],
-    rating: 0,
+    rating: '',
     menus: [],
     name: '',
     brands: [],
     origins: [],
-    maxPrice: 1000.0,
-    minPrice: 0.0,
+    maxPrice: '1000',
+    minPrice: '',
   }
   
   export const ProductFilter = ({
@@ -54,7 +85,7 @@ export const initialProductValues: ProductFilterInput = {
     menus: Products_menus[] | null;
     recipes: Products_recipes[] | null;
     ingredients: Products_ingredients[] | null;
-    onChange: (values: ProductFilterInput) => void;
+    onChange: (values: ProductFilterFormInput) => void;
   }) => {
 
     const [ openFilterInputDialog, setOpenFilterInputDialog] = React.useState(false)
@@ -73,7 +104,7 @@ export const initialProductValues: ProductFilterInput = {
            <Grid container xs={12}>
             <CardActions disableSpacing>
             <Grid key={0} item>
-           <Search placeholder="Zoek Recept" setFieldValue={setFieldValue}/>
+           <Search placeholder="Zoek product" setFieldValue={setFieldValue}/>
            </Grid>
         <Grid key={1} item>
             <ExpandMore
@@ -95,7 +126,7 @@ export const initialProductValues: ProductFilterInput = {
       <Collapse in={openFilterInputDialog} timeout="auto" unmountOnExit>
         <CardContent>   
                   <Grid container spacing={2} xs={12}>
-             <Grid key={1} item xs={3}>
+             <Grid item xs={3}>
            <Rating1 
            updateField="rating"
            setFieldValue={setFieldValue}/>
@@ -106,8 +137,8 @@ export const initialProductValues: ProductFilterInput = {
               setFieldValue={setFieldValue} />
           </Grid>
           <Grid key={3} item xs={3}>
-            <Recipes 
-            recipes={recipes}
+            <Ingredients 
+            ingredients={ingredients}
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={4} item xs={3}>
@@ -126,10 +157,8 @@ export const initialProductValues: ProductFilterInput = {
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={7} item xs={3}>
-            <Strings
-            title="merk"
-            input="brands" 
-            strings={brands}
+            <Brands
+            brands={brands}
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={7} item xs={3}>

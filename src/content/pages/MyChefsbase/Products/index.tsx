@@ -9,7 +9,7 @@ import { MenuFilterInput, ProductFilterInput } from "src/globalTypes";
 import { useFilterProductsQuery } from "./api";
 import { TopPartProductPage } from "./components/ProductPageTopPart";
 import { ProductTable } from "./components/ProductTable";
-import { initialProductValues } from "./filterproducts";
+import { initialProductValues, mapFormToInput, ProductFilterFormInput } from "./filterproducts";
 import { AddProductDialog } from "./productDialogs/AddProductDialog";
   
   export const ProductPage = ({
@@ -21,9 +21,9 @@ import { AddProductDialog } from "./productDialogs/AddProductDialog";
   }) => {
 
     const [openAddMenu, setOpenAddProduct] = useState(false)
-    const [ input, setInput] = useState<ProductFilterInput>(initialProductValues);
+    const [ input, setInput] = useState<ProductFilterFormInput>(initialProductValues);
     const { loading, data } = useFilterProductsQuery({
-        input: input
+        input: mapFormToInput(input)
     })
     
     let content;

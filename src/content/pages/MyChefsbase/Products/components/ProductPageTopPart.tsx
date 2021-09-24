@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { LoadingScreen } from "src/components/layout";
 import { IngredientFilterInput, ProductFilterInput } from "src/globalTypes";
 import { ProductsData } from "../api";
-import { ProductFilter } from "../filterproducts";
+import { ProductFilter, ProductFilterFormInput } from "../filterproducts";
 
 
 export const TopPartProductPage = ({
@@ -11,7 +11,7 @@ export const TopPartProductPage = ({
     setInput,
 }: {
     setOpenAddProduct: () => void;
-  setInput: (values: ProductFilterInput) => void;
+  setInput: (values: ProductFilterFormInput) => void;
 }) => {
   const [ openFilterInputDialog, setOpenFilterInputDialog] = React.useState(false)
   const [name, setName] = useState()
@@ -22,8 +22,8 @@ export const TopPartProductPage = ({
 
   return (
     <ProductFilter
-    origins={data.origins}
-    brands={data.brands}
+    origins={data.allOrigins}
+    brands={data.allBrands}
     setOpenAddProduct={setOpenAddProduct}
     onClose={() => setOpenFilterInputDialog(false)}
     suppliers={data.suppliers}
