@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Table, TableCell, TableRow, TextField, Typography } from "@material-ui/core";
+import { Autocomplete, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Table, TableCell, TableRow, TextField, Typography } from "@material-ui/core";
 import { FieldArray, Formik } from "formik";
 import React, { useState } from "react";
 import { FormField } from "src/components/form/FormField";
@@ -8,6 +8,7 @@ import { composeValidators, required } from "src/utilities/formikValidators";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
 import { useAddProduct, useAllSuppliersQuery } from "../api";
 import { AddProductVariables } from "../types/AddProduct";
+import { AllSuppliers_suppliers } from "../types/AllSuppliers";
 
 export const AddProductDialog = ({
     open,
@@ -71,11 +72,6 @@ const formState : AddProductVariables = {
                 setFieldValue={setFieldValue}
                 />
                 <FormField
-                  name="input.price"
-                  label="Prijs"
-                  validator={composeValidators(required)}
-                />
-                <FormField
                   name="input.brand"
                   label="Merk"
                   validator={composeValidators(required)}
@@ -85,33 +81,27 @@ const formState : AddProductVariables = {
                   label="Herkomst"
                   validator={composeValidators(required)}
                 />
-                Leveranciers:
-                <FieldArray
-                name="suppliers"
-                render={arrayHelpers => (
-                <div>
-                    {data && (
-                        <>
-
-                 {values.suppliers?.map((supplier, index) => (
-                     <div key={index}>
-                         <FormikSelect 
-                         title="Leverancier"
-                         name={`suppliers.${index}.id`}
-                         >
-                             {data.suppliers.map((supplier) => (
-                      <MenuItem key={supplier.id} value={supplier.id}>
-                        {supplier.name}
-                      </MenuItem>
-                    ))}
-                             </FormikSelect>
-                     </div>
-                   ))}
-                   </>
-                    )}
-                </div>
+                <Grid container xs={12}>
+                    <Grid item xs={12}>
+                    Leveranciers:
+                    {data.suppliers && (
+                    <Autocomplete
+                    multiple
+                    id="tags-standard"
+                    options={data.suppliers.map((option) => (option))}
+                    getOptionLabel={(option) => option? option.name : ""}
+                    onChange={(event,  values: AllSuppliers_suppliers[]) => setFieldValue("suppliers", values.map((option) => option.id))}
+                    renderInput={(params) => (
+                 <TextField
+                 {...params}
+                 fullWidth
+                label="Leveranciers"
+                />
                 )}
                 />
+                )}
+                </Grid>
+                </Grid> 
                 {error && (
                   <Typography color="error">
                     Er is een fout opgetreden, probeer het opnieuw.

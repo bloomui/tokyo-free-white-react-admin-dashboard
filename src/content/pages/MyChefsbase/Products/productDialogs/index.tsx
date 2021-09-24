@@ -53,17 +53,17 @@ export const ProductDialog = ({
                        title="rating"
                        item={product.rating}
                        />
-                      <ItemSuppliers
-                      title="Leveranciers"
-                      item={product.suppliers}
-                      />
-                      <ItemString
+                       <ItemString
                       title="Merk"
                       item={product.brand}
                       />
                       <ItemString
                       title="Herkomst"
                       item={product.origin}
+                      />
+                      <ItemSuppliers
+                      title="Leveranciers"
+                      item={product.suppliers}
                       />
                       </Grid>
                   </Card>
@@ -85,11 +85,26 @@ export const ItemSuppliers = ({title, item}: {title: string, item: FilterProduct
         <Grid key={0} item xs={12}>
         <Typography style={{ fontWeight: 600 }}>{title}</Typography>
         </Grid> 
-                    {item && item.map((supplier) => (
-                <Grid item xs={12}>
-                                <Typography align="center">- {supplier.name}</Typography>
-                            </Grid>
+        <Grid key={1} item xs={12}>
+                <TableContainer>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell align="center">Leverancier Opties</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {item && item.map((product) => (
+                <>
+                        <TableRow>
+                            <TableCell align="center">
+                            {product.name}
+                            </TableCell>
+                        </TableRow>
+                        </>
                     ))}
+                    </TableBody>
+                </TableContainer>
+            </Grid>
             </>
     )
 }

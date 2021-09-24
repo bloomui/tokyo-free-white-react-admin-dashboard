@@ -11,6 +11,7 @@ import { UpdateDishVariables } from "../../Dishes/types/UpdateDish";
 import { useAllProductsQuery } from "../../Ingredients/api";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
 import { useAllSuppliersQuery, useUpdateProduct } from "../api";
+import { AllSuppliers_suppliers } from "../types/AllSuppliers";
 import { FilterProducts_filterProducts } from "../types/FilterProducts";
 import { UpdateProductVariables } from "../types/UpdateProduct";
 
@@ -88,7 +89,7 @@ const formState : UpdateProductVariables = {
           return (
             <>
               <DialogTitle style={{ fontWeight: 600 }} id="form-dialog-title">
-                Ingredient Aanpassen
+                Product Aanpassen
               </DialogTitle>
               <DialogContent>
                 <FormField
@@ -100,35 +101,35 @@ const formState : UpdateProductVariables = {
                 updateField="input.rating"
                 setFieldValue={setFieldValue}
                 />
-                <Grid container xs={12}>
+                <FormField
+                  name="input.brand"
+                  label="Merk"
+                  validator={composeValidators(required)}
+                />
+                <FormField
+                  name="input.origin"
+                  label="Herkomst"
+                  validator={composeValidators(required)}
+                />
+                    <Grid container xs={12}>
                     <Grid item xs={12}>
                     Leveranciers:
-                <FieldArray
-                name="suppliers"
-                render={arrayHelpers => (
-                <div>
-                    {data && (
-                        <>
-
-                 {values.suppliers?.map((supplier, index) => (
-                     <div key={index}>
-                         <FormikSelect 
-                         title="Leverancier"
-                         name={`suppliers.${index}.id`}
-                         >
-                             {data.suppliers.map((supplier) => (
-                      <MenuItem key={supplier.id} value={supplier.id}>
-                        {supplier.name}
-                      </MenuItem>
-                    ))}
-                             </FormikSelect>
-                     </div>
-                   ))}
-                   </>
-                    )}
-                </div>
+                    {data.suppliers && (
+                    <Autocomplete
+                    multiple
+                    id="tags-standard"
+                    options={data.suppliers.map((option) => (option))}
+                    getOptionLabel={(option) => option? option.name : ""}
+                    onChange={(event,  values: AllSuppliers_suppliers[]) => setFieldValue("suppliers", values.map((option) => option.id))}
+                    renderInput={(params) => (
+                 <TextField
+                 {...params}
+                 fullWidth
+                label="Leveranciers"
+                />
                 )}
                 />
+                )}
                 </Grid>
                 </Grid> 
                 {error && (

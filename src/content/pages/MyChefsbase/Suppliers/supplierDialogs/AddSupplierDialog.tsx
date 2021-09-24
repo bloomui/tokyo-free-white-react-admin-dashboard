@@ -18,10 +18,6 @@ export const AddSupplierDialog = ({
     onClose: () => void
 }) => {
 
-  const {data} = useAllSuppliersQuery()
-
-    const [stepHere, setStep] = useState(1)
-
     const { addSupplier, loading, error } = useAddSupplier({
         onCompleted: () => {window.location.reload()},
       });

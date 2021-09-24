@@ -11,9 +11,61 @@ import { IngredientPage } from './Ingredients';
 import { SupplierPage } from './Suppliers';
 import { ProductPage } from './Products';
 
+export enum ChefsTab {
+  Menus = "Menus",
+  Gerechten = "Gerechten",
+  Recepten = "Recepten",
+  Ingredienten = "Ingredienten",
+  Producten = "Producten",
+  Leveranciers = "Leveranciers",
+  Favorieten = "Favorieten",
+}
+
+const serializeTab = (tab: string): ChefsTab | string => {
+  if (tab === "Menus") {
+    return ChefsTab.Menus;
+  }
+  if (tab === "Gerechten") {
+    return ChefsTab.Gerechten;
+  }
+  if (tab === "Recepten") {
+    return ChefsTab.Recepten;
+  }
+  if (tab === "Ingredienten") {
+    return ChefsTab.Ingredienten;
+  } 
+  if (tab === "Producten") {
+    return ChefsTab.Producten;
+  }
+  if (tab === "Leveranciers") {
+    return ChefsTab.Leveranciers;
+  } 
+  if (tab === "Favorieten") {
+    return ChefsTab.Favorieten;
+  }
+  else {
+    return tab;
+  }
+};
+
+const determineTab = (tab?: string): ChefsTab => {
+  const enumValues: (string | ChefsTab)[] = Object.values(ChefsTab);
+
+  if (tab && enumValues.includes(tab)) {
+    return serializeTab(tab) as ChefsTab;
+  } else {
+    return ChefsTab.Menus;
+  }
+};
+
 function MyChefsBase() {
   const [value, setValue] = useState(0);
   const [page, setPage] = useState<number>(0);
+
+  // const selectedTab = determineTab(tab);
+
+  // console.log(selectedTab);
+  // const setTab = (tab: ChefsTab) => history.push(routes.scheme({ id, tab }));
       
   let content;
 

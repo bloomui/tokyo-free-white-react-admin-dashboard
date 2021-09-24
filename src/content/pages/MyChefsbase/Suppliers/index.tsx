@@ -10,7 +10,7 @@ import { useFilterSuppliersQuery } from "./api";
 import { TopPartSupplierPage } from "./components/SupplierPageTopPart";
 import { SupplierTable } from "./components/SupplierTable";
 import { initialSupplierValues } from "./filtersuppliers";
-import { AddSupplierDialog } from "./supplierDialogs/AddProductDialog";
+import { AddSupplierDialog } from "./supplierDialogs/AddSupplierDialog";
   export const SupplierPage = ({
     page,
     setPage,

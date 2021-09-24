@@ -21,8 +21,9 @@ import { KitchenType } from "src/globalTypes";
 import { AreYouSureDelete } from "../../Menus/filtermenus/components/AreYouSureDelete";
 import { EnhancedTableHead, EnhancedTableToolbar } from "../../Menus/components/MenuTable";
 import { ProductDialog } from "../../Products/productDialogs";
-import { UpdateSupplierDialog } from "../supplierDialogs/updateProductDialog";
+import { UpdateSupplierDialog } from "../supplierDialogs/updateSupplierDialog";
 import { FilterSuppliers, FilterSuppliers_filterSuppliers } from "../types/FilterSuppliers";
+import { SupplierDialog } from "../supplierDialogs";
 
 const headCellsSuppliers: string[] = [
   "Naam", "email", "rating", "acties"
@@ -198,7 +199,7 @@ headCells={headCellsSuppliers}
             />
             {id &&  (
               <>
-              <ProductDialog
+              <SupplierDialog
               setId={() => setId(id)}
               id={id}
               open={open}

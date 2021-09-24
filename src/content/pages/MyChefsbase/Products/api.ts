@@ -152,7 +152,7 @@ export const useAddProduct = ({
   const [addProduct, { loading, error }] = useMutation<
     AddProduct,
     AddProductVariables
-  >(AddIngredientMutation, {
+  >(AddProductMutation, {
     onCompleted: () => onCompleted(),
   });
 

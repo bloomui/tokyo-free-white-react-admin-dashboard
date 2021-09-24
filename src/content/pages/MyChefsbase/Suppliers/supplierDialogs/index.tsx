@@ -6,7 +6,7 @@ import { composeValidators, required } from "src/utilities/formikValidators"
 import { FilterDishes_filterDishes_method, FilterDishes_filterDishes_recipes } from "../../Dishes/types/FilterDishes"
 import { ItemString, ItemInt } from "../../Menus/menuDialog"
 import { useGetSupplierQuery } from "../api"
-import { UpdateSupplierDialog } from "./updateProductDialog"
+import { UpdateSupplierDialog } from "./updateSupplierDialog"
 
 export const SupplierDialog = ({
     setId,
@@ -54,11 +54,10 @@ export const SupplierDialog = ({
                        title="rating"
                        item={supplier.rating}
                        />
-                      <FormField
-                  name="input.email"
-                  label="Email"
-                  validator={composeValidators(required)}
-                />
+                       <ItemString
+                       title="Email"
+                       item={supplier.email}
+                       />
                       </Grid>
                   </Card>
               </DialogContent>
