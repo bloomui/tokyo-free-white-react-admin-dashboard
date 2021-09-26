@@ -1,7 +1,8 @@
-import { Typography, Avatar, Grid } from '@material-ui/core';
+import { Typography, Avatar, Grid, Button } from '@material-ui/core';
 
 
 import { useTheme } from '@material-ui/core/styles';
+import React from 'react';
 
 function PageHeader() {
 
@@ -27,6 +28,9 @@ function PageHeader() {
         Let's check the {user.name} Chefsbase!
         </Typography>
       </Grid>
+      <Button>
+              Upload een document
+            </Button>
     </Grid>
   );
 }

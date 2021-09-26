@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Tab, Tabs, Box, Container, Grid, } from '@material-ui/core';
+import { Tab, Tabs, Box, Container, Grid, Button, DialogTitle, Dialog, DialogContent, } from '@material-ui/core';
 import Footer from 'src/components/Footer';
 import React, { useState } from 'react';
 import { MenuPage } from 'src/content/pages/MyChefsbase/Menus';
@@ -61,6 +61,7 @@ const determineTab = (tab?: string): ChefsTab => {
 function MyChefsBase() {
   const [value, setValue] = useState(0);
   const [page, setPage] = useState<number>(0);
+  const [open, setOpen] = useState<boolean>(false);
 
   // const selectedTab = determineTab(tab);
 
@@ -138,8 +139,14 @@ function MyChefsBase() {
       </Tabs>
       {content}
           </Grid>
+          <Grid item lg={8} xs={12}>
+          <Button onClick={() => setOpen(true)} variant="contained" color="primary">
+              Upload een document
+            </Button>          
+            </Grid>
         </Grid>
       </Container>
+      <UploadDocument open={open} onClose={() => setOpen(false)}/>
       <Footer />
     </>
   );
@@ -147,3 +154,29 @@ function MyChefsBase() {
 
 export default MyChefsBase;
 
+export const UploadDocument = ({open, onClose}:{ open: boolean, onClose: () => void}) => {
+
+  return (
+<Dialog
+        open={open}
+        >
+          <DialogTitle>Upload een document</DialogTitle>
+          <DialogContent>
+            <Grid container spacing={2} xs={12}>
+              <Grid item xs={6}>
+              <Button fullWidth variant="contained" >Download Template</Button>
+              </Grid>
+              <Grid item xs={6}>
+              <Button fullWidth variant="contained" >Upload document</Button>
+              </Grid>
+              <Grid item xs={6}>
+              <Button fullWidth variant="outlined"  onClick={onClose}>Terug</Button>
+              </Grid>
+              <Grid item xs={6}>
+              <Button fullWidth variant="outlined" onClick={onClose}>Uploaden</Button>
+              </Grid>
+            </Grid>
+          </DialogContent>
+        </Dialog>
+  )
+}

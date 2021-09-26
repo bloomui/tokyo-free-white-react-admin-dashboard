@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Tab, Tabs, Box, Container, Grid, } from '@material-ui/core';
+import { Tab, Tabs, Box, Container, Grid, Button, } from '@material-ui/core';
 import Footer from 'src/components/Footer';
 import React, { useState } from 'react';
 import { MenuPage } from 'src/content/pages/MyChefsbase/Menus';
@@ -47,7 +47,7 @@ function MyChefsBase() {
         <title>Crypto Dashboard</title>
       </Helmet>
       <PageTitleWrapper>
-        <PageHeader />
+          <PageHeader />
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
@@ -86,15 +86,11 @@ function MyChefsBase() {
       </Tabs>
       {content}
           </Grid>
-          {/* <Grid item lg={8} xs={12}>
-            <Wallets />
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <AccountSecurity />
-          </Grid>
-          <Grid item xs={12}>
-            <WatchList />
-          </Grid> */}
+          <Grid item lg={8} xs={12}>
+          <Button>
+              Upload een document
+            </Button>          
+            </Grid>
         </Grid>
       </Container>
       <Footer />
