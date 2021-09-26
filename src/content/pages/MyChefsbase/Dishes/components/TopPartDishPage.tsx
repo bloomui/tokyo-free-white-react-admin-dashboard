@@ -30,7 +30,6 @@ export const TopPartDishPage = ({
     recipes={data.recipes}
     ingredients={data.ingredients}
     themes={data.allThemes}
-    types={data.allTypes}
     onChange={(values) => setInput(values)}
     />
   )

@@ -8,7 +8,7 @@ import { CourseToDishesInput, MenuInput } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
 import { useAllDishesQuery, useUpdateMenu } from "../api";
 import { Rating1, RatingLabels } from "../filtermenus/components/rating";
-import { FilterMenus, FilterMenus_filterMenus } from "../types/FilterMenus";
+import { FilterMenus, FilterMenus_filterMenus, FilterMenus_filterMenus_courses_dishes } from "../types/FilterMenus";
 import { Menus_dishes } from "../types/Menus";
 import { UpdateMenuVariables } from "../types/UpdateMenu"
 
@@ -25,7 +25,8 @@ export const UpdateMenuDialog = ({
   const {data} = useAllDishesQuery()
 
     const { updateMenu, loading, error } = useUpdateMenu({
-        onCompleted: () => window.location.reload(),
+        onCompleted: () => {}
+      //   window.location.reload(),
       });
 
     const formInput: MenuInput = menu? {
@@ -71,7 +72,7 @@ export const UpdateMenuDialog = ({
           });
         }}
       >
-        {({ submitForm, setFieldValue }) => {
+        {({ values, submitForm, setFieldValue }) => {
           return (
             <>
               <DialogTitle style={{ fontWeight: 600 }} id="form-dialog-title">
@@ -105,7 +106,7 @@ export const UpdateMenuDialog = ({
                 setFieldValue={setFieldValue}
                 />
                 Gangen:
-                {menu.courses?.map((course, index) => (
+                {menu.courses.map((course, index) => (
                     <>
                     {course.course.courseType}
                     {data && (
@@ -113,10 +114,10 @@ export const UpdateMenuDialog = ({
                         <Autocomplete
                 multiple
                 id="tags-standard"
-                defaultValue={course.dishes}
+                defaultValue={course.dishes.map((option) => (option))}
                 options={data.dishes.map((option) => (option))}
                 getOptionLabel={(option) => option.name}
-                onChange={(event,  values) => setFieldValue(`courses.${index}.dishes`, values.map((option) => option))}
+                onChange={(event,  values) => setFieldValue(`courses.${index}.dishes`, values.map((option: FilterMenus_filterMenus_courses_dishes) => option.id))}
                 renderInput={(params) => (
                  <TextField
                  {...params}

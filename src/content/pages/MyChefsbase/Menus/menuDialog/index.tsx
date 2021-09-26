@@ -11,16 +11,15 @@ export const MenuDialog = ({
     id,
     open,
     onClose,
-    setOpenUpdateDialog,
 }: {
     setId: () => void;
-    setOpenUpdateDialog: () => void;
     id: string;
     open: boolean;
     onClose: () => void
 }) => {
 
     const { data, loading, error } = useGetMenuQuery(id)
+    const [updateOpen, setUpdateOpen] = useState(false)
 
     if (loading) return <LoadingScreen/>
     if (error) return <LoadingScreen/>
@@ -28,6 +27,7 @@ export const MenuDialog = ({
     let menu = data.menu
 
     return (
+        <>
         <Dialog open={open} onClose={onClose}>
             {menu && (
              <>
@@ -38,7 +38,7 @@ export const MenuDialog = ({
                 </Button>
                 <Button variant="contained" onClick={() => {
                     setId();
-                    setOpenUpdateDialog()
+                    setUpdateOpen(true);
                 }}>
                   Menu aanpassen
                 </Button>
@@ -71,9 +71,15 @@ export const MenuDialog = ({
                   </Card>
               </DialogContent>
             </>
-
             )}
+            <UpdateMenuDialog
+        menu={menu}
+        open={updateOpen}
+        onClose={() => setUpdateOpen(false)}
+        />
         </Dialog>
+        
+        </>
     )
 }
 
@@ -98,6 +104,19 @@ export const ItemCourses2 = ({title, item}: {title: string, item: FilterMenus_fi
 }
 
 export const ItemString = ({title, item}: {title: string, item: string | null}) => {
+    return (
+        <>
+        <Grid key={0} item xs={3}>
+        <Typography style={{ fontWeight: 600 }}>{title}</Typography>
+        </Grid>  
+        <Grid key={1} item xs={9}>
+        {item? item : "Geen "+ title + "bekend"}
+        </Grid> 
+        </> 
+    )
+}
+
+export const ItemDouble = ({title, item}: {title: string, item: number | null}) => {
     return (
         <>
         <Grid key={0} item xs={3}>

@@ -38,7 +38,6 @@ export const initialValues: DishFilterInput = {
     products,
     suppliers,
     themes,
-    types,
     recipes,
     menus,
     ingredients,
@@ -46,7 +45,6 @@ export const initialValues: DishFilterInput = {
   }: {
     setOpenAddDish: () => void;
     onClose: () => void;
-    types: string[] | null;
     themes: string[] | null;
     suppliers: Dishes_suppliers[] | null;
     recipes: Dishes_recipes[] | null;
@@ -107,12 +105,7 @@ export const initialValues: DishFilterInput = {
             <Themes 
             themes={themes}
             setFieldValue={setFieldValue} />
-            </Grid>
-            <Grid key={4} item xs={3}>
-            <Types 
-            types={types}
-            setFieldValue={setFieldValue} />
-            </Grid>
+            </Grid>           
             <Grid key={5} item xs={3}>
               <Suppliers 
               suppliers={suppliers}

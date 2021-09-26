@@ -2,7 +2,7 @@ import { Dialog, DialogTitle, DialogContent, Card, CardActionArea, Grid, Typogra
 import React, { useState } from "react"
 import { LoadingScreen } from "src/components/layout"
 import { FilterDishes_filterDishes_method, FilterDishes_filterDishes_recipes } from "../../Dishes/types/FilterDishes"
-import { ItemString, ItemInt } from "../../Menus/menuDialog"
+import { ItemString, ItemInt, ItemDouble } from "../../Menus/menuDialog"
 import { useGetProductQuery } from "../api"
 import { FilterProducts_filterProducts_suppliers } from "../types/FilterProducts"
 import { UpdateProductDialog } from "./updateProductDialog"
@@ -56,6 +56,10 @@ export const ProductDialog = ({
                        <ItemString
                       title="Merk"
                       item={product.brand}
+                      />
+                      <ItemDouble 
+                      title="Prijs"
+                      item={product.price}
                       />
                       <ItemString
                       title="Herkomst"
