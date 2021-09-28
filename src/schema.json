@@ -239,8 +239,8 @@
               }
             ],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
+              "kind": "OBJECT",
+              "name": "LoginResult",
               "ofType": null
             },
             "isDeprecated": false,
@@ -1895,10 +1895,22 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
-          },
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "LoginResult",
+        "description": null,
+        "specifiedByUrl": null,
+        "fields": [
           {
-            "name": "password",
-            "description": null,
+            "name": "accessToken",
+            "description": " If non null then username/password correct. Otherwise null",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -1909,12 +1921,12 @@
             "deprecationReason": null
           },
           {
-            "name": "accesstoken",
+            "name": "account",
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
+              "kind": "OBJECT",
+              "name": "Account",
               "ofType": null
             },
             "isDeprecated": false,

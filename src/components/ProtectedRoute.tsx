@@ -2,23 +2,24 @@
 
 import React from "react";
 
-export const ProtectedRoute = {}
-// ({ children, ...rest }: RouteProps) => {
-//     return (
-//         <Route
-//             {...rest}
-//             render={({ location }) =>
-//                 isLoggedIn() ? (
-//                     children
-//                 ) : (
-//                         <Redirect
-//                             to={{
-//                                 pathname: "/login",
-//                                 state: { from: location }
-//                             }}
-//                         />
-//                     )
-//             }
-//         />
-//     );
-// }
+import { Route, useNavigate } from "react-router";
+import { isLoggedIn } from "src/utilities/auth";
+
+function ProtectedRoute({ Component, ...rest }: any) {
+    const navigate = useNavigate();
+    
+    return (
+      <Route
+        {...rest}
+        render={props =>
+          isLoggedIn() ? (
+            <Component {...props} />
+          ) : (
+            navigate(`${props.location}`)
+          )
+        }
+      />
+    );
+  }
+  
+  export default ProtectedRoute;

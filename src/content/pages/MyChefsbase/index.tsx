@@ -10,7 +10,8 @@ import PageHeader from 'src/components/pageHeader/PageHeader';
 import { IngredientPage } from './Ingredients';
 import { SupplierPage } from './Suppliers';
 import { ProductPage } from './Products';
-
+import { clearAuth } from 'src/utilities/auth';
+import { useNavigate } from 'react-router';
 export enum ChefsTab {
   Menus = "Menus",
   Gerechten = "Gerechten",
@@ -62,6 +63,7 @@ function MyChefsBase() {
   const [value, setValue] = useState(0);
   const [page, setPage] = useState<number>(0);
   const [open, setOpen] = useState<boolean>(false);
+  const navigate = useNavigate()
 
   // const selectedTab = determineTab(tab);
 
@@ -142,7 +144,13 @@ function MyChefsBase() {
           <Grid item lg={8} xs={12}>
           <Button onClick={() => setOpen(true)} variant="contained" color="primary">
               Upload een document
-            </Button>          
+            </Button> 
+            <Button onClick={() => {
+              clearAuth();
+              navigate(`/`)
+            }
+
+            }>Log Out</Button>         
             </Grid>
         </Grid>
       </Container>

@@ -106,7 +106,7 @@ export const Router: PartialRouteObject[] = [
   },
 ]
 
-const routes: PartialRouteObject[] = [
+const routes = (isLoggedIn: boolean) => [
   {
     path: '*',
     element: <BaseLayout />,
@@ -116,7 +116,7 @@ const routes: PartialRouteObject[] = [
         element: <Overview />
       },
       {
-        path: 'authenticate',
+        path: 'authorize',
         children:[
           {
             path: 'signin',
@@ -190,7 +190,7 @@ const routes: PartialRouteObject[] = [
       },
       {
         path: 'chefsbase',
-        element: <MyChefsBase />
+        element: isLoggedIn ? <MyChefsBase /> : <Navigate to="/authorize/signin" />
       },
       {
         path: 'inventaris',
