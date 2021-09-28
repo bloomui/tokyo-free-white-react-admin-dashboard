@@ -40,7 +40,7 @@ function ManagementUserSettings() {
         <title>User Settings - Applications</title>
       </Helmet>
       <PageTitleWrapper>
-        <PageHeader />
+      <PageHeader />
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid

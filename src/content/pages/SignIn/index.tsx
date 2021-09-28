@@ -116,6 +116,7 @@ const SignInForm = () => {
                   name="password"
                   id="password"
                   label="Wachtwoord"
+                  type="password"
                   fullWidth
                   onChange={(e) => setPassword(e.target.value)}
                   />

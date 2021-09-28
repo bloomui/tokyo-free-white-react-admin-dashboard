@@ -9,6 +9,7 @@ import SuspenseLoader from 'src/components/SuspenseLoader';
 import SignInForm from './content/pages/SignIn';
 import SignUpForm from './content/pages/SignUp';
 import MyChefsBase from './content/pages/MyChefsbase';
+import { AddRecipePage } from './content/pages/MyChefsbase/Recipes/AddRecipe';
 
 const Loader = (Component) => (props) => (
   <Suspense fallback={<SuspenseLoader />}>
@@ -200,6 +201,10 @@ const routes = (isLoggedIn: boolean) => [
         path: 'orders',
         element: <StatusComingSoon />
       },
+      {
+        path: 'addrecipe',
+        element: <AddRecipePage />
+      }
     ]
   },
   {
