@@ -25,7 +25,7 @@ export const Rating1 = ({
       <>
       <Grid container spacing={2} xs={12}>
       <Grid item>
-    <Typography >Aantal sterren:</Typography>
+    <Typography >Beoordeling:</Typography>
     </Grid>
     </Grid>
     <Grid container spacing={2} xs={12}>
