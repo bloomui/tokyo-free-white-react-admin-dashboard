@@ -17,6 +17,7 @@
     "@material-ui/lab": "5.0.0-alpha.41",
     "@material-ui/styles": "5.0.0-beta.2",
     "@mui/material": "^5.0.0",
+    "@mui/styles": "^5.0.1",
     "@types/js-cookie": "^2.2.7",
     "@types/nprogress": "0.2.0",
     "@types/react": "17.0.15",

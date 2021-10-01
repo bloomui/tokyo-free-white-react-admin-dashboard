@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
-import { Button, Checkbox, Container, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from "@material-ui/core";
-import { FieldArray, Formik } from "formik";
+import { Button, Checkbox, Container, Grid, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableRow, TextField, TextFieldProps, Typography } from "@material-ui/core";
+import { FieldArray, Formik, useField } from "formik";
 import React from "react";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -8,29 +8,30 @@ import { FormikSelect } from "src/components/form/FormikSelect";
 import { LoadingScreen } from "src/components/layout";
 import { PageHeader } from "src/components/pageHeader/PageHeader";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
-import { FormField } from "src/content/pages/SignIn";
+import { FormField } from "src/components/form/FormField";
 import { AddRecipeInput, QuantityToId, StepToMethodInput } from "src/globalTypes";
-import { composeValidators, required } from "src/utilities/formikValidators";
+import { composeValidators, required, Validator } from "src/utilities/formikValidators";
 import { user } from "../..";
-import { useFilterIngredientsQuery } from "../../Ingredients/api";
-import { IngredientTable } from "../../Ingredients/components/IngredientTable"
-import { initialIngredientValues } from "../../Ingredients/filterIngredients";
 import { ingredient_ingredient } from "../../Ingredients/types/ingredient";
-import { EnhancedTableToolbar, EnhancedTableHead, EnhancedTableToolbarIngredients } from "../../Menus/components/MenuTable";
+import { EnhancedTableHead } from "../../Menus/components/MenuTable";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
 import { useAddRecipe } from "../api";
+import { Divider } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { AddRecipeVariables } from "../types/AddRecipe";
 import { ingredientsQuery } from "./api";
+import { formikFieldErrorProps } from "src/utilities/formikError";
 
 export const AddRecipePage = () => {
 
     const { addRecipe, loading, error } = useAddRecipe({
-        onCompleted: () => {window.location.reload()},
-      });
+        onCompleted: () => {}
+          // window.location.reload()
+        },
+      );
       const [stepHere, setStep] = useState(1)
-      const [selectedIngredients, setIngredients] = React.useState<ingredient_ingredient[]>([]);
+      const [selectedIngredients, setIngredients] = React.useState<ingredientToQ[]>([]);
 
-      const [indexIngredient, setIndex] = useState(0)
     const formInput: AddRecipeInput = {
         name: '',
         rating: 0,
@@ -83,8 +84,11 @@ export const AddRecipePage = () => {
         onSubmit={(values) => {
           addRecipe({
             variables: {
-                method: values.method,
-                ingredients: values.ingredients,
+                method: values.method.map((stepToMethod, index) => ({
+                  step: index + 1,
+                  method: stepToMethod.method
+                })),
+                ingredients: mapIngredientToQToInput(selectedIngredients),
                 input: {
                 type: values.input.type,
                 name: values.input.name,
@@ -108,75 +112,23 @@ export const AddRecipePage = () => {
                 />
                 </Grid>
                 <Grid xs={1}></Grid>
-                <Grid xs={5}>
-                <Typography>Geef het recept type aan</Typography>
-                <FormField
-                  name="input.type"
-                  label="Type"
-                />
-                </Grid>
-                <Grid xs={1}></Grid>
                 <Grid xs={3}>
                 <Rating1
                 updateField="input.rating"
                 setFieldValue={setFieldValue}
                 />
                 </Grid>
-                <Grid xs={12}>
-                Ingredienten:
-                <FieldArray
-                name="ingredients"
-                render={arrayHelpers => (
-                <div>
-                        <Table>
-                 {values.ingredients?.map((quantityToIngredient, index) => (
-                     <>
-                     {selectedIngredients.map((ingredient) => (
-                        <TableRow>
-                     <div key={index}>
-                         <TableCell>
-                         {ingredient.name}
-                             </TableCell>
-                             <TableCell>
-                        <TextField
-                        fullWidth
-                        id={`ingredients.${index}.quantity`}
-                        name={`ingredients.${index}.quantity`}
-                       label="Hoeveelheid"
-                       value={quantityToIngredient.quantity}
-                       onChange={handleChange}
-                        />
-                        </TableCell>
-                        <TableCell>
-                        <TextField
-                        fullWidth
-                        id={`ingredients.${index}.unit`}
-                        name={`ingredients.${index}.unit`}
-                       label="Eenheid"
-                       value={quantityToIngredient.unit}
-                       onChange={handleChange}
-                        />
-                        </TableCell>
-                        <TableCell>
-                            <Button
-                            variant="contained" 
-                            color="secondary"
-                        style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
-                         onClick={() => arrayHelpers.remove(index)}>
-                        -
-                       </Button>
-                       </TableCell>
-                     </div>
-                     </TableRow>
-                     ))}
-                     </>
-                   ))}
-                   </Table>
-                </div>
-                )}
+                <Grid xs={1}></Grid>
+                <Grid xs={5}>
+                <Typography>Geef het recept type aan</Typography>
+                <FormField
+                  name="input.type"
+                  label="Type"
                 />
+                </Grid>                
                 </Grid>
-                    <Grid xs={12}>
+                <Grid xs={6}>
+                <Grid xs={12}>
                 Stappenplan om dit recept te maken:
                 <Grid xs={12}>
                 <FieldArray
@@ -184,17 +136,19 @@ export const AddRecipePage = () => {
                 render={arrayHelpers => (
                 <div>
                     <Table>
+                      <TableRow>
+                        <TableCell>
+                          Stap
+                        </TableCell>
+                        <TableCell>
+                          Actie
+                        </TableCell>
+                      </TableRow>
                  {values.method?.map((stepToMethod, index)=> (
                    <TableRow>
-                     <div key={stepToMethod.step}>
+                     <>
                          <TableCell>
-                         <TextField
-                        id={`method.${index}.step`}
-                        name={`method.${index}.step`}
-                       label="Stap"
-                       value={stepToMethod.step}
-                       onChange={handleChange}
-                        />
+                           {index + 1}
                         </TableCell>
                         <TableCell>
                         <TextField
@@ -217,7 +171,7 @@ export const AddRecipePage = () => {
                        </Button>
                         </TableCell>
                             
-                     </div>
+                     </>
                      </TableRow>
                    ))}
                    <TableRow>
@@ -237,14 +191,45 @@ export const AddRecipePage = () => {
                 />
                 </Grid>
                 </Grid> 
-                </Grid> 
-                <Grid xs={6}>
-                    <SelectIngredient 
-                    setIngredients={(selected) => setIngredients(selected)}
-                    setField={(selected) => setFieldValue(`ingredients.${indexIngredient}.id`, selected[indexIngredient].id)}
-                    />
-                </Grid>              
                 </Grid>
+                </Grid>
+                <Grid xs={12}></Grid>
+                <Divider/>
+                <Grid container xs={12}>
+                  <Grid xs={6}>
+                Ingredienten:
+                </Grid>
+                <Grid xs={6}></Grid>
+                <Grid xs={6}>
+                  <TableContainer>
+                <Table size="small">
+                  <TableRow>
+                    <TableCell>Ingredient</TableCell>
+                    <TableCell>Hoeveelheid</TableCell>
+                    <TableCell>Eenheid</TableCell>
+                    </TableRow>
+                {selectedIngredients.map((ingredient) =>  (
+                  <TableRow>
+                    <TableCell>
+                      {ingredient.name}
+                    </TableCell>
+                    <TableCell>
+                      {ingredient.quantity}
+                    </TableCell>
+                    <TableCell>
+                      {ingredient.unit}
+                    </TableCell>
+                  </TableRow>
+                ))}
+                </Table>
+                </TableContainer>
+                </Grid>
+                <Grid xs={6}>
+                  <TableData 
+                  setIngredients={(selected) => selectedIngredients.push(selected)
+                  }/>
+                  </Grid>
+                </Grid>             
                 {error && (
                   <Typography color="error">
                     Er is een fout opgetreden, probeer het opnieuw.
@@ -268,108 +253,130 @@ export const AddRecipePage = () => {
           )
 }
 
-export const SelectIngredient = ({
-    setField,
-    setIngredients
-}: {
-    setField: (selected: ingredient_ingredient[]) => void
-    setIngredients: (selected: ingredient_ingredient[]) => void
-    }) => {
-    const { loading, data, error } = useQuery(ingredientsQuery)
-
-    const [selected, setSelected] = React.useState<readonly ingredient_ingredient[]>([]);
-    const handleClick = (event: React.MouseEvent<unknown>, ingredient: ingredient_ingredient) => {
-        const selectedIndex = selected.indexOf(ingredient);
-        let newSelected: readonly ingredient_ingredient[] = [];
-    
-        if (selectedIndex === -1) {
-          newSelected = newSelected.concat(selected, ingredient);
-        } else if (selectedIndex === 0) {
-          newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-          newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-          newSelected = newSelected.concat(
-            selected.slice(0, selectedIndex),
-            selected.slice(selectedIndex + 1),
-          );
-        }
-    
-        setSelected(newSelected);
-      };
-    const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.checked) {
-          const newSelecteds = data.ingredients.map((ingredient) => ingredient);
-          setSelected(newSelecteds);
-          return;
-        }
-        setSelected([]);
-    };
-    const isSelected = (ingredient: ingredient_ingredient) => selected.indexOf(ingredient) !== -1;
-
-    if (loading) return <LoadingScreen />;
-    if (error) return <LoadingScreen />;
-    
-    return (
-        <>
-        <EnhancedTableToolbarIngredients 
-        selected={selected.map((item) => item)} 
-        setIngredients={(selected) => setIngredients(selected)}
-        setField={(selected) => setField(selected)}/>
-  <TableContainer component={Paper}>
-  <Table >
-  <EnhancedTableHead
-  numSelected={selected.length}
-  onSelectAllClick={handleSelectAllClick}
-  rowCount={data.ingredients.length}
-  headCells={headCellsIngredients}
-  />
-  <TableBody>
-  {data.ingredients.map((ingredient, index) => {
-                  const isItemSelected = isSelected(ingredient);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-                  return (
-                      <>
-                      <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, ingredient)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={ingredient.id}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell 
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                      >{ingredient.name}</TableCell>
-                      <TableCell align="left">{ingredient.rating}</TableCell>
-                      <TableCell 
-                  align="center"
-                  >
-                  </TableCell>
-                    </TableRow>
-                   </>
-                  )
-              })}
-              </TableBody>
-                     </Table>
-                     </TableContainer>              
-                  </>
-    )
+export type ingredientToQ = {
+  name: string,
+  id: string,
+  quantity: string,
+  unit: string
 }
 
-const headCellsIngredients: string[] = [
-    "Naam", "rating"
-  ]
+const mapIngredientToQToInput = (selected: ingredientToQ[]): QuantityToId[] => {
+  return selected.map((a) => (
+    {
+      id: a.id,
+      quantity: Number(a.quantity),
+      unit: a.unit
+    }
+  ))
+}
+
+export const units = ["gram", "miligram", "kilogram", "theelepel(s)", "eetlepel(s)", "stuk(s)", "mililiter", "liter"]
+
+const TableData = ({
+  setIngredients
+}: {
+  setIngredients: (selected: ingredientToQ) => void
+}) => {
+
+  const { loading, data, error } = useQuery(ingredientsQuery)
+  if (loading) return <LoadingScreen />;
+  if (error) return <LoadingScreen />;
+
+  return (
+    <TableContainer component={Paper}>
+          <Table size="small">
+        <TableRow>
+          <TableCell>Ingredient</TableCell>
+          <TableCell>Hoeveelheid</TableCell>
+          <TableCell>Eenheid</TableCell>
+          <TableCell>Voeg toe</TableCell>
+        </TableRow>
+        {data.ingredients.map((ingredient) => (
+          <Row 
+          data={ingredient}
+          setIngredient={(a: ingredientToQ) => setIngredients(a)}/>
+        ))}
+        </Table>
+      </TableContainer>
+  )
+}
+
+const Row = ({data, setIngredient}: {data: ingredient_ingredient, setIngredient: (a) => void}) => {
+
+  const formState: ingredientToQ = {
+  name: data.name,
+  id: data.id,
+  quantity: '',
+  unit: ''
+}
+
+  return (
+    <Formik
+        initialValues={formState}
+        onSubmit={(values) => {
+          setIngredient(values);
+        }}
+      >
+        {({ submitForm }) => {
+      return (
+        <>
+        <TableRow >
+          <TableCell >
+            {data.name}
+          </TableCell>
+          <TableCell >
+            <FormFieldHere
+                  name="quantity"
+                  validator={composeValidators(required)}
+                />
+          </TableCell>
+          <TableCell >
+            <FormikSelect
+            title="Eenheid"
+            name={`unit`}
+            >
+              {units.map((unit) => (
+                <MenuItem>{unit}</MenuItem>
+              ))}
+            </FormikSelect>
+          </TableCell>
+          <TableCell>
+          <Button
+                  onClick={() => {submitForm()}}
+                  color="primary"
+                  variant="outlined"
+                >
+                  +
+                </Button>
+          </TableCell>
+        </TableRow>
+      </>
+      )
+        }
+      }
+      </Formik>
+  )
+}
+
+  type FieldProps = {
+    name: string;
+    validator?: Validator;
+    otherFieldProps?: Partial<TextFieldProps>;
+  };
+
+  const FormFieldHere = (props: FieldProps) => {
+    const { name, validator, otherFieldProps } = props;
+  
+    const [field, meta] = useField({
+      name,
+      validate: validator,
+    });
+  
+    return (
+      <TextField
+        {...(otherFieldProps as any)}
+        {...field}
+        {...formikFieldErrorProps(meta)}
+      />
+    );
+  };
