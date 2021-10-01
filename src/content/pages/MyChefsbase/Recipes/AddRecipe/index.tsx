@@ -226,7 +226,7 @@ export const AddRecipePage = () => {
                 </Grid>
                 <Grid xs={6}>
                   <TableData 
-                  setIngredients={(selected) => selectedIngredients.push(selected)
+                  setIngredients={(selected) => setIngredients([...selectedIngredients, selected])
                   }/>
                   </Grid>
                 </Grid>             
@@ -333,10 +333,10 @@ const Row = ({data, setIngredient}: {data: ingredient_ingredient, setIngredient:
           <TableCell >
             <FormikSelect
             title="Eenheid"
-            name={`unit`}
+            name="unit"
             >
               {units.map((unit) => (
-                <MenuItem>{unit}</MenuItem>
+                <MenuItem key={unit} value={unit}>{unit}</MenuItem>
               ))}
             </FormikSelect>
           </TableCell>
