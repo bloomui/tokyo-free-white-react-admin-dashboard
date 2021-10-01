@@ -1,32 +1,25 @@
 import { useQuery } from "@apollo/client";
-import { Button, Checkbox, Container, Grid, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableRow, TextField, TextFieldProps, Typography } from "@material-ui/core";
+import { Button, Container, Grid, Table, TableCell, TableContainer, TableRow, TextField, TextFieldProps, Typography } from "@material-ui/core";
 import { FieldArray, Formik, useField } from "formik";
 import React from "react";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { FormikSelect } from "src/components/form/FormikSelect";
-import { LoadingScreen } from "src/components/layout";
 import { PageHeader } from "src/components/pageHeader/PageHeader";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import { FormField } from "src/components/form/FormField";
 import { AddRecipeInput, QuantityToId, StepToMethodInput } from "src/globalTypes";
 import { composeValidators, required, Validator } from "src/utilities/formikValidators";
 import { user } from "../..";
-import { ingredient_ingredient } from "../../Ingredients/types/ingredient";
-import { EnhancedTableHead } from "../../Menus/components/MenuTable";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
 import { useAddRecipe } from "../api";
 import { Divider } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import { AddRecipeVariables } from "../types/AddRecipe";
-import { ingredientsQuery } from "./api";
-import { formikFieldErrorProps } from "src/utilities/formikError";
+import { TableData } from "./components/IngredientTable";
 
 export const AddRecipePage = () => {
 
     const { addRecipe, loading, error } = useAddRecipe({
-        onCompleted: () => {}
-          // window.location.reload()
+        onCompleted: () => window.location.reload()
         },
       );
       const [stepHere, setStep] = useState(1)
@@ -125,7 +118,17 @@ export const AddRecipePage = () => {
                   name="input.type"
                   label="Type"
                 />
-                </Grid>                
+                </Grid> 
+                <Grid xs={5}>
+                <Button
+                  disabled={loading}
+                  onClick={() => submitForm()}
+                  color="primary"
+                  variant="contained"
+                >
+                  Gegevens toevoegen
+                </Button>
+                </Grid>               
                 </Grid>
                 <Grid xs={6}>
                 <Grid xs={12}>
@@ -235,13 +238,6 @@ export const AddRecipePage = () => {
                     Er is een fout opgetreden, probeer het opnieuw.
                   </Typography>
                 )}
-                <Button
-                  disabled={loading}
-                  onClick={() => submitForm()}
-                  color="primary"
-                >
-                  Gegevens toevoegen
-                </Button>
             </>
           );
         }}
@@ -269,114 +265,3 @@ const mapIngredientToQToInput = (selected: ingredientToQ[]): QuantityToId[] => {
     }
   ))
 }
-
-export const units = ["gram", "miligram", "kilogram", "theelepel(s)", "eetlepel(s)", "stuk(s)", "mililiter", "liter"]
-
-const TableData = ({
-  setIngredients
-}: {
-  setIngredients: (selected: ingredientToQ) => void
-}) => {
-
-  const { loading, data, error } = useQuery(ingredientsQuery)
-  if (loading) return <LoadingScreen />;
-  if (error) return <LoadingScreen />;
-
-  return (
-    <TableContainer component={Paper}>
-          <Table size="small">
-        <TableRow>
-          <TableCell>Ingredient</TableCell>
-          <TableCell>Hoeveelheid</TableCell>
-          <TableCell>Eenheid</TableCell>
-          <TableCell>Voeg toe</TableCell>
-        </TableRow>
-        {data.ingredients.map((ingredient) => (
-          <Row 
-          data={ingredient}
-          setIngredient={(a: ingredientToQ) => setIngredients(a)}/>
-        ))}
-        </Table>
-      </TableContainer>
-  )
-}
-
-const Row = ({data, setIngredient}: {data: ingredient_ingredient, setIngredient: (a) => void}) => {
-
-  const formState: ingredientToQ = {
-  name: data.name,
-  id: data.id,
-  quantity: '',
-  unit: ''
-}
-
-  return (
-    <Formik
-        initialValues={formState}
-        onSubmit={(values) => {
-          setIngredient(values);
-        }}
-      >
-        {({ submitForm }) => {
-      return (
-        <>
-        <TableRow >
-          <TableCell >
-            {data.name}
-          </TableCell>
-          <TableCell >
-            <FormFieldHere
-                  name="quantity"
-                  validator={composeValidators(required)}
-                />
-          </TableCell>
-          <TableCell >
-            <FormikSelect
-            title="Eenheid"
-            name="unit"
-            >
-              {units.map((unit) => (
-                <MenuItem key={unit} value={unit}>{unit}</MenuItem>
-              ))}
-            </FormikSelect>
-          </TableCell>
-          <TableCell>
-          <Button
-                  onClick={() => {submitForm()}}
-                  color="primary"
-                  variant="outlined"
-                >
-                  +
-                </Button>
-          </TableCell>
-        </TableRow>
-      </>
-      )
-        }
-      }
-      </Formik>
-  )
-}
-
-  type FieldProps = {
-    name: string;
-    validator?: Validator;
-    otherFieldProps?: Partial<TextFieldProps>;
-  };
-
-  const FormFieldHere = (props: FieldProps) => {
-    const { name, validator, otherFieldProps } = props;
-  
-    const [field, meta] = useField({
-      name,
-      validate: validator,
-    });
-  
-    return (
-      <TextField
-        {...(otherFieldProps as any)}
-        {...field}
-        {...formikFieldErrorProps(meta)}
-      />
-    );
-  };

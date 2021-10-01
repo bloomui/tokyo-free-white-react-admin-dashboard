@@ -10,7 +10,7 @@ export const FormikSelect = ({
   validate,
   children,
 }: {
-  title: string;
+  title?: string;
   name: string;
   validate?: Validator;
   children: any[]; // todo implement static check
@@ -23,7 +23,7 @@ export const FormikSelect = ({
   return (
     <>
       <InputLabel>{title}</InputLabel>
-      <Select name={name} value={field.value} onChange={field.onChange}>
+      <Select variant="outlined" size="small" name={name} value={field.value} onChange={field.onChange}>
         {children}
       </Select>
       <FormikErrorText meta={meta} />

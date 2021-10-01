@@ -48,12 +48,19 @@ const menuItems: MenuItems[] = [
       {
         name: 'Chefsbase',
         link: '/mychefsbase/chefsbase',
-        icon: FaDatabase
-      },
-      {
-        name: 'Recept toevoegen',
-        link: '/mychefsbase/addrecipe',
-        icon: VscAdd
+        icon: FaDatabase,
+        items: [
+          {
+            name: 'Gegevens',
+        link: '/mychefsbase/chefsbase',
+        icon: FaDatabase,
+          },
+          {
+            name: 'Recept toevoegen',
+            link: '/mychefsbase/addrecipe',
+            icon: VscAdd
+          },
+        ]
       },
       {
         name: 'Inventaris',

@@ -17,3 +17,7 @@ export interface ingredients_ingredients {
 export interface ingredients {
   ingredients: ingredients_ingredients[] | null;
 }
+
+export interface ingredientsVariables {
+  name?: string | null;
+}
