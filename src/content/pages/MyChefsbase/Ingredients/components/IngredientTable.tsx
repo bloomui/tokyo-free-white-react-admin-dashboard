@@ -100,7 +100,9 @@ export const IngredientTable = ({
     
     return (
       <>
-      <EnhancedTableToolbar selected={selected.map((item) => String(item))} />
+      <EnhancedTableToolbar 
+      kitchenType={KitchenType.Ingredient}
+      selected={selected.map((item) => String(item))} />
 <TableContainer component={Paper}>
 <Table >
 <EnhancedTableHead

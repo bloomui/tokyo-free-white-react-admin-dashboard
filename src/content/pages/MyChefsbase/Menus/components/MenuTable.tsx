@@ -133,7 +133,8 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
 
     return (
         <>
-                      <EnhancedTableToolbar selected={selected.map((item) => String(item))} />
+                      <EnhancedTableToolbar
+                      kitchenType={KitchenType.Menu} selected={selected.map((item) => String(item))} />
                 <TableContainer component={Paper}>
               <Table >
               <EnhancedTableHead
@@ -303,8 +304,10 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
 };
 
 export const EnhancedTableToolbar = ({
+      kitchenType,
       selected
   }:{
+    kitchenType: KitchenType,
       selected: string[]
     }) => {
         const numSelected = selected.length
@@ -335,7 +338,7 @@ export const EnhancedTableToolbar = ({
                 <Grid item xs={6} onClick={() => {
                     removeMultiple({variables: {
                         ids: selected,
-                        kitchenType: KitchenType.Menu
+                        kitchenType: kitchenType
                     }});
                 }
               }>
@@ -348,7 +351,7 @@ export const EnhancedTableToolbar = ({
           <Grid item xs={6} onClick={() => {
                     addMultiple({variables: {
                         ids: selected,
-                        kitchenType: KitchenType.Menu
+                        kitchenType: kitchenType
                     }});
                 }
               }>
