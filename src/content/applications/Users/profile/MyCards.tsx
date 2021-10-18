@@ -13,16 +13,14 @@ import {
   CardContent,
   Tooltip,
   IconButton,
-  // Zoom,
+  
   Avatar
-} from '@material-ui/core';
-import { experimentalStyled } from '@material-ui/core/styles';
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 
-// import { useSnackbar } from 'notistack';
-import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
-import AddTwoToneIcon from '@material-ui/icons/AddTwoTone';
-
-const AvatarAddWrapper = experimentalStyled(Avatar)(
+const AvatarAddWrapper = styled(Avatar)(
   ({ theme }) => `
         background: ${theme.colors.alpha.black[5]};
         color: ${theme.colors.primary.main};
@@ -31,7 +29,7 @@ const AvatarAddWrapper = experimentalStyled(Avatar)(
 `
 );
 
-const CardLogo = experimentalStyled('img')(
+const CardLogo = styled('img')(
   ({ theme }) => `
       border: 1px solid ${theme.colors.alpha.black[30]};
       border-radius: ${theme.general.borderRadius};
@@ -41,7 +39,7 @@ const CardLogo = experimentalStyled('img')(
 `
 );
 
-const CardAddAction = experimentalStyled(Card)(
+const CardAddAction = styled(Card)(
   ({ theme }) => `
         border: ${theme.colors.primary.main} dashed 1px;
         height: 100%;
@@ -65,7 +63,7 @@ const CardAddAction = experimentalStyled(Card)(
 `
 );
 
-const IconButtonError = experimentalStyled(IconButton)(
+const IconButtonError = styled(IconButton)(
   ({ theme }) => `
      background: ${theme.colors.error.lighter};
      color: ${theme.colors.error.main};
@@ -77,7 +75,7 @@ const IconButtonError = experimentalStyled(IconButton)(
 `
 );
 
-const CardCc = experimentalStyled(Card)(
+const CardCc = styled(Card)(
   ({ theme }) => `
      border: 1px solid ${theme.colors.alpha.black[30]};
      background: ${theme.colors.alpha.black[5]};
@@ -86,8 +84,6 @@ const CardCc = experimentalStyled(Card)(
 );
 
 function MyCards() {
-
-  // const { enqueueSnackbar } = useSnackbar();
 
   const data = {
     savedCards: 7
@@ -100,14 +96,7 @@ function MyCards() {
   };
 
   const handleDelete = () => {
-    // enqueueSnackbar(t('The card has been removed successfully'), {
-    //   variant: 'success',
-    //   anchorOrigin: {
-    //     vertical: 'top',
-    //     horizontal: 'right'
-    //   },
-    //   TransitionComponent: Zoom
-    // });
+    
   };
 
   return (

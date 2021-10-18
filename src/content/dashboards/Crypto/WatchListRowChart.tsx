@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import PropTypes from 'prop-types';
 import { Line } from 'react-chartjs-2';
-import { useTheme } from '@material-ui/core';
+import { useTheme } from '@mui/material';
 
 interface WatchListRowChartProps {
   data: any[];

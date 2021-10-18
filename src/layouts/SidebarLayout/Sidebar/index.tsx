@@ -3,12 +3,12 @@ import { Scrollbars } from 'react-custom-scrollbars-2';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 import Logo from 'src/components/Logo';
 
-import { Box, Drawer, Hidden } from '@material-ui/core';
+import { Box, Drawer, Hidden } from '@mui/material';
 
-import { experimentalStyled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import SidebarMenu from './SidebarMenu';
 
-const SidebarWrapper = experimentalStyled(Box)(
+const SidebarWrapper = styled(Box)(
   ({ theme }) => `
         width: ${theme.sidebar.width};
         color: ${theme.sidebar.textColor};
@@ -25,7 +25,7 @@ const SidebarWrapper = experimentalStyled(Box)(
 `
 );
 
-const TopSection = experimentalStyled(Box)(
+const TopSection = styled(Box)(
   ({ theme }) => `
         display: flex;
         height: 88px;

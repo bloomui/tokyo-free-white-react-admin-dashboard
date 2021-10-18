@@ -1,10 +1,10 @@
 import { Helmet } from 'react-helmet-async';
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Button, Container, IconButton, Grid, Card, CardHeader, CardContent, Divider } from '@material-ui/core';
+import { Button, Container, IconButton, Grid, Card, CardHeader, CardContent, Divider } from '@mui/material';
 import Footer from 'src/components/Footer';
-import DeleteIcon from '@material-ui/icons/Delete';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 function Buttons() {
   return (

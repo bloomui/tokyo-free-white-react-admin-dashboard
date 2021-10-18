@@ -1,7 +1,7 @@
-import { Box, Container, Link, Typography } from '@material-ui/core';
-import { experimentalStyled } from '@material-ui/core/styles';
+import { Box, Container, Link, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-const FooterWrapper = experimentalStyled(Box)(
+const FooterWrapper = styled(Box)(
   ({ theme }) => `
         border-radius: 0;
         margin: ${theme.spacing(3)} 0;

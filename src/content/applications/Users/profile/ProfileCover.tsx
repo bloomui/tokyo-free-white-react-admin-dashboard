@@ -8,19 +8,19 @@ import {
   CardMedia,
   Button,
   IconButton
-} from '@material-ui/core';
-import { experimentalStyled } from '@material-ui/core/styles';
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-import ArrowBackTwoToneIcon from '@material-ui/icons/ArrowBackTwoTone';
-import ArrowForwardTwoToneIcon from '@material-ui/icons/ArrowForwardTwoTone';
-import UploadTwoToneIcon from '@material-ui/icons/UploadTwoTone';
-import MoreHorizTwoToneIcon from '@material-ui/icons/MoreHorizTwoTone';
+import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
+import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
+import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
+import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
 
-const Input = experimentalStyled('input')({
+const Input = styled('input')({
   display: 'none'
 });
 
-const AvatarWrapper = experimentalStyled(Card)(
+const AvatarWrapper = styled(Card)(
   ({ theme }) => `
 
     position: relative;
@@ -36,7 +36,7 @@ const AvatarWrapper = experimentalStyled(Card)(
 `
 );
 
-const ButtonUploadWrapper = experimentalStyled(Box)(
+const ButtonUploadWrapper = styled(Box)(
   ({ theme }) => `
     position: absolute;
     width: ${theme.spacing(4)};
@@ -60,7 +60,7 @@ const ButtonUploadWrapper = experimentalStyled(Box)(
 `
 );
 
-const CardCover = experimentalStyled(Card)(
+const CardCover = styled(Card)(
   ({ theme }) => `
     position: relative;
 
@@ -70,7 +70,7 @@ const CardCover = experimentalStyled(Card)(
 `
 );
 
-const CardCoverAction = experimentalStyled(Box)(
+const CardCoverAction = styled(Box)(
   ({ theme }) => `
     position: absolute;
     right: ${theme.spacing(2)};

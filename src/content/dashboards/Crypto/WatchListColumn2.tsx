@@ -1,25 +1,24 @@
-import { Card, Box, Typography, Avatar } from '@material-ui/core';
+import { Card, Box, Typography, Avatar } from '@mui/material';
 
-import { experimentalStyled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import Label from 'src/components/Label';
 import Text from 'src/components/Text';
 import WatchListColumn1Chart from './WatchListColumn1Chart';
 
-const AvatarWrapper = experimentalStyled(Avatar)(
+const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
         background: transparent;
         margin-right: ${theme.spacing(0.5)};
 `
 );
 
-const WatchListColumn1ChartWrapper = experimentalStyled(WatchListColumn1Chart)(
+const WatchListColumn1ChartWrapper = styled(WatchListColumn1Chart)(
   () => `
         height: 130px;
 `
 );
 
 function WatchListColumn2() {
-
 
   const price = {
     week: {

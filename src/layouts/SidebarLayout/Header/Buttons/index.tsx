@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 import HeaderSearch from './Search';
 import HeaderNotifications from './Notifications';
 

@@ -9,17 +9,17 @@ import ChatContent from './ChatContent';
 
 import { Scrollbars } from 'react-custom-scrollbars-2';
 
-import { Box } from '@material-ui/core';
-import { experimentalStyled } from '@material-ui/core/styles';
+import { Box } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-const RootWrapper = experimentalStyled(Box)(
+const RootWrapper = styled(Box)(
   () => `
        height: 100%;
        display: flex;
 `
 );
 
-const Sidebar = experimentalStyled(Box)(
+const Sidebar = styled(Box)(
   ({ theme }) => `
         width: 300px;
         background: ${theme.colors.alpha.white[100]};
@@ -27,7 +27,7 @@ const Sidebar = experimentalStyled(Box)(
 `
 );
 
-const ChatWindow = experimentalStyled(Box)(
+const ChatWindow = styled(Box)(
   () => `
         width: 100%;
         height: 100%;
@@ -37,7 +37,7 @@ const ChatWindow = experimentalStyled(Box)(
 `
 );
 
-const ChatTopBar = experimentalStyled(Box)(
+const ChatTopBar = styled(Box)(
   ({ theme }) => `
         background: ${theme.colors.alpha.white[100]};
         border-bottom: ${theme.colors.alpha.black[10]} solid 1px;
@@ -45,13 +45,13 @@ const ChatTopBar = experimentalStyled(Box)(
 `
 );
 
-const ChatMain = experimentalStyled(Box)(
+const ChatMain = styled(Box)(
   () => `
         flex: 1;
 `
 );
 
-const ChatBottomBar = experimentalStyled(Box)(
+const ChatBottomBar = styled(Box)(
   ({ theme }) => `
         padding: ${theme.spacing(3)};
 `

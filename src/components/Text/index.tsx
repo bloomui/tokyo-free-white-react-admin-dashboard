@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { experimentalStyled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 
 interface TextProps {
   className?: string;
@@ -15,7 +15,7 @@ interface TextProps {
   children?: ReactNode;
 }
 
-const TextWrapper = experimentalStyled('span')(
+const TextWrapper = styled('span')(
   ({ theme }) => `
       
       &.MuiText {

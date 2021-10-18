@@ -4,10 +4,10 @@ import clsx from 'clsx';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 
 import PropTypes from 'prop-types';
-import { Button, Badge, Collapse, ListItem } from '@material-ui/core';
+import { Button, Badge, Collapse, ListItem } from '@mui/material';
 
-import ExpandLessTwoToneIcon from '@material-ui/icons/ExpandLessTwoTone';
-import ExpandMoreTwoToneIcon from '@material-ui/icons/ExpandMoreTwoTone';
+import ExpandLessTwoToneIcon from '@mui/icons-material/ExpandLessTwoTone';
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 
 interface SidebarMenuItemProps {
   children?: ReactNode;
@@ -39,7 +39,7 @@ const SidebarMenuItem: FC<SidebarMenuItemProps> = ({
 
   if (children) {
     return (
-      <ListItem className="Mui-children" key={name} {...rest}>
+      <ListItem component="div" className="Mui-children" key={name} {...rest}>
         <Button
           className={clsx({ 'Mui-active': menuToggle })}
           startIcon={Icon && <Icon />}
@@ -56,7 +56,7 @@ const SidebarMenuItem: FC<SidebarMenuItemProps> = ({
   }
 
   return (
-    <ListItem key={name} {...rest}>
+    <ListItem component="div" key={name} {...rest}>
       <Button
         activeClassName="Mui-active"
         component={RouterLink}

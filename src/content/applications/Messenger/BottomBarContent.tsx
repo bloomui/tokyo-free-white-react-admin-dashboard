@@ -8,13 +8,13 @@ import {
   Hidden,
   TextField,
   Divider
-} from '@material-ui/core';
+} from '@mui/material';
 
-import { experimentalStyled } from '@material-ui/core/styles';
-import AttachFileTwoToneIcon from '@material-ui/icons/AttachFileTwoTone';
-import SendTwoToneIcon from '@material-ui/icons/SendTwoTone';
+import { styled } from '@mui/material/styles';
+import AttachFileTwoToneIcon from '@mui/icons-material/AttachFileTwoTone';
+import SendTwoToneIcon from '@mui/icons-material/SendTwoTone';
 
-const DividerWrapper = experimentalStyled(Divider)(
+const DividerWrapper = styled(Divider)(
   ({ theme }) => `
         height: 40px !important;
         margin: 0 ${theme.spacing(2)};
@@ -22,7 +22,7 @@ const DividerWrapper = experimentalStyled(Divider)(
 `
 );
 
-const Input = experimentalStyled('input')({
+const Input = styled('input')({
   display: 'none'
 });
 

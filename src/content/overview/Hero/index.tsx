@@ -4,25 +4,25 @@ import {
   Container,
   Grid,
   Typography
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { Link as RouterLink } from 'react-router-dom';
 
-import { experimentalStyled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 
-const TypographyH1 = experimentalStyled(Typography)(
+const TypographyH1 = styled(Typography)(
   ({ theme }) => `
     font-size: ${theme.typography.pxToRem(50)};
 `
 );
 
-const TypographyH2 = experimentalStyled(Typography)(
+const TypographyH2 = styled(Typography)(
   ({ theme }) => `
     font-size: ${theme.typography.pxToRem(17)};
 `
 );
 
-const LabelWrapper = experimentalStyled(Box)(
+const LabelWrapper = styled(Box)(
   ({ theme }) => `
     background-color: ${theme.colors.success.main};
     color: ${theme.palette.success.contrastText};
@@ -36,7 +36,7 @@ const LabelWrapper = experimentalStyled(Box)(
 `
 );
 
-const MuiAvatar = experimentalStyled(Box)(
+const MuiAvatar = styled(Box)(
   ({ theme }) => `
     width: ${theme.spacing(8)};
     height: ${theme.spacing(8)};
@@ -56,7 +56,7 @@ const MuiAvatar = experimentalStyled(Box)(
 `
 );
 
-const TsAvatar = experimentalStyled(Box)(
+const TsAvatar = styled(Box)(
   ({ theme }) => `
     width: ${theme.spacing(8)};
     height: ${theme.spacing(8)};
@@ -82,7 +82,7 @@ function Hero() {
     <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
       <Grid spacing={{ xs: 6, md: 10 }} justifyContent="center" alignItems="center" container>
         <Grid item md={10} lg={8} mx="auto">
-          <LabelWrapper color="success">Version 1.0.0</LabelWrapper>
+          <LabelWrapper color="success">Version 1.1.0</LabelWrapper>
           <TypographyH1 sx={{ mb: 2 }} variant="h1">
             Tokyo Free White React Admin Dashboard
           </TypographyH1>

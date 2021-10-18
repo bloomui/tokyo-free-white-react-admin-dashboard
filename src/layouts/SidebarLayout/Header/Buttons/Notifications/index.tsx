@@ -9,14 +9,14 @@ import {
   Popover,
   Tooltip,
   Typography
-} from '@material-ui/core';
+} from '@mui/material';
 import { useRef, useState } from 'react';
-import NotificationsActiveTwoToneIcon from '@material-ui/icons/NotificationsActiveTwoTone';
-import { experimentalStyled } from '@material-ui/core/styles';
+import NotificationsActiveTwoToneIcon from '@mui/icons-material/NotificationsActiveTwoTone';
+import { styled } from '@mui/material/styles';
 
 import { formatDistance, subDays } from 'date-fns';
 
-const NotificationsBadge = experimentalStyled(Badge)(
+const NotificationsBadge = styled(Badge)(
   ({ theme }) => `
     
     .MuiBadge-badge {

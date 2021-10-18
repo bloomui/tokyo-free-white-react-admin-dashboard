@@ -1,9 +1,8 @@
-import { Box, Hidden, Tooltip } from '@material-ui/core';
+import { Box, Hidden, Tooltip } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { experimentalStyled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 
-
-const LogoWrapper = experimentalStyled(Link)(
+const LogoWrapper = styled(Link)(
   ({ theme }) => `
         color: ${theme.palette.text.primary};
         padding: ${theme.spacing(0, 1, 0, 0)};
@@ -13,7 +12,7 @@ const LogoWrapper = experimentalStyled(Link)(
 `
 );
 
-const LogoSignWrapper = experimentalStyled(Box)(
+const LogoSignWrapper = styled(Box)(
   () => `
         width: 52px;
         height: 38px;
@@ -22,7 +21,7 @@ const LogoSignWrapper = experimentalStyled(Box)(
 `
 );
 
-const LogoSign = experimentalStyled(Box)(
+const LogoSign = styled(Box)(
   ({ theme }) => `
         background: ${theme.general.reactFrameworkColor};
         width: 18px;
@@ -59,7 +58,7 @@ const LogoSign = experimentalStyled(Box)(
 `
 );
 
-const LogoSignInner = experimentalStyled(Box)(
+const LogoSignInner = styled(Box)(
   ({ theme }) => `
         width: 16px;
         height: 16px;
@@ -72,13 +71,13 @@ const LogoSignInner = experimentalStyled(Box)(
 `
 );
 
-const LogoTextWrapper = experimentalStyled(Box)(
+const LogoTextWrapper = styled(Box)(
   ({ theme }) => `
         padding-left: ${theme.spacing(1)};
 `
 );
 
-const VersionBadge = experimentalStyled(Box)(
+const VersionBadge = styled(Box)(
   ({ theme }) => `
         background: ${theme.palette.success.main};
         color: ${theme.palette.success.contrastText};
@@ -91,7 +90,7 @@ const VersionBadge = experimentalStyled(Box)(
 `
 );
 
-const LogoText = experimentalStyled(Box)(
+const LogoText = styled(Box)(
   ({ theme }) => `
         font-size: ${theme.typography.pxToRem(15)};
         font-weight: ${theme.typography.fontWeightBold};
@@ -110,8 +109,8 @@ function Logo() {
       </LogoSignWrapper>
       <Hidden smDown>
         <LogoTextWrapper>
-          <Tooltip title="Version 1.0" arrow placement="right">
-            <VersionBadge>1.0</VersionBadge>
+          <Tooltip title="Version 1.1.0" arrow placement="right">
+            <VersionBadge>1.1</VersionBadge>
           </Tooltip>
           <LogoText>Tokyo Free White</LogoText>
         </LogoTextWrapper>

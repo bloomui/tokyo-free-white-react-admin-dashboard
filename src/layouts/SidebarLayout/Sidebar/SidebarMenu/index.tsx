@@ -1,11 +1,11 @@
-import { ListSubheader, List } from '@material-ui/core';
+import { ListSubheader, List } from '@mui/material';
 import { useLocation, matchPath } from 'react-router-dom';
 import SidebarMenuItem from './item';
 import menuItems, { MenuItem } from './items';
-import { experimentalStyled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 
 
-const MenuWrapper = experimentalStyled(List)(
+const MenuWrapper = styled(List)(
   ({ theme }) => `
     margin-bottom: ${theme.spacing(1)};
     padding: 0;
@@ -16,7 +16,8 @@ const MenuWrapper = experimentalStyled(List)(
 
     .MuiListSubheader-root {
       text-transform: uppercase;
-      font-size: ${theme.typography.pxToRem(13)};
+      font-weight: bold;
+      font-size: ${theme.typography.pxToRem(12)};
       color: ${theme.sidebar.menuItemHeadingColor};
       padding: ${theme.spacing(0.8, 2)};
       line-height: 1.4;
@@ -24,7 +25,7 @@ const MenuWrapper = experimentalStyled(List)(
 `
 );
 
-const SubMenuWrapper = experimentalStyled(List)(
+const SubMenuWrapper = styled(List)(
   ({ theme }) => `
     &.MuiList-root {
       padding: 0;
@@ -42,7 +43,7 @@ const SubMenuWrapper = experimentalStyled(List)(
           background-color: ${theme.sidebar.menuItemBg};
           width: 100%;
           justify-content: flex-start;
-          font-size: ${theme.typography.pxToRem(14)};
+          font-size: ${theme.typography.pxToRem(13)};
           padding-top: ${theme.spacing(0.8)};
           padding-bottom: ${theme.spacing(0.8)};
           position: relative;
@@ -53,7 +54,9 @@ const SubMenuWrapper = experimentalStyled(List)(
 
             .MuiBadge-standard {
               background: ${theme.colors.primary.main};
-              font-size: ${theme.typography.pxToRem(12)};
+              font-size: ${theme.typography.pxToRem(9)};
+              font-weight: bold;
+              text-transform: uppercase;
               color: ${theme.palette.primary.contrastText};
             }
           }
@@ -198,7 +201,7 @@ function SidebarMenu() {
         <MenuWrapper
           key={section.heading}
           subheader={
-            <ListSubheader disableSticky>{section.heading}</ListSubheader>
+            <ListSubheader component="div" disableSticky>{section.heading}</ListSubheader>
           }
         >
           {renderSidebarMenuItems({

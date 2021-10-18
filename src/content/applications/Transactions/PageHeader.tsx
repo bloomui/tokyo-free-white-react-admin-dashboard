@@ -1,6 +1,6 @@
-import { Typography, Button, Grid } from '@material-ui/core';
+import { Typography, Button, Grid } from '@mui/material';
 
-import AddTwoToneIcon from '@material-ui/icons/AddTwoTone';
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 
 function PageHeader() {
 

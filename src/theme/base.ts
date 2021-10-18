@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { Theme } from '@material-ui/core';
+import { Theme } from '@mui/material';
 import { PureLightTheme } from './schemes/PureLightTheme';
 
 export function themeCreator(theme: string): Theme {
   return themeMap[theme];
 }
 
-declare module '@material-ui/core/styles' {
+declare module '@mui/material/styles' {
   interface Theme {
     colors: {
       gradients: {

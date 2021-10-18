@@ -1,7 +1,5 @@
-import { Typography, Avatar, Grid } from '@material-ui/core';
-
-
-import { useTheme } from '@material-ui/core/styles';
+import { Typography, Avatar, Grid } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 function PageHeader() {
 

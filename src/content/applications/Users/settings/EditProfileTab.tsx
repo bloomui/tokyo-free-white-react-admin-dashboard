@@ -6,10 +6,10 @@ import {
   Box,
   Divider,
   Button
-} from '@material-ui/core';
+} from '@mui/material';
 
-import EditTwoToneIcon from '@material-ui/icons/EditTwoTone';
-import DoneTwoToneIcon from '@material-ui/icons/DoneTwoTone';
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
+import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone';
 import Text from 'src/components/Text';
 import Label from 'src/components/Label';
 

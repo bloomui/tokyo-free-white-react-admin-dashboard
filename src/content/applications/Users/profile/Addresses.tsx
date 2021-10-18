@@ -6,9 +6,9 @@ import {
   CardHeader,
   Divider,
   Grid
-} from '@material-ui/core';
+} from '@mui/material';
 
-import { ArrowForwardTwoTone } from '@material-ui/icons';
+import { ArrowForwardTwoTone } from '@mui/icons-material';
 
 function Addresses() {
 

@@ -1,10 +1,10 @@
 import { FC, ReactNode } from 'react';
-import { Container } from '@material-ui/core';
+import { Container } from '@mui/material';
 import PropTypes from 'prop-types';
-import { experimentalStyled } from '@material-ui/core/styles';
-import { Box } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box } from '@mui/material';
 
-const PageTitle = experimentalStyled(Box)(
+const PageTitle = styled(Box)(
   ({ theme }) => `
         padding: ${theme.spacing(4, 0)};
 `
@@ -18,7 +18,9 @@ const PageTitleWrapper: FC<PageTitleWrapperProps> = ({ children }) => {
   return (
     <>
       <PageTitle>
-        <Container maxWidth="lg">{children}</Container>
+        <Container maxWidth="lg">
+          {children}
+        </Container>
       </PageTitle>
     </>
   );

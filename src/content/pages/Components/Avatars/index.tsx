@@ -1,14 +1,14 @@
 import { Helmet } from 'react-helmet-async';
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Container, Grid, Card, CardHeader, CardContent, Divider } from '@material-ui/core';
+import { Container, Grid, Card, CardHeader, CardContent, Divider } from '@mui/material';
 import Footer from 'src/components/Footer';
-import Avatar from '@material-ui/core/Avatar';
-import Stack from '@material-ui/core/Stack';
-import { deepOrange, deepPurple, green, pink } from '@material-ui/core/colors';
-import FolderIcon from '@material-ui/icons/Folder';
-import PageviewIcon from '@material-ui/icons/Pageview';
-import AssignmentIcon from '@material-ui/icons/Assignment';
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+import { deepOrange, deepPurple, green, pink } from '@mui/material/colors';
+import FolderIcon from '@mui/icons-material/Folder';
+import PageviewIcon from '@mui/icons-material/Pageview';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 function stringToColor(string: string) {
   let hash = 0;

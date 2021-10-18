@@ -7,21 +7,21 @@ import {
   Typography,
   Avatar,
   Divider
-} from '@material-ui/core';
+} from '@mui/material';
 
-import { experimentalStyled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import Text from 'src/components/Text';
 import Label from 'src/components/Label';
 import WatchListRowChart from './WatchListRowChart';
 
-const AvatarWrapper = experimentalStyled(Avatar)(
+const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
         background: transparent;
         margin-right: ${theme.spacing(0.5)};
 `
 );
 
-const LabelWrapper = experimentalStyled(Box)(
+const LabelWrapper = styled(Box)(
   ({ theme }) => `
         position: absolute;
         right: ${theme.spacing(2)};
@@ -29,14 +29,13 @@ const LabelWrapper = experimentalStyled(Box)(
 `
 );
 
-const WatchListRowChartWrapper = experimentalStyled(WatchListRowChart)(
+const WatchListRowChartWrapper = styled(WatchListRowChart)(
   ({ theme }) => `
         height: 100px;
 `
 );
 
 function WatchListRow() {
-
 
   const price = {
     week: {

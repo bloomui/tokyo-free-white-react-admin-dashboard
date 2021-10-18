@@ -11,20 +11,20 @@ import {
   ListItemText,
   List,
   ListItemAvatar
-} from '@material-ui/core';
+} from '@mui/material';
 
-import { experimentalStyled } from '@material-ui/core/styles';
-import TrendingUp from '@material-ui/icons/TrendingUp';
+import { styled } from '@mui/material/styles';
+import TrendingUp from '@mui/icons-material/TrendingUp';
 import AccountBalanceChart from './AccountBalanceChart';
 import Text from 'src/components/Text';
 
-const AccountBalanceChartWrapper = experimentalStyled(AccountBalanceChart)(
+const AccountBalanceChartWrapper = styled(AccountBalanceChart)(
   () => `
       width: 100%;
       height: 100%;
 `
 );
-const AvatarSuccess = experimentalStyled(Avatar)(
+const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.success.main};
       color: ${theme.palette.success.contrastText};
@@ -35,8 +35,7 @@ const AvatarSuccess = experimentalStyled(Avatar)(
 );
 
 function AccountBalance() {
-
-
+  
   const cryptoBalance = {
     datasets: [
       {

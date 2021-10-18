@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { experimentalStyled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 
 interface LabelProps {
   className?: string;
@@ -8,7 +8,7 @@ interface LabelProps {
   children?: ReactNode;
 }
 
-const LabelWrapper = experimentalStyled('span')(
+const LabelWrapper = styled('span')(
   ({ theme }) => `
       background-color: ${theme.colors.alpha.black[5]};
       padding: ${theme.spacing(0.5, 1)};

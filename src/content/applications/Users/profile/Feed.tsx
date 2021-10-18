@@ -7,9 +7,9 @@ import {
   Avatar,
   Grid,
   Button
-} from '@material-ui/core';
+} from '@mui/material';
 
-import AddTwoToneIcon from '@material-ui/icons/AddTwoTone';
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 
 function Feed() {
 

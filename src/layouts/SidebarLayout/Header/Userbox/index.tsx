@@ -14,37 +14,37 @@ import {
   ListItemText,
   Popover,
   Typography
-} from '@material-ui/core';
+} from '@mui/material';
 
-import InboxTwoToneIcon from '@material-ui/icons/InboxTwoTone';
-import { experimentalStyled } from '@material-ui/core/styles';
-import ExpandMoreTwoToneIcon from '@material-ui/icons/ExpandMoreTwoTone';
-import AccountBoxTwoToneIcon from '@material-ui/icons/AccountBoxTwoTone';
-import LockOpenTwoToneIcon from '@material-ui/icons/LockOpenTwoTone';
-import AccountTreeTwoToneIcon from '@material-ui/icons/AccountTreeTwoTone';
+import InboxTwoToneIcon from '@mui/icons-material/InboxTwoTone';
+import { styled } from '@mui/material/styles';
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
+import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
+import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
+import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
 
-const UserBoxButton = experimentalStyled(Button)(
+const UserBoxButton = styled(Button)(
   ({ theme }) => `
         padding-left: ${theme.spacing(1)};
         padding-right: ${theme.spacing(1)};
 `
 );
 
-const MenuUserBox = experimentalStyled(Box)(
+const MenuUserBox = styled(Box)(
   ({ theme }) => `
         background: ${theme.colors.alpha.black[5]};
         padding: ${theme.spacing(2)};
 `
 );
 
-const UserBoxText = experimentalStyled(Box)(
+const UserBoxText = styled(Box)(
   ({ theme }) => `
         text-align: left;
         padding-left: ${theme.spacing(1)};
 `
 );
 
-const UserBoxLabel = experimentalStyled(Typography)(
+const UserBoxLabel = styled(Typography)(
   ({ theme }) => `
         font-weight: ${theme.typography.fontWeightBold};
         color: ${theme.palette.secondary.main};
@@ -52,7 +52,7 @@ const UserBoxLabel = experimentalStyled(Typography)(
 `
 );
 
-const UserBoxDescription = experimentalStyled(Typography)(
+const UserBoxDescription = styled(Typography)(
   ({ theme }) => `
         color: ${lighten(theme.palette.secondary.main, 0.5)}
 `

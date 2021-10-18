@@ -1,5 +1,5 @@
-import { alpha, createTheme, lighten, darken } from '@material-ui/core';
-import '@material-ui/lab/themeAugmentation';
+import { alpha, createTheme, lighten, darken } from '@mui/material';
+import '@mui/lab/themeAugmentation';
 
 const themeColors = {
   primary: '#5569ff',
@@ -46,19 +46,19 @@ const colors = {
   },
   layout: {
     general: {
-      bodyBg: '#F6F8FB'
+      bodyBg: '#f2f5f9'
     },
     sidebar: {
       background: themeColors.white,
       textColor: themeColors.secondary,
-      dividerBg: '#F6F8FB',
+      dividerBg: '#f2f5f9',
       menuItemColor: '#242E6F',
       menuItemColorActive: themeColors.primary,
       menuItemBg: 'transparent',
-      menuItemBgActive: '#F6F8FB',
+      menuItemBgActive: '#f2f5f9',
       menuItemIconColor: lighten(themeColors.secondary, 0.3),
       menuItemIconColorActive: themeColors.primary,
-      menuItemHeadingColor: themeColors.secondary
+      menuItemHeadingColor: darken(themeColors.secondary, 0.3),
     }
   },
   alpha: {
@@ -89,7 +89,7 @@ const colors = {
   },
   secondary: {
     lighter: lighten(themeColors.secondary, 0.85),
-    light: lighten(themeColors.secondary, 0.3),
+    light: lighten(themeColors.secondary, 0.25),
     main: themeColors.secondary,
     dark: darken(themeColors.secondary, 0.2)
   },
@@ -325,7 +325,7 @@ export const PureLightTheme = createTheme({
       sm: 600,
       md: 960,
       lg: 1280,
-      xl: 1920
+      xl: 1840
     }
   },
   components: {
@@ -333,9 +333,11 @@ export const PureLightTheme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: alpha(darken(themeColors.primaryAlt, 0.4), 0.2),
+          backdropFilter: 'blur(2px)',
 
           '&.MuiBackdrop-invisible': {
-            backgroundColor: 'transparent'
+            backgroundColor: 'transparent',
+            backdropFilter: 'blur(2px)',
           }
         }
       }
@@ -1063,7 +1065,7 @@ export const PureLightTheme = createTheme({
   },
   typography: {
     fontFamily: [
-      '"Roboto"',
+      'Inter',
       '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"'
     ].join(','),
     fontSize: 14,
@@ -1097,7 +1099,7 @@ export const PureLightTheme = createTheme({
       fontSize: 14
     },
     body2: {
-      fontSize: 14
+      fontSize: 14,
     },
     button: {
       fontSize: 14,
@@ -1115,7 +1117,7 @@ export const PureLightTheme = createTheme({
     subtitle2: {
       fontWeight: 400,
       fontSize: 15,
-      color: colors.alpha.black[50]
+      color: colors.alpha.black[70]
     },
     overline: {
       fontSize: 13,

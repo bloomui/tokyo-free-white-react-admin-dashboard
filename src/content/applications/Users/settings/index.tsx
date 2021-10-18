@@ -2,16 +2,16 @@ import { useState, ChangeEvent } from 'react';
 import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Container, Tabs, Tab, Grid } from '@material-ui/core';
+import { Container, Tabs, Tab, Grid } from '@mui/material';
 import Footer from 'src/components/Footer';
-import { experimentalStyled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 
 import ActivityTab from './ActivityTab';
 import EditProfileTab from './EditProfileTab';
 import NotificationsTab from './NotificationsTab';
 import SecurityTab from './SecurityTab';
 
-const TabsWrapper = experimentalStyled(Tabs)(
+const TabsWrapper = styled(Tabs)(
   () => `
     .MuiTabs-scrollableX {
       overflow-x: auto !important;

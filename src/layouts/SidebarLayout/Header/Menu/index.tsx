@@ -5,15 +5,13 @@ import {
   ListItemText,
   Menu,
   MenuItem
-} from '@material-ui/core';
+} from '@mui/material';
 import { useRef, useState } from 'react';
-
-
 import { NavLink } from 'react-router-dom';
-import { experimentalStyled } from '@material-ui/core/styles';
-import ExpandMoreTwoToneIcon from '@material-ui/icons/ExpandMoreTwoTone';
+import { styled } from '@mui/material/styles';
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 
-const ListWrapper = experimentalStyled(Box)(
+const ListWrapper = styled(Box)(
   ({ theme }) => `
         .MuiTouchRipple-root {
             display: none;

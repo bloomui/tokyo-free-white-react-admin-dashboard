@@ -10,16 +10,16 @@ import {
   Button,
   CardActions,
   Link
-} from '@material-ui/core';
-import { experimentalStyled } from '@material-ui/core/styles';
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-import MoreHorizTwoToneIcon from '@material-ui/icons/MoreHorizTwoTone';
-import ThumbUpAltTwoToneIcon from '@material-ui/icons/ThumbUpAltTwoTone';
-import CommentTwoToneIcon from '@material-ui/icons/CommentTwoTone';
-import ShareTwoToneIcon from '@material-ui/icons/ShareTwoTone';
+import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
+import ThumbUpAltTwoToneIcon from '@mui/icons-material/ThumbUpAltTwoTone';
+import CommentTwoToneIcon from '@mui/icons-material/CommentTwoTone';
+import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone';
 import Text from 'src/components/Text';
 
-const CardActionsWrapper = experimentalStyled(CardActions)(
+const CardActionsWrapper = styled(CardActions)(
   ({ theme }) => `
      background: ${theme.colors.alpha.black[5]};
      padding: ${theme.spacing(3)};

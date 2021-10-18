@@ -23,14 +23,14 @@ import {
   TableRow,
   TableContainer,
   useTheme
-} from '@material-ui/core';
-import { experimentalStyled } from '@material-ui/core/styles';
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-import DoneTwoToneIcon from '@material-ui/icons/DoneTwoTone';
-import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
+import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone';
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import { format, subHours, subWeeks, subDays } from 'date-fns';
 
-const ButtonError = experimentalStyled(Button)(
+const ButtonError = styled(Button)(
   ({ theme }) => `
      background: ${theme.colors.error.main};
      color: ${theme.palette.error.contrastText};
@@ -41,7 +41,7 @@ const ButtonError = experimentalStyled(Button)(
     `
 );
 
-const AvatarSuccess = experimentalStyled(Avatar)(
+const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
     background: ${theme.colors.success.light};
     width: ${theme.spacing(5)};
@@ -49,7 +49,7 @@ const AvatarSuccess = experimentalStyled(Avatar)(
 `
 );
 
-const AvatarWrapper = experimentalStyled(Avatar)(
+const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
     width: ${theme.spacing(5)};
     height: ${theme.spacing(5)};

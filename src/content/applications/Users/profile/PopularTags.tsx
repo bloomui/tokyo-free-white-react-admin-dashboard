@@ -10,11 +10,11 @@ import {
   ListItemText,
   Avatar,
   useTheme
-} from '@material-ui/core';
-import { experimentalStyled } from '@material-ui/core/styles';
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 
-const ListWrapper = experimentalStyled(List)(
+const ListWrapper = styled(List)(
   () => `
       .MuiListItem-root {
         border-radius: 0;

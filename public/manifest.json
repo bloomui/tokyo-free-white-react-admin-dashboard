@@ -1,6 +1,6 @@
 {
   "theme_color": "#1975ff",
-  "background_color": "#F6F8FB",
+  "background_color": "#f2f5f9",
   "display": "standalone",
   "start_url": ".",
   "short_name": "Tokyo Free White",

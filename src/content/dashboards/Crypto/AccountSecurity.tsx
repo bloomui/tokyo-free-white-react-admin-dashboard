@@ -9,29 +9,29 @@ import {
   Switch,
   ListItemAvatar,
   Avatar
-} from '@material-ui/core';
+} from '@mui/material';
 
-import { experimentalStyled } from '@material-ui/core/styles';
-import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
-import PhoneLockedTwoToneIcon from '@material-ui/icons/PhoneLockedTwoTone';
-import EmailTwoToneIcon from '@material-ui/icons/EmailTwoTone';
+import { styled } from '@mui/material/styles';
+import LockTwoToneIcon from '@mui/icons-material/LockTwoTone';
+import PhoneLockedTwoToneIcon from '@mui/icons-material/PhoneLockedTwoTone';
+import EmailTwoToneIcon from '@mui/icons-material/EmailTwoTone';
 import Text from 'src/components/Text';
 
-const AvatarWrapperError = experimentalStyled(Avatar)(
+const AvatarWrapperError = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.error.lighter};
       color:  ${theme.colors.error.main};
 `
 );
 
-const AvatarWrapperSuccess = experimentalStyled(Avatar)(
+const AvatarWrapperSuccess = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.success.lighter};
       color:  ${theme.colors.success.main};
 `
 );
 
-const AvatarWrapperWarning = experimentalStyled(Avatar)(
+const AvatarWrapperWarning = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.warning.lighter};
       color:  ${theme.colors.warning.main};
@@ -39,7 +39,6 @@ const AvatarWrapperWarning = experimentalStyled(Avatar)(
 );
 
 function AccountSecurity() {
-
 
   const [checked, setChecked] = useState(['phone_verification']);
 

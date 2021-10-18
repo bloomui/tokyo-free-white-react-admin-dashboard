@@ -1,17 +1,17 @@
 import { useContext } from 'react';
 
-import { Box, Hidden, IconButton, Tooltip } from '@material-ui/core';
-import { experimentalStyled } from '@material-ui/core/styles';
-import MenuTwoToneIcon from '@material-ui/icons/MenuTwoTone';
+import { Box, Hidden, IconButton, Tooltip } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import { SidebarContext } from 'src/contexts/SidebarContext';
-import CloseTwoToneIcon from '@material-ui/icons/CloseTwoTone';
+import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
 
 import HeaderMenu from './Menu';
 import HeaderButtons from './Buttons';
 import HeaderUserbox from './Userbox';
 import Logo from 'src/components/Logo';
 
-const HeaderWrapper = experimentalStyled(Box)(
+const HeaderWrapper = styled(Box)(
   ({ theme }) => `
         height: ${theme.header.height};
         color: ${theme.header.textColor};
@@ -47,7 +47,7 @@ function Header() {
         <HeaderButtons />
         <HeaderUserbox />
         <Hidden lgUp>
-          <Tooltip arrow title="Search">
+          <Tooltip arrow title="Toggle Menu">
             <IconButton color="primary" onClick={toggleSidebar}>
               {!sidebarToggle ? <MenuTwoToneIcon /> : <CloseTwoToneIcon />}
             </IconButton>

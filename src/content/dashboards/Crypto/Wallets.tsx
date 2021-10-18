@@ -8,12 +8,12 @@ import {
   Avatar,
   Tooltip,
   CardActionArea
-} from '@material-ui/core';
+} from '@mui/material';
 
-import { experimentalStyled } from '@material-ui/core/styles';
-import AddTwoToneIcon from '@material-ui/icons/AddTwoTone';
+import { styled } from '@mui/material/styles';
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 
-const AvatarWrapper = experimentalStyled(Avatar)(
+const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
         background: transparent;
         margin-left: -${theme.spacing(0.5)};
@@ -22,7 +22,7 @@ const AvatarWrapper = experimentalStyled(Avatar)(
 `
 );
 
-const AvatarAddWrapper = experimentalStyled(Avatar)(
+const AvatarAddWrapper = styled(Avatar)(
   ({ theme }) => `
         background: ${theme.colors.alpha.black[5]};
         color: ${theme.colors.primary.main};
@@ -31,7 +31,7 @@ const AvatarAddWrapper = experimentalStyled(Avatar)(
 `
 );
 
-const CardAddAction = experimentalStyled(Card)(
+const CardAddAction = styled(Card)(
   ({ theme }) => `
         border: ${theme.colors.primary.main} dashed 1px;
         height: 100%;
@@ -56,7 +56,6 @@ const CardAddAction = experimentalStyled(Card)(
 
 function Wallets() {
 
-
   return (
     <>
       <Box
@@ -71,7 +70,7 @@ function Wallets() {
           variant="outlined"
           startIcon={<AddTwoToneIcon fontSize="small" />}
         >
-          Add New Wallet
+          Add new wallet
         </Button>
       </Box>
       <Grid container spacing={3}>

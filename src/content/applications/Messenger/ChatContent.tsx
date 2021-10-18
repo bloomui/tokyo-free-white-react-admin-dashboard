@@ -1,7 +1,6 @@
-import { Box, Avatar, Typography, Card, Divider } from '@material-ui/core';
+import { Box, Avatar, Typography, Card, Divider } from '@mui/material';
 
-
-import { experimentalStyled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import {
   formatDistance,
   format,
@@ -9,9 +8,9 @@ import {
   subHours,
   subMinutes
 } from 'date-fns';
-import ScheduleTwoToneIcon from '@material-ui/icons/ScheduleTwoTone';
+import ScheduleTwoToneIcon from '@mui/icons-material/ScheduleTwoTone';
 
-const DividerWrapper = experimentalStyled(Divider)(
+const DividerWrapper = styled(Divider)(
   ({ theme }) => `
       .MuiDivider-wrapper {
         text-transform: none;
@@ -22,7 +21,7 @@ const DividerWrapper = experimentalStyled(Divider)(
 `
 );
 
-const CardWrapperPrimary = experimentalStyled(Card)(
+const CardWrapperPrimary = styled(Card)(
   ({ theme }) => `
       background: ${theme.colors.primary.main};
       color: ${theme.palette.primary.contrastText};
@@ -34,7 +33,7 @@ const CardWrapperPrimary = experimentalStyled(Card)(
 `
 );
 
-const CardWrapperSecondary = experimentalStyled(Card)(
+const CardWrapperSecondary = styled(Card)(
   ({ theme }) => `
       background: ${theme.colors.alpha.black[10]};
       color: ${theme.colors.alpha.black[100]};

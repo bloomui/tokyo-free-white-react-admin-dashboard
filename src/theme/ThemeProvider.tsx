@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { ThemeProvider } from '@material-ui/core';
+import { ThemeProvider } from '@mui/material';
 import { themeCreator } from './base';
-import { StylesProvider } from '@material-ui/styles';
+import { StylesProvider } from '@mui/styles';
 
 export const ThemeContext = React.createContext(
   (themeName: string): void => { }

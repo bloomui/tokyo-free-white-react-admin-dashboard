@@ -1,11 +1,11 @@
-import { Box, Container, Card } from '@material-ui/core';
+import { Box, Container, Card } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 
-import { experimentalStyled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import Logo from 'src/components/LogoSign';
 import Hero from './Hero';
 
-const OverviewWrapper = experimentalStyled(Box)(
+const OverviewWrapper = styled(Box)(
   () => `
     overflow: auto;
     flex: 1;

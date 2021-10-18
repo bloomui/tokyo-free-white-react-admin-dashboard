@@ -7,17 +7,17 @@ import {
   Grid,
   Card,
   Typography
-} from '@material-ui/core';
+} from '@mui/material';
 
-import { experimentalStyled } from '@material-ui/core/styles';
-import ViewWeekTwoToneIcon from '@material-ui/icons/ViewWeekTwoTone';
-import TableRowsTwoToneIcon from '@material-ui/icons/TableRowsTwoTone';
+import { styled } from '@mui/material/styles';
+import ViewWeekTwoToneIcon from '@mui/icons-material/ViewWeekTwoTone';
+import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone';
 import WatchListColumn1 from './WatchListColumn1';
 import WatchListColumn2 from './WatchListColumn2';
 import WatchListColumn3 from './WatchListColumn3';
 import WatchListRow from './WatchListRow';
 
-const EmptyResultsWrapper = experimentalStyled('img')(
+const EmptyResultsWrapper = styled('img')(
   ({ theme }) => `
       max-width: 100%;
       width: ${theme.spacing(66)};
@@ -26,7 +26,6 @@ const EmptyResultsWrapper = experimentalStyled('img')(
 );
 
 function WatchList() {
-
 
   const [tabs, setTab] = useState<string | null>('watch_list_columns');
 

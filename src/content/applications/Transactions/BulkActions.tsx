@@ -9,13 +9,13 @@ import {
   ListItem,
   List,
   Typography
-} from '@material-ui/core';
-import { experimentalStyled } from '@material-ui/core/styles';
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
-import MoreVertTwoToneIcon from '@material-ui/icons/MoreVertTwoTone';
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
 
-const ButtonError = experimentalStyled(Button)(
+const ButtonError = styled(Button)(
   ({ theme }) => `
      background: ${theme.colors.error.main};
      color: ${theme.palette.error.contrastText};

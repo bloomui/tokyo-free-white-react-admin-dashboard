@@ -19,19 +19,17 @@ import {
   ListItemAvatar,
   ListItemText,
   lighten
-} from '@material-ui/core';
-
-
-import { experimentalStyled } from '@material-ui/core/styles';
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { formatDistance, subMinutes, subHours } from 'date-fns';
-import SettingsTwoToneIcon from '@material-ui/icons/SettingsTwoTone';
-import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone';
+import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import Label from 'src/components/Label';
-import CheckTwoToneIcon from '@material-ui/icons/CheckTwoTone';
-import AlarmTwoToneIcon from '@material-ui/icons/AlarmTwoTone';
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
+import AlarmTwoToneIcon from '@mui/icons-material/AlarmTwoTone';
 import { Link as RouterLink } from 'react-router-dom';
 
-const AvatarSuccess = experimentalStyled(Avatar)(
+const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
           background-color: ${theme.colors.success.lighter};
           color: ${theme.colors.success.main};
@@ -42,7 +40,7 @@ const AvatarSuccess = experimentalStyled(Avatar)(
     `
 );
 
-const MeetingBox = experimentalStyled(Box)(
+const MeetingBox = styled(Box)(
   ({ theme }) => `
           background-color: ${lighten(theme.colors.alpha.black[10], 0.5)};
           margin: ${theme.spacing(2)} 0;
@@ -51,13 +49,13 @@ const MeetingBox = experimentalStyled(Box)(
     `
 );
 
-const RootWrapper = experimentalStyled(Box)(
+const RootWrapper = styled(Box)(
   ({ theme }) => `
         padding: ${theme.spacing(2.5)};
   `
 );
 
-const ListItemWrapper = experimentalStyled(ListItemButton)(
+const ListItemWrapper = styled(ListItemButton)(
   ({ theme }) => `
         &.MuiButtonBase-root {
             margin: ${theme.spacing(1)} 0;
@@ -65,7 +63,7 @@ const ListItemWrapper = experimentalStyled(ListItemButton)(
   `
 );
 
-const TabsContainerWrapper = experimentalStyled(Box)(
+const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
         .MuiTabs-indicator {
             min-height: 4px;

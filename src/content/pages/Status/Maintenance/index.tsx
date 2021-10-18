@@ -5,17 +5,16 @@ import {
   Divider,
   IconButton,
   Tooltip
-} from '@material-ui/core';
+} from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import Logo from 'src/components/LogoSign';
 
+import { styled } from '@mui/material/styles';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import InstagramIcon from '@mui/icons-material/Instagram';
 
-import { experimentalStyled } from '@material-ui/core/styles';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import TwitterIcon from '@material-ui/icons/Twitter';
-import InstagramIcon from '@material-ui/icons/Instagram';
-
-const MainContent = experimentalStyled(Box)(
+const MainContent = styled(Box)(
   () => `
     height: 100%;
     display: flex;
@@ -28,7 +27,6 @@ const MainContent = experimentalStyled(Box)(
 );
 
 function StatusMaintenance() {
-
 
   return (
     <>

@@ -6,14 +6,14 @@ import {
   Divider,
   Avatar,
   useTheme
-} from '@material-ui/core';
-import { experimentalStyled } from '@material-ui/core/styles';
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-import ShoppingBagTwoToneIcon from '@material-ui/icons/ShoppingBagTwoTone';
-import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
-import StarTwoToneIcon from '@material-ui/icons/StarTwoTone';
+import ShoppingBagTwoToneIcon from '@mui/icons-material/ShoppingBagTwoTone';
+import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
+import StarTwoToneIcon from '@mui/icons-material/StarTwoTone';
 
-const AvatarPrimary = experimentalStyled(Avatar)(
+const AvatarPrimary = styled(Avatar)(
   ({ theme }) => `
       background: ${theme.colors.primary.lighter};
       color: ${theme.colors.primary.main};

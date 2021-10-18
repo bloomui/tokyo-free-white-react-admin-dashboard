@@ -1,20 +1,20 @@
 import { ReactNode } from 'react';
 
-import DesignServicesTwoToneIcon from '@material-ui/icons/DesignServicesTwoTone';
-import BrightnessLowTwoToneIcon from '@material-ui/icons/BrightnessLowTwoTone';
-import MmsTwoToneIcon from '@material-ui/icons/MmsTwoTone';
-import TableChartTwoToneIcon from '@material-ui/icons/TableChartTwoTone';
-import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
-import BallotTwoToneIcon from '@material-ui/icons/BallotTwoTone';
-import BeachAccessTwoToneIcon from '@material-ui/icons/BeachAccessTwoTone';
-import EmojiEventsTwoToneIcon from '@material-ui/icons/EmojiEventsTwoTone';
-import FilterVintageTwoToneIcon from '@material-ui/icons/FilterVintageTwoTone';
-import HowToVoteTwoToneIcon from '@material-ui/icons/HowToVoteTwoTone';
-import LocalPharmacyTwoToneIcon from '@material-ui/icons/LocalPharmacyTwoTone';
-import RedeemTwoToneIcon from '@material-ui/icons/RedeemTwoTone';
-import SettingsTwoToneIcon from '@material-ui/icons/SettingsTwoTone';
-import TrafficTwoToneIcon from '@material-ui/icons/TrafficTwoTone';
-import VerifiedUserTwoToneIcon from '@material-ui/icons/VerifiedUserTwoTone';
+import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
+import BrightnessLowTwoToneIcon from '@mui/icons-material/BrightnessLowTwoTone';
+import MmsTwoToneIcon from '@mui/icons-material/MmsTwoTone';
+import TableChartTwoToneIcon from '@mui/icons-material/TableChartTwoTone';
+import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
+import BallotTwoToneIcon from '@mui/icons-material/BallotTwoTone';
+import BeachAccessTwoToneIcon from '@mui/icons-material/BeachAccessTwoTone';
+import EmojiEventsTwoToneIcon from '@mui/icons-material/EmojiEventsTwoTone';
+import FilterVintageTwoToneIcon from '@mui/icons-material/FilterVintageTwoTone';
+import HowToVoteTwoToneIcon from '@mui/icons-material/HowToVoteTwoTone';
+import LocalPharmacyTwoToneIcon from '@mui/icons-material/LocalPharmacyTwoTone';
+import RedeemTwoToneIcon from '@mui/icons-material/RedeemTwoTone';
+import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
+import TrafficTwoToneIcon from '@mui/icons-material/TrafficTwoTone';
+import VerifiedUserTwoToneIcon from '@mui/icons-material/VerifiedUserTwoTone';
 
 export interface MenuItem {
   link?: string;

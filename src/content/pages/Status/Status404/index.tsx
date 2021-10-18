@@ -8,14 +8,13 @@ import {
   FormControl,
   OutlinedInput,
   InputAdornment
-} from '@material-ui/core';
+} from '@mui/material';
 import { Helmet } from 'react-helmet-async';
-import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone';
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 
+import { styled } from '@mui/material/styles';
 
-import { experimentalStyled } from '@material-ui/core/styles';
-
-const MainContent = experimentalStyled(Box)(
+const MainContent = styled(Box)(
   ({ theme }) => `
     height: 100%;
     display: flex;
@@ -27,20 +26,19 @@ const MainContent = experimentalStyled(Box)(
 `
 );
 
-const OutlinedInputWrapper = experimentalStyled(OutlinedInput)(
+const OutlinedInputWrapper = styled(OutlinedInput)(
   ({ theme }) => `
     background-color: ${theme.colors.alpha.white[100]};
 `
 );
 
-const ButtonSearch = experimentalStyled(Button)(
+const ButtonSearch = styled(Button)(
   ({ theme }) => `
     margin-right: -${theme.spacing(1)};
 `
 );
 
 function Status404() {
-
 
   return (
     <>
