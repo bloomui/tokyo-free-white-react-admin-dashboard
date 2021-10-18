@@ -12,7 +12,11 @@
 </h1>
 <div align="center">
 
+<<<<<<< HEAD
 ![version](https://img.shields.io/badge/version-1.1.0-blue.svg)
+=======
+![version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+>>>>>>> 8ffee1570dfe3350ea3fcabda92cc721ea687d64
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 
 <a href="https://bloomui.com/product/tokyo-free-white-react-typescript-material-ui-admin-dashboard/"><img src="https://bloomui.s3.us-east-2.amazonaws.com/tokyo-free-white-react-typescript-material-ui-admin-dashboard.jpg" /></a>
@@ -58,4 +62,8 @@ We’ve included a few page examples for most used user flows that will give you
     You can open a support ticket by sending an email here: <a href="mailto:support@bloomui.freshdesk.com" title="Open Support Ticket">
         support@bloomui.freshdesk.com
     </a>
+<<<<<<< HEAD
 </p>
+=======
+</p>
+>>>>>>> 8ffee1570dfe3350ea3fcabda92cc721ea687d64
