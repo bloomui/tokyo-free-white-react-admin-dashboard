@@ -4,7 +4,7 @@ import { LoadingScreen } from "src/components/layout"
 import { FilterDishes_filterDishes_method, FilterDishes_filterDishes_recipes } from "../../Dishes/types/FilterDishes"
 import { ItemString, ItemInt } from "../../Menus/menuDialog"
 import { useGetIngredientQuery } from "../api"
-import { FilterIngredients_filterIngredients_products } from "../types/FilterIngredients"
+import { FilterIngredients_filterIngredients_nutrition, FilterIngredients_filterIngredients_products } from "../types/FilterIngredients"
 import { UpdateIngredientDialog } from "./UpdateIngredientDialog"
 
 export const IngredientDialog = ({
@@ -57,7 +57,10 @@ export const IngredientDialog = ({
                       title="Producten"
                       item={ingredient.products}
                       />
-                      
+                      <ItemNutrition
+                      title="Voedingswaarde"
+                      item={ingredient.nutrition}
+                      />
                       </Grid>
                   </Card>
               </DialogContent>
@@ -102,3 +105,42 @@ export const ItemProducts = ({title, item}: {title: string, item: FilterIngredie
     )
 }
 
+export const ItemNutrition = ({title, item}: {title: string, item: FilterIngredients_filterIngredients_nutrition;}) => {
+    return (
+        <>
+        <Grid key={0} item xs={12}>
+        <Typography style={{ fontWeight: 600 }}>{title}</Typography>
+        </Grid> 
+        <Grid key={1} item xs={12}>
+                <TableContainer>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell align="center">Voedingswaarde</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                <>
+                        <TableRow>
+                            <TableCell align="center">
+                            Calorieën: {item.kcal}
+                            </TableCell>
+                            <TableCell align="center">
+                            Proteïne: {item.protein.total}
+                            </TableCell>
+                            <TableCell align="center">
+                            Vetten: {item.fat.total}
+                            </TableCell>
+                            <TableCell align="center">
+                            Koolhydraten: {item.carbs.carbs}
+                            </TableCell>
+                            <TableCell align="center">
+                            Suikers: {item.carbs.sugar}
+                            </TableCell>
+                        </TableRow>
+                        </>
+                    </TableBody>
+                </TableContainer>
+            </Grid>
+            </>
+    )
+}
