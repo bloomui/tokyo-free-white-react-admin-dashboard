@@ -11,9 +11,30 @@ import { allProducts } from "./types/AllProducts";
 const getIngredientQuery = gql`
  query ingredient ($id: String!) {
    ingredient (id: $id) {
+    category
     id
     name
     rating
+    
+    nutrition {
+      vitamins {
+      c
+        e
+        dTotal
+        kTotal
+    }
+      carbs {
+        carbs
+        sugar
+      }
+      protein {
+        total
+      }
+      fat {
+        total
+      }
+      kcal
+    }
     products {
       id
       name
@@ -46,9 +67,30 @@ const AllProductsQuery = gql`
 export const FilterIngredientsQuery = gql`
 query FilterIngredients ($input: IngredientFilterInput) {
     filterIngredients (input: $input) {
-        id
-    name
-    rating
+      category
+      id
+      name
+      rating
+      
+      nutrition {
+        vitamins {
+        c
+          e
+          dTotal
+          kTotal
+      }
+        carbs {
+          carbs
+          sugar
+        }
+        protein {
+          total
+        }
+        fat {
+          total
+        }
+        kcal
+      }
     products {
       id
       name

@@ -25,7 +25,7 @@ import { IngredientDialog } from "../ingredientDialogs";
 import { UpdateIngredientDialog } from "../ingredientDialogs/UpdateIngredientDialog";
 
 const headCellsIngredients: string[] = [
-  "Naam", "rating", "acties"
+  "Naam", "categorie", "rating", "acties"
 ]
 
 export const IngredientTable = ({
@@ -146,6 +146,7 @@ headCells={headCellsIngredients}
                       setOpen(true)
                     }}
                     >{ingredient.name}</TableCell>
+                    <TableCell align="left">{ingredient.category}</TableCell>
                     <TableCell align="left">{ingredient.rating}</TableCell>
                     <TableCell 
                 align="center"

@@ -33,6 +33,7 @@ export interface AddDishInput {
 export interface AddIngredientInput {
   name: string;
   rating?: number | null;
+  category?: string | null;
 }
 
 export interface AddMenuInput {
@@ -100,6 +101,7 @@ export interface IngredientFilterInput {
   products?: string[] | null;
   recipes?: string[] | null;
   dishes?: string[] | null;
+  categories?: string[] | null;
   rating?: number | null;
   menus?: string[] | null;
   offset?: number | null;
@@ -111,6 +113,7 @@ export interface IngredientInput {
   id: string;
   name: string;
   rating?: number | null;
+  category?: string | null;
 }
 
 export interface MenuFilterInput {
