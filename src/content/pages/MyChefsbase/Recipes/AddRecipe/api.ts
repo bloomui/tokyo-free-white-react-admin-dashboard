@@ -7,6 +7,7 @@ export const ingredientsQuery =  gql`
         ingredients (name: $name) {
             id
             name
+            category
             rating
         }
     }

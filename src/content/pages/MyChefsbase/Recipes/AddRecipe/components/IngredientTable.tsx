@@ -54,6 +54,7 @@ export  const TableData = ({
               </TableRow>
         <TableRow>
           <TableCell>Ingredient</TableCell>
+          <TableCell>Categorie</TableCell>
           <TableCell>Hoeveelheid</TableCell>
           <TableCell>Eenheid</TableCell>
           <TableCell>Voeg toe</TableCell>
@@ -90,6 +91,9 @@ const Row = ({data, setIngredient}: {data: ingredients_ingredients, setIngredien
         <TableRow >
           <TableCell >
             {data.name}
+          </TableCell>
+          <TableCell >
+            {data.category}
           </TableCell>
           <TableCell >
               <TextField

@@ -56,8 +56,9 @@ const AllIngredientsQuery = gql`
 `;
 
 export const FilterRecipesQuery = gql`
-query FilterRecipes ($input: RecipeFilterInput) {
-    filterRecipes (input: $input) {
+query FilterRecipes ($input: RecipeFilterInput, $offset: Int, $limit: Int) {
+  numberOfRecipes  
+  filterRecipes (input: $input, offset: $offset, limit: $limit) {
         id
         name
         rating
@@ -124,17 +125,23 @@ export const useAllIngredientsQuery = () => {
     return { loading, data, error};
   };
 
+export const recipeRowsPerPage = 10;
 export const useFilterRecipesQuery = ({
+  page,
   input,
 }: {
+  page: number;
   input: RecipeFilterInput | null;
 }) => {
 
+  const offset = page * recipeRowsPerPage
   const { loading, data, error } = useSimpleQuery<
   FilterRecipes
     >(FilterRecipesQuery, {
     variables: {
       input: input,
+      offset: offset,
+      limit: recipeRowsPerPage,
     },
   });
   return { loading, data, error};

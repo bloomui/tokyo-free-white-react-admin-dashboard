@@ -11,6 +11,7 @@ export interface ingredients_ingredients {
   __typename: "Ingredient";
   id: string;
   name: string;
+  category: string | null;
   rating: number | null;
 }
 

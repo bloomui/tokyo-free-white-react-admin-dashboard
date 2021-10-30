@@ -151,7 +151,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
                     <>
                     <TableRow
                     hover
-                    onClick={(event) => handleClick(event, menu.id)}
+                    // onClick={(event) => handleClick(event, menu.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -160,6 +160,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
+                        onClick={(event) => handleClick(event, menu.id)}
                         color="primary"
                         checked={isItemSelected}
                         inputProps={{

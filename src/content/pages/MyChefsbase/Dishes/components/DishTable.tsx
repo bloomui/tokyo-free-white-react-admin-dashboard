@@ -123,7 +123,6 @@ headCells={headCellsDishes}
                     <>
                     <TableRow
                     hover
-                    onClick={(event) => handleClick(event, dish.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -132,6 +131,7 @@ headCells={headCellsDishes}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
+                        onClick={(event) => handleClick(event, dish.id)}
                         color="primary"
                         checked={isItemSelected}
                         inputProps={{

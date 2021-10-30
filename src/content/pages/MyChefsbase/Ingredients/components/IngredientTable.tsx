@@ -119,7 +119,6 @@ headCells={headCellsIngredients}
                     <>
                     <TableRow
                     hover
-                    onClick={(event) => handleClick(event, ingredient.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -128,6 +127,7 @@ headCells={headCellsIngredients}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
+                        onClick={(event) => handleClick(event, ingredient.id)}
                         color="primary"
                         checked={isItemSelected}
                         inputProps={{
@@ -188,16 +188,16 @@ headCells={headCellsIngredients}
             })}
             </TableBody>
                    </Table>
-                   </TableContainer>
                    <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
-              component="div"
-              count={data? (data.filterIngredients? (data.filterIngredients.length) : 1000) : 1000}
+              component={Paper}
+              count={data.filterIngredients.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
+             </TableContainer>
             {id &&  (
               <>
               <IngredientDialog

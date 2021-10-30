@@ -9,6 +9,7 @@ import {
       TableBody,
       TableCell,
       TableContainer,
+      TableFooter,
       TableHead,
       TablePagination,
       TableRow,
@@ -23,6 +24,7 @@ import { EnhancedTableHead, EnhancedTableToolbar } from "../../Menus/components/
 import { FilterRecipes, FilterRecipes_filterRecipes } from "../types/FilterRecipes";
 import { RecipeDialog } from "../recipeDialogs";
 import { UpdateRecipeDialog } from "../recipeDialogs/UpdateRecipeDialog";
+import { recipeRowsPerPage } from "../api";
 
 const headCellsRecipes: string[] = [
   "Naam", "type", "rating", "acties"
@@ -119,7 +121,6 @@ headCells={headCellsRecipes}
                     <>
                     <TableRow
                     hover
-                    onClick={(event) => handleClick(event, recipe.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -128,6 +129,7 @@ headCells={headCellsRecipes}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
+                        onClick={(event) => handleClick(event, recipe.id)}
                         color="primary"
                         checked={isItemSelected}
                         inputProps={{
@@ -187,17 +189,19 @@ headCells={headCellsRecipes}
                 )
             })}
             </TableBody>
-                   </Table>
-                   </TableContainer>
-                   <TablePagination
+            </Table>
+              {/* <TableRow> */}
+              <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
-              component="div"
-              count={data? (data.filterRecipes? (data.filterRecipes.length) : 1000) : 1000}
-              rowsPerPage={rowsPerPage}
+              component={Paper}
+              count={data.numberOfRecipes ? data.numberOfRecipes : 1000}
+              rowsPerPage={recipeRowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
+              {/* </TableRow> */}
+             </TableContainer>
             {id &&  (
               <>
               <RecipeDialog
