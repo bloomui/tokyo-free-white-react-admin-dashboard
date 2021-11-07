@@ -7,6 +7,7 @@ import { FilterIngredients } from "./types/FilterIngredients";
 import { ingredient, ingredientVariables } from "./types/ingredient";
 import { UpdateIngredient, UpdateIngredientVariables } from "./types/UpdateIngredient";
 import { allProducts } from "./types/AllProducts";
+import { ingredientRowsPerPage } from "../Recipes/AddRecipe/api";
 
 const getIngredientQuery = gql`
  query ingredient ($id: String!) {
@@ -65,8 +66,9 @@ const AllProductsQuery = gql`
 `;
 
 export const FilterIngredientsQuery = gql`
-query FilterIngredients ($input: IngredientFilterInput) {
-    filterIngredients (input: $input) {
+query FilterIngredients ($input: IngredientFilterInput, $offset: Int, $limit: Int) {
+  numberOfIngredients
+    filterIngredients (input: $input, offset: $offset, limit: $limit) {
       category
       id
       name
@@ -144,15 +146,20 @@ export const useAllProductsQuery = () => {
 
 export const useFilterIngredientsQuery = ({
   input,
+  page
 }: {
+  page: number,
   input: IngredientFilterInput | null;
 }) => {
+  const offset = page * ingredientRowsPerPage
 
   const { loading, data, error } = useSimpleQuery<
   FilterIngredients
     >(FilterIngredientsQuery, {
     variables: {
       input: input,
+      offset: offset,
+      limit: ingredientRowsPerPage
     },
   });
   return { loading, data, error};

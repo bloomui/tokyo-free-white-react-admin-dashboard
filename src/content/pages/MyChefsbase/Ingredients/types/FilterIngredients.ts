@@ -59,9 +59,12 @@ export interface FilterIngredients_filterIngredients {
 }
 
 export interface FilterIngredients {
+  numberOfIngredients: number | null;
   filterIngredients: FilterIngredients_filterIngredients[] | null;
 }
 
 export interface FilterIngredientsVariables {
   input?: IngredientFilterInput | null;
+  offset?: number | null;
+  limit?: number | null;
 }

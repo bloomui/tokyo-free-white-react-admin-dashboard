@@ -13,6 +13,39 @@ export interface recipe_recipe_method {
   method: string;
 }
 
+export interface recipe_recipe_nutrition_vitamins {
+  __typename: "Vitamins";
+  c: number | null;
+  e: number | null;
+  dTotal: number | null;
+  kTotal: number | null;
+}
+
+export interface recipe_recipe_nutrition_carbs {
+  __typename: "Carbs";
+  carbs: number | null;
+  sugar: number | null;
+}
+
+export interface recipe_recipe_nutrition_protein {
+  __typename: "Proteins";
+  total: number | null;
+}
+
+export interface recipe_recipe_nutrition_fat {
+  __typename: "Fats";
+  total: number | null;
+}
+
+export interface recipe_recipe_nutrition {
+  __typename: "Nutrition";
+  vitamins: recipe_recipe_nutrition_vitamins | null;
+  carbs: recipe_recipe_nutrition_carbs | null;
+  protein: recipe_recipe_nutrition_protein | null;
+  fat: recipe_recipe_nutrition_fat | null;
+  kcal: number | null;
+}
+
 export interface recipe_recipe_ingredients_ingredient {
   __typename: "Ingredient";
   id: string;
@@ -38,6 +71,7 @@ export interface recipe_recipe {
   rating: number | null;
   type: string | null;
   method: recipe_recipe_method[] | null;
+  nutrition: recipe_recipe_nutrition | null;
   ingredients: recipe_recipe_ingredients[] | null;
 }
 

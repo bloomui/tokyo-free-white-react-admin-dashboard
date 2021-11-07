@@ -20,6 +20,25 @@ const getRecipeQuery = gql`
           step
           method
         }
+        nutrition {
+          vitamins {
+          c
+            e
+            dTotal
+            kTotal
+        }
+          carbs {
+            carbs
+            sugar
+          }
+          protein {
+            total
+          }
+          fat {
+            total
+          }
+          kcal
+        }
         ingredients {
           ingredient {
             id

@@ -16,9 +16,12 @@ export interface ingredients_ingredients {
 }
 
 export interface ingredients {
+  numberOfIngredients: number | null;
   ingredients: ingredients_ingredients[] | null;
 }
 
 export interface ingredientsVariables {
   name?: string | null;
+  offset?: number | null;
+  limit?: number | null;
 }

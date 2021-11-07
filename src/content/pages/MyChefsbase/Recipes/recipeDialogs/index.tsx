@@ -2,6 +2,7 @@ import { Dialog, DialogTitle, DialogContent, Card, CardActionArea, Grid, Typogra
 import React, { useState } from "react"
 import { LoadingScreen } from "src/components/layout"
 import { FilterDishes_filterDishes_method, FilterDishes_filterDishes_recipes } from "../../Dishes/types/FilterDishes"
+import { ItemNutrition } from "../../Ingredients/ingredientDialogs"
 import { ItemString, ItemInt } from "../../Menus/menuDialog"
 import { useGetRecipeQuery } from "../api"
 import { FilterRecipes_filterRecipes_ingredients } from "../types/FilterRecipes"
@@ -56,6 +57,10 @@ export const RecipeDialog = ({
                        <ItemInt 
                        title="rating"
                        item={recipe.rating}
+                       />
+                       <ItemNutrition
+                       title="Voedingswaarde"
+                       item={recipe.nutrition}
                        />
                       <ItemIngredients
                       title="Recepten"

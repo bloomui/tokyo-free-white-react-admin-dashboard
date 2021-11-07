@@ -122,20 +122,35 @@ export const ItemNutrition = ({title, item}: {title: string, item: FilterIngredi
                 <>
                         <TableRow>
                             <TableCell align="center">
-                            Calorieën: {item.kcal}
+                            Calorieën:</TableCell>
+                            <TableCell> {item.kcal}
                             </TableCell>
+                            </TableRow>
+                            <TableRow>
                             <TableCell align="center">
-                            Proteïne: {item.protein.total}
+                            Proteïne: </TableCell>
+                            <TableCell>{item.protein.total}
                             </TableCell>
+                            </TableRow>
+                            <TableRow>
                             <TableCell align="center">
-                            Vetten: {item.fat.total}
+                            Vetten: </TableCell>
+                            <TableCell>{item.fat.total}
                             </TableCell>
+                            </TableRow>
+                            <TableRow>
                             <TableCell align="center">
-                            Koolhydraten: {item.carbs.carbs}
+                            Koolhydraten: </TableCell>
+                            <TableCell>{item.carbs.carbs}
                             </TableCell>
+                            </TableRow>
+                            <TableRow>
                             <TableCell align="center">
-                            Suikers: {item.carbs.sugar}
+                            Suikers: </TableCell>
+                            <TableCell>{item.carbs.sugar}
                             </TableCell>
+                            </TableRow>
+                            <TableRow>
                         </TableRow>
                         </>
                     </TableBody>

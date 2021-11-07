@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client";
-import { Button, MenuItem, Paper, Table, TableCell, TableContainer, TableRow, TextField, TextFieldProps } from "@material-ui/core";
+import { Button, Grid, MenuItem, Paper, Table, TableCell, TableContainer, TablePagination, TableRow, TextField, TextFieldProps } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import { Formik, useField } from "formik";
 import React, { useState } from "react";
 import { FormikSelect } from "src/components/form/FormikSelect";
@@ -9,7 +10,7 @@ import { composeValidators, required, Validator } from "src/utilities/formikVali
 import { ingredientToQ } from "..";
 import { AutoSubmitToken } from "../../../Menus/filtermenus";
 import { Search } from "../../../Menus/filtermenus/components/search";
-import { useSearchIngredientQuery } from "../api";
+import { ingredientRowsPerPage, useSearchIngredientQuery } from "../api";
 import { ingredients_ingredients } from "../types/ingredients";
 
 export const units = ["gram", "miligram", "kilogram", "theelepel(s)", "eetlepel(s)", "stuk(s)", "mililiter", "liter"]
@@ -19,14 +20,30 @@ export  const TableData = ({
 }: {
   setIngredients: (selected: ingredientToQ) => void
 }) => {
+    const [pageNumber, setPageNumber] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const handleChangePage = (
+        event: any,
+        newPage: React.SetStateAction<number>
+      ) => {
+        setPage(newPage as number);
+      };
+      const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+          setRowsPerPage(parseInt(event.target.value, 10));
+          setPageNumber(0);
+        };
 
     const [name, setName] = useState<string>()
 
     const nameForm = {
         name: ''
     }
+    const [page, setPage] = useState<number>(0)
 
-  const { loading, data, error, refetch } = useSearchIngredientQuery({name})
+  const { loading, data, error, refetch } = useSearchIngredientQuery({
+    name: name,
+    page: page
+    });
   if (loading) return <LoadingScreen />;
   if (error) return <LoadingScreen />;
 
@@ -43,6 +60,16 @@ export  const TableData = ({
         {({ setFieldValue, submitForm }) => {
           return (
             <>
+            {/* <Grid container spacing={2} xs={12}>
+ <Grid key={0} item>
+   <Typography>Zoek op naam:</Typography>
+ <TextField
+      fullWidth
+      placeholder="Zoek op naam"
+      onChange={(e) => setName(e.target.value)}
+    />
+    </Grid>
+    </Grid> */}
               <Search
               placeholder="Zoek op naam" setFieldValue={setFieldValue}
               />
@@ -65,6 +92,15 @@ export  const TableData = ({
           setIngredient={(a: ingredientToQ) => setIngredients(a)}/>
         ))}
         </Table>
+        <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component={Paper}
+              count={data.numberOfIngredients ? data.numberOfIngredients : 1000}
+              rowsPerPage={ingredientRowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
       </TableContainer>
   )
 }
