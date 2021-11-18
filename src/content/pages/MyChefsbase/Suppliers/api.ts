@@ -32,6 +32,7 @@ export const useGetSupplierQuery = (id: string) => {
 
 export const FilterSuppliersQuery = gql`
 query FilterSuppliers ($input: SupplierFilterInput) {
+    numberOfSuppliers
     filterSuppliers (input: $input) {
     id
     name

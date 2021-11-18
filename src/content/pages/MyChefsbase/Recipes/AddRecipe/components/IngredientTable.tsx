@@ -60,20 +60,20 @@ export  const TableData = ({
         {({ setFieldValue, submitForm }) => {
           return (
             <>
-            {/* <Grid container spacing={2} xs={12}>
+            <Grid container spacing={2} xs={12}>
  <Grid key={0} item>
-   <Typography>Zoek op naam:</Typography>
+   <Typography>Zoek op naam:</Typography> 
  <TextField
+      onBlur={refetch}
       fullWidth
       placeholder="Zoek op naam"
-      onChange={(e) => setName(e.target.value)}
-    />
+onChange={(e) => setFieldValue("name", e.target.value)}    />
     </Grid>
-    </Grid> */}
-              <Search
+    </Grid>
+              {/* <Search
               placeholder="Zoek op naam" setFieldValue={setFieldValue}
-              />
-        <AutoSubmitToken />
+              /> */}
+        {/* <AutoSubmitToken /> */}
     </>
           )
         }}

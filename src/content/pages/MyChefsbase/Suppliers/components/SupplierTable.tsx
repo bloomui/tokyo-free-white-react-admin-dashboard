@@ -192,7 +192,7 @@ headCells={headCellsSuppliers}
                    <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component={Paper}
-        count={data.filterSuppliers.length}
+        count={data.numberOfSuppliers}
         rowsPerPage={10}
         page={page}
         backIconButtonProps={{

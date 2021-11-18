@@ -40,9 +40,12 @@ export interface FilterMenus_filterMenus {
 }
 
 export interface FilterMenus {
+  numberOfMenus: number | null;
   filterMenus: FilterMenus_filterMenus[] | null;
 }
 
 export interface FilterMenusVariables {
   input?: MenuFilterInput | null;
+  offset?: number | null;
+  limit?: number | null;
 }

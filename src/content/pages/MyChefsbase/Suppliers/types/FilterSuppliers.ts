@@ -18,6 +18,7 @@ export interface FilterSuppliers_filterSuppliers {
 }
 
 export interface FilterSuppliers {
+  numberOfSuppliers: number | null;
   filterSuppliers: FilterSuppliers_filterSuppliers[] | null;
 }
 

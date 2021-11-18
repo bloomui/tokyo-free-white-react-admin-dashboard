@@ -197,7 +197,7 @@ headCells={headCellsDishes}
                    <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={data? (data.filterDishes? (data.filterDishes.length) : 1000) : 1000}
+              count={data.numberOfDishes}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

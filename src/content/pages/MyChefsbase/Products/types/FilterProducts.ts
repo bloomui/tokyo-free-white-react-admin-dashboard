@@ -27,9 +27,12 @@ export interface FilterProducts_filterProducts {
 }
 
 export interface FilterProducts {
+  numberOfProducts: number | null;
   filterProducts: FilterProducts_filterProducts[] | null;
 }
 
 export interface FilterProductsVariables {
   input?: ProductFilterInput | null;
+  offset?: number | null;
+  limit?: number | null;
 }

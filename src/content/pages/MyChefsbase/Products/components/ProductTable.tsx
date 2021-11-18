@@ -194,7 +194,7 @@ headCells={headCellsProducts}
                    <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={data? (data.filterProducts? (data.filterProducts.length) : 1000) : 1000}
+              count={data.numberOfProducts}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

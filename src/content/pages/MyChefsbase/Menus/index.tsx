@@ -23,7 +23,8 @@ import { TopPartMenuPage } from "./components/TopPartMenuPage";
     const [openAddMenu, setOpenAddMenu] = useState(false)
     const [ input, setInput] = useState<MenuFilterInput>(initialMenuValues);
     const { loading, data } = useFilterMenuQuery({
-        input: input
+        input: input,
+        page: page,
     })
     
     let content;

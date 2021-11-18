@@ -23,7 +23,8 @@ import { AddProductDialog } from "./productDialogs/AddProductDialog";
     const [openAddMenu, setOpenAddProduct] = useState(false)
     const [ input, setInput] = useState<ProductFilterFormInput>(initialProductValues);
     const { loading, data } = useFilterProductsQuery({
-        input: mapFormToInput(input)
+        input: mapFormToInput(input),
+        page: page
     })
     
     let content;

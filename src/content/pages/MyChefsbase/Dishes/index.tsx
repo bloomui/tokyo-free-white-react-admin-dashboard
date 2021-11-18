@@ -23,6 +23,7 @@ import { DishFilter, initialValues } from "./filterdishes";
     const [ input, setInput] = useState<DishFilterInput>(initialValues);
 
     const { loading, data } = useFilterDishesQuery({
+      page: page,
       input: input,
       });
   

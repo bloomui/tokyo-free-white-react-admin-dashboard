@@ -67,7 +67,7 @@ const AllProductsQuery = gql`
 
 export const FilterIngredientsQuery = gql`
 query FilterIngredients ($input: IngredientFilterInput, $offset: Int, $limit: Int) {
-  numberOfIngredients
+    numberOfIngredients
     filterIngredients (input: $input, offset: $offset, limit: $limit) {
       category
       id

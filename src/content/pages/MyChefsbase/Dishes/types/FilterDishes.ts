@@ -45,9 +45,12 @@ export interface FilterDishes_filterDishes {
 }
 
 export interface FilterDishes {
+  numberOfDishes: number | null;
   filterDishes: FilterDishes_filterDishes[] | null;
 }
 
 export interface FilterDishesVariables {
   input?: DishFilterInput | null;
+  limit?: number | null;
+  offset?: number | null;
 }
