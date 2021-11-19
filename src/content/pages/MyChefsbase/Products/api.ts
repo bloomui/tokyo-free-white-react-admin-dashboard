@@ -126,7 +126,7 @@ export const useFilterProductsQuery = ({
     variables: {
       input: input,
       offset: offset,
-      limit: page
+      limit: productRowsPerPage
     },
   });
   return { loading, data, error};

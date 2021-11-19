@@ -1,5 +1,4 @@
-import { useQuery } from "@apollo/client";
-import { Button, Container, Grid, Paper, Table, TableCell, TableContainer, TableRow, TextField, TextFieldProps, Typography } from "@material-ui/core";
+import { Button, Container, Divider, Grid, MenuItem, Table, TableCell, TableContainer, TableRow, TextField, TextFieldProps, Typography } from "@material-ui/core";
 import { FieldArray, Formik, useField } from "formik";
 import React from "react";
 import { useState } from "react";
@@ -7,31 +6,32 @@ import { Helmet } from "react-helmet-async";
 import { PageHeader } from "src/components/pageHeader/PageHeader";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import { FormField } from "src/components/form/FormField";
-import { AddRecipeInput, QuantityToId, StepToMethodInput } from "src/globalTypes";
+import { AddDishInput, AddIngredientInput, AddProductInput, AddRecipeInput, QuantityToId, StepToMethodInput } from "src/globalTypes";
 import { composeValidators, required, Validator } from "src/utilities/formikValidators";
 import { user } from "../..";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
-import { useAddRecipe } from "../api";
-import { Divider } from '@mui/material';
-import { AddRecipeVariables } from "../types/AddRecipe";
-import { TableData } from "./components/IngredientTable";
-import { VscTrash } from "react-icons/vsc";
+import { FormikSelect } from "src/components/form/FormikSelect";
+import { useAddDish } from "../api";
+import { AddDishVariables } from "../types/AddDish";
+import { TableRecipeData } from "./components/RecipeTable";
 
-export const AddRecipePage = () => {
+export const AddDishPage = () => {
 
-    const { addRecipe, loading, error } = useAddRecipe({
-        onCompleted: () => window.location.reload()
+    const { addDish, loading, error } = useAddDish({
+        onCompleted: () => {window.location.reload()}
         },
       );
       const [stepHere, setStep] = useState(1)
-      const [selectedIngredients, setIngredients] = React.useState<ingredientToQ[]>([]);
+      const [selectedRecipes, setRecipes] = React.useState<recipeToQ[]>([]);
 
-    const formInput: AddRecipeInput = {
+      const formInput: AddDishInput = {
         name: '',
         rating: 0,
         type: '',
+        theme: '',
+        comment: '',
     }
-    const emptyIngredientEntry: QuantityToId = {
+    const emptyRecipeEntry: QuantityToId = {
         quantity: 0,
         unit: '',
         id: '',
@@ -40,31 +40,31 @@ export const AddRecipePage = () => {
             step: stepHere,
             method: ''
             }
-
-            function handleDelete(index) {
-              selectedIngredients.splice(index, 1)
-              setIngredients([...selectedIngredients])
-            }
     
-    const formIngredients: QuantityToId[] | null = [emptyIngredientEntry]
-        
-    const formMethods: StepToMethodInput[] | null = [
-        emptyStep
-    ]
-    const formState : AddRecipeVariables = {
-        input: formInput,
-        ingredients: formIngredients,
-        method: formMethods
-    }
-        
+            function handleDelete(index) {
+                selectedRecipes.splice(index, 1)
+                setRecipes([...selectedRecipes])
+              }
+      
+      const formRecipes: QuantityToId[] | null = [emptyRecipeEntry]
+          
+      const formMethods: StepToMethodInput[] | null = [
+          emptyStep
+      ]
+      const formState : AddDishVariables = {
+          input: formInput,
+          recipes: formRecipes,
+          method: formMethods
+      }
+       
     return (
         <>
         <Helmet>
-        <title>Nieuw recept</title>
+        <title>Nieuw Gerecht</title>
       </Helmet>
       <PageTitleWrapper>
       <PageHeader
-        title="Nieuw recept"
+        title="Nieuw gerecht"
         name="Soup Bros"
         avatar={user.avatar}
          />
@@ -81,17 +81,19 @@ export const AddRecipePage = () => {
         <Formik
         initialValues={formState}
         onSubmit={(values) => {
-          addRecipe({
+          addDish({
             variables: {
                 method: values.method.map((stepToMethod, index) => ({
                   step: index + 1,
                   method: stepToMethod.method
                 })),
-                ingredients: mapIngredientToQToInput(selectedIngredients),
+                recipes: mapRecipeToQToInput(selectedRecipes),
                 input: {
-                type: values.input.type,
+                theme: values.input.theme,
                 name: values.input.name,
-                rating: values.input.rating
+                rating: values.input.rating,
+                type: values.input.type,
+                comment: values.input.comment,
               },
             },
           });
@@ -101,7 +103,47 @@ export const AddRecipePage = () => {
           return (
             <>
             <Grid container xs={12} spacing={2}>
-            <Grid xs={12}>
+                <Grid xs={6}>
+                <Grid xs={5}>
+                <Typography>Geef dit gerecht een naam</Typography>
+                <FormField
+                  name="input.name"
+                  label="Naam"
+                  validator={composeValidators(required)}
+                />
+                </Grid>
+                <Grid xs={1}></Grid>
+                <Grid xs={3}>
+                <Rating1
+                updateField="input.rating"
+                setFieldValue={setFieldValue}
+                />
+                </Grid>
+                <Grid xs={1}></Grid>
+                <Grid xs={5}>
+                <Typography>Geef het thema aan</Typography>
+                <FormField
+                  name="input.theme"
+                  label="Thema"
+                />
+                </Grid> 
+                <Grid xs={5}>
+                <Grid xs={5}>
+                <Typography>Geef het type aan</Typography>
+                <FormField
+                  name="input.type"
+                  label="Type"
+                />
+                </Grid> 
+                <Grid xs={5}>
+                <Typography>Geef een opmerking aan</Typography>
+                <FormField
+                  name="input.comment"
+                  label="Opmerking"
+                />
+                </Grid> 
+                </Grid>
+                <Grid xs={5}>
                 <Button
                   disabled={loading}
                   onClick={() => submitForm()}
@@ -110,41 +152,16 @@ export const AddRecipePage = () => {
                 >
                   Gegevens toevoegen
                 </Button>
-                </Grid>   
-                <Grid container xs={6}>
-                <Grid xs={6}>
-                <Typography>Geef dit recept een naam</Typography>
-                <FormField
-                  name="input.name"
-                  label="Naam"
-                  validator={composeValidators(required)}
-                />
-                </Grid>
-                <Grid xs={6}>
-                <Typography>Geef het recept type aan</Typography>
-                <FormField
-                  name="input.type"
-                  label="Type"
-                />
-                </Grid>  
-                <Grid xs={6}>
-                <Rating1
-                updateField="input.rating"
-                setFieldValue={setFieldValue}
-                />
-                </Grid>
-                <Grid xs={1}></Grid>
-                           
+                </Grid>               
                 </Grid>
                 <Grid xs={6}>
                 <Grid xs={12}>
-                Stappenplan om dit recept te maken:
+                Stappenplan om dit gerecht te maken:
                 <Grid xs={12}>
                 <FieldArray
                 name="method"
                 render={arrayHelpers => (
                 <div>
-                  <TableContainer >
                     <Table>
                       <TableRow>
                         <TableCell>
@@ -196,7 +213,6 @@ export const AddRecipePage = () => {
                        </Button>
                    </TableRow>
                    </Table>
-                   </TableContainer>
                    </div>
                 )}
                 />
@@ -207,26 +223,27 @@ export const AddRecipePage = () => {
                 <Grid xs={12}></Grid>
                 <Divider/>
                 <Grid container xs={12}>
-                  <Grid xs={12}>
-                Ingredienten:
+                  <Grid xs={6}>
+                Recepten:
                 </Grid>
+                <Grid xs={6}>
                   <TableContainer>
                 <Table size="small">
                   <TableRow>
-                    <TableCell>Ingredient</TableCell>
+                    <TableCell>Recept</TableCell>
                     <TableCell>Hoeveelheid</TableCell>
                     <TableCell>Eenheid</TableCell>
                     </TableRow>
-                {selectedIngredients.map((ingredient, index) =>  (
+                {selectedRecipes.map((recipe, index) =>  (
                   <TableRow>
                     <TableCell>
-                      {ingredient.name}
+                      {recipe.name}
                     </TableCell>
                     <TableCell>
-                      {ingredient.quantity}
+                      {recipe.quantity}
                     </TableCell>
                     <TableCell>
-                      {ingredient.unit}
+                      {recipe.unit}
                     </TableCell>
                     <TableCell>
                     <Button
@@ -241,9 +258,10 @@ export const AddRecipePage = () => {
                 ))}
                 </Table>
                 </TableContainer>
-                <Grid xs={12}>
-                  <TableData 
-                  setIngredients={(selected) => setIngredients([...selectedIngredients, selected])
+                </Grid>
+                <Grid xs={6}>
+                  <TableRecipeData 
+                  setRecipes={(selected) => setRecipes([...selectedRecipes, selected])
                   }/>
                   </Grid>
                 </Grid>             
@@ -263,14 +281,14 @@ export const AddRecipePage = () => {
           )
 }
 
-export type ingredientToQ = {
+export type recipeToQ = {
   name: string,
   id: string,
   quantity: string,
   unit: string
 }
 
-const mapIngredientToQToInput = (selected: ingredientToQ[]): QuantityToId[] => {
+const mapRecipeToQToInput = (selected: recipeToQ[]): QuantityToId[] => {
   return selected.map((a) => (
     {
       id: a.id,

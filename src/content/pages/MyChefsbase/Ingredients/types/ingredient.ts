@@ -7,7 +7,13 @@
 // GraphQL query operation: ingredient
 // ====================================================
 
-export interface ingredient_ingredient_nutrition_vitamins {
+export interface ingredient_ingredient_nutrition_quantity {
+  __typename: "Quantity";
+  quantity: number;
+  unit: string;
+}
+
+export interface ingredient_ingredient_nutrition_nutrition_vitamins {
   __typename: "Vitamins";
   c: number | null;
   e: number | null;
@@ -15,29 +21,35 @@ export interface ingredient_ingredient_nutrition_vitamins {
   kTotal: number | null;
 }
 
-export interface ingredient_ingredient_nutrition_carbs {
+export interface ingredient_ingredient_nutrition_nutrition_carbs {
   __typename: "Carbs";
   carbs: number | null;
   sugar: number | null;
 }
 
-export interface ingredient_ingredient_nutrition_protein {
+export interface ingredient_ingredient_nutrition_nutrition_protein {
   __typename: "Proteins";
   total: number | null;
 }
 
-export interface ingredient_ingredient_nutrition_fat {
+export interface ingredient_ingredient_nutrition_nutrition_fat {
   __typename: "Fats";
   total: number | null;
 }
 
-export interface ingredient_ingredient_nutrition {
+export interface ingredient_ingredient_nutrition_nutrition {
   __typename: "Nutrition";
-  vitamins: ingredient_ingredient_nutrition_vitamins | null;
-  carbs: ingredient_ingredient_nutrition_carbs | null;
-  protein: ingredient_ingredient_nutrition_protein | null;
-  fat: ingredient_ingredient_nutrition_fat | null;
+  vitamins: ingredient_ingredient_nutrition_nutrition_vitamins | null;
+  carbs: ingredient_ingredient_nutrition_nutrition_carbs | null;
+  protein: ingredient_ingredient_nutrition_nutrition_protein | null;
+  fat: ingredient_ingredient_nutrition_nutrition_fat | null;
   kcal: number | null;
+}
+
+export interface ingredient_ingredient_nutrition {
+  __typename: "QuantityToNutrition";
+  quantity: ingredient_ingredient_nutrition_quantity;
+  nutrition: ingredient_ingredient_nutrition_nutrition;
 }
 
 export interface ingredient_ingredient_products {

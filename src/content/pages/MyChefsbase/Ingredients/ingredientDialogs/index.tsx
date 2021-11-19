@@ -4,7 +4,7 @@ import { LoadingScreen } from "src/components/layout"
 import { FilterDishes_filterDishes_method, FilterDishes_filterDishes_recipes } from "../../Dishes/types/FilterDishes"
 import { ItemString, ItemInt } from "../../Menus/menuDialog"
 import { useGetIngredientQuery } from "../api"
-import { FilterIngredients_filterIngredients_nutrition, FilterIngredients_filterIngredients_products } from "../types/FilterIngredients"
+import { FilterIngredients_filterIngredients_nutrition, FilterIngredients_filterIngredients_nutrition_nutrition, FilterIngredients_filterIngredients_products } from "../types/FilterIngredients"
 import { UpdateIngredientDialog } from "./UpdateIngredientDialog"
 
 export const IngredientDialog = ({
@@ -49,6 +49,10 @@ export const IngredientDialog = ({
               <DialogContent>
                   <Card>
                       <Grid container spacing={2} xs={12}>
+                          <ItemString
+                          title="categorie"
+                          item={ingredient.category}
+                          />
                        <ItemInt 
                        title="rating"
                        item={ingredient.rating}
@@ -57,9 +61,10 @@ export const IngredientDialog = ({
                       title="Producten"
                       item={ingredient.products}
                       />
+                      <Grid item xs={12}>Per {ingredient.nutrition.quantity.quantity} {ingredient.nutrition.quantity.unit}:</Grid>
                       <ItemNutrition
                       title="Voedingswaarde"
-                      item={ingredient.nutrition}
+                      item={ingredient.nutrition.nutrition}
                       />
                       </Grid>
                   </Card>
@@ -105,7 +110,7 @@ export const ItemProducts = ({title, item}: {title: string, item: FilterIngredie
     )
 }
 
-export const ItemNutrition = ({title, item}: {title: string, item: FilterIngredients_filterIngredients_nutrition;}) => {
+export const ItemNutrition = ({title, item}: {title: string, item: FilterIngredients_filterIngredients_nutrition_nutrition;}) => {
     return (
         <>
         <Grid key={0} item xs={12}>

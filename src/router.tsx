@@ -10,6 +10,11 @@ import SignInForm from './content/pages/SignIn';
 import SignUpForm from './content/pages/SignUp';
 import MyChefsBase from './content/pages/MyChefsbase';
 import { AddRecipePage } from './content/pages/MyChefsbase/Recipes/AddRecipe';
+import { AddProductPage } from './content/pages/MyChefsbase/Products/AddProduct';
+import { AddIngredientPage } from './content/pages/MyChefsbase/Ingredients/AddIngredient';
+import { AddDishPage } from './content/pages/MyChefsbase/Dishes/AddDish';
+import { AddMenuPage } from './content/pages/MyChefsbase/Menus/AddMenu';
+import { AddSupplierPage } from './content/pages/MyChefsbase/Suppliers/AddSupplier';
 
 const Loader = (Component) => (props) => (
   <Suspense fallback={<SuspenseLoader />}>
@@ -202,8 +207,28 @@ const routes = (isLoggedIn: boolean) => [
         element: <StatusComingSoon />
       },
       {
+        path: 'addsupplier',
+        element: <AddSupplierPage />
+      },
+      {
+        path: 'addproduct',
+        element: <AddProductPage />
+      },
+      {
+        path: 'addingredient',
+        element: <AddIngredientPage />
+      },
+      {
         path: 'addrecipe',
         element: <AddRecipePage />
+      },
+      {
+        path: 'adddish',
+        element: <AddDishPage />
+      },
+      {
+        path: 'addmenu',
+        element: <AddMenuPage />
       }
     ]
   },

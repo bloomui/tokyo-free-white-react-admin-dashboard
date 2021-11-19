@@ -56,8 +56,33 @@ const menuItems: MenuItems[] = [
         icon: FaDatabase,
           },
           {
+            name: 'Leverancier toevoegen',
+            link: '/mychefsbase/addsupplier',
+            icon: VscAdd
+          },
+          {
+            name: 'Product toevoegen',
+            link: '/mychefsbase/addproduct',
+            icon: VscAdd
+          },
+          {
+            name: 'Ingredient toevoegen',
+            link: '/mychefsbase/addingredient',
+            icon: VscAdd
+          },
+          {
             name: 'Recept toevoegen',
             link: '/mychefsbase/addrecipe',
+            icon: VscAdd
+          },
+          {
+            name: 'Gerecht toevoegen',
+            link: '/mychefsbase/adddish',
+            icon: VscAdd
+          },
+          {
+            name: 'Menu toevoegen',
+            link: '/mychefsbase/addmenu',
             icon: VscAdd
           },
         ]

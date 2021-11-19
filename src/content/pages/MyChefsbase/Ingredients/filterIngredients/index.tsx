@@ -4,6 +4,7 @@ import React from "react";
 import { FaFilter } from "react-icons/fa";
 import { IngredientFilterInput, RecipeFilterInput } from "src/globalTypes";
 import { AutoSubmitToken, ExpandMore } from "../../Menus/filtermenus";
+import { Categories } from "../../Menus/filtermenus/components/categories";
 import { Dishes } from "../../Menus/filtermenus/components/dishes";
 import { Ingredients } from "../../Menus/filtermenus/components/ingredients";
 import { Menus } from "../../Menus/filtermenus/components/menus";
@@ -22,6 +23,7 @@ export const initialIngredientValues: IngredientFilterInput = {
     suppliers: [],
     recipes: [],
     products: [],
+    categories: [],
     rating: 0,
     menus: [],
     name: ''
@@ -30,6 +32,7 @@ export const initialIngredientValues: IngredientFilterInput = {
   export const IngredientFilter = ({
     setOpenAddIngredient,
     onClose,
+    allCategories,
     products,
     suppliers,
     dishes,
@@ -44,6 +47,7 @@ export const initialIngredientValues: IngredientFilterInput = {
     menus: Ingredients_menus[] | null;
     recipes: Ingredients_recipes[] | null;
     products: Ingredients_products[] | null;
+    allCategories: string[] | null;
     onChange: (values: IngredientFilterInput) => void;
   }) => {
 
@@ -63,7 +67,7 @@ export const initialIngredientValues: IngredientFilterInput = {
            <Grid container xs={12}>
             <CardActions disableSpacing>
             <Grid key={0} item>
-           <Search placeholder="Zoek Recept" setFieldValue={setFieldValue}/>
+           <Search placeholder="Zoek Ingredient" setFieldValue={setFieldValue}/>
            </Grid>
         <Grid key={1} item>
             <ExpandMore
@@ -90,6 +94,11 @@ export const initialIngredientValues: IngredientFilterInput = {
            updateField="rating"
            setFieldValue={setFieldValue}/>
            </Grid>
+           <Grid key={3} item xs={3}>
+            <Categories 
+            allCategories={allCategories}
+            setFieldValue={setFieldValue} />
+            </Grid> 
            <Grid key={2} item xs={3}>
               <Suppliers 
               suppliers={suppliers}

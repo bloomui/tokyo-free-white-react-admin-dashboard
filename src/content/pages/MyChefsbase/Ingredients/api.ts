@@ -16,8 +16,12 @@ const getIngredientQuery = gql`
     id
     name
     rating
-    
     nutrition {
+      quantity {
+        quantity
+        unit
+      }
+      nutrition {
       vitamins {
       c
         e
@@ -36,6 +40,7 @@ const getIngredientQuery = gql`
       }
       kcal
     }
+  }
     products {
       id
       name
@@ -73,8 +78,12 @@ query FilterIngredients ($input: IngredientFilterInput, $offset: Int, $limit: In
       id
       name
       rating
-      
       nutrition {
+        quantity {
+          quantity
+          unit
+        }
+        nutrition {
         vitamins {
         c
           e
@@ -93,6 +102,7 @@ query FilterIngredients ($input: IngredientFilterInput, $offset: Int, $limit: In
         }
         kcal
       }
+    }
     products {
       id
       name
@@ -102,6 +112,7 @@ query FilterIngredients ($input: IngredientFilterInput, $offset: Int, $limit: In
 
 export const IngredientsData = gql`
 query Ingredients {
+  allCategories
   suppliers {
     id
     name

@@ -29,6 +29,7 @@ export const TopPartIngredientPage = ({
     menus={data.menus}
     dishes={data.dishes}
     recipes={data.recipes}
+    allCategories={data.allCategories}
     onChange={(values) => setInput(values)}
     />
   )

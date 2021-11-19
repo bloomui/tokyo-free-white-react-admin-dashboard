@@ -3,27 +3,25 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { SupplierFilterInput } from "./../../../../../globalTypes";
-
 // ====================================================
-// GraphQL query operation: FilterSuppliers
+// GraphQL query operation: suppliers
 // ====================================================
 
-export interface FilterSuppliers_filterSuppliers {
+export interface suppliers_suppliers {
   __typename: "Supplier";
   id: string;
   name: string;
-  rating: number | null;
   email: string;
+  rating: number | null;
 }
 
-export interface FilterSuppliers {
+export interface suppliers {
   numberOfSuppliers: number | null;
-  filterSuppliers: FilterSuppliers_filterSuppliers[] | null;
+  suppliers: suppliers_suppliers[] | null;
 }
 
-export interface FilterSuppliersVariables {
-  input?: SupplierFilterInput | null;
+export interface suppliersVariables {
+  name?: string | null;
   offset?: number | null;
   limit?: number | null;
 }

@@ -1,5 +1,4 @@
 import { gql } from "@apollo/client";
-import { useRef } from "react";
 import { useMutation } from "@apollo/client";
 import { Menus } from "./types/Menus";
 import { Delete, DeleteVariables } from "./types/Delete";
