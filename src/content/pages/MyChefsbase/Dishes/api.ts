@@ -58,8 +58,9 @@ const AllRecipesQuery = gql`
 `;
 
 export const FilterDishesQuery = gql`
-query FilterDishes ($input: DishFilterInput) {
-    filterDishes (input: $input) {
+query FilterDishes ($input: DishFilterInput, $limit: Int, $offset: Int) {
+    numberOfDishes
+    filterDishes (input: $input, limit: $limit, offset: $offset) {
     id
     comment
     name
@@ -128,17 +129,23 @@ export const useAllRecipesQuery = () => {
     return { loading, data, error};
   };
 
+  const dishesMax = 10
 export const useFilterDishesQuery = ({
   input,
+  page,
 }: {
+  page: number;
   input: DishFilterInput | null;
 }) => {
 
+  const offset = dishesMax * page
   const { loading, data, error } = useSimpleQuery<
   FilterDishes
     >(FilterDishesQuery, {
     variables: {
       input: input,
+      limit: dishesMax,
+      offset: offset
     },
   });
   return { loading, data, error};

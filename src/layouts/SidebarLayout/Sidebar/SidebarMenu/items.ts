@@ -16,6 +16,7 @@ import SettingsTwoToneIcon from '@material-ui/icons/SettingsTwoTone';
 import TrafficTwoToneIcon from '@material-ui/icons/TrafficTwoTone';
 import VerifiedUserTwoToneIcon from '@material-ui/icons/VerifiedUserTwoTone';
 import { FaDatabase } from "react-icons/fa"
+import { VscAdd } from 'react-icons/vsc';
 
 export interface MenuItem {
   link?: string;
@@ -47,7 +48,44 @@ const menuItems: MenuItems[] = [
       {
         name: 'Chefsbase',
         link: '/mychefsbase/chefsbase',
-        icon: FaDatabase
+        icon: FaDatabase,
+        items: [
+          {
+            name: 'Gegevens',
+        link: '/mychefsbase/chefsbase',
+        icon: FaDatabase,
+          },
+          {
+            name: 'Leverancier toevoegen',
+            link: '/mychefsbase/addsupplier',
+            icon: VscAdd
+          },
+          {
+            name: 'Product toevoegen',
+            link: '/mychefsbase/addproduct',
+            icon: VscAdd
+          },
+          {
+            name: 'Ingredient toevoegen',
+            link: '/mychefsbase/addingredient',
+            icon: VscAdd
+          },
+          {
+            name: 'Recept toevoegen',
+            link: '/mychefsbase/addrecipe',
+            icon: VscAdd
+          },
+          {
+            name: 'Gerecht toevoegen',
+            link: '/mychefsbase/adddish',
+            icon: VscAdd
+          },
+          {
+            name: 'Menu toevoegen',
+            link: '/mychefsbase/addmenu',
+            icon: VscAdd
+          },
+        ]
       },
       {
         name: 'Inventaris',

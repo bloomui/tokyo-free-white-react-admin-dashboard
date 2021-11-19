@@ -23,6 +23,7 @@ import { AddIngredientDialog } from "./ingredientDialogs/AddIngredientDialog";
     const [ input, setInput] = useState<IngredientFilterInput>(initialIngredientValues);
 
     const { loading, data } = useFilterIngredientsQuery({
+      page: page,
       input: input,
       });
   

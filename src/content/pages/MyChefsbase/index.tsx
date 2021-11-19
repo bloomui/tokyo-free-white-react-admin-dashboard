@@ -6,11 +6,12 @@ import React, { useState } from 'react';
 import { MenuPage } from 'src/content/pages/MyChefsbase/Menus';
 import { DishPage } from 'src/content/pages/MyChefsbase/Dishes';
 import { RecipePage } from 'src/content/pages/MyChefsbase/Recipes';
-import PageHeader from 'src/components/pageHeader/PageHeader';
+import { PageHeader } from 'src/components/pageHeader/PageHeader';
 import { IngredientPage } from './Ingredients';
 import { SupplierPage } from './Suppliers';
 import { ProductPage } from './Products';
-
+import { clearAuth } from 'src/utilities/auth';
+import { useNavigate } from 'react-router';
 export enum ChefsTab {
   Menus = "Menus",
   Gerechten = "Gerechten",
@@ -20,6 +21,13 @@ export enum ChefsTab {
   Leveranciers = "Leveranciers",
   Favorieten = "Favorieten",
 }
+
+export const user =
+{
+  name: 'Soup Bros',
+  avatar: '/static/images/avatars/SB_logo.png',
+  title: "Let's check the Soup Bros Chefsbase!"
+};
 
 const serializeTab = (tab: string): ChefsTab | string => {
   if (tab === "Menus") {
@@ -62,6 +70,7 @@ function MyChefsBase() {
   const [value, setValue] = useState(0);
   const [page, setPage] = useState<number>(0);
   const [open, setOpen] = useState<boolean>(false);
+  const navigate = useNavigate()
 
   // const selectedTab = determineTab(tab);
 
@@ -100,7 +109,10 @@ function MyChefsBase() {
         <title>My Chefsbase</title>
       </Helmet>
       <PageTitleWrapper>
-        <PageHeader />
+        <PageHeader
+        title={user.title}
+        name={user.name}
+        avatar={user.avatar} />
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
@@ -142,7 +154,13 @@ function MyChefsBase() {
           <Grid item lg={8} xs={12}>
           <Button onClick={() => setOpen(true)} variant="contained" color="primary">
               Upload een document
-            </Button>          
+            </Button> 
+            <Button onClick={() => {
+              clearAuth();
+              navigate(`/`)
+            }
+
+            }>Log Out</Button>         
             </Grid>
         </Grid>
       </Container>

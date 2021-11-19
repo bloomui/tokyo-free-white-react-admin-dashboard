@@ -1,0 +1,138 @@
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Paper, Table, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, TextFieldProps } from "@material-ui/core";
+import { Typography } from "@mui/material";
+import { Formik, useField } from "formik";
+import React, { useState } from "react";
+import { LoadingScreen } from "src/components/layout";
+import { productToQ } from "..";
+import { productsRowsPerPage, useSearchProductQuery } from "../api";
+import { products_products } from "../types/products";
+
+
+export  const TableProductData = ({
+  setProduct
+}: {
+    setProduct: (selected: productToQ) => void
+}) => {
+    const [pageNumber, setPageNumber] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const handleChangePage = (
+        event: any,
+        newPage: React.SetStateAction<number>
+      ) => {
+        setPage(newPage as number);
+      };
+      const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+          setRowsPerPage(parseInt(event.target.value, 10));
+          setPageNumber(0);
+        };
+
+    const [name, setName] = useState<string>()
+
+    const [page, setPage] = useState<number>(0)
+
+  const { loading, data, error, refetch } = useSearchProductQuery({
+    name: name,
+    page: page
+    });
+  if (loading) return <LoadingScreen />;
+  if (error) return <LoadingScreen />;
+
+  return (
+    <TableContainer component={Paper}>
+          <Table size="small">
+              <TableRow>
+              <Grid container spacing={2} xs={12}>
+ <Grid key={0} item>
+   <Typography>Zoek op naam:</Typography> 
+ <TextField
+    onKeyPress= {(e) => {
+        if (e.key === 'Enter') {
+          console.log(e.key);
+        refetch({name: name})
+      }
+      }}      
+      fullWidth
+      placeholder="Zoek op naam"
+      onChange={(e) => setName(e.target.value)}    />
+    </Grid>
+    </Grid>
+              </TableRow>
+        <TableRow>
+          <TableCell>Product</TableCell>
+          <TableCell>Merk</TableCell>
+          <TableCell>Herkomst</TableCell>
+          <TableCell>Prijs</TableCell>
+          <TableCell>Voeg toe</TableCell>
+        </TableRow>
+        {data.products.map((product) => (
+          <Row 
+          data={product}
+          setProduct={(a: productToQ) => setProduct(a)}/>
+        ))}
+        </Table>
+        <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component={Paper}
+              count={data.numberOfProducts ? data.numberOfProducts : 1000}
+              rowsPerPage={productsRowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+      </TableContainer>
+  )
+}
+
+
+const Row = ({data, setProduct}: {data: products_products, setProduct: (a) => void}) => {
+
+    const formState: productToQ = {
+    name: data.name,
+    id: data.id,
+    origin: data.origin,
+    price: data.price,
+    brand: data.brand,
+  }
+  const  [open, setOpen] = useState<boolean>(false)
+  
+    return (
+      <Formik
+          initialValues={formState}
+          onSubmit={(values) => {
+            setProduct(values);
+          }}
+        >
+          {({ setFieldValue, submitForm }) => {
+        return (
+          <>
+          <TableRow >
+            <TableCell >
+              {data.name}
+            </TableCell>
+            <TableCell >
+              {data.brand}
+            </TableCell>
+            <TableCell >
+              {data.origin}
+            </TableCell>
+            <TableCell >
+              {data.price}
+            </TableCell>
+            <TableCell>
+            <Button
+                    onClick={() => {submitForm()}}
+                    color="primary"
+                    variant="outlined"
+                  >
+                    +
+                  </Button>
+            </TableCell>
+          </TableRow>
+        </>
+        )
+          }
+        }
+        </Formik>
+    )
+  }
+  

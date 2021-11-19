@@ -22,6 +22,7 @@ import { AddSupplierDialog } from "./supplierDialogs/AddSupplierDialog";
     const [openAddMenu, setOpenAddSupplier] = useState(false)
     const [ input, setInput] = useState<ProductFilterInput>(initialSupplierValues);
     const { loading, data } = useFilterSuppliersQuery({
+        page: page,
         input: input
     })
     

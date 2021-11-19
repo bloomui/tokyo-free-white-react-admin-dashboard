@@ -18,9 +18,12 @@ export interface FilterSuppliers_filterSuppliers {
 }
 
 export interface FilterSuppliers {
+  numberOfSuppliers: number | null;
   filterSuppliers: FilterSuppliers_filterSuppliers[] | null;
 }
 
 export interface FilterSuppliersVariables {
   input?: SupplierFilterInput | null;
+  offset?: number | null;
+  limit?: number | null;
 }

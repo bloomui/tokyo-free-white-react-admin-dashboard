@@ -22,6 +22,7 @@ import { MenuDialog } from "../menuDialog";
 import { UpdateMenuDialog } from "../menuDialog/UpdateMenu";
 import { AreYouSureDelete } from "../filtermenus/components/AreYouSureDelete";
 import { FilterMenus, FilterMenus_filterMenus } from "../types/FilterMenus";
+import { ingredient_ingredient } from "../../Ingredients/types/ingredient";
   
 export interface EnhancedTableProps {
     numSelected: number;
@@ -132,7 +133,8 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
 
     return (
         <>
-                      <EnhancedTableToolbar selected={selected.map((item) => String(item))} />
+                      <EnhancedTableToolbar
+                      kitchenType={KitchenType.Menu} selected={selected.map((item) => String(item))} />
                 <TableContainer component={Paper}>
               <Table >
               <EnhancedTableHead
@@ -149,7 +151,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
                     <>
                     <TableRow
                     hover
-                    onClick={(event) => handleClick(event, menu.id)}
+                    // onClick={(event) => handleClick(event, menu.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -158,6 +160,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
+                        onClick={(event) => handleClick(event, menu.id)}
                         color="primary"
                         checked={isItemSelected}
                         inputProps={{
@@ -258,9 +261,54 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
     )
   }
   
+  export const EnhancedTableToolbarIngredients = ({
+    selected,
+    setIngredients,
+    setField
+}:{
+    setField: (selected: ingredient_ingredient[]) => void
+    selected: ingredient_ingredient[],
+    setIngredients: (selected: ingredient_ingredient[]) => void
+  }) => {
+      const numSelected = selected.length
+      
+  return (
+    <Toolbar
+    >
+      {numSelected > 0 ? (
+        <Typography
+          sx={{ flex: '1 1 100%' }}
+          color="inherit"
+          variant="subtitle1"
+          component="div"
+        >
+          {numSelected} geselecteerd
+        </Typography>
+      ) : (<></>)}
+      {numSelected > 0 ? (
+          <Grid container xs={12}>
+              <Grid item xs={6} onClick={() => {
+                  setIngredients(selected)
+                  setField(selected)
+              }
+            }>
+        <Tooltip title="Toevoegen">
+          <IconButton>
+            <VscAdd />
+          </IconButton>
+        </Tooltip>
+        </Grid>
+      </Grid>
+      ) : (<></>)}
+    </Toolbar>
+  );
+};
+
 export const EnhancedTableToolbar = ({
+      kitchenType,
       selected
   }:{
+    kitchenType: KitchenType,
       selected: string[]
     }) => {
         const numSelected = selected.length
@@ -291,7 +339,7 @@ export const EnhancedTableToolbar = ({
                 <Grid item xs={6} onClick={() => {
                     removeMultiple({variables: {
                         ids: selected,
-                        kitchenType: KitchenType.Menu
+                        kitchenType: kitchenType
                     }});
                 }
               }>
@@ -304,7 +352,7 @@ export const EnhancedTableToolbar = ({
           <Grid item xs={6} onClick={() => {
                     addMultiple({variables: {
                         ids: selected,
-                        kitchenType: KitchenType.Menu
+                        kitchenType: kitchenType
                     }});
                 }
               }>

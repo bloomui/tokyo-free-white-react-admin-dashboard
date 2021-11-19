@@ -48,8 +48,9 @@ const AllSuppliersQuery = gql`
 `;
 
 export const FilterProductsQuery = gql`
-query FilterProducts ($input: ProductFilterInput) {
-    filterProducts (input: $input) {
+query FilterProducts ($input: ProductFilterInput, $offset: Int, $limit: Int) {
+    numberOfProducts  
+    filterProducts (input: $input, offset: $offset, limit: $limit) {
     id
     name
     rating
@@ -109,17 +110,23 @@ export const useAllSuppliersQuery = () => {
     return { loading, data, error};
   };
 
+  const productRowsPerPage = 10
 export const useFilterProductsQuery = ({
   input,
+  page
 }: {
+  page: number,
   input: ProductFilterInput | null;
 }) => {
+  const offset = page * productRowsPerPage
 
   const { loading, data, error } = useSimpleQuery<
   FilterProducts
     >(FilterProductsQuery, {
     variables: {
       input: input,
+      offset: offset,
+      limit: productRowsPerPage
     },
   });
   return { loading, data, error};

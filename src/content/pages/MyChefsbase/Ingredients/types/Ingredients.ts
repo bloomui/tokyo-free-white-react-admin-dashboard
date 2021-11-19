@@ -38,6 +38,7 @@ export interface Ingredients_menus {
 }
 
 export interface Ingredients {
+  allCategories: string[] | null;
   suppliers: Ingredients_suppliers[] | null;
   products: Ingredients_products[] | null;
   recipes: Ingredients_recipes[] | null;

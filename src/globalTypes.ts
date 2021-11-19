@@ -33,6 +33,8 @@ export interface AddDishInput {
 export interface AddIngredientInput {
   name: string;
   rating?: number | null;
+  category?: string | null;
+  nutrition?: QuantityToNutritionInput | null;
 }
 
 export interface AddMenuInput {
@@ -100,6 +102,7 @@ export interface IngredientFilterInput {
   products?: string[] | null;
   recipes?: string[] | null;
   dishes?: string[] | null;
+  categories?: string[] | null;
   rating?: number | null;
   menus?: string[] | null;
   offset?: number | null;
@@ -111,6 +114,8 @@ export interface IngredientInput {
   id: string;
   name: string;
   rating?: number | null;
+  category?: string | null;
+  nutrition?: QuantityToNutritionInput | null;
 }
 
 export interface MenuFilterInput {
@@ -138,6 +143,85 @@ export interface MenuInput {
   theme?: string | null;
   periodstartdate?: string | null;
   periodenddate?: string | null;
+}
+
+export interface NutritionInput {
+  kcal?: number | null;
+  carbscarbs?: number | null;
+  carbssugar?: number | null;
+  fatstotal?: number | null;
+  fatsfacid?: number | null;
+  fatstotalfacid?: number | null;
+  fatssatured?: number | null;
+  fatssingleUnsat?: number | null;
+  fatscompoundUnsat?: number | null;
+  fatsn3?: number | null;
+  fatsn6?: number | null;
+  fatsother?: number | null;
+  protplant?: number | null;
+  protanimal?: number | null;
+  prottotal?: number | null;
+  fattotal?: number | null;
+  fatfacid?: number | null;
+  fattotalfacid?: number | null;
+  fatsatured?: number | null;
+  fatsingleUnsat?: number | null;
+  fatcompoundUnsat?: number | null;
+  fatn3?: number | null;
+  fatn6?: number | null;
+  fatother?: number | null;
+  starch?: number | null;
+  polyols?: number | null;
+  fibres?: number | null;
+  nitrogen?: number | null;
+  polysachhariden?: number | null;
+  alcohol?: number | null;
+  water?: number | null;
+  organicAcids?: number | null;
+  vite?: number | null;
+  vitc?: number | null;
+  vitkTotal?: number | null;
+  vitb12?: number | null;
+  vitb6?: number | null;
+  vitb2?: number | null;
+  vitb1?: number | null;
+  vitk2?: number | null;
+  vitk1?: number | null;
+  vitcholecalciferolE?: number | null;
+  vithidro25D?: number | null;
+  vitdTotal?: number | null;
+  foliumAcid?: number | null;
+  pholate?: number | null;
+  pholatEquivalents?: number | null;
+  nicotinAcid?: number | null;
+  tocoalfa?: number | null;
+  tocobeta?: number | null;
+  tocogamma?: number | null;
+  tocodelta?: number | null;
+  lycopeans?: number | null;
+  betaCrypto?: number | null;
+  zeacanthine?: number | null;
+  lutein?: number | null;
+  caralfa?: number | null;
+  carbeta?: number | null;
+  retrae?: number | null;
+  retre?: number | null;
+  rettotal?: number | null;
+  ash?: number | null;
+  jodium?: number | null;
+  sink?: number | null;
+  selenium?: number | null;
+  cupper?: number | null;
+  irontotal?: number | null;
+  ironnonhaem?: number | null;
+  ironhaem?: number | null;
+  magnesium?: number | null;
+  fosfor?: number | null;
+  calcium?: number | null;
+  kalium?: number | null;
+  natrium?: number | null;
+  cholesterol?: number | null;
+  famstxr?: number | null;
 }
 
 export interface ProductFilterInput {
@@ -169,6 +253,12 @@ export interface QuantityToId {
   id: string;
   quantity: number;
   unit: string;
+}
+
+export interface QuantityToNutritionInput {
+  quantity: number;
+  unit: string;
+  nutrition: NutritionInput;
 }
 
 export interface RecipeFilterInput {

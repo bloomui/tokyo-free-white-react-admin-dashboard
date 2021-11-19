@@ -105,7 +105,8 @@ export const DishTable = ({
     
     return (
       <>
-      <EnhancedTableToolbar selected={selected.map((item) => String(item))} />
+      <EnhancedTableToolbar
+      kitchenType={KitchenType.Dish} selected={selected.map((item) => String(item))} />
 <TableContainer component={Paper}>
 <Table >
 <EnhancedTableHead
@@ -122,7 +123,6 @@ headCells={headCellsDishes}
                     <>
                     <TableRow
                     hover
-                    onClick={(event) => handleClick(event, dish.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -131,6 +131,7 @@ headCells={headCellsDishes}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
+                        onClick={(event) => handleClick(event, dish.id)}
                         color="primary"
                         checked={isItemSelected}
                         inputProps={{
@@ -196,7 +197,7 @@ headCells={headCellsDishes}
                    <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={data? (data.filterDishes? (data.filterDishes.length) : 1000) : 1000}
+              count={data.numberOfDishes}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

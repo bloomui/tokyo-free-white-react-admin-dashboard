@@ -100,7 +100,9 @@ export const ProductTable = ({
     
     return (
       <>
-      <EnhancedTableToolbar selected={selected.map((item) => String(item))} />
+      <EnhancedTableToolbar
+      kitchenType={KitchenType.Product}
+      selected={selected.map((item) => String(item))} />
 <TableContainer component={Paper}>
 <Table >
 <EnhancedTableHead
@@ -117,7 +119,6 @@ headCells={headCellsProducts}
                     <>
                     <TableRow
                     hover
-                    onClick={(event) => handleClick(event, product.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -126,6 +127,7 @@ headCells={headCellsProducts}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
+                        onClick={(event) => handleClick(event, product.id)}
                         color="primary"
                         checked={isItemSelected}
                         inputProps={{
@@ -192,7 +194,7 @@ headCells={headCellsProducts}
                    <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={data? (data.filterProducts? (data.filterProducts.length) : 1000) : 1000}
+              count={data.numberOfProducts}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

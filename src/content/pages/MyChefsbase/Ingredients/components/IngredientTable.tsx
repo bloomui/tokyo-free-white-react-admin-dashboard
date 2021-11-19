@@ -25,7 +25,7 @@ import { IngredientDialog } from "../ingredientDialogs";
 import { UpdateIngredientDialog } from "../ingredientDialogs/UpdateIngredientDialog";
 
 const headCellsIngredients: string[] = [
-  "Naam", "rating", "acties"
+  "Naam", "categorie", "rating", "acties"
 ]
 
 export const IngredientTable = ({
@@ -100,7 +100,9 @@ export const IngredientTable = ({
     
     return (
       <>
-      <EnhancedTableToolbar selected={selected.map((item) => String(item))} />
+      <EnhancedTableToolbar 
+      kitchenType={KitchenType.Ingredient}
+      selected={selected.map((item) => String(item))} />
 <TableContainer component={Paper}>
 <Table >
 <EnhancedTableHead
@@ -117,7 +119,6 @@ headCells={headCellsIngredients}
                     <>
                     <TableRow
                     hover
-                    onClick={(event) => handleClick(event, ingredient.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -126,6 +127,7 @@ headCells={headCellsIngredients}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
+                        onClick={(event) => handleClick(event, ingredient.id)}
                         color="primary"
                         checked={isItemSelected}
                         inputProps={{
@@ -144,6 +146,7 @@ headCells={headCellsIngredients}
                       setOpen(true)
                     }}
                     >{ingredient.name}</TableCell>
+                    <TableCell align="left">{ingredient.category}</TableCell>
                     <TableCell align="left">{ingredient.rating}</TableCell>
                     <TableCell 
                 align="center"
@@ -185,16 +188,16 @@ headCells={headCellsIngredients}
             })}
             </TableBody>
                    </Table>
-                   </TableContainer>
                    <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
-              component="div"
-              count={data? (data.filterIngredients? (data.filterIngredients.length) : 1000) : 1000}
+              component={Paper}
+              count={data.numberOfIngredients}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
+             </TableContainer>
             {id &&  (
               <>
               <IngredientDialog

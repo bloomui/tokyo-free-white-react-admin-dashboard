@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import {
   Avatar,
@@ -22,6 +22,7 @@ import ExpandMoreTwoToneIcon from '@material-ui/icons/ExpandMoreTwoTone';
 import AccountBoxTwoToneIcon from '@material-ui/icons/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@material-ui/icons/LockOpenTwoTone';
 import AccountTreeTwoToneIcon from '@material-ui/icons/AccountTreeTwoTone';
+import { clearAuth } from 'src/utilities/auth';
 
 const UserBoxButton = experimentalStyled(Button)(
   ({ theme }) => `
@@ -77,6 +78,7 @@ function HeaderUserbox() {
   const handleClose = (): void => {
     setOpen(false);
   };
+  const navigate = useNavigate()
 
   return (
     <>
@@ -141,9 +143,16 @@ function HeaderUserbox() {
         </List>
         <Divider />
         <Box sx={{ m: 1 }}>
-          <Button color="primary" fullWidth>
+          <Button 
+          color="primary" 
+          fullWidth
+          onClick={() => {
+              clearAuth();
+              navigate(`/`)
+            }
+          }>
             <LockOpenTwoToneIcon sx={{ mr: 1 }} />
-            Sign out
+            Afmelden
           </Button>
         </Box>
       </Popover>

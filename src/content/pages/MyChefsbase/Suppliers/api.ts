@@ -31,8 +31,9 @@ export const useGetSupplierQuery = (id: string) => {
   };
 
 export const FilterSuppliersQuery = gql`
-query FilterSuppliers ($input: SupplierFilterInput) {
-    filterSuppliers (input: $input) {
+query FilterSuppliers ($input: SupplierFilterInput, $offset: Int, $limit: Int) {
+    numberOfSuppliers
+    filterSuppliers (input: $input, offset: $offset, limit: $limit) {
     id
     name
     rating
@@ -76,17 +77,24 @@ mutation AddSupplier ($input: AddSupplierInput!) {
   addSupplier(input: $input)
 }`;
 
+const productRowsPerPage = 10
+
 export const useFilterSuppliersQuery = ({
+  page,
   input,
 }: {
+  page: number;
   input: SupplierFilterInput | null;
 }) => {
 
+  const offset = productRowsPerPage * page
   const { loading, data, error } = useSimpleQuery<
   FilterSuppliers
     >(FilterSuppliersQuery, {
     variables: {
       input: input,
+      offset: offset,
+      limit: productRowsPerPage
     },
   });
   return { loading, data, error};

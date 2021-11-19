@@ -24,6 +24,7 @@ import { AddRecipeDialog } from "./recipeDialogs/AddRecipeDialog";
 
     const { loading, data } = useFilterRecipesQuery({
       input: input,
+      page: page
       });
   
     let content;

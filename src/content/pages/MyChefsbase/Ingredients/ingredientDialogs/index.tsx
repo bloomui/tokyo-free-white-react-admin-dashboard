@@ -4,7 +4,7 @@ import { LoadingScreen } from "src/components/layout"
 import { FilterDishes_filterDishes_method, FilterDishes_filterDishes_recipes } from "../../Dishes/types/FilterDishes"
 import { ItemString, ItemInt } from "../../Menus/menuDialog"
 import { useGetIngredientQuery } from "../api"
-import { FilterIngredients_filterIngredients_products } from "../types/FilterIngredients"
+import { FilterIngredients_filterIngredients_nutrition, FilterIngredients_filterIngredients_nutrition_nutrition, FilterIngredients_filterIngredients_products } from "../types/FilterIngredients"
 import { UpdateIngredientDialog } from "./UpdateIngredientDialog"
 
 export const IngredientDialog = ({
@@ -49,6 +49,10 @@ export const IngredientDialog = ({
               <DialogContent>
                   <Card>
                       <Grid container spacing={2} xs={12}>
+                          <ItemString
+                          title="categorie"
+                          item={ingredient.category}
+                          />
                        <ItemInt 
                        title="rating"
                        item={ingredient.rating}
@@ -57,7 +61,11 @@ export const IngredientDialog = ({
                       title="Producten"
                       item={ingredient.products}
                       />
-                      
+                      <Grid item xs={12}>Per {ingredient.nutrition.quantity.quantity} {ingredient.nutrition.quantity.unit}:</Grid>
+                      <ItemNutrition
+                      title="Voedingswaarde"
+                      item={ingredient.nutrition.nutrition}
+                      />
                       </Grid>
                   </Card>
               </DialogContent>
@@ -102,3 +110,57 @@ export const ItemProducts = ({title, item}: {title: string, item: FilterIngredie
     )
 }
 
+export const ItemNutrition = ({title, item}: {title: string, item: FilterIngredients_filterIngredients_nutrition_nutrition;}) => {
+    return (
+        <>
+        <Grid key={0} item xs={12}>
+        <Typography style={{ fontWeight: 600 }}>{title}</Typography>
+        </Grid> 
+        <Grid key={1} item xs={12}>
+                <TableContainer>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell align="center">Voedingswaarde</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                <>
+                        <TableRow>
+                            <TableCell align="center">
+                            Calorieën:</TableCell>
+                            <TableCell> {item.kcal}
+                            </TableCell>
+                            </TableRow>
+                            <TableRow>
+                            <TableCell align="center">
+                            Proteïne: </TableCell>
+                            <TableCell>{item.protein.total}
+                            </TableCell>
+                            </TableRow>
+                            <TableRow>
+                            <TableCell align="center">
+                            Vetten: </TableCell>
+                            <TableCell>{item.fat.total}
+                            </TableCell>
+                            </TableRow>
+                            <TableRow>
+                            <TableCell align="center">
+                            Koolhydraten: </TableCell>
+                            <TableCell>{item.carbs.carbs}
+                            </TableCell>
+                            </TableRow>
+                            <TableRow>
+                            <TableCell align="center">
+                            Suikers: </TableCell>
+                            <TableCell>{item.carbs.sugar}
+                            </TableCell>
+                            </TableRow>
+                            <TableRow>
+                        </TableRow>
+                        </>
+                    </TableBody>
+                </TableContainer>
+            </Grid>
+            </>
+    )
+}

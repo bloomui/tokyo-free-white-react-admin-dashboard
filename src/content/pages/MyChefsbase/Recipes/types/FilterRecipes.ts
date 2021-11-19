@@ -44,9 +44,12 @@ export interface FilterRecipes_filterRecipes {
 }
 
 export interface FilterRecipes {
+  numberOfRecipes: number | null;
   filterRecipes: FilterRecipes_filterRecipes[] | null;
 }
 
 export interface FilterRecipesVariables {
   input?: RecipeFilterInput | null;
+  offset?: number | null;
+  limit?: number | null;
 }

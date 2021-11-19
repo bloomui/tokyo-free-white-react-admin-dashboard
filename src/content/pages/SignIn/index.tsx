@@ -2,21 +2,83 @@ import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import { Box, Checkbox, Container, CssBaseline, FormControlLabel, Grid, InputAdornment } from '@material-ui/core';
-import IconButton from "@material-ui/core/IconButton";
-import { useLazyQuery, useQuery } from '@apollo/client';
-import { Form, Formik, useField } from 'formik';
-import { composeValidators, required, Validator } from '../../../utilities/formikValidators';
+import { Checkbox, Container, CssBaseline, FormControlLabel, Grid } from '@material-ui/core';
+import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, useApolloClient, } from '@apollo/client';
+import { useField } from 'formik';
+import { Validator } from '../../../utilities/formikValidators';
 import { formikFieldErrorProps } from '../../../utilities/formikError';
-import { ItemButton } from 'src/components/buttons/ItemButton';
 import { Link as RouterLink } from 'react-router-dom';
-import { experimentalStyled } from '@material-ui/core/styles';
 import { LabelWrapper, TypographyH1, TypographyH2 } from 'src/content/overview/Hero';
+import { useLogin } from 'src/utilities/api';
+import { useCookies } from 'react-cookie';
+import {useNavigate} from 'react-router-dom';
+import { setToken } from 'src/utilities/auth';
+
+// export const getToken = () => {
+//   const [cookies, setCookie, removeCookie] = useCookies(["accesstoken"]);
+//   return (
+//     cookies
+//   )
+// }
+
+// export function useAuthToken(token: string) {
+  
+//   //we use react-cookies to access our cookies
+//   const [cookies, setCookie, removeCookie] = useCookies([token]);
+  
+//   // this function allows to save any string in our cookies, under the key "authToken"
+//   const setAuthToken = (authToken) => setCookie(token, authToken);
+  
+//   //this function removes the key "authToken" from our cookies. Useful to logout
+//   const removeAuthToken = () => removeCookie(token);
+  
+//   return [cookies[token], setAuthToken, removeAuthToken];
+// };
+
+// const httpLink = new HttpLink({ uri: "http://localhost:9090/graphql" });
+
+// const authMiddleware = (authToken) =>
+//   new ApolloLink((operation, forward) => {
+//     // add the authorization to the headers
+//     if (authToken) {
+//       operation.setContext({
+//         headers: {
+//           authorization: `${authToken}`,
+//         },
+//       });
+//     }
+
+//     return forward(operation);
+//   });
+
+// const cache = new InMemoryCache({});
+
+// export const useAppApolloClient = (token: string) => {
+//   const [authToken] = useAuthToken(token);
+//   return new ApolloClient({
+//     link: authMiddleware(authToken).concat(httpLink),
+//     cache,
+//   });
+// };
 
 const SignInForm = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [id, setId] = useState("");
+  const [loginError, setLoginError] = useState(false);
+  const navigate = useNavigate();
+ 
+  const { authenticateFn, loading } = useLogin(
+    {
+    onSuccess: (token: string | null) => {
+
+      if (token == null) setLoginError(true)
+      else {
+        setToken(token)
+               navigate(`/mychefsbase/chefsbase`);
+      }
+    },
+  }
+  );
 
     return (
       <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
@@ -46,6 +108,7 @@ const SignInForm = () => {
                   id="email"
                   label="Email"
                   fullWidth
+                  onChange={(e) => setEmail(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -53,7 +116,9 @@ const SignInForm = () => {
                   name="password"
                   id="password"
                   label="Wachtwoord"
+                  type="password"
                   fullWidth
+                  onChange={(e) => setPassword(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={12}>
@@ -64,10 +129,24 @@ const SignInForm = () => {
                   </Grid>
                   <Grid item xs={12} sm={12}>
                   <Button
-            component={RouterLink}
-            to="/mychefsbase/chefsbase"
+            // component={RouterLink}
+            // to="/mychefsbase/chefsbase"
             size="large"
             variant="contained"
+            onClick={async () => {
+
+                const result = await authenticateFn({
+                  variables: {
+                    email,
+                    password
+                  }
+                })
+
+
+
+
+
+            }}
           >
                 Sign In
               </Button>
@@ -86,6 +165,7 @@ const SignInForm = () => {
                </>
         </Grid>
       </Grid>
+            {loginError  && ( <Typography color="error">Inloggen mislukt</Typography>)}
     </Container>
     );
        }

@@ -1,5 +1,4 @@
 import { gql } from "@apollo/client";
-import { useRef } from "react";
 import { useMutation } from "@apollo/client";
 import { Menus } from "./types/Menus";
 import { Delete, DeleteVariables } from "./types/Delete";
@@ -48,8 +47,9 @@ const AllDishQuery = gql`
 `;
 
 const FilterMenuQuery = gql`
-query FilterMenus ($input: MenuFilterInput) {
-  filterMenus (input: $input) {
+query FilterMenus ($input: MenuFilterInput, $offset: Int, $limit: Int) {
+  numberOfMenus
+  filterMenus (input: $input, offset: $offset, limit: $limit) {
     id
     periodenddate
     periodstartdate
@@ -133,18 +133,24 @@ mutation AddMenu ($input: AddMenuInput!, $courses: [AddCourseToDishesInput!]) {
   addMenu(input: $input, courses: $courses)
 }`;
 
+export const menuRowsPerPage = 10;
+
 export const useFilterMenuQuery = ({
+  page,
   input,
 }: {
+  page: number;
   input: MenuFilterInput | null;
 }) => {
-
+  const offset = page * menuRowsPerPage
   const { loading, data, error } = useSimpleQuery<
   FilterMenus,
   FilterMenusVariables
   >(FilterMenuQuery, {
     variables: {
       input: input,
+      offset: offset,
+      limit: menuRowsPerPage,
     },
   });
   return { loading, data, error};

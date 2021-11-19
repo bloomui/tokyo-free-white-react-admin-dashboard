@@ -25,8 +25,7 @@ export const UpdateMenuDialog = ({
   const {data} = useAllDishesQuery()
 
     const { updateMenu, loading, error } = useUpdateMenu({
-        onCompleted: () => {}
-      //   window.location.reload(),
+        onCompleted: () => window.location.reload(),
       });
 
     const formInput: MenuInput = menu? {

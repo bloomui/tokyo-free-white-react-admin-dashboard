@@ -101,9 +101,10 @@ export const SupplierTable = ({
     
     return (
       <>
-      <EnhancedTableToolbar selected={selected.map((item) => String(item))} />
-<TableContainer component={Paper}>
-<Table >
+      <EnhancedTableToolbar 
+      kitchenType={KitchenType.Supplier}
+      selected={selected.map((item) => String(item))} />
+<Table component={Paper}>
 <EnhancedTableHead
 numSelected={selected.length}
 onSelectAllClick={handleSelectAllClick}
@@ -111,14 +112,14 @@ rowCount={suppliers.length}
 headCells={headCellsSuppliers}
 />
 <TableBody>
-{suppliers.map((supplier, index) => {
+{suppliers.slice(page * 10, page * 10 + 10)
+.map((supplier, index) => {
                 const isItemSelected = isSelected(supplier.id);
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
                     <>
                     <TableRow
                     hover
-                    onClick={(event) => handleClick(event, supplier.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -127,6 +128,7 @@ headCells={headCellsSuppliers}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
+                        onClick={(event) => handleClick(event, supplier.id)}
                         color="primary"
                         checked={isItemSelected}
                         inputProps={{
@@ -187,16 +189,21 @@ headCells={headCellsSuppliers}
             })}
             </TableBody>
                    </Table>
-                   </TableContainer>
                    <TablePagination
-              rowsPerPageOptions={[10, 25, 100]}
-              component="div"
-              count={data? (data.filterSuppliers? (data.filterSuppliers.length) : 1000) : 1000}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+        rowsPerPageOptions={[5, 10, 25]}
+        component={Paper}
+        count={data.numberOfSuppliers}
+        rowsPerPage={10}
+        page={page}
+        backIconButtonProps={{
+          'aria-label': 'Previous Page',
+        }}
+        nextIconButtonProps={{
+          'aria-label': 'Next Page',
+        }}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
             {id &&  (
               <>
               <SupplierDialog
