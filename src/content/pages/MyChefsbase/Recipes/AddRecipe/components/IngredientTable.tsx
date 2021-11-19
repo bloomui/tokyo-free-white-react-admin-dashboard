@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { Button, Grid, MenuItem, Paper, Table, TableCell, TableContainer, TablePagination, TableRow, TextField, TextFieldProps } from "@material-ui/core";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Paper, Table, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, TextFieldProps } from "@material-ui/core";
 import { Typography } from "@mui/material";
 import { Formik, useField } from "formik";
 import React, { useState } from "react";
@@ -35,9 +35,6 @@ export  const TableData = ({
 
     const [name, setName] = useState<string>()
 
-    const nameForm = {
-        name: ''
-    }
     const [page, setPage] = useState<number>(0)
 
   const { loading, data, error, refetch } = useSearchIngredientQuery({
@@ -51,39 +48,25 @@ export  const TableData = ({
     <TableContainer component={Paper}>
           <Table size="small">
               <TableRow>
-              <Formik
-        initialValues={nameForm}
-        onSubmit={(values) => {
-         refetch({name: values.name})
-        }}
-        >
-        {({ setFieldValue, submitForm }) => {
-          return (
-            <>
-            <Grid container spacing={2} xs={12}>
+              <Grid container spacing={2} xs={12}>
  <Grid key={0} item>
    <Typography>Zoek op naam:</Typography> 
  <TextField
-      onBlur={refetch}
+    onKeyPress= {(e) => {
+        if (e.key === 'Enter') {
+          console.log(e.key);
+        refetch({name: name})
+      }
+      }}      
       fullWidth
       placeholder="Zoek op naam"
-onChange={(e) => setFieldValue("name", e.target.value)}    />
+      onChange={(e) => setName(e.target.value)}    />
     </Grid>
     </Grid>
-              {/* <Search
-              placeholder="Zoek op naam" setFieldValue={setFieldValue}
-              /> */}
-        {/* <AutoSubmitToken /> */}
-    </>
-          )
-        }}
-        </Formik>
               </TableRow>
         <TableRow>
           <TableCell>Ingredient</TableCell>
           <TableCell>Categorie</TableCell>
-          <TableCell>Hoeveelheid</TableCell>
-          <TableCell>Eenheid</TableCell>
           <TableCell>Voeg toe</TableCell>
         </TableRow>
         {data.ingredients.map((ingredient) => (
@@ -113,6 +96,7 @@ const Row = ({data, setIngredient}: {data: ingredients_ingredients, setIngredien
   quantity: '',
   unit: ''
 }
+const  [open, setOpen] = useState<boolean>(false)
 
   return (
     <Formik
@@ -131,24 +115,9 @@ const Row = ({data, setIngredient}: {data: ingredients_ingredients, setIngredien
           <TableCell >
             {data.category}
           </TableCell>
-          <TableCell >
-              <TextField
-              variant="outlined" size="small"
-              onChange={(e) => setFieldValue("quantity", e.target.value)}
-              />
-          </TableCell>
-          <TableCell >
-            <FormikSelect
-            name="unit"
-            >
-              {units.map((unit) => (
-                <MenuItem key={unit} value={unit}>{unit}</MenuItem>
-              ))}
-            </FormikSelect>
-          </TableCell>
           <TableCell>
           <Button
-                  onClick={() => {submitForm()}}
+                  onClick={() => {setOpen(true)}}
                   color="primary"
                   variant="outlined"
                 >
@@ -156,6 +125,56 @@ const Row = ({data, setIngredient}: {data: ingredients_ingredients, setIngredien
                 </Button>
           </TableCell>
         </TableRow>
+        <Dialog open={open} onClose={() => setOpen(false)}>
+                <DialogActions>
+                  <Grid xs={12}><Button
+                  onClick={() => {setOpen(false)}}
+                  color="primary"
+                  variant="outlined"
+                >
+                  Terug</Button></Grid>
+                </DialogActions>
+              <DialogContent>
+                <Table>
+                  <TableHead>
+                  <TableCell>Hoeveelheid</TableCell>
+                  <TableCell>Eenheid</TableCell>
+                    </TableHead>
+                    <TableRow>
+                      <TableCell>
+                      <TextField
+              variant="outlined" size="small"
+              onChange={(e) => setFieldValue("quantity", e.target.value)}
+              />
+                      </TableCell>
+                        <TableCell>
+                        <FormikSelect
+                      name="unit"
+                      >
+              {units.map((unit) => (
+                <MenuItem key={unit} value={unit}>{unit}</MenuItem>
+              ))}
+            </FormikSelect>
+                        </TableCell>
+                        <TableCell>
+                        <Button
+                  onClick={() => {
+                    submitForm();
+                    setOpen(false)}}
+                  color="primary"
+                  variant="outlined">Voeg Toe</Button>
+                        </TableCell>
+                  </TableRow>
+                  </Table>
+                      <Grid container spacing={2} xs={12}>
+              <Grid  item xs={6}>
+              </Grid>
+              <Grid  item xs={6}>
+              
+              </Grid>
+               </Grid>
+              </DialogContent>
+        </Dialog>
       </>
       )
         }

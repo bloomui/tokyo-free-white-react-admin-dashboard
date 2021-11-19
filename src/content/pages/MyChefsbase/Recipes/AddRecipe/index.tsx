@@ -15,6 +15,7 @@ import { useAddRecipe } from "../api";
 import { Divider } from '@mui/material';
 import { AddRecipeVariables } from "../types/AddRecipe";
 import { TableData } from "./components/IngredientTable";
+import { VscTrash } from "react-icons/vsc";
 
 export const AddRecipePage = () => {
 
@@ -38,6 +39,11 @@ export const AddRecipePage = () => {
     const emptyStep: StepToMethodInput = {
             step: stepHere,
             method: ''
+            }
+
+            function handleDelete(index) {
+              selectedIngredients.splice(index, 1)
+              setIngredients([...selectedIngredients])
             }
     
     const formIngredients: QuantityToId[] | null = [emptyIngredientEntry]
@@ -202,7 +208,6 @@ export const AddRecipePage = () => {
                   <Grid xs={6}>
                 Ingredienten:
                 </Grid>
-                <Grid xs={6}></Grid>
                 <Grid xs={6}>
                   <TableContainer>
                 <Table size="small">
@@ -211,7 +216,7 @@ export const AddRecipePage = () => {
                     <TableCell>Hoeveelheid</TableCell>
                     <TableCell>Eenheid</TableCell>
                     </TableRow>
-                {selectedIngredients.map((ingredient) =>  (
+                {selectedIngredients.map((ingredient, index) =>  (
                   <TableRow>
                     <TableCell>
                       {ingredient.name}
@@ -221,6 +226,15 @@ export const AddRecipePage = () => {
                     </TableCell>
                     <TableCell>
                       {ingredient.unit}
+                    </TableCell>
+                    <TableCell>
+                    <Button
+                       variant="contained" 
+                       color="secondary"
+                        style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
+                         onClick={() => {handleDelete(index)}}>           
+                                                 -
+                       </Button>
                     </TableCell>
                   </TableRow>
                 ))}
