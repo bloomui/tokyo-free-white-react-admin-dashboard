@@ -2,6 +2,7 @@ import { Box, Grid, Typography } from "@material-ui/core";
 import React from "react"
 import Rating from '@material-ui/lab/Rating';
 import { TextField } from "@material-ui/core";
+import { H5 } from "src/content/pages/Components/TextTypes";
 
 export const RatingLabels: { [index: string]: string } = {
     0: 'Minimaal',
@@ -25,7 +26,7 @@ export const Rating1 = ({
       <>
       <Grid container spacing={2} xs={12}>
       <Grid item>
-    <Typography >Beoordeling:</Typography>
+      <H5 title="Beoordeling"/>
     </Grid>
     </Grid>
     <Grid container spacing={2} xs={12}>

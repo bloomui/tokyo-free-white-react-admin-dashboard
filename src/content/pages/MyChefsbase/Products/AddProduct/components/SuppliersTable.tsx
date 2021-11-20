@@ -1,8 +1,9 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Paper, Table, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, TextFieldProps } from "@material-ui/core";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Paper, Table, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, TextFieldProps } from "@material-ui/core";
 import { Typography } from "@mui/material";
 import { Formik, useField } from "formik";
 import React, { useState } from "react";
 import { LoadingScreen } from "src/components/layout";
+import { H5 } from "src/content/pages/Components/TextTypes";
 import { supplierToQ } from "..";
 import { suppliersRowsPerPage, useSearchSupplierQuery } from "../api";
 import { suppliers_suppliers } from "../types/suppliers";
@@ -41,9 +42,7 @@ export  const TableSupplierData = ({
     <TableContainer component={Paper}>
           <Table size="small">
               <TableRow>
-              <Grid container spacing={2} xs={12}>
- <Grid key={0} item>
-   <Typography>Zoek op naam:</Typography> 
+   <TableCell colSpan={2}>
  <TextField
     onKeyPress= {(e) => {
         if (e.key === 'Enter') {
@@ -54,8 +53,10 @@ export  const TableSupplierData = ({
       fullWidth
       placeholder="Zoek op naam"
       onChange={(e) => setName(e.target.value)}    />
-    </Grid>
-    </Grid>
+      </TableCell>
+      <TableCell>
+      Klik enter om te zoeken
+    </TableCell>
               </TableRow>
         <TableRow>
           <TableCell>Leverancier</TableCell>
@@ -71,7 +72,7 @@ export  const TableSupplierData = ({
         <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component={Paper}
-              count={data.numberOfSuppliers ? data.numberOfSuppliers : 1000}
+              count={data.numberOfSuppliers}
               rowsPerPage={suppliersRowsPerPage}
               page={page}
               onPageChange={handleChangePage}

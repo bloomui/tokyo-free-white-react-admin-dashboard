@@ -15,6 +15,8 @@ import { Divider } from '@mui/material';import { AddIngredientVariables } from "
 import { TableProductData } from "./component/ProductsTable";
 import { emptyQuantityToNutrition, units } from "../ingredientDialogs/UpdateIngredientDialog";
 import { FormikSelect } from "src/components/form/FormikSelect";
+import { H3, H5, H5Left } from "src/content/pages/Components/TextTypes";
+import { Quantity } from "../../Menus/filtermenus/components/quantity";
 
 export const AddIngredientPage = () => {
 
@@ -86,8 +88,8 @@ export const AddIngredientPage = () => {
           return (
             <>
             <Grid container xs={12} spacing={2}>
-                <Grid xs={5}>
-                <Typography>Geef een ingredientnaam op</Typography>
+                <Grid xs={3}>
+                <H5 title="Ingredientnaam"/>
                 <FormField
                   name="input.name"
                   label="Naam"
@@ -96,57 +98,80 @@ export const AddIngredientPage = () => {
                 </Grid>
                 <Grid xs={1}></Grid>
                 <Grid xs={3}>
-                <Rating1
-                updateField="input.rating"
-                setFieldValue={setFieldValue}
-                />
-                </Grid>
-                <Grid xs={1}></Grid>
-                <Grid xs={5}>
-                <Typography>Geef de categorie aan</Typography>
+                <H5 title="Categorie"/>
                 <FormField
                   name="input.category"
                   label="Categorie"
                 />
                 </Grid> 
-                <Grid xs={12}>
-                Voedingswaaarde:
-                <Grid container xs={12}>
-                <Grid item xs={3}> 
-                Per:
-                </Grid>
-                  <Grid item xs={6}> 
-                  <FormField
-                  name="input.nutrition.quantity"
-                  label="Hoeveelheid"
-                  validator={composeValidators(required)}
+                <Grid xs={4}></Grid>
+                <Grid xs={3}>
+                <Rating1
+                updateField="input.rating"
+                setFieldValue={setFieldValue}
                 />
-                  </Grid>
-                  <Grid item xs={3}> 
-                  <FormikSelect
+                </Grid> 
+                <Grid xs={1}></Grid>
+                <Grid xs={3}>
+                <H5 title="Toevoegen"/>
+                <Button
+                  disabled={loading}
+                  onClick={() => submitForm()}
+                  color="primary"
+                  variant="contained"
+                >
+                  Gegevens toevoegen
+                </Button>
+                </Grid>               
+                </Grid>
+                <Divider/>
+                <Grid xs={12}>
+                <TableContainer>
+                    <Table>
+                        <TableRow>
+                            <TableCell colSpan={6}>
+                            <H3 title="Voedingswaarde"/>
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                        <TableCell colSpan={2}></TableCell>
+                            <TableCell colSpan={2}>
+                            <H5Left title="Hoeveelheid"/>
+                            </TableCell>
+                            <TableCell colSpan={2}>
+                            <H5Left title="Eenheid"/>
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                        <TableCell colSpan={2} align="center">Per</TableCell>
+                        <TableCell colSpan={2}>
+                        <Quantity
+                  name="input.nutrition.quantity"
+                  setFieldValue={setFieldValue}
+                />
+                            </TableCell>
+                            <TableCell colSpan={2}>
+                            <FormikSelect
                       name="input.nutrition.unit"
                       >
               {units.map((unit) => (
                 <MenuItem key={unit} value={unit}>{unit}</MenuItem>
               ))}
             </FormikSelect>
-                  </Grid>
-                  <Table size="small">
-                    <TableRow>
+                            </TableCell>
+                        </TableRow>
+                        <TableRow></TableRow>
+                        <TableRow>
                       <TableCell>Kilocalorieën</TableCell>
                       <TableCell><FormField
                   name="input.nutrition.nutrition.kcal"
                   label="Kcal"
                 /></TableCell>
-                    </TableRow>
-                    <TableRow>
                       <TableCell>Eiwitten</TableCell>
                       <TableCell><FormField
                   name="input.nutrition.nutrition.prottotal"
                   label="Eiwitten"
                 /></TableCell>
-                    </TableRow>
-                    <TableRow>
                       <TableCell>Koolhydraten</TableCell>
                       <TableCell><FormField
                   name="input.nutrition.nutrition.carbscarbs"
@@ -159,40 +184,31 @@ export const AddIngredientPage = () => {
                   name="input.nutrition.nutrition.carbssugar"
                   label="Suikers"
                 /></TableCell>
-                    </TableRow>
-                    <TableRow>
                       <TableCell>Vetten</TableCell>
                       <TableCell><FormField
                   name="input.nutrition.nutrition.fatstotal"
                   label="Vetten"
                 /></TableCell>
-                    </TableRow>
-                    <TableRow>
                       <TableCell>Vezels</TableCell>
                       <TableCell><FormField
                   name="input.nutrition.nutrition.fibres"
                   label="Vezels"
                 /></TableCell>
                     </TableRow>
-                  </Table>
-                </Grid>
-                <Button
-                  disabled={loading}
-                  onClick={() => submitForm()}
-                  color="primary"
-                  variant="contained"
-                >
-                  Gegevens toevoegen
-                </Button>
-                </Grid>               
-                </Grid>
-                
-                <Grid xs={12}></Grid>
+                    </Table>
+                    </TableContainer>
+                    </Grid>
+          
                 <Divider/>
                 <Grid container xs={12}>
-                  <Grid xs={6}>
-                Productopties:
+                  <Grid xs={12}>
+                <H3 title="Productopties"/>
                 </Grid>
+                <Grid xs={6}>
+                  <TableProductData 
+                  setProduct={(selected) => setProducts([...selectedProducts, selected])
+                  }/>
+                  </Grid>
                 <Grid xs={6}>
                   <TableContainer>
                 <Table size="small">
@@ -230,11 +246,6 @@ export const AddIngredientPage = () => {
                 </Table>
                 </TableContainer>
                 </Grid>
-                <Grid xs={6}>
-                  <TableProductData 
-                  setProduct={(selected) => setProducts([...selectedProducts, selected])
-                  }/>
-                  </Grid>
                 </Grid>             
                 {error && (
                   <Typography color="error">

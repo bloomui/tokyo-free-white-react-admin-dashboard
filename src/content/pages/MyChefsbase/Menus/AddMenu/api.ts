@@ -16,7 +16,7 @@ export const dishesQuery =  gql`
 `;
 
 export const dishRowsPerPage = 10;
-export const useSearchRecipeQuery = ({
+export const useSearchDishesQuery = ({
     page, 
     name
 }: {

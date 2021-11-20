@@ -14,6 +14,8 @@ import { useAddProduct } from "../api";
 import { Divider } from '@mui/material';
 import { AddProductVariables } from "../types/AddProduct";
 import { TableSupplierData } from "./components/SuppliersTable";
+import { H3, H5 } from "src/content/pages/Components/TextTypes";
+import { Price } from "../../Menus/filtermenus/components/prices";
 
 export const AddProductPage = () => {
 
@@ -21,7 +23,6 @@ export const AddProductPage = () => {
         onCompleted: () => window.location.reload()
         },
       );
-      const [stepHere, setStep] = useState(1)
       const [selectedSuppliers, setSuppliers] = React.useState<supplierToQ[]>([]);
 
     const formInput: AddProductInput = {
@@ -87,8 +88,8 @@ export const AddProductPage = () => {
           return (
             <>
             <Grid container xs={12} spacing={2}>
-                <Grid xs={5}>
-                <Typography>Geef een productnaam op</Typography>
+                <Grid xs={3}>
+                <H5 title="Productnaam"/>
                 <FormField
                   name="input.name"
                   label="Naam"
@@ -97,34 +98,36 @@ export const AddProductPage = () => {
                 </Grid>
                 <Grid xs={1}></Grid>
                 <Grid xs={3}>
+                <H5 title="Merknaam"/>
+                <FormField
+                  name="input.brand"
+                  label="Merk"
+                />
+                </Grid> 
+                <Grid xs={1}></Grid>
+                <Grid xs={3}>
+                <H5 title="Land van herkomst"/>
+                <FormField
+                  name="input.origin"
+                  label="Herkomst"
+                />
+                </Grid> 
+                <Grid xs={3}>
                 <Rating1
                 updateField="input.rating"
                 setFieldValue={setFieldValue}
                 />
                 </Grid>
                 <Grid xs={1}></Grid>
-                <Grid xs={5}>
-                <Typography>Geef het merk aan</Typography>
-                <FormField
-                  name="input.brand"
-                  label="Merk"
+                <Grid xs={3}>
+                <H5 title="Prijs (€)"/>
+                <Price 
+                setFieldValue={setFieldValue}
                 />
                 </Grid> 
-                <Grid xs={5}>
-                <Typography>Geef het land van herkomst aan</Typography>
-                <FormField
-                  name="input.origin"
-                  label="Herkomst"
-                />
-                </Grid> 
-                <Grid xs={5}>
-                <Typography>Geef de prijs aan</Typography>
-                <FormField
-                  name="input.price"
-                  label="Prijs (€)"
-                />
-                </Grid> 
-                <Grid xs={12}>
+                <Grid xs={1}></Grid>
+                <Grid xs={3}>
+                <H5 title="Toevoegen"/>
                 <Button
                   disabled={loading}
                   onClick={() => submitForm()}
@@ -135,19 +138,27 @@ export const AddProductPage = () => {
                 </Button>
                 </Grid>               
                 </Grid>
-                
-                <Grid xs={12}></Grid>
                 <Divider/>
                 <Grid container xs={12}>
+                <Grid xs={6}>
+                <H3 title="Leveranciers om toe te voegen"/>
+                        </Grid>
+                        <Grid xs={6}>
+                <H3 title="Toegevoegde leveranciers"/>
+                        </Grid>
                   <Grid xs={6}>
-                Leveranciersopties:
-                </Grid>
+                <Grid xs={12}>
+                <TableSupplierData 
+                  setSuppliers={(selected) => setSuppliers([...selectedSuppliers, selected])
+                  }/>
+                  </Grid>                
+                  </Grid>
                 <Grid xs={6}>
                   <TableContainer>
                 <Table size="small">
                   <TableRow>
-                    <TableCell>Naam</TableCell>
-                    <TableCell>email</TableCell>
+                    <TableCell><H5 title="Naam"/></TableCell>
+                    <TableCell><H5 title="Email"/></TableCell>
                     </TableRow>
                 {selectedSuppliers.map((supplier, index) =>  (
                   <TableRow>
@@ -171,12 +182,7 @@ export const AddProductPage = () => {
                 </Table>
                 </TableContainer>
                 </Grid>
-                <Grid xs={6}>
-                  <TableSupplierData 
-                  setSuppliers={(selected) => setSuppliers([...selectedSuppliers, selected])
-                  }/>
-                  </Grid>
-                </Grid>             
+                </Grid>            
                 {error && (
                   <Typography color="error">
                     Er is een fout opgetreden, probeer het opnieuw.

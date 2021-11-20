@@ -16,6 +16,7 @@ import { Divider } from '@mui/material';
 import { AddRecipeVariables } from "../types/AddRecipe";
 import { TableData } from "./components/IngredientTable";
 import { VscTrash } from "react-icons/vsc";
+import { H3, H5 } from "src/content/pages/Components/TextTypes";
 
 export const AddRecipePage = () => {
 
@@ -101,7 +102,32 @@ export const AddRecipePage = () => {
           return (
             <>
             <Grid container xs={12} spacing={2}>
-            <Grid xs={12}>
+                <Grid container xs={12}>
+                <Grid xs={3}>
+                <H5 title="Geef dit recept een naam"/>
+                <FormField
+                  name="input.name"
+                  label="Naam"
+                  validator={composeValidators(required)}
+                />
+                </Grid>
+                <Grid xs={1}></Grid>
+                <Grid xs={3}>
+                <Typography>Geef het recept type aan</Typography>
+                <FormField
+                  name="input.type"
+                  label="Type"
+                />
+                </Grid>  
+                <Grid xs={5}></Grid>
+                <Grid xs={3}>
+                <Rating1
+                updateField="input.rating"
+                setFieldValue={setFieldValue}
+                />
+                </Grid>
+                <Grid xs={1}></Grid>
+                <Grid xs={3}>
                 <Button
                   disabled={loading}
                   onClick={() => submitForm()}
@@ -111,34 +137,10 @@ export const AddRecipePage = () => {
                   Gegevens toevoegen
                 </Button>
                 </Grid>   
-                <Grid container xs={6}>
-                <Grid xs={6}>
-                <Typography>Geef dit recept een naam</Typography>
-                <FormField
-                  name="input.name"
-                  label="Naam"
-                  validator={composeValidators(required)}
-                />
                 </Grid>
-                <Grid xs={6}>
-                <Typography>Geef het recept type aan</Typography>
-                <FormField
-                  name="input.type"
-                  label="Type"
-                />
-                </Grid>  
-                <Grid xs={6}>
-                <Rating1
-                updateField="input.rating"
-                setFieldValue={setFieldValue}
-                />
-                </Grid>
-                <Grid xs={1}></Grid>
-                           
-                </Grid>
-                <Grid xs={6}>
                 <Grid xs={12}>
-                Stappenplan om dit recept te maken:
+                <Grid xs={12}>
+                <H3 title="Stappenplan om dit recept te maken:"/>
                 <Grid xs={12}>
                 <FieldArray
                 name="method"
@@ -153,6 +155,12 @@ export const AddRecipePage = () => {
                         <TableCell>
                           Actie
                         </TableCell>
+                        <TableCell>
+                          Verwijder stap
+                          </TableCell>
+                        <TableCell>
+                          Nog een stap toevoegen
+                        </TableCell>
                       </TableRow>
                  {values.method?.map((stepToMethod, index)=> (
                    <TableRow>
@@ -166,6 +174,7 @@ export const AddRecipePage = () => {
                         name={`method.${index}.method`}
                        label="Methode"
                        value={stepToMethod.method}
+                       multiline
                        onChange={handleChange}
                         />
                         </TableCell>
@@ -180,12 +189,8 @@ export const AddRecipePage = () => {
                         -
                        </Button>
                         </TableCell>
-                            
-                     </>
-                     </TableRow>
-                   ))}
-                   <TableRow>
-                       <Button
+                        <TableCell>
+                        <Button
                        variant="contained" 
                        color="secondary"
                         style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
@@ -194,7 +199,10 @@ export const AddRecipePage = () => {
                          arrayHelpers.push(emptyStep)}}>
                         +
                        </Button>
-                   </TableRow>
+                       </TableCell>
+                     </>
+                     </TableRow>
+                   ))}
                    </Table>
                    </TableContainer>
                    </div>
@@ -208,8 +216,14 @@ export const AddRecipePage = () => {
                 <Divider/>
                 <Grid container xs={12}>
                   <Grid xs={12}>
-                Ingredienten:
+                <H3 title="Ingredienten"/>
                 </Grid>
+                <Grid xs={6}>
+                  <TableData 
+                  setIngredients={(selected) => setIngredients([...selectedIngredients, selected])
+                  }/>
+                  </Grid>
+                  <Grid xs={6}>
                   <TableContainer>
                 <Table size="small">
                   <TableRow>
@@ -241,11 +255,7 @@ export const AddRecipePage = () => {
                 ))}
                 </Table>
                 </TableContainer>
-                <Grid xs={12}>
-                  <TableData 
-                  setIngredients={(selected) => setIngredients([...selectedIngredients, selected])
-                  }/>
-                  </Grid>
+                </Grid>
                 </Grid>             
                 {error && (
                   <Typography color="error">
