@@ -14,6 +14,7 @@ import { FormikSelect } from "src/components/form/FormikSelect";
 import { useAddDish } from "../api";
 import { AddDishVariables } from "../types/AddDish";
 import { TableRecipeData } from "./components/RecipeTable";
+import { H3, H5 } from "src/content/pages/Components/TextTypes";
 
 export const AddDishPage = () => {
 
@@ -103,13 +104,35 @@ export const AddDishPage = () => {
           return (
             <>
             <Grid container xs={12} spacing={2}>
-                <Grid xs={6}>
-                <Grid xs={5}>
-                <Typography>Geef dit gerecht een naam</Typography>
+                <Grid xs={3}>
+                <H5 title="Geef dit gerecht een naam"/>
                 <FormField
                   name="input.name"
                   label="Naam"
                   validator={composeValidators(required)}
+                />
+                </Grid>
+                <Grid xs={1}></Grid>
+                <Grid xs={3}>
+                <H5 title="Geef het thema aan"/>
+                <FormField
+                  name="input.theme"
+                  label="Thema"
+                />
+                </Grid>
+                <Grid xs={1}></Grid>
+                <Grid xs={3}>
+                <H5 title="Geef het gerechttype aan"/>
+                <FormField
+                  name="input.type"
+                  label="Type"
+                />
+                </Grid>
+                <Grid xs={3}>
+                <H5 title="Voeg een opmerking toe"/>
+                <FormField
+                  name="input.comment"
+                  label="Opmerking"
                 />
                 </Grid>
                 <Grid xs={1}></Grid>
@@ -120,30 +143,7 @@ export const AddDishPage = () => {
                 />
                 </Grid>
                 <Grid xs={1}></Grid>
-                <Grid xs={5}>
-                <Typography>Geef het thema aan</Typography>
-                <FormField
-                  name="input.theme"
-                  label="Thema"
-                />
-                </Grid> 
-                <Grid xs={5}>
-                <Grid xs={5}>
-                <Typography>Geef het type aan</Typography>
-                <FormField
-                  name="input.type"
-                  label="Type"
-                />
-                </Grid> 
-                <Grid xs={5}>
-                <Typography>Geef een opmerking aan</Typography>
-                <FormField
-                  name="input.comment"
-                  label="Opmerking"
-                />
-                </Grid> 
-                </Grid>
-                <Grid xs={5}>
+                <Grid xs={3}>
                 <Button
                   disabled={loading}
                   onClick={() => submitForm()}
@@ -152,16 +152,16 @@ export const AddDishPage = () => {
                 >
                   Gegevens toevoegen
                 </Button>
-                </Grid>               
-                </Grid>
-                <Grid xs={6}>
+                </Grid>  
+                <Divider/>  
                 <Grid xs={12}>
-                Stappenplan om dit gerecht te maken:
+                <H3 title="Stappenplan om dit gerecht te maken:"/>
                 <Grid xs={12}>
                 <FieldArray
                 name="method"
                 render={arrayHelpers => (
                 <div>
+                  <TableContainer >
                     <Table>
                       <TableRow>
                         <TableCell>
@@ -169,6 +169,12 @@ export const AddDishPage = () => {
                         </TableCell>
                         <TableCell>
                           Actie
+                        </TableCell>
+                        <TableCell>
+                          Verwijder stap
+                          </TableCell>
+                        <TableCell>
+                          Nog een stap toevoegen
                         </TableCell>
                       </TableRow>
                  {values.method?.map((stepToMethod, index)=> (
@@ -183,6 +189,7 @@ export const AddDishPage = () => {
                         name={`method.${index}.method`}
                        label="Methode"
                        value={stepToMethod.method}
+                       multiline
                        onChange={handleChange}
                         />
                         </TableCell>
@@ -197,12 +204,8 @@ export const AddDishPage = () => {
                         -
                        </Button>
                         </TableCell>
-                            
-                     </>
-                     </TableRow>
-                   ))}
-                   <TableRow>
-                       <Button
+                        <TableCell>
+                        <Button
                        variant="contained" 
                        color="secondary"
                         style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
@@ -211,22 +214,30 @@ export const AddDishPage = () => {
                          arrayHelpers.push(emptyStep)}}>
                         +
                        </Button>
-                   </TableRow>
+                       </TableCell>
+                     </>
+                     </TableRow>
+                   ))}
                    </Table>
+                   </TableContainer>
                    </div>
                 )}
                 />
                 </Grid>
+                </Grid>
                 </Grid> 
-                </Grid>
-                </Grid>
                 <Grid xs={12}></Grid>
                 <Divider/>
                 <Grid container xs={12}>
-                  <Grid xs={6}>
-                Recepten:
+                  <Grid xs={12}>
+                <H3 title="Recepten"/>
                 </Grid>
                 <Grid xs={6}>
+                  <TableRecipeData 
+                  setRecipes={(selected) => setRecipes([...selectedRecipes, selected])
+                  }/>
+                  </Grid>
+                  <Grid xs={6}>
                   <TableContainer>
                 <Table size="small">
                   <TableRow>
@@ -259,11 +270,6 @@ export const AddDishPage = () => {
                 </Table>
                 </TableContainer>
                 </Grid>
-                <Grid xs={6}>
-                  <TableRecipeData 
-                  setRecipes={(selected) => setRecipes([...selectedRecipes, selected])
-                  }/>
-                  </Grid>
                 </Grid>             
                 {error && (
                   <Typography color="error">

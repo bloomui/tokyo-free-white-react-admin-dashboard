@@ -12,20 +12,26 @@ import { user } from "../..";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
 import { useAddSupplier } from "../api";
 import { AddSupplierVariables } from "../types/AddSupplier";
+import { H5, H5Left } from "src/content/pages/Components/TextTypes";
+import { useAddSuppliers } from "./api";
+import { AddSuppliersVariables } from "./types/AddSuppliers";
 
 export const AddSupplierPage = () => {
 
     
-    const { addSupplier, loading, error } = useAddSupplier({
+    const { addSuppliers, loading, error } = useAddSuppliers({
         onCompleted: () => {window.location.reload()},
       });
 
-    const formInput: AddSupplierInput = {
+
+      const emptyAddSupplierInput: AddSupplierInput = {
         email: '',
         name: '',
         rating: 0,
-    }
-const formState : AddSupplierVariables = {
+      }
+    const formInput: AddSupplierInput[] = [emptyAddSupplierInput]
+    
+const formState : AddSuppliersVariables = {
         input: formInput,
     }
 
@@ -49,16 +55,13 @@ const formState : AddSupplierVariables = {
           alignItems="stretch"
           spacing={3}
         >
-          <Grid item xs={12}></Grid>
+          <Grid item xs={12}>
       <Formik
         initialValues={formState}
         onSubmit={(values) => {
-          addSupplier({
+          addSuppliers({
             variables: {
-                input: {
-                name: values.input.name,
-                email: values.input.email,
-              },
+                input: values.input,
             },
           });
         }}
@@ -67,32 +70,75 @@ const formState : AddSupplierVariables = {
           return (
             <>
               <Grid container xs={12} spacing={2}>
-                <Grid xs={5}>
-                <Typography>Geef een productnaam op</Typography>
-                <FormField
-                  name="input.name"
-                  label="Naam"
-                  validator={composeValidators(required)}
+              <Grid xs={12}>
+                <FieldArray
+                name="input"
+                render={arrayHelpers => (
+                <div>
+                  <TableContainer >
+                    <Table>
+                      <TableRow>
+                        <TableCell>
+                          <H5Left title="Naam"/>
+                        </TableCell>
+                        <TableCell>
+                        <H5Left title="Email"/>
+                        </TableCell>
+                        <TableCell></TableCell>
+                        <TableCell></TableCell>
+                      </TableRow>
+                 {values.input?.map((input, index)=> (
+                   <TableRow>
+                     <>
+                        <TableCell>
+                        <TextField
+                        id={`input.${index}.name`}
+                        name={`method.${index}.name`}
+                       label="Naam"
+                       value={input.name}
+                       onChange={handleChange}
+                        />
+                        </TableCell>
+                        <TableCell>
+                        <TextField
+                        id={`input.${index}.email`}
+                        name={`method.${index}.email`}
+                       label="Email"
+                       value={input.email}
+                       onChange={handleChange}
+                        />
+                        </TableCell>
+                        <TableCell>
+                        <Button
+                            variant="contained" 
+                            color="secondary"
+                        style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
+                         onClick={() => {
+                             arrayHelpers.remove(index)}}>
+                        -
+                       </Button>
+                        </TableCell>
+                        <TableCell>
+                        <Button
+                       variant="contained" 
+                       color="secondary"
+                        style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
+                         onClick={() => {
+                         arrayHelpers.push(emptyAddSupplierInput)}}>
+                        +
+                       </Button>
+                        </TableCell>
+                            
+                     </>
+                     </TableRow>
+                   ))}
+                   </Table>
+                   </TableContainer>
+                   </div>
+                )}
                 />
-                <Rating1
-                updateField="input.rating"
-                setFieldValue={setFieldValue}
-                />
-                <FormField
-                  name="input.email"
-                  label="Email"
-                  validator={composeValidators(required)}
-                />
-                <Grid xs={5}>
-                <Button
-                  disabled={loading}
-                  onClick={() => submitForm()}
-                  color="primary"
-                  variant="contained"
-                >
-                  Gegevens toevoegen
-                </Button>
-                </Grid>   
+                </Grid>
+                <Grid xs={4}>  
                 {error && (
                   <Typography color="error">
                     Er is een fout opgetreden, probeer het opnieuw.
@@ -104,6 +150,7 @@ const formState : AddSupplierVariables = {
               );
             }}
           </Formik>
+          </Grid>
           </Grid>
           </Container>
           </>
