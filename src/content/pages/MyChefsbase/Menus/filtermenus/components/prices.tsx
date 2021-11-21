@@ -3,24 +3,30 @@ import Autocomplete from "@material-ui/lab/Autocomplete"
 import React from "react"
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
+import { H5 } from "src/content/pages/Components/TextTypes"
+import { FormField } from "src/components/form/FormField";
+import { FormikSelect } from "src/components/form/FormikSelect";
+import { MenuItem } from "@mui/material";
+import { composeValidators, required } from "src/utilities/formikValidators";
+import { units } from "../../../Ingredients/ingredientDialogs/UpdateIngredientDialog";
 
 const marks = [
   {
     value: 0.0,
     label: '€0,00',
   },
-  {
-    value: 25.0,
-    label: '€25,00',
-  },
-  {
-    value: 50.0,
-    label: '€50,00',
-  },
-  {
-    value: 75.0,
-    label: '€75,00',
-  },
+  // {
+  //   value: 25.0,
+  //   label: '€25,00',
+  // },
+  // {
+  //   value: 50.0,
+  //   label: '€50,00',
+  // },
+  // {
+  //   value: 75.0,
+  //   label: '€75,00',
+  // },
   {
     value: 100.0,
     label: '€100,00',
@@ -44,7 +50,9 @@ export const Price = ({
     };
   return (
     <>
-<Box >
+<Grid container xs={12}>
+  <Grid xs={6}>
+    <H5 title="Prijs"/>
       <Slider
         aria-label="Prijs"
         defaultValue={0.0}
@@ -54,7 +62,28 @@ export const Price = ({
         valueLabelDisplay="on"
         onChange={handleChange}
       />
-    </Box>
+      </Grid>
+      <Grid xs={6}>
+    <H5 title="Per"/>
+    <Grid xs={7}>
+                <FormField
+                  name="input.quantity"
+                  label="Naam"
+                  validator={composeValidators(required)}
+                />
+                </Grid>
+                <Grid xs={1}></Grid>
+                <Grid xs={4}>
+                <FormikSelect
+                      name="input.unit"
+                      >
+              {units.map((unit) => (
+                <MenuItem key={unit} value={unit}>{unit}</MenuItem>
+              ))}
+            </FormikSelect>
+                </Grid>
+      </Grid>
+    </Grid>
 </>
   )
   }  

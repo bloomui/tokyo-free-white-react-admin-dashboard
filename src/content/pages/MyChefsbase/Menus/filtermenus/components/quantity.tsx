@@ -3,6 +3,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete"
 import React from "react"
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
+import { H5 } from "src/content/pages/Components/TextTypes"
 
 const marks = [
   {

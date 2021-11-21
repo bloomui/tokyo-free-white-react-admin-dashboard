@@ -1,3 +1,4 @@
+import { H5 } from "src/content/pages/Components/TextTypes"
 import { Grid, TextField, Typography } from "@material-ui/core"
 import Autocomplete from "@material-ui/lab/Autocomplete"
 import React from "react"
@@ -14,8 +15,8 @@ export const Menus = ({
     return (
       <>
   <Grid container spacing={2} xs={12}>
- <Grid key={0} item>
-   <Typography>Zoek op menu's:</Typography>
+  <Grid key={0} item xs={12}>
+ <H5 title="Zoek op menus"/>
    {menus && (
     <Autocomplete
 multiple

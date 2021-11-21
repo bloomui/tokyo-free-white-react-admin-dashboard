@@ -21,8 +21,7 @@ import { TableDishData } from "./components/DishTable";
 export const AddMenuPage = () => {
     const {data} = useAllDishesQuery()
     const { addMenu, loading, error } = useAddMenu({
-        onCompleted: () => {}
-        // window.location.reload(),
+        onCompleted: () => window.location.reload(),
       });
 
       const [selectedDishes, setDishes] = React.useState<dishForCourse[]>([]);
@@ -79,12 +78,7 @@ export const AddMenuPage = () => {
         onSubmit={(values) => {
             addMenu({
                 variables: {
-                    courses: selectedDishes.map((selected) => (
-                        {
-                            coursetype: selected.coursetype,
-                            dishes: [selected.dishid]
-                        }
-                    )),
+                    courses: mapCoursesToInput(selectedDishes),
                   input: {
                     name: values.input.name,
                     rating: values.input.rating,
@@ -260,22 +254,17 @@ export type dishForCourse = {
   dishname: string,
 }
 
-var groupBy = function(xs, key) {
-    return xs.reduce(function(rv, x) {
-      (rv[x[key]] = rv[x[key]] || []).push(x);
-      return rv;
-    }, {});
-  };
+export const mapCoursesToInput = (selected: dishForCourse[]): AddCourseToDishesInput[] => {
 
-// const mapCoursesToInput = (selected: dishForCourse[]): AddCourseToDishesInput[] => {
-//     const b = selected.map((a) => (
-//         selected.filter((a.coursetype === ))
-//     ))
-//     const a = selected.map((sel) => (
-//         {
-//             coursetype: sel.coursetype,
-//             dishes: [sel.dishid]
-//         }
-//     )),
-
-//   }
+    const a = []
+    selected.forEach((b) => {
+        if (a.includes(b.coursetype) == false) a.push(b.coursetype)
+    })
+    const map = a.map((coursetype) => {
+        return {
+                coursetype: coursetype,
+                dishes: selected.filter((s) => s.coursetype == coursetype).map((s) => s.dishid)
+            }
+    })
+    return map
+  }

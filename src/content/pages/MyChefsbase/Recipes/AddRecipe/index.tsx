@@ -26,7 +26,7 @@ export const AddRecipePage = () => {
       );
       const [stepHere, setStep] = useState(1)
       const [selectedIngredients, setIngredients] = React.useState<ingredientToQ[]>([]);
-
+      
     const formInput: AddRecipeInput = {
         name: '',
         rating: 0,
@@ -280,7 +280,7 @@ export type ingredientToQ = {
   unit: string
 }
 
-const mapIngredientToQToInput = (selected: ingredientToQ[]): QuantityToId[] => {
+export const mapIngredientToQToInput = (selected: ingredientToQ[]): QuantityToId[] => {
   return selected.map((a) => (
     {
       id: a.id,

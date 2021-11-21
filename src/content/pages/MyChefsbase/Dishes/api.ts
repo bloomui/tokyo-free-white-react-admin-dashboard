@@ -14,6 +14,7 @@ const getDishQuery = gql`
  query dish ($id: String!) {
    dish (id: $id) {
     id
+    type
     comment
     name
     rating
@@ -62,6 +63,7 @@ query FilterDishes ($input: DishFilterInput, $limit: Int, $offset: Int) {
     numberOfDishes
     filterDishes (input: $input, limit: $limit, offset: $offset) {
     id
+    type
     comment
     name
     rating

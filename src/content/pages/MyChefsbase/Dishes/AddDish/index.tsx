@@ -41,7 +41,7 @@ export const AddDishPage = () => {
             step: stepHere,
             method: ''
             }
-    
+           
             function handleDelete(index) {
                 selectedRecipes.splice(index, 1)
                 setRecipes([...selectedRecipes])
@@ -294,7 +294,7 @@ export type recipeToQ = {
   unit: string
 }
 
-const mapRecipeToQToInput = (selected: recipeToQ[]): QuantityToId[] => {
+export const mapRecipeToQToInput = (selected: recipeToQ[]): QuantityToId[] => {
   return selected.map((a) => (
     {
       id: a.id,

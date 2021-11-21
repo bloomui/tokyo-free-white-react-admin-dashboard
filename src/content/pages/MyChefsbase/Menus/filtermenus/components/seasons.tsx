@@ -1,6 +1,7 @@
 import { Grid, TextField, Typography } from "@material-ui/core"
 import Autocomplete from "@material-ui/lab/Autocomplete"
 import React from "react"
+import { H5 } from "src/content/pages/Components/TextTypes"
 
 export const Seasons = ({
     seasons,
@@ -12,7 +13,7 @@ export const Seasons = ({
     return (
       <>
   <Grid container spacing={2} xs={12}>
- <Grid key={0} item>
+  <Grid key={0} item xs={12}>
    <Typography>Zoek op seizoen:</Typography>
    {seasons && (
     <Autocomplete

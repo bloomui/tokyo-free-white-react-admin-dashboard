@@ -1,15 +1,18 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Table, TableCell, TableRow, TextField, Typography } from "@material-ui/core";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, MenuItem, Table, TableCell, TableContainer, TableRow, TextField, Typography } from "@material-ui/core";
 import { Autocomplete, Rating } from "@material-ui/lab";
 import { FieldArray, Formik } from "formik";
 import React, { useState } from "react";
-import { FormField } from "src/components/form/FormField";
-import { FormikSelect } from "src/components/form/FormikSelect";
+import { FormField, FormFieldEdit } from "src/components/form/FormField";
+import { Rating1, RatingEdit } from "../../Menus/filtermenus/components/rating";import { FormikSelect } from "src/components/form/FormikSelect";
+import { H3, H5, H5Left } from "src/content/pages/Components/TextTypes";
 import { RecipeInput, QuantityToId, StepToMethodInput, DishInput, AddIngredientInput, IngredientInput, QuantityToNutritionInput, NutritionInput } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
 import { initialValues } from "../../Dishes/filterdishes";
 import { UpdateDishVariables } from "../../Dishes/types/UpdateDish";
 import { Products } from "../../Menus/filtermenus/components/products";
-import { Rating1 } from "../../Menus/filtermenus/components/rating";
+import { Quantity } from "../../Menus/filtermenus/components/quantity";
+import { productToQ } from "../AddIngredient";
+import { TableProductData } from "../AddIngredient/component/ProductsTable";
 import { useAllProductsQuery, useUpdateIngredient } from "../api";
 import { AddIngredientVariables } from "../types/AddIngredient";
 import { allProducts_products } from "../types/AllProducts";
@@ -46,6 +49,13 @@ export const UpdateIngredientDialog = ({
         onCompleted: () => window.location.reload(),
       });
 
+      const [selectedProducts, setProducts] = React.useState<productToQ[]>([]);
+
+            function handleDelete(index) {
+                selectedProducts.splice(index, 1)
+                setProducts([...selectedProducts])
+            }
+
 const formInput: IngredientInput = {
   id: '',
   name: '',
@@ -59,13 +69,13 @@ const formState : UpdateIngredientVariables = {
 }
 
     return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog fullScreen open={open} onClose={onClose}>
       <Formik
         initialValues={formState}
         onSubmit={(values) => {
           updateIngredient({
             variables: {
-                products: values.products,
+                products: selectedProducts.map((productToId) => productToId.id),
                 input: {
                 id: ingredient.id,
                 name: values.input.name,
@@ -84,77 +94,94 @@ const formState : UpdateIngredientVariables = {
                 Ingredient Aanpassen
               </DialogTitle>
               <DialogContent>
-                <FormField
+              <Grid container xs={12} spacing={2}>
+                <Grid xs={3}>
+                <H5 title="Ingredientnaam"/>
+                <FormFieldEdit
+                  placeholder={ingredient.name}
                   name="input.name"
                   label="Naam"
                   validator={composeValidators(required)}
                 />
-                <Rating1
-                updateField="input.rating"
-                setFieldValue={setFieldValue}
-                />
-                <FormField
+                </Grid>
+                <Grid xs={1}></Grid>
+                <Grid xs={3}>
+                <H5 title="Categorie"/>
+                <FormFieldEdit
+                  placeholder={ingredient.category}
                   name="input.category"
                   label="Categorie"
                 />
-                <Grid container xs={12}>
-                    <Grid item xs={12}>
-                    Producten:
-                    {data.products && (
-                    <Autocomplete
-                    multiple
-                    id="tags-standard"
-                    options={data.products.map((option) => (option))}
-                    getOptionLabel={(option) => option? option.name : ""}
-                    onChange={(event,  values: allProducts_products[]) => setFieldValue("products", values.map((option) => option.id))}
-                    renderInput={(params) => (
-                 <TextField
-                 {...params}
-                 fullWidth
-                label="Producten"
-                />
-                )}
-                />
-                )}
-                </Grid>
                 </Grid> 
-                Voedingswaaarde:
-                <Grid container xs={12}>
-                <Grid item xs={3}> 
-                Per:
-                </Grid>
-                  <Grid item xs={6}> 
-                  <FormField
-                  name="input.nutrition.quantity"
-                  label="Hoeveelheid"
-                  validator={composeValidators(required)}
+                <Grid xs={4}></Grid>
+                <Grid xs={3}>
+                <RatingEdit
+                defaultNumber={ingredient.rating}
+                updateField="input.rating"
+                setFieldValue={setFieldValue}
                 />
-                  </Grid>
-                  <Grid item xs={3}> 
-                  <FormikSelect
+                </Grid> 
+                <Grid xs={1}></Grid>
+                <Grid xs={3}>
+                <H5 title="Toevoegen"/>
+                <Button
+                  disabled={loading}
+                  onClick={() => submitForm()}
+                  color="primary"
+                  variant="contained"
+                >
+                  Gegevens toevoegen
+                </Button>
+                </Grid>               
+                </Grid>
+                <Divider/>
+                <Grid xs={12}>
+                <TableContainer>
+                    <Table>
+                        <TableRow>
+                            <TableCell colSpan={6}>
+                            <H3 title="Voedingswaarde"/>
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                        <TableCell colSpan={2}></TableCell>
+                            <TableCell colSpan={2}>
+                            <H5Left title="Hoeveelheid"/>
+                            </TableCell>
+                            <TableCell colSpan={2}>
+                            <H5Left title="Eenheid"/>
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                        <TableCell colSpan={2} align="center">Per</TableCell>
+                        <TableCell colSpan={2}>
+                        <Quantity
+                  name="input.nutrition.quantity"
+                  setFieldValue={setFieldValue}
+                />
+                            </TableCell>
+                            <TableCell colSpan={2}>
+                            <FormikSelect
                       name="input.nutrition.unit"
                       >
               {units.map((unit) => (
                 <MenuItem key={unit} value={unit}>{unit}</MenuItem>
               ))}
             </FormikSelect>
-                  </Grid>
-                  <Table size="small">
-                    <TableRow>
+                            </TableCell>
+                        </TableRow>
+                        <TableRow></TableRow>
+                        <TableRow>
                       <TableCell>Kilocalorieën</TableCell>
                       <TableCell><FormField
                   name="input.nutrition.nutrition.kcal"
                   label="Kcal"
                 /></TableCell>
-                    </TableRow>
-                    <TableRow>
                       <TableCell>Eiwitten</TableCell>
                       <TableCell><FormField
                   name="input.nutrition.nutrition.prottotal"
                   label="Eiwitten"
                 /></TableCell>
-                    </TableRow>
-                    <TableRow>
                       <TableCell>Koolhydraten</TableCell>
                       <TableCell><FormField
                   name="input.nutrition.nutrition.carbscarbs"
@@ -167,23 +194,69 @@ const formState : UpdateIngredientVariables = {
                   name="input.nutrition.nutrition.carbssugar"
                   label="Suikers"
                 /></TableCell>
-                    </TableRow>
-                    <TableRow>
                       <TableCell>Vetten</TableCell>
                       <TableCell><FormField
                   name="input.nutrition.nutrition.fatstotal"
                   label="Vetten"
                 /></TableCell>
-                    </TableRow>
-                    <TableRow>
                       <TableCell>Vezels</TableCell>
                       <TableCell><FormField
                   name="input.nutrition.nutrition.fibres"
                   label="Vezels"
                 /></TableCell>
                     </TableRow>
-                  </Table>
+                    </Table>
+                    </TableContainer>
+                    </Grid>
+          
+                <Divider/>
+                <Grid container xs={12}>
+                  <Grid xs={12}>
+                <H3 title="Productopties"/>
                 </Grid>
+                <Grid xs={6}>
+                  <TableProductData 
+                  setProduct={(selected) => setProducts([...selectedProducts, selected])
+                  }/>
+                  </Grid>
+                <Grid xs={6}>
+                  <TableContainer>
+                <Table size="small">
+                  <TableRow>
+                    <TableCell>Naam</TableCell>
+                    <TableCell>email</TableCell>
+                    <TableCell>Herkomst</TableCell>
+                    <TableCell>Prijs</TableCell>
+                    </TableRow>
+                {selectedProducts.map((product, index) =>  (
+                  <TableRow>
+                    <TableCell>
+                      {product.name}
+                    </TableCell>
+                    <TableCell>
+                      {product.brand}
+                    </TableCell>
+                    <TableCell>
+                      {product.origin}
+                    </TableCell>
+                    <TableCell>
+                      {product.price}
+                    </TableCell>
+                    <TableCell>
+                    <Button
+                       variant="contained" 
+                       color="secondary"
+                        style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
+                         onClick={() => {handleDelete(index)}}>           
+                                                 -
+                       </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+                </Table>
+                </TableContainer>
+                </Grid>
+                </Grid> 
                 {error && (
                   <Typography color="error">
                     Er is een fout opgetreden, probeer het opnieuw.

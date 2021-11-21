@@ -16,6 +16,7 @@ import { Suppliers } from "../../Menus/filtermenus/components/suppliers";
 import { Types } from "../../Menus/filtermenus/components/types";
 import { initialRecipeValues } from "../../Recipes/filterrecipes";
 import { Ingredients_dishes, Ingredients_menus, Ingredients_products, Ingredients_recipes, Ingredients_suppliers } from "../types/Ingredients";
+import {useNavigate} from 'react-router-dom';
 
 
 export const initialIngredientValues: IngredientFilterInput = {
@@ -53,6 +54,7 @@ export const initialIngredientValues: IngredientFilterInput = {
 
     const [ openFilterInputDialog, setOpenFilterInputDialog] = React.useState(false)
 
+    const  navigate = useNavigate()
     return (
       <Card>
         <Formik
@@ -80,8 +82,9 @@ export const initialIngredientValues: IngredientFilterInput = {
         </ExpandMore>
         </Grid>
         <Grid key={2} item>
-        <Button fullWidth color="secondary" variant="contained" onClick={setOpenAddIngredient}>
-                      <span> Nieuw Ingredient</span>
+        <Button 
+        onClick={() => navigate("/mychefsbase/addingredient")}
+        fullWidth color="secondary" variant="contained" ><span> Nieuw ingredient</span>
                   </Button>
         </Grid>
       </CardActions>

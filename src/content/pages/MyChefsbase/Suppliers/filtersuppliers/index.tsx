@@ -17,6 +17,7 @@ import { Suppliers } from "../../Menus/filtermenus/components/suppliers";
 import { Types } from "../../Menus/filtermenus/components/types";
 import { initialRecipeValues } from "../../Recipes/filterrecipes";
 import { Suppliers_products, Suppliers_dishes, Suppliers_menus, Suppliers_recipes, Suppliers_ingredients } from "../types/Suppliers";
+import {useNavigate} from 'react-router-dom';
 
 
 export const initialSupplierValues: SupplierFilterInput = {
@@ -51,6 +52,7 @@ export const initialSupplierValues: SupplierFilterInput = {
 
     const [ openFilterInputDialog, setOpenFilterInputDialog] = React.useState(false)
 
+    const navigate = useNavigate()
     return (
       <Card>
         <Formik

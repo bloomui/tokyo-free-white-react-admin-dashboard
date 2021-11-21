@@ -20,11 +20,15 @@ import { Price } from "../../Menus/filtermenus/components/prices";
 export const AddProductPage = () => {
 
     const { addProduct, loading, error } = useAddProduct({
-        onCompleted: () => window.location.reload()
+        onCompleted: () => {},
+        // window.location.reload()
         },
       );
       const [selectedSuppliers, setSuppliers] = React.useState<supplierToQ[]>([]);
-
+      function handleDelete(index) {
+        selectedSuppliers.splice(index, 1)
+        setSuppliers([...selectedSuppliers])
+      }
     const formInput: AddProductInput = {
         price: 0,
         unit: '',
@@ -35,10 +39,7 @@ export const AddProductPage = () => {
         rating: 0,
     }
 
-            function handleDelete(index) {
-              selectedSuppliers.splice(index, 1)
-              setSuppliers([...selectedSuppliers])
-            }
+            
     
     const formSuppliers: string[] | null = []
         

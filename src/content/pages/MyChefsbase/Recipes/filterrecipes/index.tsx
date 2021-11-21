@@ -13,6 +13,7 @@ import { Search } from "../../Menus/filtermenus/components/search";
 import { Suppliers } from "../../Menus/filtermenus/components/suppliers";
 import { Types } from "../../Menus/filtermenus/components/types";
 import { Recipes_suppliers, Recipes_dishes, Recipes_menus, Recipes_ingredients, Recipes_products } from "../types/Recipes";
+import {useNavigate} from 'react-router-dom';
 
 
 export const initialRecipeValues: RecipeFilterInput = {
@@ -49,6 +50,7 @@ export const initialRecipeValues: RecipeFilterInput = {
   }) => {
 
     const [ openFilterInputDialog, setOpenFilterInputDialog] = React.useState(false)
+    const navigate = useNavigate()
 
     return (
       <Card>
@@ -77,7 +79,8 @@ export const initialRecipeValues: RecipeFilterInput = {
         </ExpandMore>
         </Grid>
         <Grid key={2} item>
-        <Button fullWidth color="secondary" variant="contained" onClick={setOpenAddRecipe}>
+        <Button 
+        onClick={() => navigate("/mychefsbase/addrecipe")} fullWidth color="secondary" variant="contained" >
                       <span> Nieuw recept</span>
                   </Button>
         </Grid>

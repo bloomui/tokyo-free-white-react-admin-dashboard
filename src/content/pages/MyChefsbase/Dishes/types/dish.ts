@@ -34,6 +34,7 @@ export interface dish_dish_recipes {
 export interface dish_dish {
   __typename: "Dish";
   id: string;
+  type: string | null;
   comment: string | null;
   name: string;
   rating: number | null;

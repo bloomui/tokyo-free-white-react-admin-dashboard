@@ -2,6 +2,7 @@ import { Grid, TextField, Typography } from "@material-ui/core"
 import Autocomplete from "@material-ui/lab/Autocomplete"
 import React from "react"
 import { Menus_products } from "../../types/Menus"
+import { H5 } from "src/content/pages/Components/TextTypes"
 
 export const Products = ({
     products,
@@ -13,8 +14,8 @@ export const Products = ({
     return (
       <>
   <Grid container spacing={2} xs={12}>
- <Grid key={0} item>
-   <Typography>Zoek op producten:</Typography>
+  <Grid key={0} item xs={12}>
+ <H5 title="Zoek op producten"/>
    {products && (
 
 <Autocomplete
