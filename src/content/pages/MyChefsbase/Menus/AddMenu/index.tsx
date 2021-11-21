@@ -14,13 +14,22 @@ import { FormikSelect } from "src/components/form/FormikSelect";
 import { useAddMenu, useAllDishesQuery } from "../api";
 import { AddMenuVariables } from "../types/AddMenu";
 import { AllDishes_dishes } from "../types/AllDishes";
+import { H3, H5 } from "src/content/pages/Components/TextTypes";
+import { TableDishData } from "./components/DishTable";
 
 
 export const AddMenuPage = () => {
     const {data} = useAllDishesQuery()
     const { addMenu, loading, error } = useAddMenu({
-        onCompleted: () => window.location.reload(),
+        onCompleted: () => {}
+        // window.location.reload(),
       });
+
+      const [selectedDishes, setDishes] = React.useState<dishForCourse[]>([]);
+      function handleDelete(index) {
+        selectedDishes.splice(index, 1)
+        setDishes([...selectedDishes])
+      }
 
     const formInput: AddMenuInput = {
         name: '',
@@ -70,7 +79,12 @@ export const AddMenuPage = () => {
         onSubmit={(values) => {
             addMenu({
                 variables: {
-                    courses: values.courses,
+                    courses: selectedDishes.map((selected) => (
+                        {
+                            coursetype: selected.coursetype,
+                            dishes: [selected.dishid]
+                        }
+                    )),
                   input: {
                     name: values.input.name,
                     rating: values.input.rating,
@@ -89,35 +103,57 @@ export const AddMenuPage = () => {
                 <Grid container xs={12}>
                     <Grid container xs={12}>
                     <Grid xs={3}>
+                        <H5 title="Geef een menu naam op"/>
                  <FormField
                   name="input.name"
                   label="Naam"
                 />
                 </Grid>
+                <Grid xs={1}></Grid>
                 <Grid xs={3}>
+                <H5 title="Geef een seizoen op"/>
                  <FormField
                   name="input.season"
                   label="Seizoen"
                 />
                 </Grid>
+                <Grid xs={1}></Grid>
                 <Grid xs={3}>
+                <H5 title="Geef een thema op"/>
                 <FormField
                   name="input.theme"
                   label="Thema"
                 />
                 </Grid>
-                <Grid xs={3}>
+                <Grid container xs={7}>
+                    <Grid xs={12}>
+                <H5 title="Geef een periode op"/>
+                </Grid>
+                <Grid xs={5}>
                 <FormField
                   name="input.periodstartdate"
-                  label="Start datum"
+                  label="Vanaf"
                 />
                 </Grid>
-                <Grid xs={3}>
+                <Grid xs={2}></Grid>
+                <Grid xs={5}>
                 <FormField
                   name="input.periodenddate"
-                  label="Eind datum"
-                  validator={composeValidators(mustBeDate)}
+                  label="Tot"
                 />
+                </Grid>
+                </Grid>
+                <Grid xs={1}></Grid>
+                <Grid xs={3}>
+                    <H5 title="Toevoegen"/>
+                <Button
+                  disabled={loading}
+                  onClick={() => submitForm()}
+                  color="primary"
+                  variant="contained"
+                >
+                  Gegevens toevoegen
+                </Button>
                 </Grid>
                 <Grid xs={3}>
                 <Rating1
@@ -129,9 +165,19 @@ export const AddMenuPage = () => {
                 </Grid> 
                 </Grid>       
                 <Divider/>
+                <Divider/>
+                <Grid container xs={12}>
+                  <Grid xs={12}>
+                <H3 title="Gangen"/>
+                </Grid>
                 <Grid xs={6}>
-                  Gangen:
-                <FieldArray
+                  <TableDishData
+                  courses={values.courses.map((course) => course.coursetype)} 
+                  setDishes={(selected) => setDishes([...selectedDishes, selected])
+                  }/>
+                  </Grid>
+                  <Grid xs={6}>
+                  <FieldArray
             name="courses"
              render={arrayHelpers => (
                <div>
@@ -145,22 +191,31 @@ export const AddMenuPage = () => {
                        value={courseToDishes.coursetype}
                        onChange={handleChange}
                         />
-                        {data && (
-                            <Autocomplete
-                            multiple
-                            id="tags-standard"
-                            options={data.dishes.map((option) => (option))}
-                            getOptionLabel={(option) => option.name}
-                            onChange={(event,  values: AllDishes_dishes[]) => setFieldValue(`courses.${index}.dishes`, values.map((option) => option.id))}
-                            renderInput={(params) => (
-                            <TextField
-                 {...params}
-                 fullWidth
-                label="Gerechten"
-                />
-                            )}
-                            />
-                            )}
+                        <TableContainer>
+                <Table size="small">
+                  <TableRow>
+                    <TableCell>Gerecht</TableCell>
+                    </TableRow>
+                {selectedDishes.map((dish, index) =>  {
+                    if (dish.coursetype === courseToDishes.coursetype) return (
+                    <TableRow>
+                    <TableCell>
+                      {dish.dishname}
+                    </TableCell>
+                    <TableCell>
+                    <Button
+                       variant="contained" 
+                       color="secondary"
+                        style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
+                         onClick={() => {handleDelete(index)}}>           
+                                                 -
+                       </Button>
+                    </TableCell>
+                  </TableRow>
+                    )
+                })}
+                </Table>
+                </TableContainer>
                             <Button
                             variant="contained" 
                             color="secondary"
@@ -181,17 +236,8 @@ export const AddMenuPage = () => {
                 )}
                 />  
                 </Grid>
-                <Divider/>
-                <Grid xs={12}>
-                <Button
-                  disabled={loading}
-                  onClick={() => submitForm()}
-                  color="primary"
-                  variant="contained"
-                >
-                  Gegevens toevoegen
-                </Button>
-                </Grid>            
+                </Grid>    
+                <Divider/>          
                 {error && (
                   <Typography color="error">
                     Er is een fout opgetreden, probeer het opnieuw.
@@ -208,19 +254,28 @@ export const AddMenuPage = () => {
           )
 }
 
-export type recipeToQ = {
-  name: string,
-  id: string,
-  quantity: string,
-  unit: string
+export type dishForCourse = {
+  coursetype: string,
+  dishid: string,
+  dishname: string,
 }
 
-const mapRecipeToQToInput = (selected: recipeToQ[]): QuantityToId[] => {
-  return selected.map((a) => (
-    {
-      id: a.id,
-      quantity: Number(a.quantity),
-      unit: a.unit
-    }
-  ))
-}
+var groupBy = function(xs, key) {
+    return xs.reduce(function(rv, x) {
+      (rv[x[key]] = rv[x[key]] || []).push(x);
+      return rv;
+    }, {});
+  };
+
+// const mapCoursesToInput = (selected: dishForCourse[]): AddCourseToDishesInput[] => {
+//     const b = selected.map((a) => (
+//         selected.filter((a.coursetype === ))
+//     ))
+//     const a = selected.map((sel) => (
+//         {
+//             coursetype: sel.coursetype,
+//             dishes: [sel.dishid]
+//         }
+//     )),
+
+//   }
