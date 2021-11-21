@@ -9,6 +9,18 @@ import { ProductFilterInput } from "./../../../../../globalTypes";
 // GraphQL query operation: FilterProducts
 // ====================================================
 
+export interface FilterProducts_filterProducts_price_quantity {
+  __typename: "Quantity";
+  quantity: number;
+  unit: string;
+}
+
+export interface FilterProducts_filterProducts_price {
+  __typename: "PricePerQuantity";
+  price: number | null;
+  quantity: FilterProducts_filterProducts_price_quantity | null;
+}
+
 export interface FilterProducts_filterProducts_suppliers {
   __typename: "Supplier";
   id: string;
@@ -20,7 +32,7 @@ export interface FilterProducts_filterProducts {
   id: string;
   name: string;
   rating: number | null;
-  price: number | null;
+  price: FilterProducts_filterProducts_price | null;
   brand: string | null;
   origin: string | null;
   suppliers: FilterProducts_filterProducts_suppliers[] | null;

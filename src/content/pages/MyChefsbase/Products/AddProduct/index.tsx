@@ -27,6 +27,8 @@ export const AddProductPage = () => {
 
     const formInput: AddProductInput = {
         price: 0,
+        unit: '',
+        quantity: 0,
         brand: '',
         origin: '',
         name: '',

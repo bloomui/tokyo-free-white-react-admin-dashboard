@@ -59,7 +59,7 @@ export const ProductDialog = ({
                       />
                       <ItemDouble 
                       title="Prijs"
-                      item={product.price}
+                      item={product.price.price}
                       />
                       <ItemString
                       title="Herkomst"

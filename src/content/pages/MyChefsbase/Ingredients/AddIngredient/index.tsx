@@ -268,5 +268,7 @@ export type productToQ = {
   id: string,
   brand: string,
   origin: string,
-  price: number
+  price: number,
+  quantity: number,
+  unit: string,
 }

@@ -7,6 +7,18 @@
 // GraphQL query operation: products
 // ====================================================
 
+export interface products_products_price_quantity {
+  __typename: "Quantity";
+  quantity: number;
+  unit: string;
+}
+
+export interface products_products_price {
+  __typename: "PricePerQuantity";
+  price: number | null;
+  quantity: products_products_price_quantity | null;
+}
+
 export interface products_products {
   __typename: "Product";
   id: string;
@@ -14,7 +26,7 @@ export interface products_products {
   brand: string | null;
   origin: string | null;
   rating: number | null;
-  price: number | null;
+  price: products_products_price | null;
 }
 
 export interface products {

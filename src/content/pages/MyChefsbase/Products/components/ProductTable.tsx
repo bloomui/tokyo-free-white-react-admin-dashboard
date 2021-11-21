@@ -146,7 +146,7 @@ headCells={headCellsProducts}
                       setOpen(true)
                     }}
                     >{product.name}</TableCell>
-                    <TableCell align="left">€{product.price}</TableCell>
+                    <TableCell align="left">€{product.price?.price} per {product.price?.quantity.quantity} {product.price?.quantity.unit}</TableCell>
                     <TableCell align="left">{product.origin}</TableCell>
                     <TableCell align="left">{product.brand}</TableCell>
                     <TableCell align="left">{product.rating}</TableCell>

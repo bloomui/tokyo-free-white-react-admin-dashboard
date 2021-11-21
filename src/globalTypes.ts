@@ -49,6 +49,8 @@ export interface AddMenuInput {
 export interface AddProductInput {
   name: string;
   price?: number | null;
+  quantity?: number | null;
+  unit?: string | null;
   brand?: string | null;
   rating?: number | null;
   origin?: string | null;
@@ -244,6 +246,8 @@ export interface ProductInput {
   id: string;
   name: string;
   price?: number | null;
+  quantity?: number | null;
+  unit?: string | null;
   brand?: string | null;
   rating?: number | null;
   origin?: string | null;
