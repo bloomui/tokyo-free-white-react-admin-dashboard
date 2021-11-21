@@ -90,7 +90,9 @@ const Row = ({data, setProduct}: {data: products_products, setProduct: (a) => vo
     name: data.name,
     id: data.id,
     origin: data.origin,
-    price: data.price,
+    price: data.price.price,
+    quantity: data.price.quantity.quantity,
+    unit: data.price.quantity.unit,
     brand: data.brand,
   }
   const  [open, setOpen] = useState<boolean>(false)
@@ -115,9 +117,7 @@ const Row = ({data, setProduct}: {data: products_products, setProduct: (a) => vo
             <TableCell >
               {data.origin}
             </TableCell>
-            <TableCell >
-              {data.price}
-            </TableCell>
+            <TableCell align="left">€{data.price?.price} per {data.price?.quantity.quantity} {data.price?.quantity.unit}</TableCell>
             <TableCell>
             <Button
                     onClick={() => {submitForm()}}

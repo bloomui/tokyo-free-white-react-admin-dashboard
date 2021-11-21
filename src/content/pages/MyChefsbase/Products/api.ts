@@ -15,7 +15,13 @@ const getProductQuery = gql`
     id
     name
     rating
-    price
+    price {
+      price
+      quantity {
+        quantity
+        unit
+      }
+    }
     brand
     origin
     suppliers {
@@ -54,7 +60,13 @@ query FilterProducts ($input: ProductFilterInput, $offset: Int, $limit: Int) {
     id
     name
     rating
-    price
+    price {
+      price
+      quantity {
+        quantity
+        unit
+      }
+    }
     brand
     origin
     suppliers {

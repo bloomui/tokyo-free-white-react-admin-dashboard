@@ -11,7 +11,13 @@ export const productsQuery =  gql`
             brand
             origin
             rating
-            price
+            price {
+                price
+                quantity {
+                  quantity
+                  unit
+                }
+              }
         }
     }
 `;
