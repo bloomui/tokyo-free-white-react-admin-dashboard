@@ -1,0 +1,36 @@
+name: Deploy site
+
+on:
+  workflow_run:
+    workflows: ["Build site"]
+    branches: [deploy]
+    types: [completed]
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    
+    steps:
+    - name: Download artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: build-site.yml
+        workflow_conclusion: success
+    
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Upload to Azure blob storage
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.0.72
+        inlineScript: |
+            az storage blob upload-batch --account-name chefsbasestorage -d '$web' -s ./production-files
+    
+    - name: Azure logout
+      run: |
+            az logout
