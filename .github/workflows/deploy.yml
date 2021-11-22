@@ -21,10 +21,7 @@ jobs:
         with:
           node-version: "12"
           check-latest: true
-      - name: Update Locale to NL
-        run: sudo timedatectl set-timezone Europe/Amsterdam
-      - run: yarn
-      - run: npm t
+      - run: npm ci
       - run: CI=false npm run build
       - name: "Deploy to Azure Blob Storage Configured as Static website"
         uses: azure/CLI@v1
