@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Table, TableCell, TableRow, TextField, Typography } from "@material-ui/core";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TableContainer, Divider, Table, TableCell, TableRow, TextField, Typography, Grid } from "@material-ui/core";
 import { Autocomplete, Rating } from "@material-ui/lab";
 import { FieldArray, Formik } from "formik";
 import React, { useState } from "react";
@@ -14,6 +14,10 @@ import { useAllSuppliersQuery, useUpdateProduct } from "../api";
 import { AllSuppliers_suppliers } from "../types/AllSuppliers";
 import { FilterProducts_filterProducts } from "../types/FilterProducts";
 import { UpdateProductVariables } from "../types/UpdateProduct";
+import { H3, H5 } from "src/content/pages/Components/TextTypes";
+import { TableSupplierData } from "../AddProduct/components/SuppliersTable";
+import { Price } from "../../Menus/filtermenus/components/prices";
+import { supplierToQ } from "../AddProduct";
 
 export const UpdateProductDialog = ({
   product,
@@ -30,6 +34,11 @@ export const UpdateProductDialog = ({
     const { updateProduct, loading, error } = useUpdateProduct({
         onCompleted: () => window.location.reload(),
       });
+      const [selectedSuppliers, setSuppliers] = React.useState<supplierToQ[]>([]);
+      function handleDelete(index) {
+        selectedSuppliers.splice(index, 1)
+        setSuppliers([...selectedSuppliers])
+      }
 type ProductFormInput = {
   price: string,
   brand: string,
@@ -66,13 +75,13 @@ const formState : UpdateProductVariables = {
 }
 
     return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog fullScreen open={open} onClose={onClose}>
       <Formik
         initialValues={formState}
         onSubmit={(values) => {
           updateProduct({
             variables: {
-                suppliers: values.suppliers,
+                suppliers: selectedSuppliers.map((supplierToId) => supplierToId.id),
                 input: {
                   brand: values.input.brand,
                   origin: values.input.origin,
@@ -92,44 +101,100 @@ const formState : UpdateProductVariables = {
                 Product Aanpassen
               </DialogTitle>
               <DialogContent>
+              <Grid container xs={12} spacing={2}>
+                <Grid xs={3}>
+                <H5 title="Productnaam"/>
                 <FormField
                   name="input.name"
                   label="Naam"
                   validator={composeValidators(required)}
                 />
+                </Grid>
+                <Grid xs={1}></Grid>
+                <Grid xs={3}>
+                <H5 title="Merknaam"/>
+                <FormField
+                  name="input.brand"
+                  label="Merk"
+                />
+                </Grid> 
+                <Grid xs={1}></Grid>
+                <Grid xs={3}>
+                <H5 title="Land van herkomst"/>
+                <FormField
+                  name="input.origin"
+                  label="Herkomst"
+                />
+                </Grid> 
+                <Grid xs={3}>
                 <Rating1
                 updateField="input.rating"
                 setFieldValue={setFieldValue}
                 />
-                <FormField
-                  name="input.brand"
-                  label="Merk"
-                  validator={composeValidators(required)}
+                </Grid>
+                <Grid xs={1}></Grid>
+                <Grid xs={3}>
+                <H5 title="Prijs (€)"/>
+                <Price 
+                setFieldValue={setFieldValue}
                 />
-                <FormField
-                  name="input.origin"
-                  label="Herkomst"
-                  validator={composeValidators(required)}
-                />
-                    <Grid container xs={12}>
-                    <Grid item xs={12}>
-                    Leveranciers:
-                    {data.suppliers && (
-                    <Autocomplete
-                    multiple
-                    id="tags-standard"
-                    options={data.suppliers.map((option) => (option))}
-                    getOptionLabel={(option) => option? option.name : ""}
-                    onChange={(event,  values: AllSuppliers_suppliers[]) => setFieldValue("suppliers", values.map((option) => option.id))}
-                    renderInput={(params) => (
-                 <TextField
-                 {...params}
-                 fullWidth
-                label="Leveranciers"
-                />
-                )}
-                />
-                )}
+                </Grid> 
+                <Grid xs={1}></Grid>
+                <Grid xs={3}>
+                <H5 title="Toevoegen"/>
+                <Button
+                  disabled={loading}
+                  onClick={() => submitForm()}
+                  color="primary"
+                  variant="contained"
+                >
+                  Gegevens toevoegen
+                </Button>
+                </Grid>               
+                </Grid>
+                <Divider/>
+                <Grid container xs={12}>
+                <Grid xs={6}>
+                <H3 title="Leveranciers om toe te voegen"/>
+                        </Grid>
+                        <Grid xs={6}>
+                <H3 title="Toegevoegde leveranciers"/>
+                        </Grid>
+                  <Grid xs={6}>
+                <Grid xs={12}>
+                <TableSupplierData 
+                  setSuppliers={(selected) => setSuppliers([...selectedSuppliers, selected])
+                  }/>
+                  </Grid>                
+                  </Grid>
+                <Grid xs={6}>
+                  <TableContainer>
+                <Table size="small">
+                  <TableRow>
+                    <TableCell><H5 title="Naam"/></TableCell>
+                    <TableCell><H5 title="Email"/></TableCell>
+                    </TableRow>
+                {selectedSuppliers.map((supplier, index) =>  (
+                  <TableRow>
+                    <TableCell>
+                      {supplier.name}
+                    </TableCell>
+                    <TableCell>
+                      {supplier.email}
+                    </TableCell>
+                    <TableCell>
+                    <Button
+                       variant="contained" 
+                       color="secondary"
+                        style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
+                         onClick={() => {handleDelete(index)}}>           
+                                                 -
+                       </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+                </Table>
+                </TableContainer>
                 </Grid>
                 </Grid> 
                 {error && (

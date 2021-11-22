@@ -11,7 +11,7 @@ import { RecipeTable } from "./components/RecipeTable";
 import { TopPartRecipePage } from "./components/TopPartRecipePage";
 import { initialRecipeValues } from "./filterrecipes";
 import { AddRecipeDialog } from "./recipeDialogs/AddRecipeDialog";
-  
+
   export const RecipePage = ({
     page,
     setPage,

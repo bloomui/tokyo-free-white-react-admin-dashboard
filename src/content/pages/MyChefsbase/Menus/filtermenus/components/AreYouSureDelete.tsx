@@ -2,6 +2,7 @@ import { Button, Dialog, DialogContent, Grid } from "@material-ui/core";
 import React from "react";
 import { KitchenType } from "src/globalTypes";
 import { useDelete } from "../../api";
+import { H5 } from "src/content/pages/Components/TextTypes"
 
   export const AreYouSureDelete = ({
     id,
@@ -15,7 +16,7 @@ import { useDelete } from "../../api";
     onClose: () => void;
   }) => {
     const {remove, error, loading} = useDelete({
-      onCompleted: () => {}
+      onCompleted: () => {window.location.reload()}
     });
     return (
       <Dialog open={open}>

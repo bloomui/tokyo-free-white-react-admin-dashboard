@@ -1,5 +1,6 @@
 import { Typography, Grid, TextField } from "@material-ui/core"
 import React from "react"
+import { H5 } from "src/content/pages/Components/TextTypes"
 
 export const Comment = ({
     setFieldValue
@@ -9,12 +10,12 @@ export const Comment = ({
     return (
       <>
       <Grid container spacing={2} xs={12}>
-      <Grid item>
-    <Typography >Opmerking:</Typography>
+      <Grid key={0} item xs={12}>
+      <H5 title="Zoek op opmerkingen"/>
     </Grid>
     </Grid>
     <Grid container spacing={2} xs={12}>
-    <Grid key={0} item>
+    <Grid key={0} item xs={12}>
       <TextField
         fullWidth
         placeholder="opmerking"

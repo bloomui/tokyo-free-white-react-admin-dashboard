@@ -1,6 +1,7 @@
 import { Grid, TextField, Typography } from "@material-ui/core"
 import Autocomplete from "@material-ui/lab/Autocomplete"
 import React from "react"
+import { H5 } from "src/content/pages/Components/TextTypes"
 
 export const Period = ({
     setFieldValue
@@ -10,19 +11,18 @@ export const Period = ({
     return (
       <>
       <Grid container spacing={2} xs={12}>
-      <Grid item>
-    <Typography >Zoek op periode:</Typography>
+      <Grid item xs={12}>
+    <H5 title="Zoek op periode"/>
     </Grid>
-    </Grid>
-    <Grid container spacing={2} xs={12}>
-    <Grid key={0} item>
+    <Grid item xs={5}>
  <TextField
       fullWidth
       placeholder="Vanaf datum"
       onChange={(e) => setFieldValue("periodstartdate", e.target.value)}
     />
     </Grid>
-    <Grid key={1} item>
+    <Grid item xs={1}></Grid>
+    <Grid item xs={5}>
  <TextField
       fullWidth
       placeholder="Tot datum"

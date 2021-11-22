@@ -12,6 +12,7 @@ import { SupplierPage } from './Suppliers';
 import { ProductPage } from './Products';
 import { clearAuth } from 'src/utilities/auth';
 import { useNavigate } from 'react-router';
+
 export enum ChefsTab {
   Menus = "Menus",
   Gerechten = "Gerechten",

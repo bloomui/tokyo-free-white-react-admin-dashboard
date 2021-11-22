@@ -1,5 +1,6 @@
 import { Typography, Grid, TextField, Autocomplete } from "@material-ui/core"
 import React from "react"
+import { H5 } from "src/content/pages/Components/TextTypes"
 
 export const Categories = ({
     allCategories,
@@ -11,8 +12,8 @@ export const Categories = ({
     return (
       <>
   <Grid container spacing={2} xs={12}>
- <Grid key={0} item>
-   <Typography>Zoek op Thema's:</Typography>
+  <Grid key={0} item xs={12}>
+ <H5 title="Zoek op categorieën"/>
    {allCategories && (
     <Autocomplete
 multiple

@@ -1,16 +1,20 @@
 import { useQuery } from "@apollo/client";
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from "@material-ui/core";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, TableCell, TableContainer, Table, TableRow, TextField, Typography } from "@material-ui/core";
 import { Autocomplete, Rating } from "@material-ui/lab";
-import { Formik } from "formik";
+import { FieldArray, Formik } from "formik";
 import React from "react";
-import { FormField } from "src/components/form/FormField";
+import { FormField, FormFieldEdit } from "src/components/form/FormField";
 import { CourseToDishesInput, MenuInput } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
 import { useAllDishesQuery, useUpdateMenu } from "../api";
-import { Rating1, RatingLabels } from "../filtermenus/components/rating";
+import { Rating1, RatingEdit, RatingLabels } from "../filtermenus/components/rating";
 import { FilterMenus, FilterMenus_filterMenus, FilterMenus_filterMenus_courses_dishes } from "../types/FilterMenus";
 import { Menus_dishes } from "../types/Menus";
 import { UpdateMenuVariables } from "../types/UpdateMenu"
+import { H3, H5 } from "src/content/pages/Components/TextTypes";
+import { TableDishData, TableDishDataId } from "../AddMenu/components/DishTable";
+import { Grid } from "@mui/material";
+import { dishForCourse } from "../AddMenu";
 
 export const UpdateMenuDialog = ({
     menu,
@@ -50,14 +54,20 @@ export const UpdateMenuDialog = ({
         input: formInput,
         courses: formcourses
     }
+
+    const [selectedDishes, setDishes] = React.useState<dishForCourseid[]>([]);
+      function handleDelete(index) {
+        selectedDishes.splice(index, 1)
+        setDishes([...selectedDishes])
+      }
     return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog fullScreen open={open} onClose={onClose}>
       <Formik
         initialValues={formState}
         onSubmit={(values) => {
           updateMenu({
             variables: {
-                courses: values.courses,
+              courses: mapCoursesToInputId(selectedDishes),
               input: {
                 id: menu.id,
                 name: values.input.name,
@@ -71,64 +81,161 @@ export const UpdateMenuDialog = ({
           });
         }}
       >
-        {({ values, submitForm, setFieldValue }) => {
+        {({ values, handleChange, submitForm, setFieldValue }) => {
           return (
             <>
               <DialogTitle style={{ fontWeight: 600 }} id="form-dialog-title">
                 Menu Aanpassen
               </DialogTitle>
               <DialogContent>
-                <FormField
+              <Grid container xs={12}>
+                    <Grid container xs={12}>
+                    <Grid xs={3}>
+                        <H5 title="Geef een menu naam op"/>
+                 <FormFieldEdit
+                 placeholder={menu.name}
                   name="input.name"
                   label="Naam"
-                  validator={composeValidators(required)}
                 />
-                <FormField
+                </Grid>
+                <Grid xs={1}></Grid>
+                <Grid xs={3}>
+                <H5 title="Geef een seizoen op"/>
+                <FormFieldEdit
+                 placeholder={menu.season}
                   name="input.season"
                   label="Seizoen"
                 />
-                <FormField
+                </Grid>
+                <Grid xs={1}></Grid>
+                <Grid xs={3}>
+                <H5 title="Geef een thema op"/>
+                <FormFieldEdit
+                 placeholder={menu.theme}
                   name="input.theme"
                   label="Thema"
                 />
-                <FormField
+                </Grid>
+                <Grid container xs={7}>
+                    <Grid xs={12}>
+                <H5 title="Geef een periode op"/>
+                </Grid>
+                <Grid xs={5}>
+                <FormFieldEdit
+                 placeholder={menu.periodstartdate}
                   name="input.periodstartdate"
-                  label="Start datum"
+                  label="Vanaf"
                 />
-                <FormField
+                </Grid>
+                <Grid xs={2}></Grid>
+                <Grid xs={5}>
+                <FormFieldEdit
+                 placeholder={menu.periodenddate}
                   name="input.periodenddate"
-                  label="Eind datum"
+                  label="Tot"
                 />
-                Rating:
-                <Rating1
+                </Grid>
+                </Grid>
+                <Grid xs={1}></Grid>
+                <Grid xs={3}>
+                    <H5 title="Toevoegen"/>
+                <Button
+                  disabled={loading}
+                  onClick={() => submitForm()}
+                  color="primary"
+                  variant="contained"
+                >
+                  Gegevens toevoegen
+                </Button>
+                </Grid>
+                <Grid xs={3}>
+                <RatingEdit
+                defaultNumber={menu.rating}
                 updateField="input.rating"
                 setFieldValue={setFieldValue}
                 />
-                Gangen:
-                {menu.courses.map((course, index) => (
-                    <>
-                    {course.course.courseType}
-                    {data && (
-                        <>
-                        <Autocomplete
-                multiple
-                id="tags-standard"
-                defaultValue={course.dishes.map((option) => (option))}
-                options={data.dishes.map((option) => (option))}
-                getOptionLabel={(option) => option.name}
-                onChange={(event,  values) => setFieldValue(`courses.${index}.dishes`, values.map((option: FilterMenus_filterMenus_courses_dishes) => option.id))}
-                renderInput={(params) => (
-                 <TextField
-                 {...params}
-                 fullWidth
-                label="Gerechten"
-                />
+                </Grid>
+                     
+                </Grid> 
+                </Grid>       
+                <Divider/>
+                <Divider/>
+                <Grid container xs={12}>
+                  <Grid xs={12}>
+                <H3 title="Gangen"/>
+                </Grid>
+                <Grid xs={6}>
+                  <TableDishDataId
+                  courses={values.courses} 
+                  setDishes={(selected) => setDishes([...selectedDishes, selected])
+                  }/>
+                  </Grid>
+                  <Grid xs={6}>
+                  <FieldArray
+            name="courses"
+             render={arrayHelpers => (
+               <div>
+                 {values.courses.map((courseToDishes, index) => (
+                     <div key={index}>
+                        <TextField
+                        fullWidth
+                        id={`courses.${index}.coursetype`}
+                        name={`courses.${index}.coursetype`}
+                       label="Gang"
+                       value={courseToDishes.coursetype}
+                       onChange={handleChange}
+                        />
+                        <TableContainer>
+                <Table size="small">
+                  <TableRow>
+                    <TableCell>Gerecht</TableCell>
+                    </TableRow>
+                {selectedDishes.map((dish, index) =>  {
+                    if (dish.coursetype === courseToDishes.coursetype) return (
+                    <TableRow>
+                    <TableCell>
+                      {dish.dishname}
+                    </TableCell>
+                    <TableCell>
+                    <Button
+                       variant="contained" 
+                       color="secondary"
+                        style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
+                         onClick={() => {handleDelete(index)}}>           
+                                                 -
+                       </Button>
+                    </TableCell>
+                  </TableRow>
+                    )
+                })}
+                </Table>
+                </TableContainer>
+                            <Button
+                            variant="contained" 
+                            color="secondary"
+                        style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
+                         onClick={() => arrayHelpers.remove(index)}>
+                        -
+                       </Button>
+                       <Button
+                       variant="contained" 
+                       color="secondary"
+                        style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
+                         onClick={() => arrayHelpers.push({
+                           courseid: courseToDishes.courseid,
+                          coursetype: '',
+                          dishes: [''],
+                  })}>
+                        +
+                       </Button>
+                     </div>
+                   ))}
+                </div>
                 )}
-                />
-                        </>
-                    )} 
-                </>
-                ))}
+                />  
+                </Grid>
+                </Grid>    
+                <Divider/>  
                 {error && (
                   <Typography color="error">
                     Er is een fout opgetreden, probeer het opnieuw.
@@ -155,3 +262,26 @@ export const UpdateMenuDialog = ({
     </Dialog>
   );
 };
+
+export type dishForCourseid = {
+  courseid: string,
+  coursetype: string,
+  dishid: string,
+  dishname: string,
+}
+
+export const mapCoursesToInputId = (selected: dishForCourseid[]): CourseToDishesInput[] => {
+
+    const a = []
+    selected.forEach((b) => {
+        if (a.includes(b.coursetype) == false) a.push(b.coursetype, b.courseid)
+    })
+    const map = a.map((c) => {
+        return {
+                courseid: c.courseid,
+                coursetype: c.coursetype,
+                dishes: selected.filter((s) => s.courseid == c.courseid).map((s) => s.dishid)
+            }
+    })
+    return map
+  }

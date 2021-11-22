@@ -7,7 +7,7 @@ import { AutoSubmitToken, ExpandMore } from "../../Menus/filtermenus";
 import { Dishes } from "../../Menus/filtermenus/components/dishes";
 import { Ingredients } from "../../Menus/filtermenus/components/ingredients";
 import { Menus } from "../../Menus/filtermenus/components/menus";
-import { Prices } from "../../Menus/filtermenus/components/prices";
+import { PriceRange, Prices } from "../../Menus/filtermenus/components/prices";
 import { Brands } from "../../Menus/filtermenus/components/seasons";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
 import { Recipes } from "../../Menus/filtermenus/components/recipes";
@@ -17,6 +17,7 @@ import { Suppliers } from "../../Menus/filtermenus/components/suppliers";
 import { Types } from "../../Menus/filtermenus/components/types";
 import { initialRecipeValues } from "../../Recipes/filterrecipes";
 import { Products_suppliers, Products_dishes, Products_menus, Products_recipes, Products_ingredients } from "../types/Products";
+import {useNavigate} from 'react-router-dom';
 
 
 export type ProductFilterFormInput = {
@@ -89,6 +90,7 @@ export const initialProductValues: ProductFilterFormInput = {
   }) => {
 
     const [ openFilterInputDialog, setOpenFilterInputDialog] = React.useState(false)
+    const navigate = useNavigate()
 
     return (
       <Card>
@@ -117,7 +119,7 @@ export const initialProductValues: ProductFilterFormInput = {
         </ExpandMore>
         </Grid>
         <Grid key={2} item>
-        <Button fullWidth color="secondary" variant="contained" onClick={setOpenAddProduct}>
+        <Button fullWidth color="secondary" variant="contained" onClick={() => navigate("/mychefsbase/addproduct")}>
                       <span> Nieuw product</span>
                   </Button>
         </Grid>
@@ -169,7 +171,7 @@ export const initialProductValues: ProductFilterFormInput = {
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={7} item xs={3}>
-            <Prices
+            <PriceRange
             setFieldValue={setFieldValue} />
             </Grid>
             </Grid>

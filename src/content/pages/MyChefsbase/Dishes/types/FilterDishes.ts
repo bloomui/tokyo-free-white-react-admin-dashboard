@@ -36,6 +36,7 @@ export interface FilterDishes_filterDishes_recipes {
 export interface FilterDishes_filterDishes {
   __typename: "Dish";
   id: string;
+  type: string | null;
   comment: string | null;
   name: string;
   rating: number | null;

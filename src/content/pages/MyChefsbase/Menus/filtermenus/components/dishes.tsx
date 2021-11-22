@@ -2,6 +2,7 @@ import { Grid, TextField, Typography } from "@material-ui/core"
 import Autocomplete from "@material-ui/lab/Autocomplete"
 import React from "react"
 import { Menus_dishes } from "../../types/Menus"
+import { H5 } from "src/content/pages/Components/TextTypes"
 
 export const Dishes = ({
     dishes,
@@ -13,8 +14,8 @@ export const Dishes = ({
     return (
       <>
   <Grid container spacing={2} xs={12}>
- <Grid key={0} item>
-   <Typography>Zoek op gerechten:</Typography>
+  <Grid key={0} item xs={12}>
+ <H5 title="Zoek op gerechten"/>
    {dishes && (
     <Autocomplete
 multiple

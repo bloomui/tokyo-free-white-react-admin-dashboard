@@ -5,7 +5,7 @@ import { StringValueNode } from "graphql";
 import React, { useState } from "react";
 import { FaFilter } from "react-icons/fa";
 import { LoadingScreen } from "src/components/layout";
-import { SearchDirect } from "src/components/search/SearchInputField";
+import {useNavigate} from 'react-router-dom';
 import { MenuFilterInput } from "src/globalTypes";
 import { MenusData } from "../api";
 import { Menus_suppliers, Menus_recipes, Menus_dishes, Menus_ingredients, Menus_products } from "../types/Menus";
@@ -47,6 +47,7 @@ import { Themes } from "./components/themes";
   }) => {
 
     const [ openFilterInputDialog, setOpenFilterInputDialog] = React.useState(false)
+    const navigate = useNavigate()
 
     return (
       <Card>
@@ -75,7 +76,7 @@ import { Themes } from "./components/themes";
         </ExpandMore>
         </Grid>
         <Grid key={2} item>
-        <Button fullWidth color="secondary" variant="contained" onClick={setOpenAddMenu}>
+        <Button fullWidth color="secondary" variant="contained" onClick={() => navigate("/mychefsbase/addmenu")}>
                       <span> Nieuw menu</span>
                   </Button>
         </Grid>
@@ -84,49 +85,57 @@ import { Themes } from "./components/themes";
       <Collapse in={openFilterInputDialog} timeout="auto" unmountOnExit>
         <CardContent>   
                   <Grid container spacing={2} xs={12}>
-             <Grid key={1} item xs={3}>
-           <Rating1 
-           updateField="rating"
-           setFieldValue={setFieldValue}/>
-           </Grid>
-           <Grid key={2} item xs={9}>
+           <Grid xs={1}></Grid>
+           <Grid item xs={8}>
             <Period setFieldValue={setFieldValue}/>
             </Grid>
-            <Grid key={3} item xs={3}>
+            <Grid item xs={3}>
             <Themes 
             themes={themes}
             setFieldValue={setFieldValue} />
             </Grid>
-            <Grid key={4} item xs={3}>
+            <Grid xs={1}></Grid>
+            <Grid item xs={3}>
             <Seasons 
             seasons={seasons}
             setFieldValue={setFieldValue} />
             </Grid>
-            <Grid key={5} item xs={3}>
+            <Grid xs={1}></Grid>
+            <Grid item xs={3}>
               <Suppliers 
               suppliers={suppliers}
               setFieldValue={setFieldValue} />
           </Grid>
-          <Grid key={6} item xs={3}>
+          <Grid xs={1}></Grid>
+          <Grid item xs={3}>
             <Products 
             products={products}
             setFieldValue={setFieldValue} />
             </Grid>
-            <Grid key={7} item xs={3}>
+            <Grid xs={1}></Grid>
+            <Grid item xs={3}>
             <Ingredients 
             ingredients={ingredients}
             setFieldValue={setFieldValue} />
             </Grid>
-            <Grid key={8} item xs={3}>
+            <Grid xs={1}></Grid>
+            <Grid item xs={3}>
             <Recipes 
             recipes={recipes}
             setFieldValue={setFieldValue} />
             </Grid>
-            <Grid key={8} item xs={3}>
+            <Grid xs={1}></Grid>
+            <Grid item xs={3}>
             <Dishes 
             dishes={dishes}
             setFieldValue={setFieldValue} />
-            </Grid>         
+            </Grid> 
+            <Grid xs={1}></Grid>
+            <Grid item xs={3}>
+           <Rating1 
+           updateField="rating"
+           setFieldValue={setFieldValue}/>
+           </Grid>        
             </Grid>
               </CardContent>
               </Collapse>

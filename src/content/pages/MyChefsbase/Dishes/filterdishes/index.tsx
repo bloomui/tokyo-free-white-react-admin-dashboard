@@ -3,7 +3,7 @@ import { Paper, Grid, Button, CardActions, Collapse, CardContent, Card } from "@
 import { Formik, Form } from "formik";
 import React from "react";
 import { FaFilter } from "react-icons/fa";
-import { LoadingScreen } from "src/components/layout";
+import {useNavigate} from 'react-router-dom';
 import { DishFilterInput } from "src/globalTypes";
 import { AutoSubmitToken, ExpandMore } from "../../Menus/filtermenus";
 import { Ingredients } from "../../Menus/filtermenus/components/ingredients";
@@ -56,6 +56,7 @@ export const initialValues: DishFilterInput = {
 
     const [ openFilterInputDialog, setOpenFilterInputDialog] = React.useState(false)
 
+    const navigate = useNavigate()
     return (
       <Card>
         <Formik
@@ -83,8 +84,9 @@ export const initialValues: DishFilterInput = {
         </ExpandMore>
         </Grid>
         <Grid key={2} item>
-        <Button fullWidth color="secondary" variant="contained" onClick={setOpenAddDish}>
-                      <span> Nieuw gerecht</span>
+        <Button 
+        onClick={() => navigate("/mychefsbase/adddish")}
+        fullWidth color="secondary" variant="contained" ><span> Nieuw gerecht</span>
                   </Button>
         </Grid>
       </CardActions>

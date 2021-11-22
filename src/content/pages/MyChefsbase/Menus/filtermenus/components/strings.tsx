@@ -1,6 +1,7 @@
 import { Grid, Typography, TextField } from "@material-ui/core"
 import { Autocomplete } from "@material-ui/lab"
 import React from "react"
+import { H5 } from "src/content/pages/Components/TextTypes"
 
 export const Strings = ({
     title,
@@ -16,8 +17,8 @@ export const Strings = ({
     return (
       <>
   <Grid container spacing={2} xs={12}>
- <Grid key={0} item>
-   <Typography>Zoek op {title}:</Typography>
+  <Grid key={0} item xs={12}>
+ <H5 title={`Zoek op ${title}`}/>
    {strings && (
     <Autocomplete
 multiple

@@ -14,52 +14,6 @@ import { useCookies } from 'react-cookie';
 import {useNavigate} from 'react-router-dom';
 import { setToken } from 'src/utilities/auth';
 
-// export const getToken = () => {
-//   const [cookies, setCookie, removeCookie] = useCookies(["accesstoken"]);
-//   return (
-//     cookies
-//   )
-// }
-
-// export function useAuthToken(token: string) {
-  
-//   //we use react-cookies to access our cookies
-//   const [cookies, setCookie, removeCookie] = useCookies([token]);
-  
-//   // this function allows to save any string in our cookies, under the key "authToken"
-//   const setAuthToken = (authToken) => setCookie(token, authToken);
-  
-//   //this function removes the key "authToken" from our cookies. Useful to logout
-//   const removeAuthToken = () => removeCookie(token);
-  
-//   return [cookies[token], setAuthToken, removeAuthToken];
-// };
-
-// const httpLink = new HttpLink({ uri: "http://localhost:9090/graphql" });
-
-// const authMiddleware = (authToken) =>
-//   new ApolloLink((operation, forward) => {
-//     // add the authorization to the headers
-//     if (authToken) {
-//       operation.setContext({
-//         headers: {
-//           authorization: `${authToken}`,
-//         },
-//       });
-//     }
-
-//     return forward(operation);
-//   });
-
-// const cache = new InMemoryCache({});
-
-// export const useAppApolloClient = (token: string) => {
-//   const [authToken] = useAuthToken(token);
-//   return new ApolloClient({
-//     link: authMiddleware(authToken).concat(httpLink),
-//     cache,
-//   });
-// };
 
 const SignInForm = () => {
   const [password, setPassword] = useState("");

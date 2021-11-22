@@ -2,14 +2,14 @@ import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, M
 import { Autocomplete, Rating } from "@material-ui/lab";
 import { FieldArray, Formik } from "formik";
 import React, { useState } from "react";
-import { FormField } from "src/components/form/FormField";
+import { FormField, FormFieldEdit } from "src/components/form/FormField";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import { RecipeInput, QuantityToId, StepToMethodInput, DishInput, AddIngredientInput, IngredientInput, ProductInput, SupplierInput } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
 import { initialValues } from "../../Dishes/filterdishes";
 import { UpdateDishVariables } from "../../Dishes/types/UpdateDish";
 import { useAllProductsQuery } from "../../Ingredients/api";
-import { Rating1 } from "../../Menus/filtermenus/components/rating";
+import { Rating1, RatingEdit } from "../../Menus/filtermenus/components/rating";
 import { useUpdateSupplier } from "../api";
 import { FilterSuppliers_filterSuppliers } from "../types/FilterSuppliers";
 import { UpdateSupplierVariables } from "../types/UpdateSupplier";
@@ -39,7 +39,7 @@ const formState : UpdateSupplierVariables = {
 }
 
     return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog fullScreen open={open} onClose={onClose}>
       <Formik
         initialValues={formState}
         onSubmit={(values) => {
@@ -62,16 +62,19 @@ const formState : UpdateSupplierVariables = {
                 Leverancier Aanpassen
               </DialogTitle>
               <DialogContent>
-                <FormField
+                <FormFieldEdit
+                  placeholder={supplier.name}
                   name="input.name"
                   label="Naam"
                   validator={composeValidators(required)}
                 />
-                <Rating1
+                <RatingEdit
+                defaultNumber={supplier.rating}
                 updateField="input.rating"
                 setFieldValue={setFieldValue}
                 />
-                <FormField
+                <FormFieldEdit
+                  placeholder={supplier.email}
                   name="input.email"
                   label="Email"
                   validator={composeValidators(required)}
