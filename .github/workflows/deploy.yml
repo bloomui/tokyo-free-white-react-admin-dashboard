@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - dedploy
+      - deploy
 
 env:
   AZURE_STORAGE_ACOUNT_NAME: chefsbasestorage # set this to the name of the storage account that is configured for static website hosting
