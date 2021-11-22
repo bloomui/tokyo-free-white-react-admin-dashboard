@@ -3,7 +3,7 @@ name: Deploy site
 on:
   workflow_run:
     workflows: ["Build site"]
-    branches: [deploy]
+    branches: [main]
     types: [completed]
 
 jobs:
@@ -23,6 +23,7 @@ jobs:
       uses: azure/login@v1
       with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
     
     - name: Upload to Azure blob storage
       uses: azure/CLI@v1

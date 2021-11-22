@@ -1,0 +1,34 @@
+on:
+  push:
+    branches:
+      - dedploy
+
+env:
+  AZURE_STORAGE_ACOUNT_NAME: chefsbasestorage # set this to the name of the storage account that is configured for static website hosting
+  AZURE_CREDENTIALS_SUBSCRIPTION: ${{ secrets.AZURE_CREDENTIALS }}
+
+jobs:
+  build-and-deploy-to-dev:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Azure authentication
+        uses: azure/login@v1
+        with:
+          creds: ${{ env.AZURE_CREDENTIALS_SUBSCRIPTION  }}
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "12"
+          check-latest: true
+      - name: Update Locale to NL
+        run: sudo timedatectl set-timezone Europe/Amsterdam
+      - run: yarn
+      - run: npm t
+      - run: CI=false npm run build
+      - name: "Deploy to Azure Blob Storage Configured as Static website"
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.5.1
+          inlineScript: |
+            az storage blob upload-batch -s ./build -d '$web' --account-name ${{ env.AZURE_STORAGE_ACOUNT_NAME }}
