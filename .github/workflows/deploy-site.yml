@@ -30,7 +30,8 @@ jobs:
       with:
         azcliversion: 2.30.0
         inlineScript: |
-            az storage blob upload-batch --account-name chefsbasestorage -d '$web' -s ./production-files
+            az account set --subscription fc5bc50c-7ebd-4bc4-8f0e-d1659bf195b7
+            az storage blob upload-batch --account-name storagechefsbase -d '$web' -s ./production-files --subscription fc5bc50c-7ebd-4bc4-8f0e-d1659bf195b7
     
     - name: Azure logout
       run: |
