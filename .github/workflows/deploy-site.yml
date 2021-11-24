@@ -3,7 +3,7 @@ name: Deploy site
 on:
   workflow_run:
     workflows: ["Build site"]
-    branches: [deploy]
+    branches: [master]
     types: [completed]
 
 jobs:

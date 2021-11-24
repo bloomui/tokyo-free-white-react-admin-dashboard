@@ -1,10 +1,10 @@
 on:
   push:
     branches:
-      - master
+      - deploy
 
 env:
-  AZURE_STORAGE_ACOUNT_NAME: chefsbasestorage # set this to the name of the storage account that is configured for static website hosting
+  AZURE_STORAGE_ACOUNT_NAME: storagechefsbase # set this to the name of the storage account that is configured for static website hosting
   AZURE_CREDENTIALS_SUBSCRIPTION: ${{ secrets.AZURE_CREDENTIALS }}
 
 jobs:
