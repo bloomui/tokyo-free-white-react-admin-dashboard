@@ -4,7 +4,7 @@ import { Autocomplete, Rating } from "@material-ui/lab";
 import { FieldArray, Formik } from "formik";
 import React from "react";
 import { FormField, FormFieldEdit } from "src/components/form/FormField";
-import { CourseToDishesInput, MenuInput } from "src/globalTypes";
+import { AddCourseToDishesInput, MenuInput } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
 import { useAllDishesQuery, useUpdateMenu } from "../api";
 import { Rating1, RatingEdit, RatingLabels } from "../filtermenus/components/rating";
@@ -12,9 +12,9 @@ import { FilterMenus, FilterMenus_filterMenus, FilterMenus_filterMenus_courses_d
 import { Menus_dishes } from "../types/Menus";
 import { UpdateMenuVariables } from "../types/UpdateMenu"
 import { H3, H5 } from "src/content/pages/Components/TextTypes";
-import { TableDishData, TableDishDataId } from "../AddMenu/components/DishTable";
+import { TableDishData } from "../AddMenu/components/DishTable";
 import { Grid } from "@mui/material";
-import { dishForCourse } from "../AddMenu";
+import { dishForCourse, mapCoursesToInput } from "../AddMenu";
 
 export const UpdateMenuDialog = ({
     menu,
@@ -42,7 +42,7 @@ export const UpdateMenuDialog = ({
         periodenddate: menu.periodenddate,
     }: null
 
-    const formcourses: CourseToDishesInput[] | null = menu? (menu.courses? (menu.courses.map((course) => (
+    const formcourses: AddCourseToDishesInput[] | null = menu? (menu.courses? (menu.courses.map((course) => (
         {
             courseid: course.course.id,
             coursetype: course.course.courseType,
@@ -55,11 +55,12 @@ export const UpdateMenuDialog = ({
         courses: formcourses
     }
 
-    const [selectedDishes, setDishes] = React.useState<dishForCourseid[]>([]);
+    const [selectedDishes, setDishes] = React.useState<dishForCourse[]>([]);
       function handleDelete(index) {
         selectedDishes.splice(index, 1)
         setDishes([...selectedDishes])
       }
+
     return (
     <Dialog fullScreen open={open} onClose={onClose}>
       <Formik
@@ -67,7 +68,7 @@ export const UpdateMenuDialog = ({
         onSubmit={(values) => {
           updateMenu({
             variables: {
-              courses: mapCoursesToInputId(selectedDishes),
+              courses: mapCoursesToInput(selectedDishes),
               input: {
                 id: menu.id,
                 name: values.input.name,
@@ -165,8 +166,8 @@ export const UpdateMenuDialog = ({
                 <H3 title="Gangen"/>
                 </Grid>
                 <Grid xs={6}>
-                  <TableDishDataId
-                  courses={values.courses} 
+                <TableDishData
+                  courses={values.courses.map((course) => course.coursetype)} 
                   setDishes={(selected) => setDishes([...selectedDishes, selected])
                   }/>
                   </Grid>
@@ -222,7 +223,6 @@ export const UpdateMenuDialog = ({
                        color="secondary"
                         style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
                          onClick={() => arrayHelpers.push({
-                           courseid: courseToDishes.courseid,
                           coursetype: '',
                           dishes: [''],
                   })}>
@@ -262,26 +262,3 @@ export const UpdateMenuDialog = ({
     </Dialog>
   );
 };
-
-export type dishForCourseid = {
-  courseid: string,
-  coursetype: string,
-  dishid: string,
-  dishname: string,
-}
-
-export const mapCoursesToInputId = (selected: dishForCourseid[]): CourseToDishesInput[] => {
-
-    const a = []
-    selected.forEach((b) => {
-        if (a.includes(b.coursetype) == false) a.push(b.coursetype, b.courseid)
-    })
-    const map = a.map((c) => {
-        return {
-                courseid: c.courseid,
-                coursetype: c.coursetype,
-                dishes: selected.filter((s) => s.courseid == c.courseid).map((s) => s.dishid)
-            }
-    })
-    return map
-  }

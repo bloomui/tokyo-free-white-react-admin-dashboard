@@ -68,12 +68,6 @@ export interface AddSupplierInput {
   rating?: number | null;
 }
 
-export interface CourseToDishesInput {
-  courseid: string;
-  coursetype: string;
-  dishes?: string[] | null;
-}
-
 export interface DishFilterInput {
   suppliers?: string[] | null;
   products?: string[] | null;

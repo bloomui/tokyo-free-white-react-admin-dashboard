@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { MenuInput, CourseToDishesInput } from "./../../../../../globalTypes";
+import { MenuInput, AddCourseToDishesInput } from "./../../../../../globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: UpdateMenu
@@ -15,5 +15,5 @@ export interface UpdateMenu {
 
 export interface UpdateMenuVariables {
   input: MenuInput;
-  courses?: CourseToDishesInput[] | null;
+  courses?: AddCourseToDishesInput[] | null;
 }

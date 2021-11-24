@@ -99,7 +99,7 @@ query Menus {
 `;
 
 export const UpdateMenuMutation = gql`
-mutation UpdateMenu ($input: MenuInput!, $courses: [CourseToDishesInput!]) {
+mutation UpdateMenu ($input: MenuInput!, $courses: [AddCourseToDishesInput!]) {
   updateMenu (input: $input, courses: $courses)
 }
 `;
