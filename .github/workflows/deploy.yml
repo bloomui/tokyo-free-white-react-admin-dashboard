@@ -4,7 +4,6 @@ on:
       - deploy
 
 env:
-  AZURE_STORAGE_ACOUNT_NAME: storagechefsbase # set this to the name of the storage account that is configured for static website hosting
   AZURE_CREDENTIALS_SUBSCRIPTION: ${{ secrets.AZURE_CREDENTIALS }}
 
 jobs:
@@ -26,6 +25,5 @@ jobs:
       - name: "Deploy to Azure Blob Storage Configured as Static website"
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.5.1
           inlineScript: |
-            az storage blob upload-batch -s ./build -d '$web' --account-name ${{ env.AZURE_STORAGE_ACOUNT_NAME }}
+            az storage blob upload-batch --account-name storagechefsbase --auth-mode key -d '$web' -s ./build
