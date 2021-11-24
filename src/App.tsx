@@ -10,19 +10,15 @@ import React from 'react';
 
 import { setContext } from '@apollo/client/link/context';
 import { getToken, isLoggedIn } from './utilities/auth';
+import config from "./config";
 
-const httpLink = createHttpLink({
-  uri: 'http://localhost:9090/graphql/',
-});
-
+const httpLink = createHttpLink();
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
   const token = getToken()
-  console.log(token)
   // return the headers to the context so httpLink can read them
   return {
-    uri: `http://localhost:9090/graphql/?access_token=${token}`,
-  
+    uri: `${config.endpoint}/?access_token=${token}`,
   }
 });
 
@@ -30,12 +26,6 @@ const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache()
 });
-
-
-// const client = new ApolloClient({
-//   uri: 'http://localhost:9090/graphql/?access_token=accesstoken',
-//   cache: new InMemoryCache()
-// });
 
 const App = () => {
 

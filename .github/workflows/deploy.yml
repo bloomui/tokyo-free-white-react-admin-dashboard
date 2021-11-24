@@ -5,6 +5,7 @@ on:
 
 env:
   AZURE_CREDENTIALS_SUBSCRIPTION: ${{ secrets.AZURE_CREDENTIALS }}
+  REACT_APP_API_URL: https://mychefsbase.azurewebsites.net/graphql
 
 jobs:
   build-and-deploy-to-dev:
