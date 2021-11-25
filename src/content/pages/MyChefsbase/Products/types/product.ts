@@ -23,6 +23,7 @@ export interface product_product_suppliers {
   __typename: "Supplier";
   id: string;
   name: string;
+  email: string;
 }
 
 export interface product_product {

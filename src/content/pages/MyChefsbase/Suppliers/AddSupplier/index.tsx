@@ -137,6 +137,16 @@ const formState : AddSuppliersVariables = {
                    </div>
                 )}
                 />
+                <Grid xs={3}>
+                <Button
+                  disabled={loading}
+                  onClick={() => submitForm()}
+                  color="primary"
+                  variant="contained"
+                >
+                  Gegevens toevoegen
+                </Button>
+                </Grid> 
                 </Grid>
                 <Grid xs={4}>  
                 {error && (

@@ -6,17 +6,31 @@ import { Helmet } from "react-helmet-async";
 import { PageHeader } from "src/components/pageHeader/PageHeader";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import { FormField } from "src/components/form/FormField";
-import { AddIngredientInput, AddProductInput, AddRecipeInput, QuantityToId, StepToMethodInput } from "src/globalTypes";
+import { AddIngredientInput, AddProductInput, AddRecipeInput, NutritionInput, QuantityToId, QuantityToNutritionInput, StepToMethodInput } from "src/globalTypes";
 import { composeValidators, required, Validator } from "src/utilities/formikValidators";
 import { user } from "../..";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
 import { useAddIngredient } from "../api";
 import { Divider } from '@mui/material';import { AddIngredientVariables } from "../types/AddIngredient";
 import { TableProductData } from "./component/ProductsTable";
-import { emptyQuantityToNutrition, units } from "../ingredientDialogs/UpdateIngredientDialog";
+import { units } from "../ingredientDialogs/UpdateIngredientDialog";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import { H3, H5, H5Left } from "src/content/pages/Components/TextTypes";
 import { Quantity } from "../../Menus/filtermenus/components/quantity";
+
+export const emptyNutrition: NutritionInput = {
+  kcal: 0,
+  prottotal: 0,
+  fatstotal: 0,
+  carbscarbs: 0,
+  carbssugar: 0,
+  fibres: 0
+}
+export const emptyQuantityToNutrition: QuantityToNutritionInput = {
+  quantity: 0,
+  unit: '',
+  nutrition: emptyNutrition
+}
 
 export const AddIngredientPage = () => {
 

@@ -29,10 +29,10 @@ export const UpdateSupplierDialog = ({
       });
 
 const formInput: SupplierInput = {
-  email: '',
-  id: '',
-  name: '',
-  rating: 0,
+  email: supplier.email,
+  id: supplier.id,
+  name: supplier.name,
+  rating: supplier.rating,
 }
 const formState : UpdateSupplierVariables = {
   input: formInput,

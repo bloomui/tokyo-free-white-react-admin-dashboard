@@ -27,6 +27,7 @@ const getProductQuery = gql`
     suppliers {
       id
       name
+      email
     }
 }
 }`;
@@ -72,6 +73,7 @@ query FilterProducts ($input: ProductFilterInput, $offset: Int, $limit: Int) {
     suppliers {
       id
       name
+      email
     }
 }
 }`;
