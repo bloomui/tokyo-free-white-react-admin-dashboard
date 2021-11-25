@@ -15,6 +15,7 @@ import { AddIngredientPage } from './content/pages/MyChefsbase/Ingredients/AddIn
 import { AddDishPage } from './content/pages/MyChefsbase/Dishes/AddDish';
 import { AddMenuPage } from './content/pages/MyChefsbase/Menus/AddMenu';
 import { AddSupplierPage } from './content/pages/MyChefsbase/Suppliers/AddSupplier';
+import { Orders } from './content/pages/Orders';
 
 const Loader = (Component) => (props) => (
   <Suspense fallback={<SuspenseLoader />}>
@@ -204,7 +205,7 @@ const routes = (isLoggedIn: boolean) => [
       },
       {
         path: 'orders',
-        element: <StatusComingSoon />
+        element: <Orders />
       },
       {
         path: 'addsupplier',

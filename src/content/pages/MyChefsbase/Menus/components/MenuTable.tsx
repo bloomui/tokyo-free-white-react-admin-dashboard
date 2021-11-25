@@ -1,4 +1,5 @@
 import {
+  Button,
     Grid,
     IconButton,
       Paper,
@@ -23,7 +24,8 @@ import { UpdateMenuDialog } from "../menuDialog/UpdateMenu";
 import { AreYouSureDelete } from "../filtermenus/components/AreYouSureDelete";
 import { FilterMenus, FilterMenus_filterMenus } from "../types/FilterMenus";
 import { ingredient_ingredient } from "../../Ingredients/types/ingredient";
-  
+import {useNavigate} from 'react-router-dom';
+
 export interface EnhancedTableProps {
     numSelected: number;
     onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -131,6 +133,8 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
       onCompleted: () => window.location.reload(),
     });
 
+const navigate = useNavigate()
+
     return (
         <>
                       <EnhancedTableToolbar
@@ -215,8 +219,15 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
                 }
                   style={{ cursor: 'pointer' }}/>
                   </Grid>
+                  <Grid item xs={3}>
+                  </Grid>
                   </Grid>
                   </>
+                </TableCell>
+                <TableCell>
+                <Button fullWidth color="secondary" variant="contained" onClick={() => navigate("/mychefsbase/addmenu")}>
+                      <span> Productoverzicht</span>
+                  </Button>
                 </TableCell>
                   </TableRow>
                  </>
