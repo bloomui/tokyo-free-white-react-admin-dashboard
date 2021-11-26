@@ -65,10 +65,14 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
   }
 
   export const MenuTable = ({
+    setMenuForProductOverview,
+    setOpenProductOverview,
     data, 
     page, 
     setPage,
   }: {
+    setMenuForProductOverview: (menu: FilterMenus_filterMenus) => void;
+    setOpenProductOverview: (open: boolean) => void;
     data: FilterMenus; 
     page: number; 
     setPage: (newPage: number) => void;
@@ -225,7 +229,10 @@ const navigate = useNavigate()
                   </>
                 </TableCell>
                 <TableCell>
-                <Button fullWidth color="secondary" variant="contained" onClick={() => navigate("/mychefsbase/addmenu")}>
+                <Button fullWidth color="secondary" variant="contained" onClick={() => {
+                    setMenuForProductOverview(menu);
+                    setOpenProductOverview(true)
+                }}>
                       <span> Productoverzicht</span>
                   </Button>
                 </TableCell>

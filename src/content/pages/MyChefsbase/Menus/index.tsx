@@ -11,6 +11,8 @@ import { initialMenuValues } from "./filtermenus/components/initialMenuValues";
 import { AddMenuDialog } from "./menuDialog/AddMenu";
 import { MenuTable } from "./components/MenuTable";
 import { TopPartMenuPage } from "./components/TopPartMenuPage";
+import { Orders } from "../../Orders";
+import { FilterMenus_filterMenus } from "./types/FilterMenus";
   
   export const MenuPage = ({
     page,
@@ -19,7 +21,8 @@ import { TopPartMenuPage } from "./components/TopPartMenuPage";
     page: number;
     setPage: (newPage: number) => void;
   }) => {
-
+    const [menuForProductOverview, setMenuForProductOverview] = useState<FilterMenus_filterMenus>()
+    const [openProductsForMenu, openProductOverview] = useState(false)
     const [openAddMenu, setOpenAddMenu] = useState(false)
     const [ input, setInput] = useState<MenuFilterInput>(initialMenuValues);
     const { loading, data } = useFilterMenuQuery({
@@ -33,6 +36,8 @@ import { TopPartMenuPage } from "./components/TopPartMenuPage";
       content = (
         <>
         <MenuTable
+        setMenuForProductOverview={(menu) => setMenuForProductOverview(menu)}
+        setOpenProductOverview={() => openProductOverview(true)}
         data={data}
         page={page}
         setPage={setPage}
@@ -41,7 +46,25 @@ import { TopPartMenuPage } from "./components/TopPartMenuPage";
       );
     }
   
-    return (
+
+    if (menuForProductOverview) return (
+      <>
+      <TopPartMenuPage 
+      setOpenAddMenu={() => setOpenAddMenu(true)} 
+      setInput={(values) => setInput(values)}/>
+          <Box height={3}>{loading && <LinearProgress />}</Box>
+        {content}
+        <AddMenuDialog 
+                  open={openAddMenu}
+                  onClose={() => setOpenAddMenu(false)}
+                  />
+        <Orders
+        open={openProductsForMenu}
+        onClose={() => openProductOverview(false)}
+        menu={menuForProductOverview}
+        />
+      </>
+    ); else return (
       <>
       <TopPartMenuPage 
       setOpenAddMenu={() => setOpenAddMenu(true)} 
@@ -53,5 +76,5 @@ import { TopPartMenuPage } from "./components/TopPartMenuPage";
                   onClose={() => setOpenAddMenu(false)}
                   />
       </>
-    );
+    )
   };

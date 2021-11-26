@@ -205,7 +205,7 @@ const routes = (isLoggedIn: boolean) => [
       },
       {
         path: 'orders',
-        element: <Orders />
+        element: <StatusComingSoon />
       },
       {
         path: 'addsupplier',

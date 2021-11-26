@@ -7,6 +7,34 @@
 // GraphQL query operation: dish
 // ====================================================
 
+export interface dish_dish_nutrition_protein {
+  __typename: "Proteins";
+  total: number | null;
+}
+
+export interface dish_dish_nutrition_carbs {
+  __typename: "Carbs";
+  carbs: number | null;
+  sugar: number | null;
+}
+
+export interface dish_dish_nutrition_fat {
+  __typename: "Fats";
+  satured: number | null;
+  singleUnsat: number | null;
+  compoundUnsat: number | null;
+  total: number | null;
+}
+
+export interface dish_dish_nutrition {
+  __typename: "Nutrition";
+  kcal: number | null;
+  protein: dish_dish_nutrition_protein | null;
+  carbs: dish_dish_nutrition_carbs | null;
+  fibres: number | null;
+  fat: dish_dish_nutrition_fat | null;
+}
+
 export interface dish_dish_method {
   __typename: "StepToMethod";
   step: number;
@@ -39,6 +67,7 @@ export interface dish_dish {
   name: string;
   rating: number | null;
   theme: string | null;
+  nutrition: dish_dish_nutrition | null;
   method: dish_dish_method[] | null;
   recipes: dish_dish_recipes[] | null;
 }
