@@ -54,7 +54,6 @@ export  const TableData = ({
  <TextField
     onKeyPress= {(e) => {
         if (e.key === 'Enter') {
-          console.log(e.key);
         refetch({name: name})
       }
       }}      

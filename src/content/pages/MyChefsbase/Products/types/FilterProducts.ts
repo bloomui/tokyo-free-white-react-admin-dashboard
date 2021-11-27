@@ -25,6 +25,7 @@ export interface FilterProducts_filterProducts_suppliers {
   __typename: "Supplier";
   id: string;
   name: string;
+  email: string;
 }
 
 export interface FilterProducts_filterProducts {

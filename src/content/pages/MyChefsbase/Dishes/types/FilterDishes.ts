@@ -9,6 +9,34 @@ import { DishFilterInput } from "./../../../../../globalTypes";
 // GraphQL query operation: FilterDishes
 // ====================================================
 
+export interface FilterDishes_filterDishes_nutrition_protein {
+  __typename: "Proteins";
+  total: number | null;
+}
+
+export interface FilterDishes_filterDishes_nutrition_carbs {
+  __typename: "Carbs";
+  carbs: number | null;
+  sugar: number | null;
+}
+
+export interface FilterDishes_filterDishes_nutrition_fat {
+  __typename: "Fats";
+  satured: number | null;
+  singleUnsat: number | null;
+  compoundUnsat: number | null;
+  total: number | null;
+}
+
+export interface FilterDishes_filterDishes_nutrition {
+  __typename: "Nutrition";
+  kcal: number | null;
+  protein: FilterDishes_filterDishes_nutrition_protein | null;
+  carbs: FilterDishes_filterDishes_nutrition_carbs | null;
+  fibres: number | null;
+  fat: FilterDishes_filterDishes_nutrition_fat | null;
+}
+
 export interface FilterDishes_filterDishes_method {
   __typename: "StepToMethod";
   step: number;
@@ -41,6 +69,7 @@ export interface FilterDishes_filterDishes {
   name: string;
   rating: number | null;
   theme: string | null;
+  nutrition: FilterDishes_filterDishes_nutrition | null;
   method: FilterDishes_filterDishes_method[] | null;
   recipes: FilterDishes_filterDishes_recipes[] | null;
 }

@@ -14,26 +14,11 @@ import { Quantity } from "../../Menus/filtermenus/components/quantity";
 import { productToQ } from "../AddIngredient";
 import { TableProductData } from "../AddIngredient/component/ProductsTable";
 import { useAllProductsQuery, useUpdateIngredient } from "../api";
-import { AddIngredientVariables } from "../types/AddIngredient";
-import { allProducts_products } from "../types/AllProducts";
 import { FilterIngredients_filterIngredients } from "../types/FilterIngredients";
-import { UpdateIngredient, UpdateIngredientVariables } from "../types/UpdateIngredient";
+import { UpdateIngredientVariables } from "../types/UpdateIngredient";
 
 export const units = ["grams", "mililiter"]
 
-export const emptyNutrition: NutritionInput = {
-  kcal: 0,
-  prottotal: 0,
-  fatstotal: 0,
-  carbscarbs: 0,
-  carbssugar: 0,
-  fibres: 0
-}
-export const emptyQuantityToNutrition: QuantityToNutritionInput = {
-  quantity: 0,
-  unit: '',
-  nutrition: emptyNutrition
-}
 export const UpdateIngredientDialog = ({
     ingredient,
     open,
@@ -56,16 +41,23 @@ export const UpdateIngredientDialog = ({
                 setProducts([...selectedProducts])
             }
 
+
+const quantityToNutrition: QuantityToNutritionInput = {
+              quantity: ingredient.nutrition.quantity.quantity,
+              unit: ingredient.nutrition.quantity.unit,
+              nutrition: ingredient.nutrition.nutrition
+            }
+
 const formInput: IngredientInput = {
-  id: '',
-  name: '',
-  rating: 0,
-  category: '',
-  nutrition: emptyQuantityToNutrition,
+  id: ingredient.id,
+  name: ingredient.name,
+  rating: ingredient.rating,
+  category: ingredient.category,
+  nutrition: quantityToNutrition,
 }
 const formState : UpdateIngredientVariables = {
   input: formInput,
-  products: [],
+  products: ingredient.products.map((it) => it.id),
 }
 
     return (

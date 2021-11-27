@@ -8,6 +8,8 @@ import { AllIngredients } from "./types/AllIngredients";
 import { FilterRecipes } from "./types/FilterRecipes";
 import { recipe, recipeVariables } from "./types/recipe";
 import { UpdateRecipe, UpdateRecipeVariables } from "./types/UpdateRecipe";
+import { NutritionForRecipe, NutritionForRecipeVariables } from "./types/NutritionForRecipe";
+import { ingredientsForRecipe, ingredientsForRecipeVariables } from "./types/ingredientsForRecipe";
 
 const getRecipeQuery = gql`
  query recipe ($id: String!) {
@@ -19,35 +21,6 @@ const getRecipeQuery = gql`
         method {
           step
           method
-        }
-        nutrition {
-          vitamins {
-          c
-            e
-            dTotal
-            kTotal
-        }
-          carbs {
-            carbs
-            sugar
-          }
-          protein {
-            total
-          }
-          fat {
-            total
-          }
-          kcal
-        }
-        ingredients {
-          ingredient {
-            id
-            name
-          }
-          quantity {
-            quantity
-            unit
-          }
         }
       }
     }`;
@@ -86,16 +59,6 @@ query FilterRecipes ($input: RecipeFilterInput, $offset: Int, $limit: Int) {
           step
           method
         }
-        ingredients {
-          ingredient {
-            id
-            name
-          }
-          quantity {
-            quantity
-            unit
-          }
-        }
       }
     }`;
 
@@ -125,6 +88,44 @@ query Recipes {
 }
 `;
 
+export const IngredientsForRecipeQuery = gql`
+query ingredientsForRecipe ($id: String!, $quantity: Float!, $unit: String!) {
+  ingredientsForRecipe (id: $id, quantity: $quantity, unit: $unit) { 
+    quantity {
+      quantity
+      unit
+    }
+    ingredient {
+      id
+    	name
+    }
+  }
+}
+    `;
+export const NutritionForRecipeQuery = gql`
+query NutritionForRecipe ($id: String!, $quantity: Float!, $unit: String!) {
+  nutritionForRecipe (id: $id, quantity: $quantity, unit: $unit) {
+      vitamins {
+      c
+        e
+        dTotal
+        kTotal
+    }
+      carbs {
+        carbs
+        sugar
+      }
+      protein {
+        total
+      }
+      fat {
+        total
+      }
+      kcal
+    }
+  }`;
+
+
 export const UpdateRecipeMutation = gql`
 mutation UpdateRecipe ($input: RecipeInput!, $ingredients: [QuantityToId!], $method: [StepToMethodInput!]) {
   updateRecipe (input: $input, ingredients: $ingredients, method: $method)
@@ -135,6 +136,50 @@ export const AddRecipeMutation = gql`
 mutation AddRecipe ($input: AddRecipeInput!, $ingredients: [QuantityToId!], $method: [StepToMethodInput!]) {
   addRecipe(input: $input, ingredients: $ingredients, method: $method)
 }`;
+
+export const useGetNutritionForRecipe = ({
+  id,
+  quantity,
+  unit
+}: {
+  id: string,
+  quantity: number,
+  unit: string
+}) => {
+  const { loading, data, error, refetch } = useSimpleQuery<
+  NutritionForRecipe,
+  NutritionForRecipeVariables
+  >(NutritionForRecipeQuery, {
+    variables: {
+      id: id,
+      quantity: quantity,
+      unit: unit
+    },
+  });
+  return { loading, data, error, refetch};
+};
+
+export const useGetIngredientsForRecipe = ({
+  id,
+  quantity,
+  unit
+}: {
+  id: string,
+  quantity: number,
+  unit: string
+}) => {
+  const { loading, data, error, refetch } = useSimpleQuery<
+  ingredientsForRecipe,
+  ingredientsForRecipeVariables
+  >(IngredientsForRecipeQuery, {
+    variables: {
+      id: id,
+      quantity: quantity,
+      unit: unit
+    },
+  });
+  return { loading, data, error, refetch};
+};
 
 export const useAllIngredientsQuery = () => {
 

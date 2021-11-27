@@ -1,11 +1,13 @@
-import { Dialog, DialogTitle, DialogContent, Card, CardActionArea, Grid, Typography, TableContainer, TableBody, TableCell, TableHead, TableRow, List, ListItem, Button, DialogActions } from "@material-ui/core"
+import { Dialog, DialogTitle, DialogContent, Card, CardActionArea, Grid, Typography, TableContainer, TableBody, TableCell, TableHead, TableRow, List, ListItem, Button, DialogActions, TextField, MenuItem, Select, CircularProgress } from "@material-ui/core"
 import React, { useState } from "react"
+import { FormField } from "src/components/form/FormField"
 import { LoadingScreen } from "src/components/layout"
+import { H5 } from "src/content/pages/Components/TextTypes"
 import { FilterDishes_filterDishes_method, FilterDishes_filterDishes_recipes } from "../../Dishes/types/FilterDishes"
 import { ItemNutrition } from "../../Ingredients/ingredientDialogs"
 import { ItemString, ItemInt } from "../../Menus/menuDialog"
-import { useGetRecipeQuery } from "../api"
-import { FilterRecipes_filterRecipes_ingredients } from "../types/FilterRecipes"
+import { useGetIngredientsForRecipe, useGetNutritionForRecipe, useGetRecipeQuery } from "../api"
+import { ingredientsForRecipe_ingredientsForRecipe } from "../types/ingredientsForRecipe"
 import { UpdateRecipeDialog } from "./UpdateRecipeDialog"
 
 export const RecipeDialog = ({
@@ -20,12 +22,37 @@ export const RecipeDialog = ({
     onClose: () => void
 }) => {
 
+    const [unit, setUnit] = useState('gram')
+    const [quantity, setQuantity] = useState(100)
     const { data, loading, error } = useGetRecipeQuery(id)
 
     const [openUpdateDialog, setUpdateDialog] = useState(false)
 
-    if (loading) return <LoadingScreen/>
-    if (error) return <LoadingScreen/>
+    const { data: data1, loading: loading1, error: error1, refetch: refetch1 } = useGetNutritionForRecipe({
+        id: id,
+        quantity: quantity,
+        unit: unit
+    })
+    const { data: data2, loading: loading2, error: error2, refetch: refetch2 } = useGetIngredientsForRecipe({
+        id: id,
+        quantity: quantity,
+        unit: unit
+    })
+
+    if (loading) return <CircularProgress/>
+    if (error) return <CircularProgress/>
+    if (loading1) return (
+    <Dialog open={open} onClose={onClose}><CircularProgress /></Dialog>
+    )
+    if (error1) return (
+        <Dialog open={open} onClose={onClose}><CircularProgress /></Dialog>
+        )
+    if (loading2) return (
+        <Dialog open={open} onClose={onClose}><CircularProgress /></Dialog>
+        )
+    if (error2) return (
+        <Dialog open={open} onClose={onClose}><CircularProgress /></Dialog>
+        )
 
     let recipe = data.recipe
 
@@ -58,13 +85,48 @@ export const RecipeDialog = ({
                        title="rating"
                        item={recipe.rating}
                        />
+                           <Grid xs={12}>
+                           <H5 title="Toon voedingswaarden en ingredienten per:"/>
+                           </Grid>
+                           <Grid xs={2}></Grid>
+                          <Grid xs={4}>
+                              <TextField 
+                              onKeyPress= {(e) => {
+                                if (e.key === 'Enter') {
+                                refetch1({
+                                    id: id,
+                                    quantity: quantity,
+                                    unit: unit});
+                                refetch2({
+                                    id: id,
+                                    quantity: quantity,
+                                    unit: unit});
+                              }
+                              }}  
+                              defaultValue={quantity}
+                              onChange={(e) => setQuantity(Number(e.target.value))}/>
+                          </Grid>
+                          <Grid xs={2}></Grid>
+                          <Grid xs={4}>
+                          <TextField
+                      select
+                      onChange={(e) => setUnit(e.target.value)}
+                      variant="filled"
+                    >
+                      {["gram", "kg", "milliliter", "liter"].map((option) => (
+                        <MenuItem key={option} value={option}>
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                          </Grid>
                        <ItemNutrition
                        title="Voedingswaarde"
-                       item={recipe.nutrition}
+                       item={data1.nutritionForRecipe}
                        />
                       <ItemIngredients
                       title="Recepten"
-                      item={recipe.ingredients}
+                      item={data2.ingredientsForRecipe}
                       />
                       <ItemMethods
                       title="Methode"
@@ -119,7 +181,7 @@ export const ItemMethods = ({title, item}: {title: string, item: FilterDishes_fi
     )
 }
 
-export const ItemIngredients = ({title, item}: {title: string, item: FilterRecipes_filterRecipes_ingredients []| null;}) => {
+export const ItemIngredients = ({title, item}: {title: string, item: ingredientsForRecipe_ingredientsForRecipe[]| null;}) => {
     return (
         <>
         <Grid key={0} item xs={12}>

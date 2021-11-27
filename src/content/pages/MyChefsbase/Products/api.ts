@@ -27,13 +27,14 @@ const getProductQuery = gql`
     suppliers {
       id
       name
+      email
     }
 }
 }`;
 
 export const useGetProductQuery = (id: string) => {
 
-    const { loading, data, error } = useSimpleQuery<
+    const { loading, data, error, refetch } = useSimpleQuery<
     product,
     productVariables
     >(getProductQuery, {
@@ -41,7 +42,7 @@ export const useGetProductQuery = (id: string) => {
         id: id,
       },
     });
-    return { loading, data, error};
+    return { loading, data, error, refetch};
   };
 
 const AllSuppliersQuery = gql`
@@ -72,6 +73,7 @@ query FilterProducts ($input: ProductFilterInput, $offset: Int, $limit: Int) {
     suppliers {
       id
       name
+      email
     }
 }
 }`;

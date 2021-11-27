@@ -30,47 +30,42 @@ export const UpdateProductDialog = ({
 }) => {
   const {data} = useAllSuppliersQuery()
 
+  const suppliers: supplierToQ[] = product.suppliers.map((supp) => ({
+    name: supp.name,
+    id: supp.id,
+    email: supp.email
+  }))
 
     const { updateProduct, loading, error } = useUpdateProduct({
         onCompleted: () => window.location.reload(),
       });
-      const [selectedSuppliers, setSuppliers] = React.useState<supplierToQ[]>([]);
+      const [selectedSuppliers, setSuppliers] = React.useState<supplierToQ[]>(suppliers);
       function handleDelete(index) {
         selectedSuppliers.splice(index, 1)
         setSuppliers([...selectedSuppliers])
       }
 type ProductFormInput = {
-  price: string,
+  price: number,
   brand: string,
   origin: string,
   id: string,
   name: string,
-  rating: string,
+  rating: number,
 }
 
-const formInput: ProductFormInput = {
-  price: '',
-  brand: '',
-  origin: '',
-  id: '',
-  name: '',
-  rating: '',
-}
-
-const mapProductInput = (formInput: ProductFormInput) => {
-  const mapped: ProductInput = {
-    price: Number(formInput.price),
-    brand: formInput.brand,
-    origin: formInput.origin,
-    id: formInput.id,
-    name: formInput.name,
-    rating: Number(formInput.rating)
-  }
-  return mapped
+const formInput: ProductInput = {
+  price: product.price.price,
+  quantity: product.price.quantity.quantity,
+  unit: product.price.quantity.unit,
+  brand: product.brand,
+  origin: product.origin,
+  id: product.id,
+  name: product.name,
+  rating: product.rating,
 }
 
 const formState : UpdateProductVariables = {
-  input: mapProductInput(formInput),
+  input: formInput,
   suppliers: [],
 }
 

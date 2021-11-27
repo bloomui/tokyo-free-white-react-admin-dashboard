@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TableContainer, Table, TableCell, TableRow, TextField, Typography, Divider } from "@material-ui/core";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TableContainer, Table, TableCell, TableRow, TextField, Typography, Divider, CircularProgress, MenuItem } from "@material-ui/core";
 import { Autocomplete, Rating } from "@material-ui/lab";
 import { FieldArray, Formik } from "formik";
 import React, { useState } from "react";
@@ -8,12 +8,13 @@ import { FormikSelect } from "src/components/form/FormikSelect";
 import { RecipeInput, QuantityToId, StepToMethodInput, DishInput } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
 import { UpdateDishVariables } from "../../Dishes/types/UpdateDish";
-import { useAllIngredientsQuery, useUpdateRecipe } from "../api";
+import { useAllIngredientsQuery, useGetIngredientsForRecipe, useUpdateRecipe } from "../api";
 import { FilterRecipes_filterRecipes } from "../types/FilterRecipes";
 import { UpdateRecipeVariables } from "../types/UpdateRecipe";
 import { H3, H5 } from "src/content/pages/Components/TextTypes";
 import { ingredientToQ, mapIngredientToQToInput } from "../AddRecipe";
 import { TableData } from "../AddRecipe/components/IngredientTable";
+import { LoadingScreen } from "src/components/layout";
 
 export const UpdateRecipeDialog = ({
     recipe,
@@ -24,8 +25,13 @@ export const UpdateRecipeDialog = ({
     open: boolean,
     onClose: () => void
 }) => {
-  const {data} = useAllIngredientsQuery()
-
+  const [unit, setUnit] = useState('gram')
+  const [quantity, setQuantity] = useState(100)
+  const { data: data2, loading: loading2, error: error2, refetch: refetch } = useGetIngredientsForRecipe({
+    id: recipe.id,
+    quantity: quantity,
+    unit: unit
+})
 
     const { updateRecipe, loading, error } = useUpdateRecipe({
         onCompleted: () => window.location.reload(),
@@ -48,14 +54,13 @@ export const UpdateRecipeDialog = ({
         rating: recipe.rating,
         type: recipe.type
     }
-    const formIngredients: QuantityToId[] | null = (recipe.ingredients? (recipe.ingredients.map((quantityToIngr) => (
+    const formIngredients: QuantityToId[] | null = (data2.ingredientsForRecipe.map((quantityToIngr) => (
             {
                 quantity: quantityToIngr.quantity.quantity,
                 unit: quantityToIngr.quantity.unit,
                 id: quantityToIngr.ingredient.id,
             }
-    )
-    )) : null)
+    )))
 
     const formMethods: StepToMethodInput[] | null = (recipe.method? (recipe.method.map((method) => (
         {
@@ -71,7 +76,15 @@ const formState : UpdateRecipeVariables = {
         method: formMethods
     }
 
-    const methodSize = recipe.method.length
+
+    if (loading) return <CircularProgress/>
+    if (error) return <CircularProgress/>
+    if (loading2) return (
+        <Dialog open={open} onClose={onClose}><CircularProgress /></Dialog>
+        )
+    if (error2) return (
+        <Dialog open={open} onClose={onClose}><CircularProgress /></Dialog>
+        )
 
     return (
     <Dialog fullScreen open={open} onClose={onClose}>
@@ -214,9 +227,37 @@ const formState : UpdateRecipeVariables = {
                 <Grid xs={12}></Grid>
                 <Divider/>
                 <Grid container xs={12}>
-                  <Grid xs={12}>
-                <H3 title="Ingredienten"/>
-                </Grid>
+                <Grid xs={12}>
+                           <H5 title="Toon voedingswaarden en ingredienten per:"/>
+                           </Grid>
+                           <Grid xs={2}></Grid>
+                          <Grid xs={4}>
+                              <TextField 
+                              onKeyPress= {(e) => {
+                                if (e.key === 'Enter') {
+                                refetch({
+                                    id: recipe.id,
+                                    quantity: quantity,
+                                    unit: unit});
+                              }
+                              }}  
+                              defaultValue={quantity}
+                              onChange={(e) => setQuantity(Number(e.target.value))}/>
+                          </Grid>
+                          <Grid xs={2}></Grid>
+                          <Grid xs={4}>
+                          <TextField
+                      select
+                      onChange={(e) => setUnit(e.target.value)}
+                      variant="filled"
+                    >
+                      {["gram", "kg", "milliliter", "liter"].map((option) => (
+                        <MenuItem key={option} value={option}>
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                          </Grid>
                 <Grid xs={6}>
                   <TableData 
                   setIngredients={(selected) => setIngredients([...selectedIngredients, selected])

@@ -19,6 +19,23 @@ const getDishQuery = gql`
     name
     rating
     theme
+    nutrition {
+      kcal
+      protein {
+        total
+      }
+      carbs {
+        carbs
+        sugar
+      }
+      fibres 
+      fat {
+        satured
+        singleUnsat 
+        compoundUnsat
+        total
+      }
+    }
     method {
         step 
         method
@@ -68,6 +85,23 @@ query FilterDishes ($input: DishFilterInput, $limit: Int, $offset: Int) {
     name
     rating
     theme
+    nutrition {
+      kcal
+      protein {
+        total
+      }
+      carbs {
+        carbs
+        sugar
+      }
+      fibres 
+      fat {
+        satured
+        singleUnsat 
+        compoundUnsat
+        total
+      }
+    }
     method {
         step 
         method
