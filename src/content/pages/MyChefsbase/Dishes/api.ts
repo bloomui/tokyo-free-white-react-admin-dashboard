@@ -22,19 +22,58 @@ const getDishQuery = gql`
     nutrition {
       kcal
       protein {
-        total
+      plant
+animal
+total
       }
-      carbs {
-        carbs
-        sugar
-      }
-      fibres 
-      fat {
-        satured
-        singleUnsat 
-        compoundUnsat
-        total
-      }
+  carbs {
+    carbs
+    sugar
+  }
+  fat {
+    satured
+    singleUnsat 
+    compoundUnsat
+    total
+  }
+     starch
+polyols
+fibres
+nitrogen,
+polysachhariden
+alcohol
+water
+organicAcids
+vitamins {
+e
+c
+kTotal
+b12
+dTotal
+}   
+        foliumAcid
+pholate
+pholatEquivalents
+nicotinAcid
+lycopeans
+betaCrypto
+zeacanthine
+lutein    
+ash
+jodium
+sink
+selenium
+cupper
+iron {
+total
+} 
+        magnesium
+fosfor
+calcium
+kalium
+natrium
+cholesterol
+famstxr
     }
     method {
         step 
@@ -88,19 +127,58 @@ query FilterDishes ($input: DishFilterInput, $limit: Int, $offset: Int) {
     nutrition {
       kcal
       protein {
-        total
+      plant
+animal
+total
       }
-      carbs {
-        carbs
-        sugar
-      }
-      fibres 
-      fat {
-        satured
-        singleUnsat 
-        compoundUnsat
-        total
-      }
+  carbs {
+    carbs
+    sugar
+  }
+  fat {
+    satured
+    singleUnsat 
+    compoundUnsat
+    total
+  }
+     starch
+polyols
+fibres
+nitrogen,
+polysachhariden
+alcohol
+water
+organicAcids
+vitamins {
+e
+c
+kTotal
+b12
+dTotal
+}   
+        foliumAcid
+pholate
+pholatEquivalents
+nicotinAcid
+lycopeans
+betaCrypto
+zeacanthine
+lutein    
+ash
+jodium
+sink
+selenium
+cupper
+iron {
+total
+} 
+        magnesium
+fosfor
+calcium
+kalium
+natrium
+cholesterol
+famstxr
     }
     method {
         step 

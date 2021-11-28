@@ -105,23 +105,60 @@ query ingredientsForRecipe ($id: String!, $quantity: Float!, $unit: String!) {
 export const NutritionForRecipeQuery = gql`
 query NutritionForRecipe ($id: String!, $quantity: Float!, $unit: String!) {
   nutritionForRecipe (id: $id, quantity: $quantity, unit: $unit) {
-      vitamins {
-      c
-        e
-        dTotal
-        kTotal
-    }
-      carbs {
-        carbs
-        sugar
-      }
-      protein {
-        total
-      }
-      fat {
-        total
-      }
       kcal
+      protein {
+      plant
+animal
+total
+      }
+  carbs {
+    carbs
+    sugar
+  }
+  fat {
+    satured
+    singleUnsat 
+    compoundUnsat
+    total
+  }
+     starch
+polyols
+fibres
+nitrogen,
+polysachhariden
+alcohol
+water
+organicAcids
+vitamins {
+e
+c
+kTotal
+b12
+dTotal
+}   
+        foliumAcid
+pholate
+pholatEquivalents
+nicotinAcid
+lycopeans
+betaCrypto
+zeacanthine
+lutein    
+ash
+jodium
+sink
+selenium
+cupper
+iron {
+total
+} 
+        magnesium
+fosfor
+calcium
+kalium
+natrium
+cholesterol
+famstxr
     }
   }`;
 
