@@ -3,6 +3,7 @@ import React, { useState } from "react"
 import { FormField } from "src/components/form/FormField"
 import { LoadingScreen } from "src/components/layout"
 import { H5 } from "src/content/pages/Components/TextTypes"
+import { DefaultNutritionOptions, NutritionOptionDropDown } from "../../Components/NutrutitionOptions"
 import { FilterDishes_filterDishes_method, FilterDishes_filterDishes_recipes } from "../../Dishes/types/FilterDishes"
 import { ItemNutrition } from "../../Ingredients/ingredientDialogs"
 import { ItemString, ItemInt } from "../../Menus/menuDialog"
@@ -22,6 +23,7 @@ export const RecipeDialog = ({
     onClose: () => void
 }) => {
 
+    const [nutritionsToDisplay, setNutritionsToDisplay] = useState<string[]>(DefaultNutritionOptions)
     const [unit, setUnit] = useState('gram')
     const [quantity, setQuantity] = useState(100)
     const { data, loading, error } = useGetRecipeQuery(id)
@@ -120,7 +122,13 @@ export const RecipeDialog = ({
                       ))}
                     </TextField>
                           </Grid>
+                          <Grid xs={12}>
+                          <NutritionOptionDropDown 
+                      setFieldValue={(selected) => setNutritionsToDisplay(selected)}
+                      />
+                      </Grid>
                        <ItemNutrition
+                       nutritionsToDisplay={nutritionsToDisplay}
                        title="Voedingswaarde"
                        item={data1.nutritionForRecipe}
                        />

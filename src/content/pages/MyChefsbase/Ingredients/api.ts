@@ -22,23 +22,60 @@ const getIngredientQuery = gql`
         unit
       }
       nutrition {
-      vitamins {
-      c
-        e
-        dTotal
-        kTotal
-    }
-      carbs {
-        carbs
-        sugar
-      }
-      protein {
-        total
-      }
-      fat {
-        total
-      }
       kcal
+      protein {
+      plant
+animal
+total
+      }
+  carbs {
+    carbs
+    sugar
+  }
+  fat {
+    satured
+    singleUnsat 
+    compoundUnsat
+    total
+  }
+     starch
+polyols
+fibres
+nitrogen,
+polysachhariden
+alcohol
+water
+organicAcids
+vitamins {
+e
+c
+kTotal
+b12
+dTotal
+}   
+        foliumAcid
+pholate
+pholatEquivalents
+nicotinAcid
+lycopeans
+betaCrypto
+zeacanthine
+lutein    
+ash
+jodium
+sink
+selenium
+cupper
+iron {
+total
+} 
+        magnesium
+fosfor
+calcium
+kalium
+natrium
+cholesterol
+famstxr
     }
   }
     products {
@@ -84,25 +121,62 @@ query FilterIngredients ($input: IngredientFilterInput, $offset: Int, $limit: In
           unit
         }
         nutrition {
-        vitamins {
-        c
-          e
-          dTotal
-          kTotal
+          kcal
+          protein {
+          plant
+  animal
+  total
+          }
+      carbs {
+        carbs
+        sugar
       }
-        carbs {
-          carbs
-          sugar
-        }
-        protein {
-          total
-        }
-        fat {
-          total
-        }
-        kcal
+      fat {
+        satured
+        singleUnsat 
+        compoundUnsat
+        total
       }
-    }
+         starch
+polyols
+fibres
+nitrogen,
+polysachhariden
+alcohol
+water
+organicAcids
+vitamins {
+e
+c
+kTotal
+b12
+dTotal
+}   
+            foliumAcid
+pholate
+pholatEquivalents
+nicotinAcid
+lycopeans
+betaCrypto
+zeacanthine
+lutein    
+ash
+jodium
+sink
+selenium
+cupper
+iron {
+total
+} 
+            magnesium
+fosfor
+calcium
+kalium
+natrium
+cholesterol
+famstxr
+        }
+      }
     products {
       id
       name
