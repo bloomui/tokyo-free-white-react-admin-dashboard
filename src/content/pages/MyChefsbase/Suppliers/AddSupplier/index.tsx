@@ -1,18 +1,12 @@
 import { Button, Container, Grid, Table, TableCell, TableContainer, TableRow, TextField, TextFieldProps, Typography } from "@material-ui/core";
 import { FieldArray, Formik, useField } from "formik";
 import React from "react";
-import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageHeader } from "src/components/pageHeader/PageHeader";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
-import { FormField } from "src/components/form/FormField";
-import { AddProductInput, AddRecipeInput, AddSupplierInput, QuantityToId, StepToMethodInput } from "src/globalTypes";
-import { composeValidators, required, Validator } from "src/utilities/formikValidators";
+import { AddSupplierInput } from "src/globalTypes";
 import { user } from "../..";
-import { Rating1 } from "../../Menus/filtermenus/components/rating";
-import { useAddSupplier } from "../api";
-import { AddSupplierVariables } from "../types/AddSupplier";
-import { H5, H5Left } from "src/content/pages/Components/TextTypes";
+import { H5Left } from "src/content/pages/Components/TextTypes";
 import { useAddSuppliers } from "./api";
 import { AddSuppliersVariables } from "./types/AddSuppliers";
 
@@ -38,7 +32,7 @@ const formState : AddSuppliersVariables = {
     return (
         <>
         <Helmet>
-        <title>Nieuwe leverancier</title>
+        <title>Nieuwe leveranciers</title>
       </Helmet>
       <PageTitleWrapper>
       <PageHeader
@@ -93,7 +87,7 @@ const formState : AddSuppliersVariables = {
                         <TableCell>
                         <TextField
                         id={`input.${index}.name`}
-                        name={`method.${index}.name`}
+                        name={`input.${index}.name`}
                        label="Naam"
                        value={input.name}
                        onChange={handleChange}
@@ -102,7 +96,7 @@ const formState : AddSuppliersVariables = {
                         <TableCell>
                         <TextField
                         id={`input.${index}.email`}
-                        name={`method.${index}.email`}
+                        name={`input.${index}.email`}
                        label="Email"
                        value={input.email}
                        onChange={handleChange}

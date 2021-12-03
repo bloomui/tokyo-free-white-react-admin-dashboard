@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Table, TableCell, TableContainer, TableRow, TextField, TextFieldProps, Typography } from "@material-ui/core";
+import { Button, Container, Grid, MenuItem, Table, TableCell, TableContainer, TableRow, TextField, TextFieldProps, Typography } from "@material-ui/core";
 import { FieldArray, Formik, useField } from "formik";
 import React from "react";
 import { useState } from "react";
@@ -16,6 +16,8 @@ import { AddProductVariables } from "../types/AddProduct";
 import { TableSupplierData } from "./components/SuppliersTable";
 import { H3, H5 } from "src/content/pages/Components/TextTypes";
 import { Price } from "../../Menus/filtermenus/components/prices";
+import { FormikSelect } from "src/components/form/FormikSelect";
+import { units } from "../../Ingredients/ingredientDialogs/UpdateIngredientDialog";
 
 export const AddProductPage = () => {
 
@@ -81,7 +83,9 @@ export const AddProductPage = () => {
                 rating: values.input.rating,
                 brand: values.input.brand,
                 origin: values.input.origin,
-                price: values.input.price
+                price: values.input.price,
+                quantity: values.input.quantity,
+                unit: values.input.unit
               },
             },
           });
@@ -121,6 +125,25 @@ export const AddProductPage = () => {
                 setFieldValue={setFieldValue}
                 />
                 </Grid>
+                <Grid xs={1}></Grid>
+                <Grid xs={3}>
+                <H5 title="Hoeveelheid"/>
+                <Grid xs={5}>
+                <FormField
+                  name="input.quantity"
+                  label="Herkomst"
+                />
+                </Grid>
+                <Grid xs={1}></Grid>
+                <Grid xs={6}>
+                <FormikSelect
+                name="unit"
+                >
+        {units.map((unit) => (
+          <MenuItem key={unit} value={unit}>{unit}</MenuItem>
+        ))}
+      </FormikSelect></Grid>
+                </Grid> 
                 <Grid xs={1}></Grid>
                 <Grid xs={3}>
                 <H5 title="Prijs (€)"/>

@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TableContainer, Divider, Table, TableCell, TableRow, TextField, Typography, Grid } from "@material-ui/core";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TableContainer, Divider, Table, TableCell, TableRow, TextField, Typography, Grid, MenuItem } from "@material-ui/core";
 import { Autocomplete, Rating } from "@material-ui/lab";
 import { FieldArray, Formik } from "formik";
 import React, { useState } from "react";
@@ -18,6 +18,7 @@ import { H3, H5 } from "src/content/pages/Components/TextTypes";
 import { TableSupplierData } from "../AddProduct/components/SuppliersTable";
 import { Price } from "../../Menus/filtermenus/components/prices";
 import { supplierToQ } from "../AddProduct";
+import { units } from "../../Ingredients/ingredientDialogs/UpdateIngredientDialog";
 
 export const UpdateProductDialog = ({
   product,
@@ -44,14 +45,6 @@ export const UpdateProductDialog = ({
         selectedSuppliers.splice(index, 1)
         setSuppliers([...selectedSuppliers])
       }
-type ProductFormInput = {
-  price: number,
-  brand: string,
-  origin: string,
-  id: string,
-  name: string,
-  rating: number,
-}
 
 const formInput: ProductInput = {
   price: product.price.price,
@@ -84,6 +77,8 @@ const formState : UpdateProductVariables = {
                 id: product.id,
                 name: values.input.name,
                 rating: values.input.rating,
+                quantity: values.input.quantity,
+                unit: values.input.unit
               },
             },
           });
@@ -120,6 +115,24 @@ const formState : UpdateProductVariables = {
                   name="input.origin"
                   label="Herkomst"
                 />
+                </Grid> 
+                <Grid xs={3}>
+                <H5 title="Hoeveelheid"/>
+                <Grid xs={5}>
+                <FormField
+                  name="input.quantity"
+                  label="Herkomst"
+                />
+                </Grid>
+                <Grid xs={1}></Grid>
+                <Grid xs={6}>
+                <FormikSelect
+                name="unit"
+                >
+        {units.map((unit) => (
+          <MenuItem key={unit} value={unit}>{unit}</MenuItem>
+        ))}
+      </FormikSelect></Grid>
                 </Grid> 
                 <Grid xs={3}>
                 <Rating1
