@@ -18,9 +18,7 @@ const authLink = setContext((_, { headers }) => {
   const token = getToken()
   // return the headers to the context so httpLink can read them
   return {
-    // uri: 'https://mychefsbase.azurewebsites.net/graphql/?access_token=accesstoken',
-    uri: 'http://localhost:9090/graphql/?access_token=accesstoken',
-    // uri: `${config.endpoint}/?access_token=${token}`,
+    uri: `${config.endpoint}/?access_token=${token}`,
   }
 });
 
