@@ -1,6 +1,7 @@
 import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { useAuthToken } from "./token";
 import { login, loginVariables } from "./types/login";
+import { signup, signupVariables } from "./types/signup";
 import { viewer } from "./types/viewer";
 
 export const loginQuery = gql`

@@ -16,7 +16,6 @@ import { Suppliers } from "../../Menus/filtermenus/components/suppliers";
 import { Themes } from "../../Menus/filtermenus/components/themes";
 import { Types } from "../../Menus/filtermenus/components/types";
 import { DishesData } from "../api";
-import { Dishes_ingredients, Dishes_menus, Dishes_products, Dishes_recipes, Dishes_suppliers } from "../types/Dishes";
 
 
 export const initialValues: DishFilterInput = {

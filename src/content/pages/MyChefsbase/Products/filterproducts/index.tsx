@@ -16,7 +16,6 @@ import { Strings } from "../../Menus/filtermenus/components/strings";
 import { Suppliers } from "../../Menus/filtermenus/components/suppliers";
 import { Types } from "../../Menus/filtermenus/components/types";
 import { initialRecipeValues } from "../../Recipes/filterrecipes";
-import { Products_suppliers, Products_dishes, Products_menus, Products_recipes, Products_ingredients } from "../types/Products";
 import {useNavigate} from 'react-router-dom';
 import { H3 } from "src/content/pages/Components/TextTypes";
 

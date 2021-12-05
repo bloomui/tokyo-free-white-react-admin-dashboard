@@ -15,7 +15,6 @@ import { Search } from "../../Menus/filtermenus/components/search";
 import { Suppliers } from "../../Menus/filtermenus/components/suppliers";
 import { Types } from "../../Menus/filtermenus/components/types";
 import { initialRecipeValues } from "../../Recipes/filterrecipes";
-import { Ingredients_dishes, Ingredients_menus, Ingredients_products, Ingredients_recipes, Ingredients_suppliers } from "../types/Ingredients";
 import {useNavigate} from 'react-router-dom';
 
 

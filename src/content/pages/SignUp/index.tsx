@@ -10,12 +10,19 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { LabelWrapper, TypographyH1, TypographyH2 } from 'src/content/overview/Hero';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useSignUp } from 'src/utilities/api';
 
 const SignUpForm = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const navigate = useNavigate()
+
   
+  const { signUp, loading, error } = useSignUp({
+    onCompleted: () => navigate('/authorize/SignIn')
+    },
+  );
     return (
     <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
     <Grid spacing={{ xs: 6, md: 10 }} justifyContent="center" alignItems="center" container>
@@ -72,6 +79,12 @@ const SignUpForm = () => {
                 </Grid>
               </Grid>
               <Button
+              onClick={() => signUp({
+                variables: {
+                  email: email,
+                  password: password
+                }
+              })}
                  component={RouterLink}
                  to="/authorize/SignIn"
                  size="large"

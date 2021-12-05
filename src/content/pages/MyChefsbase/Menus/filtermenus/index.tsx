@@ -8,7 +8,6 @@ import { LoadingScreen } from "src/components/layout";
 import {useNavigate} from 'react-router-dom';
 import { MenuFilterInput } from "src/globalTypes";
 import { MenusData } from "../api";
-import { Menus_suppliers, Menus_recipes, Menus_dishes, Menus_ingredients, Menus_products } from "../types/Menus";
 import { Dishes } from "./components/dishes";
 import { Ingredients } from "./components/ingredients";
 import { Period } from "./components/period";
