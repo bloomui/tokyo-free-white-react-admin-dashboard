@@ -205,7 +205,7 @@ export const ExpandMore = styled((props: ExpandMoreProps) => {
               onKeyPress= {(e) => {
                 if (e.key === 'Enter') {
                   console.log(e.key);
-                refetch({name: name})
+                refetch({productname: name})
               }
               }}   
       fullWidth
@@ -228,7 +228,7 @@ export const ExpandMore = styled((props: ExpandMoreProps) => {
     </Table></Grid>
       <Grid xs={6}>
         <Table>
-    {data.products.map((product, index) => (
+    {data.searchProduct.map((product, index) => (
       <TableRow>
         <TableCell>
         {product.name}

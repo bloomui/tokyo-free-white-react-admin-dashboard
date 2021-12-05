@@ -7,14 +7,14 @@
 // GraphQL query operation: searchProduct
 // ====================================================
 
-export interface searchProduct_products {
+export interface searchProduct_searchProduct {
   __typename: "Product";
   id: string;
   name: string;
 }
 
 export interface searchProduct {
-  products: searchProduct_products[] | null;
+  searchProduct: (searchProduct_searchProduct | null)[] | null;
 }
 
 export interface searchProductVariables {

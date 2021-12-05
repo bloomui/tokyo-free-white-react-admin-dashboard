@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import { useSimpleQuery } from "src/utilities/apollo";
 import { products } from "./types/products";
+import { searchProduct, searchProductVariables } from "./types/searchProduct";
 
 export const productsQuery =  gql`
     query products ($name: String, $offset: Int, $limit: Int) {
@@ -24,7 +25,7 @@ export const productsQuery =  gql`
 
 export const searchProductsQuery =  gql`
     query searchProduct ($productname: String) {
-        products (productname: $productname) {
+      searchProduct (productname: $productname) {
             id
             name
         }
@@ -37,7 +38,7 @@ export const useSearchProductFilterQuery = ({
 }) => {
 
   const { loading, data, error, refetch } = useSimpleQuery<
-  products
+  searchProduct, searchProductVariables
     >(productsQuery, {
     variables: {
       productname: productname

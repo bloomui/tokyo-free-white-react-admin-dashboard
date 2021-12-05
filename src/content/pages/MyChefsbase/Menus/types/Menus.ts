@@ -46,7 +46,3 @@ export interface Menus {
   recipes: Menus_recipes[] | null;
   dishes: Menus_dishes[] | null;
 }
-
-export interface MenusVariables {
-  productname: string;
-}
