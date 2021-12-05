@@ -72,7 +72,7 @@ query FilterMenus ($input: MenuFilterInput, $offset: Int, $limit: Int) {
 `;
 
 export const MenusData = gql`
-query Menus ($productname: String!) {
+query Menus {
   allSeasons
   allThemes
   suppliers {
