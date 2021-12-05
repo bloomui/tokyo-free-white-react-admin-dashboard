@@ -23,7 +23,7 @@ export const productsQuery =  gql`
 `;
 
 export const searchProductsQuery =  gql`
-    query searchProduct ($productname: String!) {
+    query searchProduct ($productname: String) {
         products (productname: $productname) {
             id
             name
