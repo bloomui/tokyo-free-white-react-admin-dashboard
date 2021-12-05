@@ -30,7 +30,7 @@ export const useSearchProductQuery = ({
     name: string,
     page: number
 }) => {
-    const offset = page * productsRowsPerPage
+    const offset = (page == 0)? productsRowsPerPage : page * productsRowsPerPage
 
     const { loading, data, error, refetch } = useSimpleQuery<
     products

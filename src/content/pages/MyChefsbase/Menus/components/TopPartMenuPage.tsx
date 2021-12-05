@@ -21,6 +21,8 @@ export const TopPartMenuPage = ({
   if (error) return <LoadingScreen />;
 
   return (
+    <>
+    A
       <MenuFilterDialog
       setOpenAddMenu={setOpenAddMenu}
       onClose={() => setOpenFilterInputDialog(false)}
@@ -34,5 +36,6 @@ export const TopPartMenuPage = ({
       seasons={data.allSeasons}
       onChange={(values) => setInput(values)}
       />
+      </>
   )
 }

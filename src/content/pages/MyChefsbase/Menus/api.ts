@@ -72,14 +72,14 @@ query FilterMenus ($input: MenuFilterInput, $offset: Int, $limit: Int) {
 `;
 
 export const MenusData = gql`
-query Menus {
+query Menus ($productname: String!) {
   allSeasons
   allThemes
   suppliers {
     id
     name
   }
-  products {
+  searchProduct (productname: $productname) {
     id
     name
   }
@@ -169,11 +169,19 @@ export const useGetMenuQuery = (id: string) => {
   return { loading, data, error};
 };
 
-export const useMenuQuery = () => {
+export const useMenuQuery = ({
+  productname
+}: {
+  productname: string
+}) => {
 
   const { loading, data, error } = useSimpleQuery<
   Menus
-  >(MenusData);
+  >(MenusData, {
+    variables: {
+      productname: productname
+    }
+  });
   return { loading, data, error};
 };
 
