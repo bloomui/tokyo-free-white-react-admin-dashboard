@@ -1,4 +1,4 @@
-import { gql, useLazyQuery, useQuery } from "@apollo/client";
+import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { useAuthToken } from "./token";
 import { login, loginVariables } from "./types/login";
 import { viewer } from "./types/viewer";
@@ -10,6 +10,30 @@ export const loginQuery = gql`
     }
   }
 `;
+
+export const signUpMutation =gql`
+mutation signup ($email: String!, $password: String!) {
+  signup (email: $email, password: $password) 
+}`;
+
+export const useSignUp = ({
+  onCompleted,
+}: {
+  onCompleted: () => void;
+}) => {
+  const [signUp, { loading, error }] = useMutation<
+  signup,
+  signupVariables
+  >(signUpMutation, {
+    onCompleted: () => onCompleted(),
+  });
+
+  return {
+    signUp,
+    loading,
+    error,
+  };
+};
 
 type Input = {
     onSuccess: (token: string | null) => void;
