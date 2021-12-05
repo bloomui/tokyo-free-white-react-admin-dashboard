@@ -75,26 +75,7 @@ export const MenusData = gql`
 query Menus {
   allSeasons
   allThemes
-  suppliers {
-    id
-    name
-  }
-  products {
-    id
-    name
-  }
-  ingredients {
-    id
-    name
-  }
-  recipes {
-    id
-    name
-  }
-  dishes {
-    id
-    name
-  }
+  
 }
 `;
 

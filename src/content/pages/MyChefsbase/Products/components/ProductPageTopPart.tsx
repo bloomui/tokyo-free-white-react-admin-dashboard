@@ -26,11 +26,11 @@ export const TopPartProductPage = ({
     brands={data.allBrands}
     setOpenAddProduct={setOpenAddProduct}
     onClose={() => setOpenFilterInputDialog(false)}
-    suppliers={data.suppliers}
-    ingredients={data.ingredients}
-    menus={data.menus}
-    dishes={data.dishes}
-    recipes={data.recipes}
+    // suppliers={data.suppliers}
+    // ingredients={data.ingredients}
+    // menus={data.menus}
+    // dishes={data.dishes}
+    // recipes={data.recipes}
     onChange={(values) => setInput(values)}
     />
   )

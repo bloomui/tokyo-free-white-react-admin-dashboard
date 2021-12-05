@@ -41,30 +41,30 @@ query FilterSuppliers ($input: SupplierFilterInput, $offset: Int, $limit: Int) {
 }
 }`;
 
-export const SuppliersData = gql`
-query Suppliers {
-  products {
-    id
-    name
-  }
-  ingredients {
-    id
-    name
-  }
-  recipes {
-    id
-    name
-  }
-  dishes {
-    id
-    name
-  }
-  menus {
-    id
-    name
-  }
-}
-`;
+// export const SuppliersData = gql`
+// query Suppliers {
+//   products {
+//     id
+//     name
+//   }
+//   ingredients {
+//     id
+//     name
+//   }
+//   recipes {
+//     id
+//     name
+//   }
+//   dishes {
+//     id
+//     name
+//   }
+//   menus {
+//     id
+//     name
+//   }
+// }
+// `;
 
 export const UpdateSupplierMutation = gql`
 mutation UpdateSupplier ($input: SupplierInput!) {
