@@ -194,7 +194,7 @@ export const ExpandMore = styled((props: ExpandMoreProps) => {
             }
 
             const {data, error, loading, refetch} = useSearchProductFilterQuery({
-              name: name,
+              productname: name,
             })
             if (loading) return <LoadingScreen />;
             if (error) return <LoadingScreen />;
