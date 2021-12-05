@@ -22,6 +22,31 @@ export const productsQuery =  gql`
     }
 `;
 
+export const searchProductsQuery =  gql`
+    query searchProduct ($productname: String!) {
+        products (productname: $productname) {
+            id
+            name
+        }
+    }
+`;
+export const useSearchProductFilterQuery = ({
+  productname
+}: {
+  productname: string
+}) => {
+
+  const { loading, data, error, refetch } = useSimpleQuery<
+  products
+    >(productsQuery, {
+    variables: {
+      productname: productname
+    },
+  });
+  return { loading, data, error, refetch};
+};
+
+
 export const productsRowsPerPage = 10;
 export const useSearchProductQuery = ({
     page, 

@@ -20,7 +20,7 @@ import { Seasons } from "./components/seasons";
 import { Suppliers } from "./components/suppliers";
 import { Themes } from "./components/themes";
 import { product_product } from "../../Products/types/product";
-import { useSearchProductQuery } from "../../Ingredients/AddIngredient/api";
+import { useSearchProductFilterQuery, useSearchProductQuery } from "../../Ingredients/AddIngredient/api";
 import { ProductFilter } from "../../Products/filterproducts";
 
   export const MenuFilterDialog = ({
@@ -193,9 +193,8 @@ export const ExpandMore = styled((props: ExpandMoreProps) => {
               setProducts([...products])
             }
 
-            const {data, error, loading, refetch} = useSearchProductQuery({
+            const {data, error, loading, refetch} = useSearchProductFilterQuery({
               name: name,
-              page: 0
             })
             if (loading) return <LoadingScreen />;
             if (error) return <LoadingScreen />;
