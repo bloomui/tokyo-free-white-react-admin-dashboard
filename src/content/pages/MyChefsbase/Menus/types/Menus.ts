@@ -13,7 +13,7 @@ export interface Menus_suppliers {
   name: string;
 }
 
-export interface Menus_searchProduct {
+export interface Menus_products {
   __typename: "Product";
   id: string;
   name: string;
@@ -41,7 +41,7 @@ export interface Menus {
   allSeasons: string[] | null;
   allThemes: string[] | null;
   suppliers: Menus_suppliers[] | null;
-  searchProduct: (Menus_searchProduct | null)[] | null;
+  products: Menus_products[] | null;
   ingredients: Menus_ingredients[] | null;
   recipes: Menus_recipes[] | null;
   dishes: Menus_dishes[] | null;

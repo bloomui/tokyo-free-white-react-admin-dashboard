@@ -79,7 +79,7 @@ query Menus ($productname: String!) {
     id
     name
   }
-  searchProduct (productname: $productname) {
+  products {
     id
     name
   }
