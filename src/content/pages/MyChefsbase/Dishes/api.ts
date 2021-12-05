@@ -201,26 +201,6 @@ export const DishesData = gql`
 query Dishes {
   allThemes
   allTypes
-  suppliers {
-    id
-    name
-  }
-  products {
-    id
-    name
-  }
-  ingredients {
-    id
-    name
-  }
-  recipes {
-    id
-    name
-  }
-  menus {
-    id
-    name
-  }
 }
 `;
 

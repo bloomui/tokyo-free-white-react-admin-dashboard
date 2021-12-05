@@ -65,26 +65,6 @@ query FilterRecipes ($input: RecipeFilterInput, $offset: Int, $limit: Int) {
 export const RecipesData = gql`
 query Recipes {
   allTypes
-  suppliers {
-    id
-    name
-  }
-  products {
-    id
-    name
-  }
-  ingredients {
-    id
-    name
-  }
-  dishes {
-    id
-    name
-  }
-  menus {
-    id
-    name
-  }
 }
 `;
 

@@ -9,7 +9,6 @@ import { composeValidators, required } from "src/utilities/formikValidators";
 import { useAllDishesQuery, useUpdateMenu } from "../api";
 import { Rating1, RatingEdit, RatingLabels } from "../filtermenus/components/rating";
 import { FilterMenus, FilterMenus_filterMenus, FilterMenus_filterMenus_courses_dishes } from "../types/FilterMenus";
-import { Menus_dishes } from "../types/Menus";
 import { UpdateMenuVariables } from "../types/UpdateMenu"
 import { H3, H5 } from "src/content/pages/Components/TextTypes";
 import { TableDishData } from "../AddMenu/components/DishTable";

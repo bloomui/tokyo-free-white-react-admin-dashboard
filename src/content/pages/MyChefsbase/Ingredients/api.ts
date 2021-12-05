@@ -187,26 +187,6 @@ famstxr
 export const IngredientsData = gql`
 query Ingredients {
   allCategories
-  suppliers {
-    id
-    name
-  }
-  products {
-    id
-    name
-  }
-  recipes {
-    id
-    name
-  }
-  dishes {
-    id
-    name
-  }
-  menus {
-    id
-    name
-  }
 }
 `;
 

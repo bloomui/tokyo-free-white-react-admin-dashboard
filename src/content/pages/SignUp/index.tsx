@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,10 +10,20 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { LabelWrapper, TypographyH1, TypographyH2 } from 'src/content/overview/Hero';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useSignUp } from 'src/utilities/api';
 
 const SignUpForm = () => {
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate()
 
+  
+  const { signUp, loading, error } = useSignUp({
+    onCompleted: () => {}
+    // navigate('/authorize/SignIn')
+    },
+  );
     return (
     <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
     <Grid spacing={{ xs: 6, md: 10 }} justifyContent="center" alignItems="center" container>
@@ -43,50 +53,23 @@ const SignUpForm = () => {
             </Typography>
             <form noValidate>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={6}>
                   <TextField
-                    autoComplete="fname"
-                    name="firstName"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="firstName"
-                    label="First Name"
-                    autoFocus
+                  name="email"
+                  id="email"
+                  label="Email"
+                  fullWidth
+                  onChange={(e) => setEmail(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="lastName"
-                    label="Last Name"
-                    name="lastName"
-                    autoComplete="lname"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
+                <TextField
+                  name="password"
+                  id="password"
+                  label="Wachtwoord"
+                  type="password"
+                  fullWidth
+                  onChange={(e) => setPassword(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -97,10 +80,16 @@ const SignUpForm = () => {
                 </Grid>
               </Grid>
               <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
+              onClick={() => signUp({
+                variables: {
+                  email: email,
+                  password: password
+                }
+              })}
+                 component={RouterLink}
+                 to="/authorize/SignIn"
+                 size="large"
+                 variant="contained"
               >
                 Sign Up
               </Button>
@@ -108,7 +97,7 @@ const SignUpForm = () => {
                 <Grid item>
                 <Button
             component={RouterLink}
-            to="/authenticate/SignIn"
+            to="/authorize/SignIn"
             size="large"
             variant="contained"
           >

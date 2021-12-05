@@ -24,11 +24,11 @@ export const TopPartRecipePage = ({
     <RecipeFilter
     setOpenAddRecipe={setOpenAddRecipe}
     onClose={() => setOpenFilterInputDialog(false)}
-    suppliers={data.suppliers}
-    products={data.products}
-    menus={data.menus}
-    dishes={data.dishes}
-    ingredients={data.ingredients}
+    // suppliers={data.suppliers}
+    // products={data.products}
+    // menus={data.menus}
+    // dishes={data.dishes}
+    // ingredients={data.ingredients}
     types={data.allTypes}
     onChange={(values) => setInput(values)}
     />

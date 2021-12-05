@@ -24,11 +24,11 @@ export const TopPartDishPage = ({
     <DishFilter
     setOpenAddDish={setOpenAddDish}
     onClose={() => setOpenFilterInputDialog(false)}
-    suppliers={data.suppliers}
-    products={data.products}
-    menus={data.menus}
-    recipes={data.recipes}
-    ingredients={data.ingredients}
+    // suppliers={data.suppliers}
+    // products={data.products}
+    // menus={data.menus}
+    // recipes={data.recipes}
+    // ingredients={data.ingredients}
     themes={data.allThemes}
     onChange={(values) => setInput(values)}
     />

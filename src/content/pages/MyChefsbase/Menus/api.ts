@@ -75,26 +75,7 @@ export const MenusData = gql`
 query Menus {
   allSeasons
   allThemes
-  suppliers {
-    id
-    name
-  }
-  products {
-    id
-    name
-  }
-  ingredients {
-    id
-    name
-  }
-  recipes {
-    id
-    name
-  }
-  dishes {
-    id
-    name
-  }
+  
 }
 `;
 
@@ -169,11 +150,19 @@ export const useGetMenuQuery = (id: string) => {
   return { loading, data, error};
 };
 
-export const useMenuQuery = () => {
+export const useMenuQuery = ({
+  productname
+}: {
+  productname: string
+}) => {
 
   const { loading, data, error } = useSimpleQuery<
   Menus
-  >(MenusData);
+  >(MenusData, {
+    variables: {
+      productname: productname
+    }
+  });
   return { loading, data, error};
 };
 

@@ -4,9 +4,14 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: Ingredients
+// GraphQL mutation operation: signup
 // ====================================================
 
-export interface Ingredients {
-  allCategories: string[] | null;
+export interface signup {
+  signup: boolean | null;
+}
+
+export interface signupVariables {
+  email: string;
+  password: string;
 }

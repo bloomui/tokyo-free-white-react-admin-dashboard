@@ -53,7 +53,7 @@
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "graphql-types-client": "apollo codegen:generate --localSchemaFile=src/schema.json --target=typescript --tagName=gql --addTypename --passthroughCustomScalars  --customScalarsPrefix GraphQL --globalTypesFile=src/globalTypes.ts types",
-    "download-schema": "apollo schema:download --endpoint=http://localhost:9090/graphql src/schema.json"
+    "download-schema": "apollo schema:download --endpoint=http://localhost:8080/graphql src/schema.json"
   },
   "eslintConfig": {
     "extends": [

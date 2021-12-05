@@ -16,7 +16,6 @@ import { Suppliers } from "../../Menus/filtermenus/components/suppliers";
 import { Themes } from "../../Menus/filtermenus/components/themes";
 import { Types } from "../../Menus/filtermenus/components/types";
 import { DishesData } from "../api";
-import { Dishes_ingredients, Dishes_menus, Dishes_products, Dishes_recipes, Dishes_suppliers } from "../types/Dishes";
 
 
 export const initialValues: DishFilterInput = {
@@ -35,22 +34,22 @@ export const initialValues: DishFilterInput = {
   export const DishFilter = ({
     setOpenAddDish,
     onClose,
-    products,
-    suppliers,
+    // products,
+    // suppliers,
     themes,
-    recipes,
-    menus,
-    ingredients,
+    // recipes,
+    // menus,
+    // ingredients,
     onChange,
   }: {
     setOpenAddDish: () => void;
     onClose: () => void;
     themes: string[] | null;
-    suppliers: Dishes_suppliers[] | null;
-    recipes: Dishes_recipes[] | null;
-    menus: Dishes_menus[] | null;
-    ingredients: Dishes_ingredients[] | null;
-    products: Dishes_products[] | null;
+    // suppliers: Dishes_suppliers[] | null;
+    // recipes: Dishes_recipes[] | null;
+    // menus: Dishes_menus[] | null;
+    // ingredients: Dishes_ingredients[] | null;
+    // products: Dishes_products[] | null;
     onChange: (values: DishFilterInput) => void;
   }) => {
 
@@ -109,29 +108,29 @@ export const initialValues: DishFilterInput = {
             setFieldValue={setFieldValue} />
             </Grid>           
             <Grid key={5} item xs={3}>
-              <Suppliers 
+              {/* <Suppliers 
               suppliers={suppliers}
-              setFieldValue={setFieldValue} />
+              setFieldValue={setFieldValue} /> */}
           </Grid>
           <Grid key={6} item xs={3}>
-            <Products 
+            {/* <Products 
             products={products}
-            setFieldValue={setFieldValue} />
+            setFieldValue={setFieldValue} /> */}
             </Grid>
             <Grid key={7} item xs={3}>
-            <Ingredients 
+            {/* <Ingredients 
             ingredients={ingredients}
-            setFieldValue={setFieldValue} />
+            setFieldValue={setFieldValue} /> */}
             </Grid>
             <Grid key={8} item xs={3}>
-            <Recipes 
+            {/* <Recipes 
             recipes={recipes}
-            setFieldValue={setFieldValue} />
+            setFieldValue={setFieldValue} /> */}
             </Grid>
             <Grid key={8} item xs={3}>
-            <Menus 
+            {/* <Menus 
             menus={menus}
-            setFieldValue={setFieldValue} />
+            setFieldValue={setFieldValue} /> */}
             </Grid>
             </Grid>
               </CardContent>
