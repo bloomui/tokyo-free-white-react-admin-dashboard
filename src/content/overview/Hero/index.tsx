@@ -70,7 +70,7 @@ function Hero() {
           <Button
             fullWidth
             component={RouterLink}
-            to="/authenticate/signup"
+            to="/authorize/signup"
             size="large"
             variant="contained"
           >
