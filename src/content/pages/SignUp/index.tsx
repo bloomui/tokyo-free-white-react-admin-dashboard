@@ -20,7 +20,8 @@ const SignUpForm = () => {
 
   
   const { signUp, loading, error } = useSignUp({
-    onCompleted: () => navigate('/authorize/SignIn')
+    onCompleted: () => {}
+    // navigate('/authorize/SignIn')
     },
   );
     return (

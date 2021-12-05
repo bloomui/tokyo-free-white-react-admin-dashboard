@@ -8,7 +8,6 @@ import { composeValidators, mustBeDate, required } from "src/utilities/formikVal
 import { useAddMenu, useAllDishesQuery, useUpdateMenu } from "../api";
 import { Rating1, RatingLabels } from "../filtermenus/components/rating";
 import { AllDishes_dishes } from "../types/AllDishes";
-import { Menus_dishes, } from "../types/Menus";
 import { UpdateMenuVariables } from "../types/UpdateMenu"
 
 export const AddMenuDialog = ({
