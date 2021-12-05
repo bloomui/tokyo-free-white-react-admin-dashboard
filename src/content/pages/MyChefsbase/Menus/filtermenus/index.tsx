@@ -27,13 +27,13 @@ import { ProductFilter } from "../../Products/filterproducts";
     setOpenAddMenu,
     onClose,
     initialValues,
-    products,
-    suppliers,
+    // products,
+    // suppliers,
     themes,
     seasons,
-    recipes,
-    dishes,
-    ingredients,
+    // recipes,
+    // dishes,
+    // ingredients,
     onChange,
   }: {
     setOpenAddMenu: () => void;
@@ -41,11 +41,11 @@ import { ProductFilter } from "../../Products/filterproducts";
     initialValues: MenuFilterInput;
     themes: string[] | null;
     seasons: string[] | null;
-    suppliers: Menus_suppliers[] | null;
-    recipes: Menus_recipes[] | null;
-    dishes: Menus_dishes[] | null;
-    ingredients: Menus_ingredients[] | null;
-    products: Menus_products[] | null;
+    // suppliers: Menus_suppliers[] | null;
+    // recipes: Menus_recipes[] | null;
+    // dishes: Menus_dishes[] | null;
+    // ingredients: Menus_ingredients[] | null;
+    // products: Menus_products[] | null;
     onChange: (values: MenuFilterInput) => void;
   }) => {
 
@@ -104,37 +104,37 @@ import { ProductFilter } from "../../Products/filterproducts";
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid xs={1}></Grid>
-            <Grid item xs={3}>
+            {/* <Grid item xs={3}>
               <Suppliers 
               suppliers={suppliers}
               setFieldValue={setFieldValue} />
-          </Grid>
+          </Grid> */}
           <Grid xs={1}></Grid>
           <Grid item xs={12}>
-            <FilterOnProducts
+            {/* <FilterOnProducts
             setFieldValue={setFieldValue}
-            />
+            /> */}
             {/* <Products 
             products={products}
             setFieldValue={setFieldValue} /> */}
             </Grid>
             <Grid xs={1}></Grid>
-            <Grid item xs={3}>
+            {/* <Grid item xs={3}>
             <Ingredients 
             ingredients={ingredients}
             setFieldValue={setFieldValue} />
-            </Grid>
+            </Grid> */}
             <Grid xs={1}></Grid>
-            <Grid item xs={3}>
+            {/* <Grid item xs={3}>
             <Recipes 
             recipes={recipes}
             setFieldValue={setFieldValue} />
-            </Grid>
+            </Grid> */}
             <Grid xs={1}></Grid>
             <Grid item xs={3}>
-            <Dishes 
+            {/* <Dishes 
             dishes={dishes}
-            setFieldValue={setFieldValue} />
+            setFieldValue={setFieldValue} /> */}
             </Grid> 
             <Grid xs={1}></Grid>
             <Grid item xs={3}>
@@ -228,7 +228,7 @@ export const ExpandMore = styled((props: ExpandMoreProps) => {
     </Table></Grid>
       <Grid xs={6}>
         <Table>
-    {data.searchProduct.map((product, index) => (
+    {data && data.searchProduct && data.searchProduct.map((product, index) => (
       <TableRow>
         <TableCell>
         {product.name}

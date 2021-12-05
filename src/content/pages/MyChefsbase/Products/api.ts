@@ -82,26 +82,6 @@ export const ProductsData = gql`
 query Products {
   allBrands
   allOrigins
-  suppliers {
-    id
-    name
-  }
-  ingredients {
-    id
-    name
-  }
-  recipes {
-    id
-    name
-  }
-  dishes {
-    id
-    name
-  }
-  menus {
-    id
-    name
-  }
 }
 `;
 

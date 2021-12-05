@@ -33,20 +33,20 @@ export const initialSupplierValues: SupplierFilterInput = {
   export const SupplierFilter = ({
     setOpenAddSupplier,
     onClose,
-    ingredients,
-    products,
-    dishes,
-    menus,
-    recipes,
+    // ingredients,
+    // products,
+    // dishes,
+    // menus,
+    // recipes,
     onChange,
   }: {
     setOpenAddSupplier: () => void;
     onClose: () => void;
-    products: Suppliers_products[] | null;
-    dishes: Suppliers_dishes[] | null;
-    menus: Suppliers_menus[] | null;
-    recipes: Suppliers_recipes[] | null;
-    ingredients: Suppliers_ingredients[] | null;
+    // products: Suppliers_products[] | null;
+    // dishes: Suppliers_dishes[] | null;
+    // menus: Suppliers_menus[] | null;
+    // recipes: Suppliers_recipes[] | null;
+    // ingredients: Suppliers_ingredients[] | null;
     onChange: (values: SupplierFilterInput) => void;
   }) => {
 
@@ -95,29 +95,29 @@ export const initialSupplierValues: SupplierFilterInput = {
            setFieldValue={setFieldValue}/>
            </Grid>
            <Grid key={2} item xs={3}>
-           <Products
+           {/* <Products
             products={products}
-            setFieldValue={setFieldValue} />
+            setFieldValue={setFieldValue} /> */}
             </Grid>
             <Grid item xs={3}>
-            <Ingredients 
+            {/* <Ingredients 
               ingredients={ingredients}
-              setFieldValue={setFieldValue} />
+              setFieldValue={setFieldValue} /> */}
               </Grid>
             <Grid item xs={3}>
-            <Recipes 
+            {/* <Recipes 
             recipes={recipes}
-            setFieldValue={setFieldValue} />
+            setFieldValue={setFieldValue} /> */}
             </Grid>
             <Grid item xs={3}>
-            <Dishes 
+            {/* <Dishes 
             dishes={dishes}
-            setFieldValue={setFieldValue} />
+            setFieldValue={setFieldValue} /> */}
             </Grid>
             <Grid item xs={3}>
-            <Menus 
+            {/* <Menus 
             menus={menus}
-            setFieldValue={setFieldValue} />
+            setFieldValue={setFieldValue} /> */}
             </Grid>
             </Grid>
               </CardContent>
