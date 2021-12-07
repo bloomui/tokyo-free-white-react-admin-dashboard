@@ -113,9 +113,9 @@ import { ProductFilter } from "../../Products/filterproducts";
             {/* <FilterOnProducts
             setFieldValue={setFieldValue}
             /> */}
-            {/* <Products 
-            products={products}
-            setFieldValue={setFieldValue} /> */}
+            <Products 
+            // products={products}
+            setFieldValue={setFieldValue} />
             </Grid>
             <Grid xs={1}></Grid>
             {/* <Grid item xs={3}>

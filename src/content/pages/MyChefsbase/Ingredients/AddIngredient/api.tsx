@@ -39,7 +39,7 @@ export const useSearchProductFilterQuery = ({
 
   const { loading, data, error, refetch } = useSimpleQuery<
   searchProduct, searchProductVariables
-    >(productsQuery, {
+    >(searchProductsQuery, {
     variables: {
       productname: productname
     },
