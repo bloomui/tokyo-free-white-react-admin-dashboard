@@ -24,7 +24,6 @@ export const UpdateDishDialog = ({
     open: boolean,
     onClose: () => void
 }) => {
-  const {data} = useAllRecipesQuery()
 
 
     const { updateDish, loading, error } = useUpdateDish({
@@ -38,7 +37,6 @@ export const UpdateDishDialog = ({
           selectedRecipes.splice(index, 1)
           setRecipes([...selectedRecipes])
         }
-
 
     const formInput: DishInput = {
         id: dish.id,
@@ -74,7 +72,6 @@ const formState : UpdateDishVariables = {
         recipes: formRecipes,
         method: formMethods
     }
-
 
     return (
     <Dialog 

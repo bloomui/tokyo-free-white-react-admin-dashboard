@@ -113,9 +113,8 @@ export const initialValues: DishFilterInput = {
               setFieldValue={setFieldValue} /> */}
           </Grid>
           <Grid key={6} item xs={3}>
-            {/* <Products 
-            products={products}
-            setFieldValue={setFieldValue} /> */}
+            <Products 
+            setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={7} item xs={3}>
             {/* <Ingredients 

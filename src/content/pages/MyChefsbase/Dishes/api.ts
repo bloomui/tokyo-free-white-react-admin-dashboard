@@ -67,7 +67,7 @@ cupper
 iron {
 total
 } 
-        magnesium
+magnesium
 fosfor
 calcium
 kalium
@@ -124,62 +124,6 @@ query FilterDishes ($input: DishFilterInput, $limit: Int, $offset: Int) {
     name
     rating
     theme
-    nutrition {
-      kcal
-      protein {
-      plant
-animal
-total
-      }
-  carbs {
-    carbs
-    sugar
-  }
-  fat {
-    satured
-    singleUnsat 
-    compoundUnsat
-    total
-  }
-     starch
-polyols
-fibres
-nitrogen,
-polysachhariden
-alcohol
-water
-organicAcids
-vitamins {
-e
-c
-kTotal
-b12
-dTotal
-}   
-        foliumAcid
-pholate
-pholatEquivalents
-nicotinAcid
-lycopeans
-betaCrypto
-zeacanthine
-lutein    
-ash
-jodium
-sink
-selenium
-cupper
-iron {
-total
-} 
-        magnesium
-fosfor
-calcium
-kalium
-natrium
-cholesterol
-famstxr
-    }
     method {
         step 
         method

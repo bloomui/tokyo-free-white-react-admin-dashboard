@@ -81,7 +81,7 @@ function changeDelay(change) {
       setTimeout(() => {
         setProductname(change);
         refetch({productname: productname})
-      }, 1000)
+      }, 200)
     );
 }
     return (
