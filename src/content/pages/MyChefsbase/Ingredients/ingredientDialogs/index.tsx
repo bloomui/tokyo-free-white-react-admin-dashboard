@@ -3,11 +3,22 @@ import React, { useState } from "react"
 import { LoadingScreen } from "src/components/layout"
 import { H5 } from "src/content/pages/Components/TextTypes"
 import { DefaultNutritionOptions, NutritionOptionDropDown } from "../../Components/NutrutitionOptions"
-import { FilterDishes_filterDishes_method, FilterDishes_filterDishes_recipes } from "../../Dishes/types/FilterDishes"
+import { FilterDishes_filterDishes_method } from "../../Dishes/types/FilterDishes"
 import { ItemString, ItemInt } from "../../Menus/menuDialog"
 import { useGetIngredientQuery } from "../api"
-import { FilterIngredients_filterIngredients_nutrition, FilterIngredients_filterIngredients_nutrition_nutrition, FilterIngredients_filterIngredients_products } from "../types/FilterIngredients"
+import { FilterIngredients_filterIngredients_products } from "../types/FilterIngredients"
+import { ingredient, ingredient_ingredient, ingredient_ingredient_nutrition_nutrition } from "../types/ingredient"
 import { UpdateIngredientDialog } from "./UpdateIngredientDialog"
+
+export  const emptyIngredient: ingredient_ingredient = {
+    __typename: "Ingredient",
+  category: 'a',
+  id: 'a',
+  name: 'a',
+  rating: 3,
+  nutrition: null,
+  products: [],
+}
 
 export const IngredientDialog = ({
     setId,
@@ -22,14 +33,14 @@ export const IngredientDialog = ({
 }) => {
     const [nutritionsToDisplay, setNutritionsToDisplay] = useState<string[]>(DefaultNutritionOptions)
 
-    const { data, loading, error } = useGetIngredientQuery(id)
+    // const { data, loading, error } = useGetIngredientQuery(id)
 
     const [openUpdateDialog, setUpdateDialog] = useState(false)
 
-    if (loading) return <LoadingScreen/>
-    if (error) return <LoadingScreen/>
+    // if (loading) return <LoadingScreen/>
+    // if (error) return <LoadingScreen/>
 
-    let ingredient = data.ingredient
+    let ingredient = emptyIngredient
 
     return (
         <>
@@ -84,7 +95,7 @@ export const IngredientDialog = ({
             )}
         </Dialog>
         <UpdateIngredientDialog
-        ingredient={ingredient}
+        id={ingredient.id}
         open={openUpdateDialog}
         onClose={() => setUpdateDialog(false)}
         />
@@ -121,7 +132,7 @@ export const ItemProducts = ({title, item}: {title: string, item: FilterIngredie
     )
 }
 
-export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToDisplay: string[], title: string, item: FilterIngredients_filterIngredients_nutrition_nutrition;}) => {
+export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToDisplay: string[], title: string, item: ingredient_ingredient_nutrition_nutrition;}) => {
     return (
         <>
         <Grid key={0} item xs={12}>

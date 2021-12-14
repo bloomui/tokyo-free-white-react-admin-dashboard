@@ -8,23 +8,30 @@ import { FormikSelect } from "src/components/form/FormikSelect";
 import { H3, H5 } from "src/content/pages/Components/TextTypes";
 import { DishInput, QuantityToId, StepToMethodInput } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
+import { emptyDish } from ".";
 import { Rating1, RatingEdit } from "../../Menus/filtermenus/components/rating";
 import { mapRecipeToQToInput, recipeToQ } from "../AddDish";
 import { TableRecipeData } from "../AddDish/components/RecipeTable";
-import { useAllRecipesQuery, useUpdateDish } from "../api";
+import { useUpdateDish } from "../api";
 import { FilterDishes, FilterDishes_filterDishes } from "../types/FilterDishes";
 import { UpdateDishVariables } from "../types/UpdateDish";
 
 export const UpdateDishDialog = ({
-    dish,
+    id,
     open,
     onClose,
 }: {
-    dish: FilterDishes_filterDishes,
+    id: string,
     open: boolean,
     onClose: () => void
 }) => {
 
+  // const { data, loading, error } = useGetDishQuery(id)
+
+    // if (loading) return <LoadingScreen/>
+    // if (error) return <LoadingScreen/>
+
+    let dish = emptyDish
 
     const { updateDish, loading, error } = useUpdateDish({
         onCompleted: () => {},

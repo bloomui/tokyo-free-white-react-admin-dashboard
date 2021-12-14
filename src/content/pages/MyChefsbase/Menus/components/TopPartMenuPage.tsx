@@ -23,11 +23,6 @@ export const TopPartMenuPage = ({
       <MenuFilterDialog
       onClose={() => setOpenFilterInputDialog(false)}
       initialValues={initialMenuValues}
-      // suppliers={data.suppliers}
-      // products={data.products}
-      // dishes={data.dishes}
-      // recipes={data.recipes}
-      // ingredients={data.ingredients}
       themes={data.allThemes}
       seasons={data.allSeasons}
       onChange={(values) => setInput(values)}

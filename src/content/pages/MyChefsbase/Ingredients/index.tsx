@@ -48,10 +48,6 @@ import { AddIngredientDialog } from "./ingredientDialogs/AddIngredientDialog";
           setInput={(values) => setInput(values)}/>
         <Box height={3}>{loading && <LinearProgress />}</Box>
         {content}
-        <AddIngredientDialog 
-                  open={openAddIngredient}
-                  onClose={() => setOpenAddIngredient(false)}
-                  />
       </>
     );
   };

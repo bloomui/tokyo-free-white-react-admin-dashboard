@@ -105,15 +105,6 @@ export const useGetDishQuery = (id: string) => {
     return { loading, data, error};
   };
 
-const AllRecipesQuery = gql`
- query AllRecipes {
-   recipes {
-     id
-     name
-   }
- }
-`;
-
 export const FilterDishesQuery = gql`
 query FilterDishes ($input: DishFilterInput, $limit: Int, $offset: Int) {
     numberOfDishes
@@ -124,20 +115,6 @@ query FilterDishes ($input: DishFilterInput, $limit: Int, $offset: Int) {
     name
     rating
     theme
-    method {
-        step 
-        method
-    }
-    recipes {
-      quantity {
-        quantity
-        unit
-      }
-      recipe {
-        id
-        name
-      }
-    }
   }
 }`;
 
@@ -158,14 +135,6 @@ export const AddDishMutation = gql`
 mutation AddDish ($input: AddDishInput!, $recipes: [QuantityToId!], $method: [StepToMethodInput!]) {
   addDish(input: $input, recipes: $recipes, method: $method)
 }`;
-
-export const useAllRecipesQuery = () => {
-
-    const { loading, data, error } = useSimpleQuery<
-    AllRecipes
-    >(AllRecipesQuery);
-    return { loading, data, error};
-  };
 
   const dishesMax = 10
 export const useFilterDishesQuery = ({

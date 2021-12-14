@@ -13,22 +13,30 @@ import { Products } from "../../Menus/filtermenus/components/products";
 import { Quantity } from "../../Menus/filtermenus/components/quantity";
 import { productToQ } from "../AddIngredient";
 import { TableProductData } from "../AddIngredient/component/ProductsTable";
-import { useAllProductsQuery, useUpdateIngredient } from "../api";
+import { useUpdateIngredient } from "../api";
 import { FilterIngredients_filterIngredients } from "../types/FilterIngredients";
 import { UpdateIngredientVariables } from "../types/UpdateIngredient";
+import { emptyIngredient } from ".";
 
 export const units = ["grams", "mililiter"]
 
+
 export const UpdateIngredientDialog = ({
-    ingredient,
+    id,
     open,
     onClose,
 }: {
-  ingredient: FilterIngredients_filterIngredients,
+  id: string,
     open: boolean,
     onClose: () => void
 }) => {
-  const {data} = useAllProductsQuery()
+
+  // const { data, loading, error } = useGetIngredientQuery(id)
+
+    // if (loading) return <LoadingScreen/>
+    // if (error) return <LoadingScreen/>
+
+    let ingredient = emptyIngredient
 
     const { updateIngredient, loading, error } = useUpdateIngredient({
         onCompleted: () => window.location.reload(),

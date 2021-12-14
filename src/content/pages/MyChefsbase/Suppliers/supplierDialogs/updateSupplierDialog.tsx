@@ -8,7 +8,6 @@ import { RecipeInput, QuantityToId, StepToMethodInput, DishInput, AddIngredientI
 import { composeValidators, required } from "src/utilities/formikValidators";
 import { initialValues } from "../../Dishes/filterdishes";
 import { UpdateDishVariables } from "../../Dishes/types/UpdateDish";
-import { useAllProductsQuery } from "../../Ingredients/api";
 import { Rating1, RatingEdit } from "../../Menus/filtermenus/components/rating";
 import { useUpdateSupplier } from "../api";
 import { FilterSuppliers_filterSuppliers } from "../types/FilterSuppliers";

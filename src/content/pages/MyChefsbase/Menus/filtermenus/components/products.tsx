@@ -60,10 +60,8 @@ if (loading) return (
 
 
 export const Products = ({
-    // products,
     setFieldValue
   }: {
-    // products: string[] | null;
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void
   }) => {
     const [productname, setProductname] = useState('')

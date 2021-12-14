@@ -48,10 +48,6 @@ import { AddProductDialog } from "./productDialogs/AddProductDialog";
       setInput={(values) => setInput(values)}/>
           <Box height={3}>{loading && <LinearProgress />}</Box>
         {content}
-        <AddProductDialog 
-                  open={openAddMenu}
-                  onClose={() => setOpenAddProduct(false)}
-                  />
       </>
     );
   };

@@ -33,20 +33,10 @@ export const initialIngredientValues: IngredientFilterInput = {
     setOpenAddIngredient,
     onClose,
     allCategories,
-    // products,
-    // suppliers,
-    // dishes,
-    // menus,
-    // recipes,
     onChange,
   }: {
     setOpenAddIngredient: () => void;
     onClose: () => void;
-    // suppliers: Ingredients_suppliers[] | null;
-    // dishes: Ingredients_dishes[] | null;
-    // menus: Ingredients_menus[] | null;
-    // recipes: Ingredients_recipes[] | null;
-    // products: Ingredients_products[] | null;
     allCategories: string[] | null;
     onChange: (values: IngredientFilterInput) => void;
   }) => {

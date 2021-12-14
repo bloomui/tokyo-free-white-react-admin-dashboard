@@ -45,15 +45,6 @@ export const useGetProductQuery = (id: string) => {
     return { loading, data, error, refetch};
   };
 
-const AllSuppliersQuery = gql`
- query AllSuppliers {
-   suppliers {
-     id
-     name
-   }
- }
-`;
-
 export const FilterProductsQuery = gql`
 query FilterProducts ($input: ProductFilterInput, $offset: Int, $limit: Int) {
     numberOfProducts  
@@ -95,14 +86,6 @@ export const AddProductMutation = gql`
 mutation AddProduct ($input: AddProductInput!, $suppliers: [String!]) {
   addProduct(input: $input, suppliers: $suppliers)
 }`;
-
-export const useAllSuppliersQuery = () => {
-
-    const { loading, data, error } = useSimpleQuery<
-    AllSuppliers
-    >(AllSuppliersQuery);
-    return { loading, data, error};
-  };
 
   const productRowsPerPage = 10
 export const useFilterProductsQuery = ({

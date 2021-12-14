@@ -8,9 +8,8 @@ import { RecipeInput, QuantityToId, StepToMethodInput, DishInput, AddIngredientI
 import { composeValidators, required } from "src/utilities/formikValidators";
 import { initialValues } from "../../Dishes/filterdishes";
 import { UpdateDishVariables } from "../../Dishes/types/UpdateDish";
-import { useAllProductsQuery } from "../../Ingredients/api";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
-import { useAllSuppliersQuery, useUpdateProduct } from "../api";
+import { useUpdateProduct } from "../api";
 import { AllSuppliers_suppliers } from "../types/AllSuppliers";
 import { FilterProducts_filterProducts } from "../types/FilterProducts";
 import { UpdateProductVariables } from "../types/UpdateProduct";
@@ -29,7 +28,6 @@ export const UpdateProductDialog = ({
     open: boolean,
     onClose: () => void
 }) => {
-  const {data} = useAllSuppliersQuery()
 
   const suppliers: supplierToQ[] = product.suppliers.map((supp) => ({
     name: supp.name,

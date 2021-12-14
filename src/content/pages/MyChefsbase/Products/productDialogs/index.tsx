@@ -1,7 +1,6 @@
 import { Dialog, DialogTitle, DialogContent, Card, CardActionArea, Grid, Typography, TableContainer, TableBody, TableCell, TableHead, TableRow, List, ListItem, Button, DialogActions } from "@material-ui/core"
 import React, { useState } from "react"
 import { LoadingScreen } from "src/components/layout"
-import { FilterDishes_filterDishes_method, FilterDishes_filterDishes_recipes } from "../../Dishes/types/FilterDishes"
 import { ItemString, ItemInt, ItemDouble } from "../../Menus/menuDialog"
 import { useGetProductQuery } from "../api"
 import { FilterProducts_filterProducts_suppliers } from "../types/FilterProducts"

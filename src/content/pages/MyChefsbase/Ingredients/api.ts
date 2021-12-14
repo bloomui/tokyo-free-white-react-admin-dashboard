@@ -98,14 +98,6 @@ export const useGetIngredientQuery = (id: string) => {
     return { loading, data, error};
   };
 
-const AllProductsQuery = gql`
- query allProducts {
-   products {
-     id
-     name
-   }
- }
-`;
 
 export const FilterIngredientsQuery = gql`
 query FilterIngredients ($input: IngredientFilterInput, $offset: Int, $limit: Int) {
@@ -115,72 +107,6 @@ query FilterIngredients ($input: IngredientFilterInput, $offset: Int, $limit: In
       id
       name
       rating
-      nutrition {
-        quantity {
-          quantity
-          unit
-        }
-        nutrition {
-          kcal
-          protein {
-          plant
-  animal
-  total
-          }
-      carbs {
-        carbs
-        sugar
-      }
-      fat {
-        satured
-        singleUnsat 
-        compoundUnsat
-        total
-      }
-         starch
-polyols
-fibres
-nitrogen,
-polysachhariden
-alcohol
-water
-organicAcids
-vitamins {
-e
-c
-kTotal
-b12
-dTotal
-}   
-            foliumAcid
-pholate
-pholatEquivalents
-nicotinAcid
-lycopeans
-betaCrypto
-zeacanthine
-lutein    
-ash
-jodium
-sink
-selenium
-cupper
-iron {
-total
-} 
-            magnesium
-fosfor
-calcium
-kalium
-natrium
-cholesterol
-famstxr
-        }
-      }
-    products {
-      id
-      name
-    }
 }
 }`;
 
@@ -200,14 +126,6 @@ export const AddIngredientMutation = gql`
 mutation AddIngredient ($input: AddIngredientInput!, $products: [String!]) {
   addIngredient(input: $input, products: $products)
 }`;
-
-export const useAllProductsQuery = () => {
-
-    const { loading, data, error } = useSimpleQuery<
-    allProducts
-    >(AllProductsQuery);
-    return { loading, data, error};
-  };
 
 export const useFilterIngredientsQuery = ({
   input,

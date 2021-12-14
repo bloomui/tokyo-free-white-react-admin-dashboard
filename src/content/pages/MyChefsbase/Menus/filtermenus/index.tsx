@@ -25,26 +25,15 @@ import { productToQ } from "../../Ingredients/AddIngredient";
 import { searchProduct_searchProduct } from "../../Ingredients/AddIngredient/types/searchProduct";
 
   export const MenuFilterDialog = ({
-    onClose,
     initialValues,
-    // products,
-    // suppliers,
     themes,
     seasons,
-    // recipes,
-    // dishes,
-    // ingredients,
     onChange,
   }: {
     onClose: () => void;
     initialValues: MenuFilterInput;
     themes: string[] | null;
     seasons: string[] | null;
-    // suppliers: Menus_suppliers[] | null;
-    // recipes: Menus_recipes[] | null;
-    // dishes: Menus_dishes[] | null;
-    // ingredients: Menus_ingredients[] | null;
-    // products: Menus_products[] | null;
     onChange: (values: MenuFilterInput) => void;
   }) => {
     const [ openFilterInputDialog, setOpenFilterInputDialog] = React.useState(false)

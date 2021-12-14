@@ -6,7 +6,7 @@ import { FormikSelect } from "src/components/form/FormikSelect";
 import { AddDishInput, QuantityToId, StepToMethodInput } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
-import { useAddDish, useAllRecipesQuery, useUpdateDish } from "../api";
+import { useAddDish, useUpdateDish } from "../api";
 import { AddDishVariables } from "../types/AddDish";
 
 export const AddDishDialog = {}
