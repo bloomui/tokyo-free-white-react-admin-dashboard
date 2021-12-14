@@ -13,6 +13,7 @@ import { MenuTable } from "./components/MenuTable";
 import { TopPartMenuPage } from "./components/TopPartMenuPage";
 import { Orders } from "../../Orders";
 import { FilterMenus_filterMenus } from "./types/FilterMenus";
+import { AddMenuPage } from "./AddMenu";
   
   export const MenuPage = ({
     page,
@@ -50,14 +51,9 @@ import { FilterMenus_filterMenus } from "./types/FilterMenus";
     if (menuForProductOverview) return (
       <>
       <TopPartMenuPage 
-      setOpenAddMenu={() => setOpenAddMenu(true)} 
       setInput={(values) => setInput(values)}/>
           <Box height={3}>{loading && <LinearProgress />}</Box>
         {content}
-        <AddMenuDialog 
-                  open={openAddMenu}
-                  onClose={() => setOpenAddMenu(false)}
-                  />
         <Orders
         open={openProductsForMenu}
         onClose={() => openProductOverview(false)}
@@ -67,14 +63,9 @@ import { FilterMenus_filterMenus } from "./types/FilterMenus";
     ); else return (
       <>
       <TopPartMenuPage 
-      setOpenAddMenu={() => setOpenAddMenu(true)} 
       setInput={(values) => setInput(values)}/>
           <Box height={3}>{loading && <LinearProgress />}</Box>
         {content}
-        <AddMenuDialog 
-                  open={openAddMenu}
-                  onClose={() => setOpenAddMenu(false)}
-                  />
       </>
     )
   };

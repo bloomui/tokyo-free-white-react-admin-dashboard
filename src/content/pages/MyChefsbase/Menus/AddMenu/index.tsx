@@ -19,7 +19,6 @@ import { TableDishData } from "./components/DishTable";
 
 
 export const AddMenuPage = () => {
-    const {data} = useAllDishesQuery()
     const { addMenu, loading, error } = useAddMenu({
         onCompleted: () => window.location.reload(),
       });
