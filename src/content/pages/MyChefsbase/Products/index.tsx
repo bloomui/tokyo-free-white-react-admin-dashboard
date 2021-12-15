@@ -20,7 +20,6 @@ import { AddProductDialog } from "./productDialogs/AddProductDialog";
     setPage: (newPage: number) => void;
   }) => {
 
-    const [openAddMenu, setOpenAddProduct] = useState(false)
     const [ input, setInput] = useState<ProductFilterFormInput>(initialProductValues);
     const { loading, data } = useFilterProductsQuery({
         input: mapFormToInput(input),
@@ -44,7 +43,6 @@ import { AddProductDialog } from "./productDialogs/AddProductDialog";
     return (
       <>
       <TopPartProductPage 
-      setOpenAddProduct={() => setOpenAddProduct(true)} 
       setInput={(values) => setInput(values)}/>
           <Box height={3}>{loading && <LinearProgress />}</Box>
         {content}

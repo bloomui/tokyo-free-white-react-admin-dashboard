@@ -20,7 +20,6 @@ import { DishFilter, initialValues } from "./filterdishes";
     page: number;
     setPage: (newPage: number) => void;
   }) => {
-    const [openAddDish, setOpenAddDish] = useState(false)
     const [ input, setInput] = useState<DishFilterInput>(initialValues);
 
     const { loading, data } = useFilterDishesQuery({
@@ -45,11 +44,9 @@ import { DishFilter, initialValues } from "./filterdishes";
     return (
       <>
       <TopPartDishPage
-          setOpenAddDish={() => setOpenAddDish(true)} 
           setInput={(values) => setInput(values)}/>
         <Box height={3}>{loading && <LinearProgress />}</Box>
         {content}
-        <AddDishPage />
       </>
     );
   };

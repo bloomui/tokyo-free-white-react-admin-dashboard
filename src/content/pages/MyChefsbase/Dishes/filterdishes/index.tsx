@@ -32,24 +32,10 @@ export const initialValues: DishFilterInput = {
   }
   
   export const DishFilter = ({
-    setOpenAddDish,
-    onClose,
-    // products,
-    // suppliers,
     themes,
-    // recipes,
-    // menus,
-    // ingredients,
     onChange,
   }: {
-    setOpenAddDish: () => void;
-    onClose: () => void;
     themes: string[] | null;
-    // suppliers: Dishes_suppliers[] | null;
-    // recipes: Dishes_recipes[] | null;
-    // menus: Dishes_menus[] | null;
-    // ingredients: Dishes_ingredients[] | null;
-    // products: Dishes_products[] | null;
     onChange: (values: DishFilterInput) => void;
   }) => {
 
@@ -64,7 +50,7 @@ export const initialValues: DishFilterInput = {
          onChange(values)
         }}
         >
-        {({ setFieldValue, submitForm }) => {
+        {({ setFieldValue }) => {
           return (
             <>
            <Grid container xs={12}>
@@ -108,9 +94,8 @@ export const initialValues: DishFilterInput = {
             setFieldValue={setFieldValue} />
             </Grid>           
             <Grid key={5} item xs={3}>
-              {/* <Suppliers 
-              suppliers={suppliers}
-              setFieldValue={setFieldValue} /> */}
+              <Suppliers 
+              setFieldValue={setFieldValue} />
           </Grid>
           <Grid key={6} item xs={3}>
             <Products 

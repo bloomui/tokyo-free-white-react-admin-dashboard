@@ -51,7 +51,7 @@ const menuItems: MenuItems[] = [
         icon: FaDatabase,
         items: [
           {
-            name: 'Gegevens',
+            name: 'Overzicht',
         link: '/mychefsbase/chefsbase',
         icon: FaDatabase,
           },

@@ -3,8 +3,8 @@ import React from "react"
 import { LoadingScreen } from "src/components/layout"
 import { ItemInt, ItemString } from "../../Menus/menuDialog"
 import { useGetDishQuery } from "../api"
-import { dish_dish, dish_dish_recipes, dish_dish_recipes_recipe } from "../types/dish"
-import { FilterDishes_filterDishes, FilterDishes_filterDishes_method } from "../types/FilterDishes"
+import { dish_dish, dish_dish_method, dish_dish_recipes, dish_dish_recipes_recipe } from "../types/dish"
+import { FilterDishes_filterDishes } from "../types/FilterDishes"
 
 export const emptyDish: dish_dish = {
     __typename: "Dish",
@@ -100,7 +100,7 @@ export const DishDialog = ({
     )
 }
 
-export const ItemMethods = ({title, item}: {title: string, item: FilterDishes_filterDishes_method []| null;}) => {
+export const ItemMethods = ({title, item}: {title: string, item: dish_dish_method []| null;}) => {
     return (
         <>
         <Grid key={0} item xs={12}>

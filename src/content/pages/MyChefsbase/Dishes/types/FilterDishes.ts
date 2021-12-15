@@ -9,12 +9,6 @@ import { DishFilterInput } from "./../../../../../globalTypes";
 // GraphQL query operation: FilterDishes
 // ====================================================
 
-export interface FilterDishes_filterDishes_method {
-  __typename: "StepToMethod";
-  step: number;
-  method: string;
-}
-
 export interface FilterDishes_filterDishes {
   __typename: "Dish";
   id: string;
@@ -23,7 +17,6 @@ export interface FilterDishes_filterDishes {
   name: string;
   rating: number | null;
   theme: string | null;
-  method: FilterDishes_filterDishes_method[] | null;
 }
 
 export interface FilterDishes {

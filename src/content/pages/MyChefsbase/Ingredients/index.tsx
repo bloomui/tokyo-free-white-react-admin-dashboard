@@ -19,7 +19,6 @@ import { AddIngredientDialog } from "./ingredientDialogs/AddIngredientDialog";
     page: number;
     setPage: (newPage: number) => void;
   }) => {
-    const [openAddIngredient, setOpenAddIngredient] = useState(false)
     const [ input, setInput] = useState<IngredientFilterInput>(initialIngredientValues);
 
     const { loading, data } = useFilterIngredientsQuery({
@@ -44,7 +43,6 @@ import { AddIngredientDialog } from "./ingredientDialogs/AddIngredientDialog";
     return (
       <>
       <TopPartIngredientPage
-          setOpenAddIngredient={() => setOpenAddIngredient(true)} 
           setInput={(values) => setInput(values)}/>
         <Box height={3}>{loading && <LinearProgress />}</Box>
         {content}

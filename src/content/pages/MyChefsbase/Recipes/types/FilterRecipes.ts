@@ -9,19 +9,12 @@ import { RecipeFilterInput } from "./../../../../../globalTypes";
 // GraphQL query operation: FilterRecipes
 // ====================================================
 
-export interface FilterRecipes_filterRecipes_method {
-  __typename: "StepToMethod";
-  step: number;
-  method: string;
-}
-
 export interface FilterRecipes_filterRecipes {
   __typename: "Recipe";
   id: string;
   name: string;
   rating: number | null;
   type: string | null;
-  method: FilterRecipes_filterRecipes_method[] | null;
 }
 
 export interface FilterRecipes {

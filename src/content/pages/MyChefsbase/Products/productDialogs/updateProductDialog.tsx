@@ -9,7 +9,7 @@ import { composeValidators, required } from "src/utilities/formikValidators";
 import { initialValues } from "../../Dishes/filterdishes";
 import { UpdateDishVariables } from "../../Dishes/types/UpdateDish";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
-import { useUpdateProduct } from "../api";
+import { useGetProductQuery, useUpdateProduct } from "../api";
 import { AllSuppliers_suppliers } from "../types/AllSuppliers";
 import { FilterProducts_filterProducts } from "../types/FilterProducts";
 import { UpdateProductVariables } from "../types/UpdateProduct";
@@ -18,20 +18,25 @@ import { TableSupplierData } from "../AddProduct/components/SuppliersTable";
 import { Price } from "../../Menus/filtermenus/components/prices";
 import { supplierToQ } from "../AddProduct";
 import { units } from "../../Ingredients/ingredientDialogs/UpdateIngredientDialog";
+import { LoadingScreen } from "src/components/layout";
 
 export const UpdateProductDialog = ({
-  product,
+  id,
     open,
     onClose,
 }: {
-  product: FilterProducts_filterProducts,
+  id: string,
     open: boolean,
     onClose: () => void
 }) => {
 
+  const { data, loading: loading1, error: error1} = useGetProductQuery(id)
+
+  let product = data.product
+
   const suppliers: supplierToQ[] = product.suppliers.map((supp) => ({
     name: supp.name,
-    id: supp.id,
+    id: id,
     email: supp.email
   }))
 
@@ -60,6 +65,7 @@ const formState : UpdateProductVariables = {
   suppliers: [],
 }
 
+if (loading) return <LoadingScreen />
     return (
     <Dialog fullScreen open={open} onClose={onClose}>
       <Formik

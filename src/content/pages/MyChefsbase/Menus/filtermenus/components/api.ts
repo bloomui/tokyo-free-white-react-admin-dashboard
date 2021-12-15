@@ -3,6 +3,7 @@ import { useSimpleQuery } from "src/utilities/apollo";
 import { searchDish, searchDishVariables } from "./types/searchDish";
 import { searchMenu, searchMenuVariables } from "./types/searchMenu";
 import { searchRecipe, searchRecipeVariables } from "./types/searchRecipe";
+import { searchSupplier, searchSupplierVariables } from "./types/searchSupplier";
 
 export const searchRecipesQuery =  gql`
     query searchRecipe ($recipename: String) {
@@ -74,6 +75,31 @@ export const useSearchDishFilterQuery = ({
     >(searchDishesQuery, {
     variables: {
       dishname: name
+    },
+  });
+  return { loading, data, error, refetch};
+};
+
+export const searchSuppliersQuery =  gql`
+    query searchSupplier ($suppliername: String) {
+        searchSupplier (suppliername: $suppliername) {
+            id
+            name
+        }
+    }
+`;
+
+export const useSearchSupplierFilterQuery = ({
+  name
+}: {
+  name: string
+}) => {
+
+  const { loading, data, error, refetch } = useSimpleQuery<
+  searchSupplier, searchSupplierVariables
+    >(searchSuppliersQuery, {
+    variables: {
+      suppliername: name
     },
   });
   return { loading, data, error, refetch};

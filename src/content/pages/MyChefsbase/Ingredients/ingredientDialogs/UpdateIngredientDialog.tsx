@@ -13,10 +13,11 @@ import { Products } from "../../Menus/filtermenus/components/products";
 import { Quantity } from "../../Menus/filtermenus/components/quantity";
 import { productToQ } from "../AddIngredient";
 import { TableProductData } from "../AddIngredient/component/ProductsTable";
-import { useUpdateIngredient } from "../api";
+import { useGetIngredientQuery, useUpdateIngredient } from "../api";
 import { FilterIngredients_filterIngredients } from "../types/FilterIngredients";
 import { UpdateIngredientVariables } from "../types/UpdateIngredient";
 import { emptyIngredient } from ".";
+import { LoadingScreen } from "src/components/layout";
 
 export const units = ["grams", "mililiter"]
 
@@ -31,12 +32,9 @@ export const UpdateIngredientDialog = ({
     onClose: () => void
 }) => {
 
-  // const { data, loading, error } = useGetIngredientQuery(id)
+  const { data, loading: loading1, error: error1 } = useGetIngredientQuery(id)
 
-    // if (loading) return <LoadingScreen/>
-    // if (error) return <LoadingScreen/>
-
-    let ingredient = emptyIngredient
+    let ingredient = data.ingredient
 
     const { updateIngredient, loading, error } = useUpdateIngredient({
         onCompleted: () => window.location.reload(),
@@ -67,6 +65,9 @@ const formState : UpdateIngredientVariables = {
   input: formInput,
   products: ingredient.products.map((it) => it.id),
 }
+
+
+if (loading1) return <LoadingScreen/>
 
     return (
     <Dialog fullScreen open={open} onClose={onClose}>

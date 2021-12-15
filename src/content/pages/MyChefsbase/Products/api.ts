@@ -61,11 +61,6 @@ query FilterProducts ($input: ProductFilterInput, $offset: Int, $limit: Int) {
     }
     brand
     origin
-    suppliers {
-      id
-      name
-      email
-    }
 }
 }`;
 

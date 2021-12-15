@@ -13,7 +13,6 @@ export const TopPartMenuPage = ({
 }: {
   setInput: (values: MenuFilterInput) => void;
 }) => {
-  const [ openFilterInputDialog, setOpenFilterInputDialog] = React.useState(false)
 
   const { loading, data, error } = useQuery(MenusData)
   if (loading) return <LoadingScreen />;
@@ -21,7 +20,6 @@ export const TopPartMenuPage = ({
 
   return (
       <MenuFilterDialog
-      onClose={() => setOpenFilterInputDialog(false)}
       initialValues={initialMenuValues}
       themes={data.allThemes}
       seasons={data.allSeasons}

@@ -3,11 +3,9 @@ import React, { useState } from "react"
 import { LoadingScreen } from "src/components/layout"
 import { H5 } from "src/content/pages/Components/TextTypes"
 import { DefaultNutritionOptions, NutritionOptionDropDown } from "../../Components/NutrutitionOptions"
-import { FilterDishes_filterDishes_method } from "../../Dishes/types/FilterDishes"
 import { ItemString, ItemInt } from "../../Menus/menuDialog"
 import { useGetIngredientQuery } from "../api"
-import { FilterIngredients_filterIngredients_products } from "../types/FilterIngredients"
-import { ingredient, ingredient_ingredient, ingredient_ingredient_nutrition_nutrition } from "../types/ingredient"
+import { ingredient, ingredient_ingredient, ingredient_ingredient_nutrition_nutrition, ingredient_ingredient_products } from "../types/ingredient"
 import { UpdateIngredientDialog } from "./UpdateIngredientDialog"
 
 export  const emptyIngredient: ingredient_ingredient = {
@@ -33,14 +31,14 @@ export const IngredientDialog = ({
 }) => {
     const [nutritionsToDisplay, setNutritionsToDisplay] = useState<string[]>(DefaultNutritionOptions)
 
-    // const { data, loading, error } = useGetIngredientQuery(id)
+    const { data, loading, error } = useGetIngredientQuery(id)
 
     const [openUpdateDialog, setUpdateDialog] = useState(false)
 
-    // if (loading) return <LoadingScreen/>
-    // if (error) return <LoadingScreen/>
+    if (loading) return <LoadingScreen/>
+    if (error) return <LoadingScreen/>
 
-    let ingredient = emptyIngredient
+    let ingredient = data.ingredient
 
     return (
         <>
@@ -102,7 +100,7 @@ export const IngredientDialog = ({
         </>
     )
 }
-export const ItemProducts = ({title, item}: {title: string, item: FilterIngredients_filterIngredients_products []| null;}) => {
+export const ItemProducts = ({title, item}: {title: string, item: ingredient_ingredient_products []| null;}) => {
     return (
         <>
         <Grid key={0} item xs={12}>

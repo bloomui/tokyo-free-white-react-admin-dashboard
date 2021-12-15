@@ -30,28 +30,14 @@ export const initialSupplierValues: SupplierFilterInput = {
   }
   
   export const SupplierFilter = ({
-    setOpenAddSupplier,
-    onClose,
-    // ingredients,
-    // products,
-    // dishes,
-    // menus,
-    // recipes,
     onChange,
   }: {
-    setOpenAddSupplier: () => void;
-    onClose: () => void;
-    // products: Suppliers_products[] | null;
-    // dishes: Suppliers_dishes[] | null;
-    // menus: Suppliers_menus[] | null;
-    // recipes: Suppliers_recipes[] | null;
-    // ingredients: Suppliers_ingredients[] | null;
     onChange: (values: SupplierFilterInput) => void;
   }) => {
 
+    const navigate = useNavigate()
     const [ openFilterInputDialog, setOpenFilterInputDialog] = React.useState(false)
 
-    const navigate = useNavigate()
     return (
       <Card>
         <Formik
@@ -60,7 +46,7 @@ export const initialSupplierValues: SupplierFilterInput = {
          onChange(values)
         }}
         >
-        {({ setFieldValue, submitForm }) => {
+        {({ setFieldValue }) => {
           return (
             <>
            <Grid container xs={12}>
@@ -79,7 +65,7 @@ export const initialSupplierValues: SupplierFilterInput = {
         </ExpandMore>
         </Grid>
         <Grid key={2} item>
-        <Button fullWidth color="secondary" variant="contained" onClick={setOpenAddSupplier}>
+        <Button fullWidth color="secondary" variant="contained" onClick={() => navigate(`/mychefsbase/addsupplier`)}>
                       <span> Nieuwe leverancier</span>
                   </Button>
         </Grid>
@@ -94,29 +80,24 @@ export const initialSupplierValues: SupplierFilterInput = {
            setFieldValue={setFieldValue}/>
            </Grid>
            <Grid key={2} item xs={3}>
-           {/* <Products
-            products={products}
-            setFieldValue={setFieldValue} /> */}
+           <Products
+            setFieldValue={setFieldValue} />
             </Grid>
             <Grid item xs={3}>
-            {/* <Ingredients 
-              ingredients={ingredients}
-              setFieldValue={setFieldValue} /> */}
+            <Ingredients 
+              setFieldValue={setFieldValue} />
               </Grid>
             <Grid item xs={3}>
-            {/* <Recipes 
-            recipes={recipes}
-            setFieldValue={setFieldValue} /> */}
+            <Recipes 
+            setFieldValue={setFieldValue} />
             </Grid>
             <Grid item xs={3}>
-            {/* <Dishes 
-            dishes={dishes}
-            setFieldValue={setFieldValue} /> */}
+            <Dishes 
+            setFieldValue={setFieldValue} />
             </Grid>
             <Grid item xs={3}>
-            {/* <Menus 
-            menus={menus}
-            setFieldValue={setFieldValue} /> */}
+            <Menus 
+            setFieldValue={setFieldValue} />
             </Grid>
             </Grid>
               </CardContent>

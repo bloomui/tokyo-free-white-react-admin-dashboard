@@ -30,7 +30,6 @@ import { searchProduct_searchProduct } from "../../Ingredients/AddIngredient/typ
     seasons,
     onChange,
   }: {
-    onClose: () => void;
     initialValues: MenuFilterInput;
     themes: string[] | null;
     seasons: string[] | null;
@@ -99,157 +98,68 @@ import { searchProduct_searchProduct } from "../../Ingredients/AddIngredient/typ
       <Collapse in={openFilterInputDialog} timeout="auto" unmountOnExit>
         <CardContent>   
                   <Grid container spacing={2} xs={12}>
-           <Grid item xs={2}>
+           <Grid item xs={3}>
             <Period setFieldValue={setFieldValue}/>
             </Grid>
             <Grid xs={1}></Grid>
-            <Grid item xs={2}>
+            <Grid item xs={3}>
             <Themes 
             themes={themes}
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid xs={1}></Grid>
-            <Grid item xs={2}>
+            <Grid item xs={3}>
             <Seasons 
             seasons={seasons}
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid xs={1}></Grid>
-            {/* <Grid item xs={3}>
-              <Suppliers 
-              suppliers={suppliers}
-              setFieldValue={setFieldValue} />
-          </Grid> */}
-          <Grid xs={1}></Grid>
-          <Grid item xs={2}>
+            <Grid item xs={3}>
            <Rating1 
            updateField="rating"
            setFieldValue={setFieldValue}/>
-           </Grid>   
-            {/* <FilterOnProducts
-            setFieldValue={setFieldValue}
-            /> */}
-           <Grid xs={6}>               
-           <FieldArray
-                name="products"
-                render={arrayHelpers => (
-                <div>
-                  <TableContainer >
-                    <Table>
-                      <TableRow>
-                        <TableCell>
-                          Producten
-                        </TableCell>
-                        
-                      </TableRow>
-                 {selectedProducts.map((product, index)=> (
-                   <TableRow>
-                     <>
-                        <TableCell>
-                        <Autocomplete
-                options={data && data.searchProduct  && data.searchProduct.map((option) => (option))}
-                onChange={(event: any, newValue: searchProduct_searchProduct) => {setProducts([...selectedProducts, newValue])
-                }}
-        id="select-on-focus"
-        selectOnFocus
-        renderInput={(params) => (
-          <TextField                  
-          onChange={(e) => { changeDelay(e.target.value); }}
-          {...params} 
-          id={selectedProducts[index].id}
-          name={selectedProducts[index].id}
-         label="Producten"
-         value={product}          
-         variant="standard" />
-        )}
-      />
-      <Button
-                            variant="contained" 
-                            color="secondary"
-                        style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
-                         onClick={() => {selectedProducts.slice(index, 1)}}>
-                        -
-                       </Button>
-                       <Button
-                       variant="contained" 
-                       color="secondary"
-                        style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
-                         onClick={() => {
-                          selectedProducts.push(emptyOne)}}>
-                        +
-                       </Button>
-                        </TableCell>
-                        
-                     </>
-                     </TableRow>
-                   ))}
-                   </Table>
-                   </TableContainer>
-                   </div>
-                )}
-                />
            </Grid>
-            {/* <Grid xs={2}>
-            <Table>
-              <TableRow>
-                <TableCell><H5 title="Gerechten"/></TableCell>
-                </TableRow>
-            </Table>
-            </Grid>
-            <Grid xs={2}>
-            <Table>
-              <TableRow>
-                <TableCell><H5 title="Recepten"/></TableCell>
-                </TableRow>
-            </Table>
-            </Grid>
-            <Grid xs={2}>
-            <Table>
-              <TableRow>
-                <TableCell><H5 title="Ingredienten"/></TableCell>
-                </TableRow>
-            </Table>
-            </Grid>
-            <Grid xs={2}>
-            <Table>
-              <TableRow>
-                <TableCell><H5 title="Producten"/></TableCell>
-                </TableRow>
-                <TableRow>
-                <FilterProducts
-                setFieldValue={setFieldValue} />
-                </TableRow>
-            </Table>
-            </Grid>
-            <Grid xs={2}>
-            <Table>
-              <TableRow>
-                <TableCell><H5 title="Leveranciers"/></TableCell>
-                </TableRow>
-            </Table>
-            </Grid> */}
-            {/* <Products 
-            // products={products}
-            setFieldValue={setFieldValue} /> */}
-            </Grid>
-            <Grid xs={1}></Grid>
-            {/* <Grid item xs={3}>
-            <Ingredients 
-            ingredients={ingredients}
+           <Grid xs={1}></Grid>
+            <Grid item xs={3}>
+              <Suppliers 
+              setFieldValue={setFieldValue} />
+          </Grid>
+          <Grid xs={1}></Grid>
+           <Grid item xs={3}> 
+           <Products 
+              setFieldValue={setFieldValue} />
+              </Grid>
+              <Grid xs={1}></Grid>
+              <Grid item xs={3}> 
+           <Products 
+              setFieldValue={setFieldValue} />
+              </Grid>
+              <Grid xs={1}></Grid>
+              <Grid item xs={3}> 
+           <Products 
+              setFieldValue={setFieldValue} />
+              </Grid>
+              <Grid xs={1}></Grid>
+              <Grid item xs={3}> 
+            <Products 
             setFieldValue={setFieldValue} />
-            </Grid> */}
-            <Grid xs={1}></Grid>
-            {/* <Grid item xs={3}>
-            <Recipes 
-            recipes={recipes}
-            setFieldValue={setFieldValue} />
-            </Grid> */}
+            </Grid>
             <Grid xs={1}></Grid>
             <Grid item xs={3}>
-            {/* <Dishes 
-            dishes={dishes}
-            setFieldValue={setFieldValue} /> */}
-            </Grid>      
+            <Ingredients 
+            setFieldValue={setFieldValue} />
+            </Grid>
+            <Grid xs={1}></Grid>
+            <Grid item xs={3}>
+            <Recipes 
+            setFieldValue={setFieldValue} />
+            </Grid>
+            <Grid xs={1}></Grid>
+            <Grid item xs={3}>
+            <Dishes 
+            setFieldValue={setFieldValue} />
+            </Grid>   
+            </Grid>   
               </CardContent>
               </Collapse>
               <AutoSubmitToken />

@@ -18,7 +18,6 @@ import { initialRecipeValues } from "./filterrecipes";
     page: number;
     setPage: (newPage: number) => void;
   }) => {
-    const [openAddRecipe, setOpenAddRecipe] = useState(false)
     const [ input, setInput] = useState<RecipeFilterInput>(initialRecipeValues);
 
     const { loading, data } = useFilterRecipesQuery({
@@ -43,7 +42,6 @@ import { initialRecipeValues } from "./filterrecipes";
     return (
       <>
       <TopPartRecipePage
-          setOpenAddRecipe={() => setOpenAddRecipe(true)} 
           setInput={(values) => setInput(values)}/>
         <Box height={3}>{loading && <LinearProgress />}</Box>
         {content}

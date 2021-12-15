@@ -1,11 +1,9 @@
 import { Dialog, DialogTitle, DialogContent, Card, CardActionArea, Grid, Typography, TableContainer, TableBody, TableCell, TableHead, TableRow, List, ListItem, Button, DialogActions, TextField, MenuItem, Select, CircularProgress } from "@material-ui/core"
 import React, { useState } from "react"
-import { FormField } from "src/components/form/FormField"
-import { LoadingScreen } from "src/components/layout"
 import { H5 } from "src/content/pages/Components/TextTypes"
 import { DefaultNutritionOptions, NutritionOptionDropDown } from "../../Components/NutrutitionOptions"
 import { recipes_recipes } from "../../Dishes/AddDish/types/recipes"
-import { FilterDishes_filterDishes_method } from "../../Dishes/types/FilterDishes"
+import { dish_dish_method } from "../../Dishes/types/dish"
 import { ItemNutrition } from "../../Ingredients/ingredientDialogs"
 import { ItemString, ItemInt } from "../../Menus/menuDialog"
 import { useGetIngredientsForRecipe, useGetNutritionForRecipe, useGetRecipeQuery } from "../api"
@@ -159,18 +157,18 @@ export const RecipeDialog = ({
                            <Grid xs={2}></Grid>
                           <Grid xs={4}>
                               <TextField 
-                            //   onKeyPress= {(e) => {
-                            //     if (e.key === 'Enter') {
-                            //     refetch1({
-                            //         id: id,
-                            //         quantity: quantity,
-                            //         unit: unit});
-                            //     refetch2({
-                            //         id: id,
-                            //         quantity: quantity,
-                            //         unit: unit});
-                            //   }
-                            //   }}  
+                              onKeyPress= {(e) => {
+                                if (e.key === 'Enter') {
+                                refetch1({
+                                    id: id,
+                                    quantity: quantity,
+                                    unit: unit});
+                                refetch2({
+                                    id: id,
+                                    quantity: quantity,
+                                    unit: unit});
+                              }
+                              }}  
                               defaultValue={quantity}
                               onChange={(e) => setQuantity(Number(e.target.value))}/>
                           </Grid>
@@ -196,7 +194,7 @@ export const RecipeDialog = ({
                        <ItemNutrition
                        nutritionsToDisplay={nutritionsToDisplay}
                        title="Voedingswaarde"
-                       item={zeroNutrition}
+                       item={data1.nutritionForRecipe}
                        />
                       <ItemIngredients
                       title="Recepten"
@@ -221,7 +219,7 @@ export const RecipeDialog = ({
     )
 }
 
-export const ItemMethods = ({title, item}: {title: string, item: FilterDishes_filterDishes_method []| null;}) => {
+export const ItemMethods = ({title, item}: {title: string, item: dish_dish_method []| null;}) => {
     return (
         <>
         <Grid key={0} item xs={12}>

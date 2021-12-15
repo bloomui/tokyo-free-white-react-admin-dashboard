@@ -5,6 +5,7 @@ import React from "react";
 import { useState } from "react";
 import { FormField, FormFieldEdit } from "src/components/form/FormField";
 import { FormikSelect } from "src/components/form/FormikSelect";
+import { LoadingScreen } from "src/components/layout";
 import { H3, H5 } from "src/content/pages/Components/TextTypes";
 import { DishInput, QuantityToId, StepToMethodInput } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
@@ -12,7 +13,7 @@ import { emptyDish } from ".";
 import { Rating1, RatingEdit } from "../../Menus/filtermenus/components/rating";
 import { mapRecipeToQToInput, recipeToQ } from "../AddDish";
 import { TableRecipeData } from "../AddDish/components/RecipeTable";
-import { useUpdateDish } from "../api";
+import { useGetDishQuery, useUpdateDish } from "../api";
 import { FilterDishes, FilterDishes_filterDishes } from "../types/FilterDishes";
 import { UpdateDishVariables } from "../types/UpdateDish";
 
@@ -26,16 +27,12 @@ export const UpdateDishDialog = ({
     onClose: () => void
 }) => {
 
-  // const { data, loading, error } = useGetDishQuery(id)
+  const { data, loading: loading1, error: error1 } = useGetDishQuery(id)
 
-    // if (loading) return <LoadingScreen/>
-    // if (error) return <LoadingScreen/>
-
-    let dish = emptyDish
+    let dish = data.dish
 
     const { updateDish, loading, error } = useUpdateDish({
-        onCompleted: () => {},
-        // window.location.reload(),
+        onCompleted: () => window.location.reload(),
       });
       const [stepHere, setStep] = useState(1)
       const [selectedRecipes, setRecipes] = React.useState<recipeToQ[]>([]);
@@ -79,6 +76,9 @@ const formState : UpdateDishVariables = {
         recipes: formRecipes,
         method: formMethods
     }
+
+    if (loading1) return <LoadingScreen/>
+    if (error1) return <LoadingScreen/>
 
     return (
     <Dialog 
