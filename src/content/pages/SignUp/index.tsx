@@ -16,8 +16,10 @@ import { useSignUp } from 'src/utilities/api';
 const SignUpForm = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const navigate = useNavigate()
-
+  const [fullName, setFullName] = useState("");
+  const [restaurantName, setRestaurantName] = useState("");
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
   
   const { signUp, loading, error } = useSignUp({
     onCompleted: () => {}
@@ -72,6 +74,45 @@ const SignUpForm = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   />
                 </Grid>
+                <Grid item xs={6} sm={6}>
+                  <TextField
+                  name="location"
+                  id="location"
+                  label="Locatie"
+                  fullWidth
+                  onChange={(e) => setLocation(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={6} sm={6}>
+                  <TextField
+                  multiline
+                  name="fullName"
+                  id="fullName"
+                  label="Naam eigenaar"
+                  fullWidth
+                  onChange={(e) => setFullName(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={6} sm={6}>
+                  <TextField
+                  multiline
+                  name="restaurantName"
+                  id="restaurantName"
+                  label="Naam restaurant"
+                  fullWidth
+                  onChange={(e) => setRestaurantName(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={6} sm={12}>
+                  <TextField
+                  multiline
+                  name="description"
+                  id="description"
+                  label="Beschrijving"
+                  fullWidth
+                  onChange={(e) => setDescription(e.target.value)}
+                  />
+                </Grid>
                 <Grid item xs={12}>
                   <FormControlLabel
                     control={<Checkbox value="allowExtraEmails" color="primary" />}
@@ -83,7 +124,11 @@ const SignUpForm = () => {
               onClick={() => signUp({
                 variables: {
                   email: email,
-                  password: password
+                  password: password,
+                  fullName: fullName,
+                  restaurantName: restaurantName,
+                  description: description,
+                  location: location
                 }
               })}
                  component={RouterLink}

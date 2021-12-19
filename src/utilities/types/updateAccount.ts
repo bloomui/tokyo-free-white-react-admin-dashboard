@@ -4,14 +4,14 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: signup
+// GraphQL mutation operation: updateAccount
 // ====================================================
 
-export interface signup {
-  signup: boolean | null;
+export interface updateAccount {
+  updateAccount: boolean | null;
 }
 
-export interface signupVariables {
+export interface updateAccountVariables {
   email: string;
   password: string;
   description?: string | null;
