@@ -1,7 +1,6 @@
 import { gql } from "@apollo/client";
 import { useSimpleQuery } from "src/utilities/apollo";
-import { viewer } from "src/utilities/types/viewer";
-import { viewer_viewer } from "./types/viewer";
+import { viewer } from "./types/viewer";
 
 const viewerQuery = gql`
  query viewer {
@@ -19,7 +18,7 @@ const viewerQuery = gql`
 export const useViewerQuery = () => {
 
     const { loading, data, error, refetch } = useSimpleQuery<
-    viewer_viewer
+    viewer
     >(viewerQuery);
     return { loading, data, error, refetch};
   };

@@ -7,7 +7,14 @@ import {
   Avatar,
   CardMedia,
   Button,
-  IconButton
+  IconButton,
+  Grid,
+  DialogTitle,
+  Dialog,
+  FormControlLabel,
+  DialogContent,
+  TextField,
+  Checkbox
 } from '@material-ui/core';
 import { experimentalStyled } from '@material-ui/core/styles';
 
@@ -16,9 +23,11 @@ import ArrowForwardTwoToneIcon from '@material-ui/icons/ArrowForwardTwoTone';
 import UploadTwoToneIcon from '@material-ui/icons/UploadTwoTone';
 import MoreHorizTwoToneIcon from '@material-ui/icons/MoreHorizTwoTone';
 import { useViewerQuery } from '../MyChefsbase/api';
-import React from 'react';
+import React, { useState } from 'react';
 import ProfileCover from 'src/content/applications/Users/profile/ProfileCover';
 import { LoadingScreen } from 'src/components/layout';
+import { useUpdateAccount } from 'src/utilities/api';
+import { useNavigate } from 'react-router';
 
 const Input = experimentalStyled('input')({
   display: 'none'
@@ -85,10 +94,12 @@ const CardCoverAction = experimentalStyled(Box)(
 
 const ProfilePage = () => {
 
+    const [updateOpen, setUpdateOpen] = useState<boolean>(false)
     const {data, loading, error} = useViewerQuery()
 
     if (loading) return <LoadingScreen />
-    let user = data
+    let user = data.viewer
+    console.log(user)
 
   return (
     <>
@@ -99,10 +110,18 @@ const ProfilePage = () => {
           </IconButton>
         </Tooltip>
         <Box>
+            <Grid container  xs={12}>
+                <Grid xs={9}>
           <Typography variant="h3" component="h3" gutterBottom>
             Profiel van {user.restaurantName}
           </Typography>
-          
+          </Grid>
+          <Grid xs={3}>
+          <Button onClick={() => setUpdateOpen(true)} variant="contained">
+              Update Profiel
+          </Button>
+          </Grid>
+          </Grid>
         </Box>
       </Box>
       <CardCover>
@@ -150,6 +169,10 @@ const ProfilePage = () => {
           justifyContent="space-between"
         >
         </Box>
+        <UpdateProfile
+        open={updateOpen}
+        onClose={() => setUpdateOpen(false)}
+        />
       </Box>
     </>
   );
@@ -161,3 +184,129 @@ ProfilePage.propTypes = {
 };
 
 export default ProfilePage;
+
+
+
+export  const  UpdateProfile = ({
+    open,
+    onClose,
+  }: {
+    open: boolean;
+    onClose: () => void;
+  }) => {
+    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [fullName, setFullName] = useState("");
+    const [restaurantName, setRestaurantName] = useState("");
+    const [description, setDescription] = useState("");
+    const [location, setLocation] = useState("");
+  
+    const navigate = useNavigate()
+  
+    // const formState: updateAccountVariables = {
+    //   email: '',
+    //   password: '',
+    //   description: '',
+    //   location: '',
+    //   fullName: '',
+    //   restaurantName: '',
+    // }
+  
+    const { updateAccount, loading, error } = useUpdateAccount({
+      onCompleted: () => window.location.reload(),
+    });
+  
+    return (
+        <Dialog open={open} onClose={onClose}>
+            <DialogTitle>
+                Update  profiel
+            </DialogTitle>
+            <DialogContent>
+            <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                    name="email"
+                    id="email"
+                    label="Email"
+                    fullWidth
+                    onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                  <TextField
+                    name="password"
+                    id="password"
+                    label="Wachtwoord"
+                    type="password"
+                    fullWidth
+                    onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={6} sm={6}>
+                    <TextField
+                    name="location"
+                    id="location"
+                    label="Locatie"
+                    fullWidth
+                    onChange={(e) => setLocation(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={6} sm={6}>
+                    <TextField
+                    multiline
+                    name="fullName"
+                    id="fullName"
+                    label="Naam eigenaar"
+                    fullWidth
+                    onChange={(e) => setFullName(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={6} sm={6}>
+                    <TextField
+                    multiline
+                    name="restaurantName"
+                    id="restaurantName"
+                    label="Naam restaurant"
+                    fullWidth
+                    onChange={(e) => setRestaurantName(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={6} sm={12}>
+                    <TextField
+                    multiline
+                    name="description"
+                    id="description"
+                    label="Beschrijving"
+                    fullWidth
+                    onChange={(e) => setDescription(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControlLabel
+                      control={<Checkbox value="allowExtraEmails" color="primary" />}
+                      label="I want to receive inspiration, marketing promotions and updates via email."
+                    />
+                  </Grid>
+                </Grid>
+                <Button
+                onClick={() => updateAccount({
+                  variables: {
+                    email: email,
+                    password: password,
+                    fullName: fullName,
+                    restaurantName: restaurantName,
+                    description: description,
+                    location: location
+                  }
+                })}
+                //    component={RouterLink}
+                //    to="/management/profile/details"
+                   size="large"
+                   variant="contained"
+                >
+                  Update
+                </Button>
+            </DialogContent>
+        </Dialog>
+    )
+  }

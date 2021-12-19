@@ -11,7 +11,9 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { LabelWrapper, TypographyH1, TypographyH2 } from 'src/content/overview/Hero';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { useSignUp } from 'src/utilities/api';
+import { useSignUp, useUpdateAccount } from 'src/utilities/api';
+import { Dialog, DialogTitle, DialogContent } from '@material-ui/core';
+import { updateAccountVariables } from 'src/utilities/types/updateAccount';
 
 const SignUpForm = () => {
   const [password, setPassword] = useState("");
