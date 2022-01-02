@@ -218,7 +218,7 @@ headCells={headCellsProducts}
             )}
             {product && (
               <UpdateProductDialog 
-                 product={product}
+                 id={product.id}
                  open={openUpdate}
                  onClose={() => setOpenUpdate(false)}
                  /> 

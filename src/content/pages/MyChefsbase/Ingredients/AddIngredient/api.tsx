@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import { useSimpleQuery } from "src/utilities/apollo";
 import { products } from "./types/products";
+import { searchIngredient, searchIngredientVariables } from "./types/searchIngredient";
 import { searchProduct, searchProductVariables } from "./types/searchProduct";
 
 export const productsQuery =  gql`
@@ -23,6 +24,31 @@ export const productsQuery =  gql`
     }
 `;
 
+export const searchIngredientsQuery =  gql`
+    query searchIngredient ($ingredientname: String) {
+      searchIngredient (ingredientname: $ingredientname) {
+            id
+            name
+        }
+    }
+`;
+
+export const useSearchIngredientFilterQuery = ({
+  name
+}: {
+  name: string
+}) => {
+
+  const { loading, data, error, refetch } = useSimpleQuery<
+  searchIngredient, searchIngredientVariables
+    >(searchIngredientsQuery, {
+    variables: {
+      ingredientname: name
+    },
+  });
+  return { loading, data, error, refetch};
+};
+
 export const searchProductsQuery =  gql`
     query searchProduct ($productname: String) {
       searchProduct (productname: $productname) {
@@ -39,7 +65,7 @@ export const useSearchProductFilterQuery = ({
 
   const { loading, data, error, refetch } = useSimpleQuery<
   searchProduct, searchProductVariables
-    >(productsQuery, {
+    >(searchProductsQuery, {
     variables: {
       productname: productname
     },

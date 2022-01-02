@@ -3,7 +3,7 @@ import React from "react"
 import { useState } from "react"
 import { LoadingScreen } from "src/components/layout"
 import { useGetMenuQuery } from "../api"
-import { FilterMenus_filterMenus, FilterMenus_filterMenus_courses } from "../types/FilterMenus"
+import { menu_menu_courses } from "../types/menu"
 import { UpdateMenuDialog } from "./UpdateMenu"
 
 export const MenuDialog = ({
@@ -73,7 +73,7 @@ export const MenuDialog = ({
             </>
             )}
             <UpdateMenuDialog
-        menu={menu}
+        id={menu.id}
         open={updateOpen}
         onClose={() => setUpdateOpen(false)}
         />
@@ -83,7 +83,7 @@ export const MenuDialog = ({
     )
 }
 
-export const ItemCourses2 = ({title, item}: {title: string, item: FilterMenus_filterMenus_courses []| null;}) => {
+export const ItemCourses2 = ({title, item}: {title: string, item: menu_menu_courses []| null;}) => {
     return (
         <>
         <Grid key={0} item xs={12}>

@@ -30,23 +30,9 @@ export const initialIngredientValues: IngredientFilterInput = {
   }
   
   export const IngredientFilter = ({
-    setOpenAddIngredient,
-    onClose,
     allCategories,
-    // products,
-    // suppliers,
-    // dishes,
-    // menus,
-    // recipes,
     onChange,
   }: {
-    setOpenAddIngredient: () => void;
-    onClose: () => void;
-    // suppliers: Ingredients_suppliers[] | null;
-    // dishes: Ingredients_dishes[] | null;
-    // menus: Ingredients_menus[] | null;
-    // recipes: Ingredients_recipes[] | null;
-    // products: Ingredients_products[] | null;
     allCategories: string[] | null;
     onChange: (values: IngredientFilterInput) => void;
   }) => {
@@ -62,7 +48,7 @@ export const initialIngredientValues: IngredientFilterInput = {
          onChange(values)
         }}
         >
-        {({ setFieldValue, submitForm }) => {
+        {({ setFieldValue }) => {
           return (
             <>
            <Grid container xs={12}>
@@ -102,29 +88,24 @@ export const initialIngredientValues: IngredientFilterInput = {
             setFieldValue={setFieldValue} />
             </Grid> 
            <Grid key={2} item xs={3}>
-              {/* <Suppliers 
-              suppliers={suppliers}
-              setFieldValue={setFieldValue} /> */}
+              <Suppliers 
+              setFieldValue={setFieldValue} />
           </Grid>
           <Grid key={3} item xs={3}>
-            {/* <Products 
-            products={products}
-            setFieldValue={setFieldValue} /> */}
+            <Products 
+            setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={4} item xs={3}>
-            {/* <Recipes 
-            recipes={recipes}
-            setFieldValue={setFieldValue} /> */}
+            <Recipes 
+            setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={5} item xs={3}>
-            {/* <Dishes 
-            dishes={dishes}
-            setFieldValue={setFieldValue} /> */}
+            <Dishes 
+            setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={6} item xs={3}>
-            {/* <Menus 
-            menus={menus}
-            setFieldValue={setFieldValue} /> */}
+            <Menus 
+            setFieldValue={setFieldValue} />
             </Grid>
             </Grid>
               </CardContent>

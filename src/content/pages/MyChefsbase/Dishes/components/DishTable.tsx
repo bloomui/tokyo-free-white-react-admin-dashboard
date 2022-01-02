@@ -222,7 +222,7 @@ headCells={headCellsDishes}
             )}
             {dish && (
               <UpdateDishDialog 
-                 dish={dish}
+                 id={dish.id}
                  open={openUpdate}
                  onClose={() => setOpenUpdate(false)}
                  /> 

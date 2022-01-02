@@ -103,6 +103,15 @@ const formState : AddSuppliersVariables = {
                         />
                         </TableCell>
                         <TableCell>
+                        <TextField
+                        id={`input.${index}.rating`}
+                        name={`input.${index}.rating`}
+                       label="Beoordeling"
+                       value={input.rating}
+                       onChange={handleChange}
+                        />
+                        </TableCell>
+                        <TableCell>
                         <Button
                             variant="contained" 
                             color="secondary"

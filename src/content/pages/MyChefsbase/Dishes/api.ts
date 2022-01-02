@@ -67,7 +67,7 @@ cupper
 iron {
 total
 } 
-        magnesium
+magnesium
 fosfor
 calcium
 kalium
@@ -105,15 +105,6 @@ export const useGetDishQuery = (id: string) => {
     return { loading, data, error};
   };
 
-const AllRecipesQuery = gql`
- query AllRecipes {
-   recipes {
-     id
-     name
-   }
- }
-`;
-
 export const FilterDishesQuery = gql`
 query FilterDishes ($input: DishFilterInput, $limit: Int, $offset: Int) {
     numberOfDishes
@@ -124,76 +115,6 @@ query FilterDishes ($input: DishFilterInput, $limit: Int, $offset: Int) {
     name
     rating
     theme
-    nutrition {
-      kcal
-      protein {
-      plant
-animal
-total
-      }
-  carbs {
-    carbs
-    sugar
-  }
-  fat {
-    satured
-    singleUnsat 
-    compoundUnsat
-    total
-  }
-     starch
-polyols
-fibres
-nitrogen,
-polysachhariden
-alcohol
-water
-organicAcids
-vitamins {
-e
-c
-kTotal
-b12
-dTotal
-}   
-        foliumAcid
-pholate
-pholatEquivalents
-nicotinAcid
-lycopeans
-betaCrypto
-zeacanthine
-lutein    
-ash
-jodium
-sink
-selenium
-cupper
-iron {
-total
-} 
-        magnesium
-fosfor
-calcium
-kalium
-natrium
-cholesterol
-famstxr
-    }
-    method {
-        step 
-        method
-    }
-    recipes {
-      quantity {
-        quantity
-        unit
-      }
-      recipe {
-        id
-        name
-      }
-    }
   }
 }`;
 
@@ -201,6 +122,7 @@ export const DishesData = gql`
 query Dishes {
   allThemes
   allTypes
+  allComments
 }
 `;
 
@@ -214,14 +136,6 @@ export const AddDishMutation = gql`
 mutation AddDish ($input: AddDishInput!, $recipes: [QuantityToId!], $method: [StepToMethodInput!]) {
   addDish(input: $input, recipes: $recipes, method: $method)
 }`;
-
-export const useAllRecipesQuery = () => {
-
-    const { loading, data, error } = useSimpleQuery<
-    AllRecipes
-    >(AllRecipesQuery);
-    return { loading, data, error};
-  };
 
   const dishesMax = 10
 export const useFilterDishesQuery = ({

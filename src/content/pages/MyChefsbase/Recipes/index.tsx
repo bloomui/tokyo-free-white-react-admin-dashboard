@@ -10,7 +10,6 @@ import { useFilterRecipesQuery } from "./api";
 import { RecipeTable } from "./components/RecipeTable";
 import { TopPartRecipePage } from "./components/TopPartRecipePage";
 import { initialRecipeValues } from "./filterrecipes";
-import { AddRecipeDialog } from "./recipeDialogs/AddRecipeDialog";
 
   export const RecipePage = ({
     page,
@@ -19,7 +18,6 @@ import { AddRecipeDialog } from "./recipeDialogs/AddRecipeDialog";
     page: number;
     setPage: (newPage: number) => void;
   }) => {
-    const [openAddRecipe, setOpenAddRecipe] = useState(false)
     const [ input, setInput] = useState<RecipeFilterInput>(initialRecipeValues);
 
     const { loading, data } = useFilterRecipesQuery({
@@ -44,14 +42,9 @@ import { AddRecipeDialog } from "./recipeDialogs/AddRecipeDialog";
     return (
       <>
       <TopPartRecipePage
-          setOpenAddRecipe={() => setOpenAddRecipe(true)} 
           setInput={(values) => setInput(values)}/>
         <Box height={3}>{loading && <LinearProgress />}</Box>
         {content}
-        <AddRecipeDialog 
-                  open={openAddRecipe}
-                  onClose={() => setOpenAddRecipe(false)}
-                  />
       </>
     );
   };

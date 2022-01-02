@@ -6,6 +6,7 @@ import { FaFilter } from "react-icons/fa";
 import {useNavigate} from 'react-router-dom';
 import { DishFilterInput } from "src/globalTypes";
 import { AutoSubmitToken, ExpandMore } from "../../Menus/filtermenus";
+import { Comments } from "../../Menus/filtermenus/components/comment";
 import { Ingredients } from "../../Menus/filtermenus/components/ingredients";
 import { Menus } from "../../Menus/filtermenus/components/menus";
 import { Products } from "../../Menus/filtermenus/components/products";
@@ -32,24 +33,12 @@ export const initialValues: DishFilterInput = {
   }
   
   export const DishFilter = ({
-    setOpenAddDish,
-    onClose,
-    // products,
-    // suppliers,
+    comments,
     themes,
-    // recipes,
-    // menus,
-    // ingredients,
     onChange,
   }: {
-    setOpenAddDish: () => void;
-    onClose: () => void;
+    comments: string[] | null;
     themes: string[] | null;
-    // suppliers: Dishes_suppliers[] | null;
-    // recipes: Dishes_recipes[] | null;
-    // menus: Dishes_menus[] | null;
-    // ingredients: Dishes_ingredients[] | null;
-    // products: Dishes_products[] | null;
     onChange: (values: DishFilterInput) => void;
   }) => {
 
@@ -64,7 +53,7 @@ export const initialValues: DishFilterInput = {
          onChange(values)
         }}
         >
-        {({ setFieldValue, submitForm }) => {
+        {({ setFieldValue }) => {
           return (
             <>
            <Grid container xs={12}>
@@ -99,7 +88,8 @@ export const initialValues: DishFilterInput = {
            setFieldValue={setFieldValue}/>
            </Grid>
            <Grid key={2} item xs={3}>
-           <Comment
+           <Comments
+           comments={comments}
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={3} item xs={3}>
@@ -108,29 +98,24 @@ export const initialValues: DishFilterInput = {
             setFieldValue={setFieldValue} />
             </Grid>           
             <Grid key={5} item xs={3}>
-              {/* <Suppliers 
-              suppliers={suppliers}
-              setFieldValue={setFieldValue} /> */}
+              <Suppliers 
+              setFieldValue={setFieldValue} />
           </Grid>
           <Grid key={6} item xs={3}>
-            {/* <Products 
-            products={products}
-            setFieldValue={setFieldValue} /> */}
+            <Products 
+            setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={7} item xs={3}>
-            {/* <Ingredients 
-            ingredients={ingredients}
-            setFieldValue={setFieldValue} /> */}
+            <Ingredients 
+            setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={8} item xs={3}>
-            {/* <Recipes 
-            recipes={recipes}
-            setFieldValue={setFieldValue} /> */}
+            <Recipes 
+            setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={8} item xs={3}>
-            {/* <Menus 
-            menus={menus}
-            setFieldValue={setFieldValue} /> */}
+            <Menus 
+            setFieldValue={setFieldValue} />
             </Grid>
             </Grid>
               </CardContent>

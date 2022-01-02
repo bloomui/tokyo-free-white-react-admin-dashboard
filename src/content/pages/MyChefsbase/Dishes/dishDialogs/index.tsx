@@ -3,8 +3,33 @@ import React from "react"
 import { LoadingScreen } from "src/components/layout"
 import { ItemInt, ItemString } from "../../Menus/menuDialog"
 import { useGetDishQuery } from "../api"
-import { FilterDishes_filterDishes, FilterDishes_filterDishes_method, FilterDishes_filterDishes_recipes } from "../types/FilterDishes"
+import { dish_dish, dish_dish_method, dish_dish_recipes, dish_dish_recipes_recipe } from "../types/dish"
+import { FilterDishes_filterDishes } from "../types/FilterDishes"
 
+export const emptyDish: dish_dish = {
+    __typename: "Dish",
+    id: '',
+    type: '',
+  comment: '',
+  name: '',
+  rating: 0,
+  theme: '',
+  nutrition: null,
+  method: [],
+  recipes: [{
+      __typename: "QuantityToRecipe",
+        quantity: {
+            __typename: "Quantity",
+            quantity: 0,
+            unit: 'a',
+        },
+        recipe: {
+            __typename: "Recipe",
+            id: 'a',
+            name: 'a',
+        }
+    }],
+}
 export const DishDialog = ({
     setId,
     id,
@@ -75,7 +100,7 @@ export const DishDialog = ({
     )
 }
 
-export const ItemMethods = ({title, item}: {title: string, item: FilterDishes_filterDishes_method []| null;}) => {
+export const ItemMethods = ({title, item}: {title: string, item: dish_dish_method []| null;}) => {
     return (
         <>
         <Grid key={0} item xs={12}>
@@ -109,7 +134,7 @@ export const ItemMethods = ({title, item}: {title: string, item: FilterDishes_fi
     )
 }
 
-export const ItemRecipes = ({title, item}: {title: string, item: FilterDishes_filterDishes_recipes []| null;}) => {
+export const ItemRecipes = ({title, item}: {title: string, item: dish_dish_recipes[]| null;}) => {
     return (
         <>
         <Grid key={0} item xs={12}>

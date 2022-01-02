@@ -8,34 +8,50 @@ import { FormikSelect } from "src/components/form/FormikSelect";
 import { RecipeInput, QuantityToId, StepToMethodInput, DishInput } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
 import { UpdateDishVariables } from "../../Dishes/types/UpdateDish";
-import { useAllIngredientsQuery, useGetIngredientsForRecipe, useUpdateRecipe } from "../api";
+import { useGetIngredientsForRecipe, useGetRecipeQuery, useUpdateRecipe } from "../api";
 import { FilterRecipes_filterRecipes } from "../types/FilterRecipes";
 import { UpdateRecipeVariables } from "../types/UpdateRecipe";
 import { H3, H5 } from "src/content/pages/Components/TextTypes";
 import { ingredientToQ, mapIngredientToQToInput } from "../AddRecipe";
 import { TableData } from "../AddRecipe/components/IngredientTable";
 import { LoadingScreen } from "src/components/layout";
+import { recipe_recipe } from "../types/recipe";
+
+export const emptyRecipe: recipe_recipe = {
+  __typename: "Recipe",
+  id: 'a',
+  name: 'a',
+  method: [],
+  rating: 0,
+  type: 'a',
+}
 
 export const UpdateRecipeDialog = ({
-    recipe,
+    id,
     open,
     onClose,
 }: {
-    recipe: FilterRecipes_filterRecipes,
+    id: string,
     open: boolean,
     onClose: () => void
 }) => {
   const [unit, setUnit] = useState('gram')
   const [quantity, setQuantity] = useState(100)
+
+  const { data, loading: loading1, error: error1 } = useGetRecipeQuery(id)
   const { data: data2, loading: loading2, error: error2, refetch: refetch } = useGetIngredientsForRecipe({
-    id: recipe.id,
+    id: id,
     quantity: quantity,
     unit: unit
 })
 
-    const { updateRecipe, loading, error } = useUpdateRecipe({
-        onCompleted: () => window.location.reload(),
-      });
+const { updateRecipe, loading, error } = useUpdateRecipe({
+  onCompleted: () => window.location.reload(),
+});
+
+  
+    let recipe = data.recipe
+
 
       const [stepHere, setStep] = useState(1)
       const [selectedIngredients, setIngredients] = React.useState<ingredientToQ[]>([]);
@@ -49,7 +65,7 @@ export const UpdateRecipeDialog = ({
         }
 
     const formInput: RecipeInput = {
-        id: recipe.id,
+        id: id,
         name: recipe.name,
         rating: recipe.rating,
         type: recipe.type
@@ -76,6 +92,8 @@ const formState : UpdateRecipeVariables = {
         method: formMethods
     }
 
+    if (loading1) return <LoadingScreen/>
+    if (error1) return <LoadingScreen/>
 
     if (loading) return <CircularProgress/>
     if (error) return <CircularProgress/>

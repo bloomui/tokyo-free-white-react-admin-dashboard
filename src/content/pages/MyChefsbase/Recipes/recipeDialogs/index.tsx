@@ -1,15 +1,78 @@
 import { Dialog, DialogTitle, DialogContent, Card, CardActionArea, Grid, Typography, TableContainer, TableBody, TableCell, TableHead, TableRow, List, ListItem, Button, DialogActions, TextField, MenuItem, Select, CircularProgress } from "@material-ui/core"
 import React, { useState } from "react"
-import { FormField } from "src/components/form/FormField"
-import { LoadingScreen } from "src/components/layout"
 import { H5 } from "src/content/pages/Components/TextTypes"
 import { DefaultNutritionOptions, NutritionOptionDropDown } from "../../Components/NutrutitionOptions"
-import { FilterDishes_filterDishes_method, FilterDishes_filterDishes_recipes } from "../../Dishes/types/FilterDishes"
+import { recipes_recipes } from "../../Dishes/AddDish/types/recipes"
+import { dish_dish_method } from "../../Dishes/types/dish"
 import { ItemNutrition } from "../../Ingredients/ingredientDialogs"
 import { ItemString, ItemInt } from "../../Menus/menuDialog"
 import { useGetIngredientsForRecipe, useGetNutritionForRecipe, useGetRecipeQuery } from "../api"
 import { ingredientsForRecipe_ingredientsForRecipe } from "../types/ingredientsForRecipe"
+import { NutritionForRecipe, NutritionForRecipe_nutritionForRecipe } from "../types/NutritionForRecipe"
 import { UpdateRecipeDialog } from "./UpdateRecipeDialog"
+
+export const zeroNutrition: NutritionForRecipe_nutritionForRecipe  = {
+    __typename: "Nutrition",
+  kcal: 0,
+  protein: {
+    __typename: "Proteins",
+    plant: 0,
+    animal: 0,
+    total: 0,
+  },
+  carbs: {
+    __typename: "Carbs",
+    carbs: 0,
+    sugar: 0,
+},
+  fat: {
+    __typename: "Fats",
+    satured: 0,
+    singleUnsat: 0,
+    compoundUnsat: 0,
+    total: 0,
+},
+  starch: 0,
+  polyols: 0,
+  fibres: 0,
+  nitrogen: 0,
+  polysachhariden: 0,
+  alcohol:0,
+  water: 0,
+  organicAcids: 0,
+  vitamins: {
+    __typename: "Vitamins",
+    e: 0,
+    c: 0,
+    kTotal: 0,
+    b12: 0,
+    dTotal: 0,
+  },
+  foliumAcid: 0,
+  pholate: 0,
+  pholatEquivalents: 0,
+  nicotinAcid: 0,
+  lycopeans: 0,
+  betaCrypto: 0,
+  zeacanthine:0,
+  lutein: 0,
+  ash: 0,
+  jodium: 0,
+  sink: 0,
+  selenium:0,
+  cupper: 0,
+  iron: {
+    __typename: "Iron",
+    total: 0,
+  },
+  magnesium: 0,
+  fosfor: 0,
+  calcium: 0,
+  kalium: 0,
+  natrium: 0,
+  cholesterol: 0,
+  famstxr: 0,
+}
 
 export const RecipeDialog = ({
     setId,
@@ -55,6 +118,7 @@ export const RecipeDialog = ({
     if (error2) return (
         <Dialog open={open} onClose={onClose}><CircularProgress /></Dialog>
         )
+
 
     let recipe = data.recipe
 
@@ -147,7 +211,7 @@ export const RecipeDialog = ({
             )}
         </Dialog>
         <UpdateRecipeDialog
-        recipe={recipe}
+        id={recipe.id}
         open={openUpdateDialog}
         onClose={() => setUpdateDialog(false)}
         />
@@ -155,7 +219,7 @@ export const RecipeDialog = ({
     )
 }
 
-export const ItemMethods = ({title, item}: {title: string, item: FilterDishes_filterDishes_method []| null;}) => {
+export const ItemMethods = ({title, item}: {title: string, item: dish_dish_method []| null;}) => {
     return (
         <>
         <Grid key={0} item xs={12}>
@@ -223,7 +287,7 @@ export const ItemIngredients = ({title, item}: {title: string, item: ingredients
     )
 }
 
-export const ItemRecipes = ({title, item}: {title: string, item: FilterDishes_filterDishes_recipes []| null;}) => {
+export const ItemRecipes = ({title, item}: {title: string, item: recipes_recipes[]| null;}) => {
     return (
         <>
         <Grid key={0} item xs={12}>
@@ -242,10 +306,10 @@ export const ItemRecipes = ({title, item}: {title: string, item: FilterDishes_fi
                 <>
                         <TableRow>
                             <TableCell align="left">
-                            {quantityToRecipe.recipe.name}
+                            {/* {quantityToRecipe.recipe.name} */}
                             </TableCell>
                             <TableCell align="left">
-                            {quantityToRecipe.quantity.quantity} {quantityToRecipe.quantity.unit}
+                            {/* {quantityToRecipe.quantity.quantity} {quantityToRecipe.quantity.unit} */}
                             </TableCell>
                         </TableRow>
                         </>

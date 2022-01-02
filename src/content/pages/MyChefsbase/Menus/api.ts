@@ -57,16 +57,6 @@ query FilterMenus ($input: MenuFilterInput, $offset: Int, $limit: Int) {
     season
     rating
     theme
-    courses {
-      course {
-        id
-        courseType
-      }
-      dishes {
-        id
-        name
-      }
-    }
   }
 }
 `;

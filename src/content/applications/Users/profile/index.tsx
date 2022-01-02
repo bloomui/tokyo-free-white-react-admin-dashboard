@@ -10,6 +10,8 @@ import Feed from './Feed';
 import PopularTags from './PopularTags';
 import MyCards from './MyCards';
 import Addresses from './Addresses';
+import React from 'react';
+import ProfilePage from 'src/content/pages/Account';
 
 function ManagementUserProfile() {
 
@@ -37,7 +39,7 @@ function ManagementUserProfile() {
           spacing={3}
         >
           <Grid item xs={12} md={8}>
-            <ProfileCover user={user} />
+            <ProfilePage/>
           </Grid>
           <Grid item xs={12} md={4}>
             <RecentActivity />
