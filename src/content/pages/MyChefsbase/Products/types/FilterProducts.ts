@@ -21,13 +21,6 @@ export interface FilterProducts_filterProducts_price {
   quantity: FilterProducts_filterProducts_price_quantity | null;
 }
 
-export interface FilterProducts_filterProducts_suppliers {
-  __typename: "Supplier";
-  id: string;
-  name: string;
-  email: string;
-}
-
 export interface FilterProducts_filterProducts {
   __typename: "Product";
   id: string;
@@ -36,7 +29,6 @@ export interface FilterProducts_filterProducts {
   price: FilterProducts_filterProducts_price | null;
   brand: string | null;
   origin: string | null;
-  suppliers: FilterProducts_filterProducts_suppliers[] | null;
 }
 
 export interface FilterProducts {

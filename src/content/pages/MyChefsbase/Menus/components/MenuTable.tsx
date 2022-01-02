@@ -25,6 +25,7 @@ import { AreYouSureDelete } from "../filtermenus/components/AreYouSureDelete";
 import { FilterMenus, FilterMenus_filterMenus } from "../types/FilterMenus";
 import { ingredient_ingredient } from "../../Ingredients/types/ingredient";
 import {useNavigate} from 'react-router-dom';
+import { menu_menu } from "../types/menu";
 
 export interface EnhancedTableProps {
     numSelected: number;
@@ -270,7 +271,7 @@ const navigate = useNavigate()
             )}
             {menu && (
               <UpdateMenuDialog 
-                 menu={menu}
+                 id={menu.id}
                  open={openUpdate}
                  onClose={() => setOpenUpdate(false)}
                  /> 

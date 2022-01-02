@@ -80,8 +80,6 @@ export interface DishFilterInput {
   comment?: string[] | null;
   course?: string[] | null;
   name?: string | null;
-  offset?: number | null;
-  limit?: number | null;
 }
 
 export interface DishInput {
@@ -101,8 +99,6 @@ export interface IngredientFilterInput {
   categories?: string[] | null;
   rating?: number | null;
   menus?: string[] | null;
-  offset?: number | null;
-  limit?: number | null;
   name?: string | null;
 }
 
@@ -127,8 +123,6 @@ export interface MenuFilterInput {
   periodenddate?: string | null;
   seasons?: string[] | null;
   name?: string | null;
-  offset?: number | null;
-  limit?: number | null;
 }
 
 export interface MenuInput {
@@ -231,8 +225,6 @@ export interface ProductFilterInput {
   minPrice?: number | null;
   rating?: number | null;
   menus?: string[] | null;
-  offset?: number | null;
-  limit?: number | null;
   name?: string | null;
 }
 
@@ -267,8 +259,6 @@ export interface RecipeFilterInput {
   rating?: number | null;
   menus?: string[] | null;
   types?: string[] | null;
-  offset?: number | null;
-  limit?: number | null;
   name?: string | null;
 }
 
@@ -290,9 +280,6 @@ export interface SupplierFilterInput {
   dishes?: string[] | null;
   rating?: number | null;
   menus?: string[] | null;
-  types?: string[] | null;
-  offset?: number | null;
-  limit?: number | null;
   name?: string | null;
   recipes?: string[] | null;
 }

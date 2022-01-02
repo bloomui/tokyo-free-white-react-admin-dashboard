@@ -1,6 +1,8 @@
 import { gql } from "@apollo/client";
 import { useSimpleQuery } from "src/utilities/apollo";
 import { products } from "./types/products";
+import { searchIngredient, searchIngredientVariables } from "./types/searchIngredient";
+import { searchProduct, searchProductVariables } from "./types/searchProduct";
 
 export const productsQuery =  gql`
     query products ($name: String, $offset: Int, $limit: Int) {
@@ -22,6 +24,56 @@ export const productsQuery =  gql`
     }
 `;
 
+export const searchIngredientsQuery =  gql`
+    query searchIngredient ($ingredientname: String) {
+      searchIngredient (ingredientname: $ingredientname) {
+            id
+            name
+        }
+    }
+`;
+
+export const useSearchIngredientFilterQuery = ({
+  name
+}: {
+  name: string
+}) => {
+
+  const { loading, data, error, refetch } = useSimpleQuery<
+  searchIngredient, searchIngredientVariables
+    >(searchIngredientsQuery, {
+    variables: {
+      ingredientname: name
+    },
+  });
+  return { loading, data, error, refetch};
+};
+
+export const searchProductsQuery =  gql`
+    query searchProduct ($productname: String) {
+      searchProduct (productname: $productname) {
+            id
+            name
+        }
+    }
+`;
+export const useSearchProductFilterQuery = ({
+  productname
+}: {
+  productname: string
+}) => {
+
+  const { loading, data, error, refetch } = useSimpleQuery<
+  searchProduct, searchProductVariables
+    >(searchProductsQuery, {
+    variables: {
+      productname: productname
+    },
+  });
+  return { loading, data, error, refetch};
+};
+
+
 export const productsRowsPerPage = 10;
 export const useSearchProductQuery = ({
     page, 
@@ -30,7 +82,7 @@ export const useSearchProductQuery = ({
     name: string,
     page: number
 }) => {
-    const offset = page * productsRowsPerPage
+    const offset = (page == 0)? productsRowsPerPage : page * productsRowsPerPage
 
     const { loading, data, error, refetch } = useSimpleQuery<
     products

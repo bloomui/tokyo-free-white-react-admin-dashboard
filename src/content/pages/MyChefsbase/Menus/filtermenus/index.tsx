@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
-import { Paper, Grid, Button, Dialog, DialogActions, DialogTitle, DialogContent, Card, CardActions, CardContent, Collapse, IconButton, IconButtonProps, styled } from "@material-ui/core";
-import { Formik, Form, useFormikContext } from "formik";
+import { Paper, Grid, Button, Dialog, DialogActions, DialogTitle, DialogContent, Card, CardActions, CardContent, Collapse, IconButton, IconButtonProps, styled, TextField, TableRow, Table, TableCell, TableContainer, Autocomplete } from "@material-ui/core";
+import { Formik, Form, useFormikContext, FieldArray } from "formik";
 import { StringValueNode } from "graphql";
 import React, { useState } from "react";
 import { FaFilter } from "react-icons/fa";
@@ -8,47 +8,60 @@ import { LoadingScreen } from "src/components/layout";
 import {useNavigate} from 'react-router-dom';
 import { MenuFilterInput } from "src/globalTypes";
 import { MenusData } from "../api";
-import { Menus_suppliers, Menus_recipes, Menus_dishes, Menus_ingredients, Menus_products } from "../types/Menus";
 import { Dishes } from "./components/dishes";
 import { Ingredients } from "./components/ingredients";
 import { Period } from "./components/period";
-import { Products } from "./components/products";
+import { FilterProducts, Products } from "./components/products";
 import { Rating1 } from "./components/rating";
 import { Recipes } from "./components/recipes";
 import { Search } from "./components/search";
 import { Seasons } from "./components/seasons";
 import { Suppliers } from "./components/suppliers";
 import { Themes } from "./components/themes";
+import { product_product } from "../../Products/types/product";
+import { useSearchProductFilterQuery, useSearchProductQuery } from "../../Ingredients/AddIngredient/api";
+import { H5 } from "src/content/pages/Components/TextTypes";
+import { productToQ } from "../../Ingredients/AddIngredient";
+import { searchProduct_searchProduct } from "../../Ingredients/AddIngredient/types/searchProduct";
 
   export const MenuFilterDialog = ({
-    setOpenAddMenu,
-    onClose,
     initialValues,
-    products,
-    suppliers,
     themes,
     seasons,
-    recipes,
-    dishes,
-    ingredients,
     onChange,
   }: {
-    setOpenAddMenu: () => void;
-    onClose: () => void;
     initialValues: MenuFilterInput;
     themes: string[] | null;
     seasons: string[] | null;
-    suppliers: Menus_suppliers[] | null;
-    recipes: Menus_recipes[] | null;
-    dishes: Menus_dishes[] | null;
-    ingredients: Menus_ingredients[] | null;
-    products: Menus_products[] | null;
     onChange: (values: MenuFilterInput) => void;
   }) => {
-
     const [ openFilterInputDialog, setOpenFilterInputDialog] = React.useState(false)
     const navigate = useNavigate()
+    const [productname, setProductname] = useState('')
 
+    const  emptyOne: searchProduct_searchProduct = {
+      __typename: "Product",
+      name: '',
+      id: ''
+    }
+    const [selectedProducts, setProducts] = React.useState<searchProduct_searchProduct[]>([emptyOne]);
+
+    const { data, loading, error, refetch } = useSearchProductFilterQuery({productname: productname})
+    
+    const [timer, setTimer] = useState(null);
+    
+  function changeDelay(change) {
+    if (timer) {
+      clearTimeout(timer);
+      setTimer(null);
+    }
+    setTimer(
+      setTimeout(() => {
+        setProductname(change);
+        refetch({productname: productname})
+      }, 100)
+    );
+  }
     return (
       <Card>
         <Formik
@@ -57,7 +70,7 @@ import { Themes } from "./components/themes";
          onChange(values)
         }}
         >
-        {({ setFieldValue, submitForm }) => {
+        {({ setFieldValue, submitForm, handleChange, values }) => {
           return (
             <>
       <Grid container xs={12}>
@@ -85,10 +98,10 @@ import { Themes } from "./components/themes";
       <Collapse in={openFilterInputDialog} timeout="auto" unmountOnExit>
         <CardContent>   
                   <Grid container spacing={2} xs={12}>
-           <Grid xs={1}></Grid>
-           <Grid item xs={8}>
+           <Grid item xs={3}>
             <Period setFieldValue={setFieldValue}/>
             </Grid>
+            <Grid xs={1}></Grid>
             <Grid item xs={3}>
             <Themes 
             themes={themes}
@@ -102,41 +115,51 @@ import { Themes } from "./components/themes";
             </Grid>
             <Grid xs={1}></Grid>
             <Grid item xs={3}>
+           <Rating1 
+           updateField="rating"
+           setFieldValue={setFieldValue}/>
+           </Grid>
+           <Grid xs={1}></Grid>
+            <Grid item xs={3}>
               <Suppliers 
-              suppliers={suppliers}
               setFieldValue={setFieldValue} />
           </Grid>
           <Grid xs={1}></Grid>
-          <Grid item xs={3}>
+           <Grid item xs={3}> 
+           <Products 
+              setFieldValue={setFieldValue} />
+              </Grid>
+              <Grid xs={1}></Grid>
+              <Grid item xs={3}> 
+           <Products 
+              setFieldValue={setFieldValue} />
+              </Grid>
+              <Grid xs={1}></Grid>
+              <Grid item xs={3}> 
+           <Products 
+              setFieldValue={setFieldValue} />
+              </Grid>
+              <Grid xs={1}></Grid>
+              <Grid item xs={3}> 
             <Products 
-            products={products}
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid xs={1}></Grid>
             <Grid item xs={3}>
             <Ingredients 
-            ingredients={ingredients}
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid xs={1}></Grid>
             <Grid item xs={3}>
             <Recipes 
-            recipes={recipes}
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid xs={1}></Grid>
             <Grid item xs={3}>
             <Dishes 
-            dishes={dishes}
             setFieldValue={setFieldValue} />
-            </Grid> 
-            <Grid xs={1}></Grid>
-            <Grid item xs={3}>
-           <Rating1 
-           updateField="rating"
-           setFieldValue={setFieldValue}/>
-           </Grid>        
-            </Grid>
+            </Grid>   
+            </Grid>   
               </CardContent>
               </Collapse>
               <AutoSubmitToken />
@@ -172,3 +195,83 @@ export const ExpandMore = styled((props: ExpandMoreProps) => {
               duration: theme.transitions.duration.shortest,
             }),
           }));
+
+          export const FilterOnProducts = (
+            {
+              setFieldValue,
+            }: {
+              setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void
+            }
+          ) => {
+            const [name, setName] = useState('')
+            const [products, setProducts] = useState<idToName[]>([])
+            function handleDelete(index) {
+              products.splice(index, 1)
+              setProducts([...products])
+            }
+
+            const {data, error, loading, refetch} = useSearchProductFilterQuery({
+              productname: name,
+            })
+            if (loading) return <LoadingScreen />;
+            if (error) return <LoadingScreen />;
+
+            return (
+              <>
+              <TextField
+              onKeyPress= {(e) => {
+                if (e.key === 'Enter') {
+                  console.log(e.key);
+                refetch({productname: name})
+              }
+              }}   
+      fullWidth
+      placeholder="Producten"
+      onChange={(e) => setName(e.target.value)}
+    />
+    <Grid container xs={12}>
+    <Grid xs={6}>
+        <Table>
+    {products.map((product, index) => (
+      <TableRow>
+        <TableCell>
+        {product.name}
+        </TableCell>
+        <TableCell>
+          <Button onClick={() => handleDelete(index)}>-</Button>
+        </TableCell>
+      </TableRow>
+    ))}
+    </Table></Grid>
+      <Grid xs={6}>
+        <Table>
+    {data && data.searchProduct && data.searchProduct.map((product, index) => (
+      <TableRow>
+        <TableCell>
+        {product.name}
+        </TableCell>
+        <TableCell>
+          <Button onClick={() => products.push({
+            id: product.id,
+            name: product.name})
+          }>+</Button>
+        </TableCell>
+      </TableRow>
+    ))}
+    </Table>
+    </Grid>
+      
+    <Grid xs={12}>
+      <Button variant="contained" color="primary" 
+    onClick={() => setFieldValue("products", products.map((option) => option.id))}>
+      Filters toepassen
+      </Button>
+      </Grid>
+    </Grid>
+              </>
+            )
+          }
+          export type idToName = {
+            id: string,
+            name: string
+          }

@@ -16,8 +16,8 @@ import { Strings } from "../../Menus/filtermenus/components/strings";
 import { Suppliers } from "../../Menus/filtermenus/components/suppliers";
 import { Types } from "../../Menus/filtermenus/components/types";
 import { initialRecipeValues } from "../../Recipes/filterrecipes";
-import { Products_suppliers, Products_dishes, Products_menus, Products_recipes, Products_ingredients } from "../types/Products";
 import {useNavigate} from 'react-router-dom';
+import { H3 } from "src/content/pages/Components/TextTypes";
 
 
 export type ProductFilterFormInput = {
@@ -66,26 +66,12 @@ export const initialProductValues: ProductFilterFormInput = {
   }
   
   export const ProductFilter = ({
-    setOpenAddProduct,
-    onClose,
-    ingredients,
     origins,
     brands,
-    suppliers,
-    dishes,
-    menus,
-    recipes,
     onChange,
   }: {
-    setOpenAddProduct: () => void;
-    onClose: () => void;
     origins: string[] | null;
     brands: string[] | null;
-    suppliers: Products_suppliers[] | null;
-    dishes: Products_dishes[] | null;
-    menus: Products_menus[] | null;
-    recipes: Products_recipes[] | null;
-    ingredients: Products_ingredients[] | null;
     onChange: (values: ProductFilterFormInput) => void;
   }) => {
 
@@ -100,7 +86,7 @@ export const initialProductValues: ProductFilterFormInput = {
          onChange(values)
         }}
         >
-        {({ setFieldValue, submitForm }) => {
+        {({ setFieldValue }) => {
           return (
             <>
            <Grid container xs={12}>
@@ -135,27 +121,22 @@ export const initialProductValues: ProductFilterFormInput = {
            </Grid>
            <Grid key={2} item xs={3}>
               <Suppliers 
-              suppliers={suppliers}
               setFieldValue={setFieldValue} />
           </Grid>
           <Grid key={3} item xs={3}>
             <Ingredients 
-            ingredients={ingredients}
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={4} item xs={3}>
             <Recipes 
-            recipes={recipes}
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={5} item xs={3}>
             <Dishes 
-            dishes={dishes}
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={6} item xs={3}>
             <Menus 
-            menus={menus}
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={7} item xs={3}>
@@ -171,6 +152,7 @@ export const initialProductValues: ProductFilterFormInput = {
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={7} item xs={3}>
+              <H3 title="Prijs"/>
             <PriceRange
             setFieldValue={setFieldValue} />
             </Grid>

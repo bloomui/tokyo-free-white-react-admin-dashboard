@@ -1,10 +1,9 @@
 import { Dialog, DialogTitle, DialogContent, Card, CardActionArea, Grid, Typography, TableContainer, TableBody, TableCell, TableHead, TableRow, List, ListItem, Button, DialogActions } from "@material-ui/core"
 import React, { useState } from "react"
 import { LoadingScreen } from "src/components/layout"
-import { FilterDishes_filterDishes_method, FilterDishes_filterDishes_recipes } from "../../Dishes/types/FilterDishes"
 import { ItemString, ItemInt, ItemDouble } from "../../Menus/menuDialog"
 import { useGetProductQuery } from "../api"
-import { FilterProducts_filterProducts_suppliers } from "../types/FilterProducts"
+import { product_product_suppliers } from "../types/product"
 import { UpdateProductDialog } from "./updateProductDialog"
 
 export const ProductDialog = ({
@@ -76,14 +75,14 @@ export const ProductDialog = ({
             )}
         </Dialog>
         <UpdateProductDialog
-        product={product}
+        id={product.id}
         open={openUpdateDialog}
         onClose={() => setUpdateDialog(false)}
         />
         </>
     )
 }
-export const ItemSuppliers = ({title, item}: {title: string, item: FilterProducts_filterProducts_suppliers []| null;}) => {
+export const ItemSuppliers = ({title, item}: {title: string, item: product_product_suppliers []| null;}) => {
     return (
         <>
         <Grid key={0} item xs={12}>

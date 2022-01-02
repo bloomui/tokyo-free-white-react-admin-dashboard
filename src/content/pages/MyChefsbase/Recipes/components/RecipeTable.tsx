@@ -220,7 +220,7 @@ headCells={headCellsRecipes}
             )}
             {recipe && (
               <UpdateRecipeDialog 
-                 recipe={recipe}
+                 id={recipe.id}
                  open={openUpdate}
                  onClose={() => setOpenUpdate(false)}
                  /> 

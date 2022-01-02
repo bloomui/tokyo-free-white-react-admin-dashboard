@@ -2,7 +2,6 @@ import { Dialog, DialogTitle, DialogContent, Card, CardActionArea, Grid, Typogra
 import React, { useState } from "react"
 import { LoadingScreen } from "src/components/layout"
 import { composeValidators, required } from "src/utilities/formikValidators"
-import { FilterDishes_filterDishes_method, FilterDishes_filterDishes_recipes } from "../../Dishes/types/FilterDishes"
 import { ItemString, ItemInt } from "../../Menus/menuDialog"
 import { useGetSupplierQuery } from "../api"
 import { UpdateSupplierDialog } from "./updateSupplierDialog"

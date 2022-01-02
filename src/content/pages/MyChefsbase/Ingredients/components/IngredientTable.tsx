@@ -216,7 +216,7 @@ headCells={headCellsIngredients}
             )}
             {ingredient && (
               <UpdateIngredientDialog 
-                 ingredient={ingredient}
+                 id={ingredient.id}
                  open={openUpdate}
                  onClose={() => setOpenUpdate(false)}
                  /> 

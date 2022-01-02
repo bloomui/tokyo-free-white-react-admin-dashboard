@@ -18,6 +18,7 @@
     "@material-ui/styles": "5.0.0-beta.2",
     "@mui/material": "^5.0.0",
     "@mui/styles": "^5.0.1",
+    "@mui/x-data-grid": "^5.1.0",
     "@types/js-cookie": "^2.2.7",
     "@types/nprogress": "0.2.0",
     "@types/react": "17.0.15",
@@ -38,12 +39,14 @@
     "react-chartjs-2": "2.11.1",
     "react-cookie": "^4.1.1",
     "react-custom-scrollbars-2": "4.4.0",
+    "react-datepicker": "^4.5.0",
     "react-dom": "17.0.2",
     "react-helmet-async": "1.0.9",
     "react-icons": "^4.2.0",
     "react-router": "6.0.0-beta.0",
     "react-router-dom": "^6.0.0-beta.0",
     "react-scripts": "4.0.3",
+    "react-table": "^7.7.0",
     "stylis": "4.0.10",
     "stylis-plugin-rtl": "2.1.0",
     "web-vitals": "2.1.0"
@@ -53,7 +56,7 @@
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "graphql-types-client": "apollo codegen:generate --localSchemaFile=src/schema.json --target=typescript --tagName=gql --addTypename --passthroughCustomScalars  --customScalarsPrefix GraphQL --globalTypesFile=src/globalTypes.ts types",
-    "download-schema": "apollo schema:download --endpoint=http://localhost:9090/graphql src/schema.json"
+    "download-schema": "apollo schema:download --endpoint=http://localhost:8080/graphql src/schema.json"
   },
   "eslintConfig": {
     "extends": [

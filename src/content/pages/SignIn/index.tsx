@@ -83,8 +83,6 @@ const SignInForm = () => {
                   </Grid>
                   <Grid item xs={12} sm={12}>
                   <Button
-            // component={RouterLink}
-            // to="/mychefsbase/chefsbase"
             size="large"
             variant="contained"
             onClick={async () => {
@@ -95,11 +93,6 @@ const SignInForm = () => {
                     password
                   }
                 })
-
-
-
-
-
             }}
           >
                 Sign In
@@ -108,7 +101,7 @@ const SignInForm = () => {
                   <Grid item xs={12} sm={12}>
                   <Button
             component={RouterLink}
-            to="/authenticate/SignUp"
+            to="/authorize/SignUp"
             size="large"
             variant="contained"
           >

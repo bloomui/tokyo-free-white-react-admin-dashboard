@@ -9,24 +9,6 @@ import { MenuFilterInput } from "./../../../../../globalTypes";
 // GraphQL query operation: FilterMenus
 // ====================================================
 
-export interface FilterMenus_filterMenus_courses_course {
-  __typename: "Course";
-  id: string;
-  courseType: string;
-}
-
-export interface FilterMenus_filterMenus_courses_dishes {
-  __typename: "Dish";
-  id: string;
-  name: string;
-}
-
-export interface FilterMenus_filterMenus_courses {
-  __typename: "CourseToDishes";
-  course: FilterMenus_filterMenus_courses_course;
-  dishes: FilterMenus_filterMenus_courses_dishes[];
-}
-
 export interface FilterMenus_filterMenus {
   __typename: "NewMenu";
   id: string;
@@ -36,7 +18,6 @@ export interface FilterMenus_filterMenus {
   season: string | null;
   rating: number | null;
   theme: string | null;
-  courses: FilterMenus_filterMenus_courses[] | null;
 }
 
 export interface FilterMenus {

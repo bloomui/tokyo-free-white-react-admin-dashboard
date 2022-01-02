@@ -15,7 +15,6 @@ import { Search } from "../../Menus/filtermenus/components/search";
 import { Suppliers } from "../../Menus/filtermenus/components/suppliers";
 import { Types } from "../../Menus/filtermenus/components/types";
 import { initialRecipeValues } from "../../Recipes/filterrecipes";
-import { Ingredients_dishes, Ingredients_menus, Ingredients_products, Ingredients_recipes, Ingredients_suppliers } from "../types/Ingredients";
 import {useNavigate} from 'react-router-dom';
 
 
@@ -31,23 +30,9 @@ export const initialIngredientValues: IngredientFilterInput = {
   }
   
   export const IngredientFilter = ({
-    setOpenAddIngredient,
-    onClose,
     allCategories,
-    products,
-    suppliers,
-    dishes,
-    menus,
-    recipes,
     onChange,
   }: {
-    setOpenAddIngredient: () => void;
-    onClose: () => void;
-    suppliers: Ingredients_suppliers[] | null;
-    dishes: Ingredients_dishes[] | null;
-    menus: Ingredients_menus[] | null;
-    recipes: Ingredients_recipes[] | null;
-    products: Ingredients_products[] | null;
     allCategories: string[] | null;
     onChange: (values: IngredientFilterInput) => void;
   }) => {
@@ -63,7 +48,7 @@ export const initialIngredientValues: IngredientFilterInput = {
          onChange(values)
         }}
         >
-        {({ setFieldValue, submitForm }) => {
+        {({ setFieldValue }) => {
           return (
             <>
            <Grid container xs={12}>
@@ -104,27 +89,22 @@ export const initialIngredientValues: IngredientFilterInput = {
             </Grid> 
            <Grid key={2} item xs={3}>
               <Suppliers 
-              suppliers={suppliers}
               setFieldValue={setFieldValue} />
           </Grid>
           <Grid key={3} item xs={3}>
             <Products 
-            products={products}
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={4} item xs={3}>
             <Recipes 
-            recipes={recipes}
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={5} item xs={3}>
             <Dishes 
-            dishes={dishes}
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={6} item xs={3}>
             <Menus 
-            menus={menus}
             setFieldValue={setFieldValue} />
             </Grid>
             </Grid>

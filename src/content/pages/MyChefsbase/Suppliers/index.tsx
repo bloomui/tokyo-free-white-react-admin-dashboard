@@ -10,7 +10,6 @@ import { useFilterSuppliersQuery } from "./api";
 import { TopPartSupplierPage } from "./components/SupplierPageTopPart";
 import { SupplierTable } from "./components/SupplierTable";
 import { initialSupplierValues } from "./filtersuppliers";
-import { AddSupplierDialog } from "./supplierDialogs/AddSupplierDialog";
   export const SupplierPage = ({
     page,
     setPage,
@@ -19,7 +18,6 @@ import { AddSupplierDialog } from "./supplierDialogs/AddSupplierDialog";
     setPage: (newPage: number) => void;
   }) => {
 
-    const [openAddMenu, setOpenAddSupplier] = useState(false)
     const [ input, setInput] = useState<ProductFilterInput>(initialSupplierValues);
     const { loading, data } = useFilterSuppliersQuery({
         page: page,
@@ -43,14 +41,9 @@ import { AddSupplierDialog } from "./supplierDialogs/AddSupplierDialog";
     return (
       <>
       <TopPartSupplierPage 
-      setOpenAddSupplier={() => setOpenAddSupplier(true)} 
       setInput={(values) => setInput(values)}/>
           <Box height={3}>{loading && <LinearProgress />}</Box>
         {content}
-        <AddSupplierDialog 
-                  open={openAddMenu}
-                  onClose={() => setOpenAddSupplier(false)}
-                  />
       </>
     );
   };

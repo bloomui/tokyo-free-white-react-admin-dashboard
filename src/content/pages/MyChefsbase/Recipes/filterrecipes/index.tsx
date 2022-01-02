@@ -12,7 +12,6 @@ import { Rating1 } from "../../Menus/filtermenus/components/rating";
 import { Search } from "../../Menus/filtermenus/components/search";
 import { Suppliers } from "../../Menus/filtermenus/components/suppliers";
 import { Types } from "../../Menus/filtermenus/components/types";
-import { Recipes_suppliers, Recipes_dishes, Recipes_menus, Recipes_ingredients, Recipes_products } from "../types/Recipes";
 import {useNavigate} from 'react-router-dom';
 
 
@@ -28,24 +27,10 @@ export const initialRecipeValues: RecipeFilterInput = {
   }
   
   export const RecipeFilter = ({
-    setOpenAddRecipe,
-    onClose,
-    products,
-    suppliers,
     types,
-    dishes,
-    menus,
-    ingredients,
     onChange,
   }: {
-    setOpenAddRecipe: () => void;
-    onClose: () => void;
     types: string[] | null;
-    suppliers: Recipes_suppliers[] | null;
-    dishes: Recipes_dishes[] | null;
-    menus: Recipes_menus[] | null;
-    ingredients: Recipes_ingredients[] | null;
-    products: Recipes_products[] | null;
     onChange: (values: RecipeFilterInput) => void;
   }) => {
 
@@ -101,27 +86,22 @@ export const initialRecipeValues: RecipeFilterInput = {
             </Grid>
             <Grid key={3} item xs={3}>
               <Suppliers 
-              suppliers={suppliers}
               setFieldValue={setFieldValue} />
           </Grid>
           <Grid key={4} item xs={3}>
             <Products 
-            products={products}
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={5} item xs={3}>
             <Ingredients 
-            ingredients={ingredients}
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={6} item xs={3}>
             <Dishes 
-            dishes={dishes}
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={7} item xs={3}>
             <Menus 
-            menus={menus}
             setFieldValue={setFieldValue} />
             </Grid>
             </Grid>

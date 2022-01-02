@@ -38,15 +38,6 @@ export const useGetRecipeQuery = (id: string) => {
     return { loading, data, error};
   };
 
-const AllIngredientsQuery = gql`
- query AllIngredients {
-   ingredients {
-     id
-     name
-   }
- }
-`;
-
 export const FilterRecipesQuery = gql`
 query FilterRecipes ($input: RecipeFilterInput, $offset: Int, $limit: Int) {
   numberOfRecipes  
@@ -55,36 +46,12 @@ query FilterRecipes ($input: RecipeFilterInput, $offset: Int, $limit: Int) {
         name
         rating
         type
-        method {
-          step
-          method
-        }
       }
     }`;
 
 export const RecipesData = gql`
 query Recipes {
   allTypes
-  suppliers {
-    id
-    name
-  }
-  products {
-    id
-    name
-  }
-  ingredients {
-    id
-    name
-  }
-  dishes {
-    id
-    name
-  }
-  menus {
-    id
-    name
-  }
 }
 `;
 
@@ -108,8 +75,8 @@ query NutritionForRecipe ($id: String!, $quantity: Float!, $unit: String!) {
       kcal
       protein {
       plant
-animal
-total
+      animal
+      total
       }
   carbs {
     carbs
@@ -217,14 +184,6 @@ export const useGetIngredientsForRecipe = ({
   });
   return { loading, data, error, refetch};
 };
-
-export const useAllIngredientsQuery = () => {
-
-    const { loading, data, error } = useSimpleQuery<
-    AllIngredients
-    >(AllIngredientsQuery);
-    return { loading, data, error};
-  };
 
 export const recipeRowsPerPage = 10;
 export const useFilterRecipesQuery = ({

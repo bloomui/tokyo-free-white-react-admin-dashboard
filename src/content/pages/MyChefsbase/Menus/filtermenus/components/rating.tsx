@@ -100,7 +100,7 @@ export const Rating1 = ({
       <>
       <Grid container spacing={2} xs={12}>
       <Grid item>
-    <Typography >Opmerking:</Typography>
+    <H5 title="Opmerkingen"/>
     </Grid>
     </Grid>
     <Grid container spacing={2} xs={12}>

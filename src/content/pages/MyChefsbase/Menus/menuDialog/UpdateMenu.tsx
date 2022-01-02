@@ -6,43 +6,44 @@ import React from "react";
 import { FormField, FormFieldEdit } from "src/components/form/FormField";
 import { AddCourseToDishesInput, MenuInput } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
-import { useAllDishesQuery, useUpdateMenu } from "../api";
+import { useAllDishesQuery, useGetMenuQuery, useUpdateMenu } from "../api";
 import { Rating1, RatingEdit, RatingLabels } from "../filtermenus/components/rating";
-import { FilterMenus, FilterMenus_filterMenus, FilterMenus_filterMenus_courses_dishes } from "../types/FilterMenus";
-import { Menus_dishes } from "../types/Menus";
+import { FilterMenus, FilterMenus_filterMenus } from "../types/FilterMenus";
 import { UpdateMenuVariables } from "../types/UpdateMenu"
 import { H3, H5 } from "src/content/pages/Components/TextTypes";
 import { TableDishData } from "../AddMenu/components/DishTable";
 import { Grid } from "@mui/material";
 import { dishForCourse, mapCoursesToInput } from "../AddMenu";
+import { menu_menu } from "../types/menu";
+import { LoadingScreen } from "src/components/layout";
 
 export const UpdateMenuDialog = ({
-    menu,
+    id,
     open,
     onClose,
 }: {
-    menu: FilterMenus_filterMenus | null,
+    id: string,
     open: boolean,
     onClose: () => void
 }) => {
   
-  const {data} = useAllDishesQuery()
+    const {data, loading: loading1,  error: error1} = useGetMenuQuery(id)
 
     const { updateMenu, loading, error } = useUpdateMenu({
         onCompleted: () => window.location.reload(),
       });
 
-    const formInput: MenuInput = menu? {
-        id: menu.id,
-        name: menu.name,
-        rating: menu.rating,
-        season: menu.season,
-        theme: menu.theme,
-        periodstartdate: menu.periodstartdate,
-        periodenddate: menu.periodenddate,
+    const formInput: MenuInput = data? {
+        id: data.menu.id,
+        name: data.menu.name,
+        rating: data.menu.rating,
+        season: data.menu.season,
+        theme: data.menu.theme,
+        periodstartdate: data.menu.periodstartdate,
+        periodenddate: data.menu.periodenddate,
     }: null
 
-    const formcourses: AddCourseToDishesInput[] | null = menu? (menu.courses? (menu.courses.map((course) => (
+    const formcourses: AddCourseToDishesInput[] | null = data? (data.menu.courses? (data.menu.courses.map((course) => (
         {
             courseid: course.course.id,
             coursetype: course.course.courseType,
@@ -61,6 +62,8 @@ export const UpdateMenuDialog = ({
         setDishes([...selectedDishes])
       }
 
+      if (loading) return <LoadingScreen/>
+
     return (
     <Dialog fullScreen open={open} onClose={onClose}>
       <Formik
@@ -70,7 +73,7 @@ export const UpdateMenuDialog = ({
             variables: {
               courses: mapCoursesToInput(selectedDishes),
               input: {
-                id: menu.id,
+                id: id,
                 name: values.input.name,
                 rating: values.input.rating,
                 season: values.input.season,
@@ -94,7 +97,7 @@ export const UpdateMenuDialog = ({
                     <Grid xs={3}>
                         <H5 title="Geef een menu naam op"/>
                  <FormFieldEdit
-                 placeholder={menu.name}
+                 placeholder={data.menu.name}
                   name="input.name"
                   label="Naam"
                 />
@@ -103,7 +106,7 @@ export const UpdateMenuDialog = ({
                 <Grid xs={3}>
                 <H5 title="Geef een seizoen op"/>
                 <FormFieldEdit
-                 placeholder={menu.season}
+                 placeholder={data.menu.season}
                   name="input.season"
                   label="Seizoen"
                 />
@@ -112,7 +115,7 @@ export const UpdateMenuDialog = ({
                 <Grid xs={3}>
                 <H5 title="Geef een thema op"/>
                 <FormFieldEdit
-                 placeholder={menu.theme}
+                 placeholder={data.menu.theme}
                   name="input.theme"
                   label="Thema"
                 />
@@ -123,7 +126,7 @@ export const UpdateMenuDialog = ({
                 </Grid>
                 <Grid xs={5}>
                 <FormFieldEdit
-                 placeholder={menu.periodstartdate}
+                 placeholder={data.menu.periodstartdate}
                   name="input.periodstartdate"
                   label="Vanaf"
                 />
@@ -131,7 +134,7 @@ export const UpdateMenuDialog = ({
                 <Grid xs={2}></Grid>
                 <Grid xs={5}>
                 <FormFieldEdit
-                 placeholder={menu.periodenddate}
+                 placeholder={data.menu.periodenddate}
                   name="input.periodenddate"
                   label="Tot"
                 />
@@ -151,7 +154,7 @@ export const UpdateMenuDialog = ({
                 </Grid>
                 <Grid xs={3}>
                 <RatingEdit
-                defaultNumber={menu.rating}
+                defaultNumber={data.menu.rating}
                 updateField="input.rating"
                 setFieldValue={setFieldValue}
                 />
