@@ -198,7 +198,7 @@ export const RecipeDialog = ({
                        />
                       <ItemIngredients
                       title="Recepten"
-                      item={[]}
+                      item={data2.ingredientsForRecipe}
                       />
                       <ItemMethods
                       title="Methode"

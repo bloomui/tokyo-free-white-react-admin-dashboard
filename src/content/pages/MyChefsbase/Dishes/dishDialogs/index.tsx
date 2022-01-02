@@ -44,12 +44,12 @@ export const DishDialog = ({
     onClose: () => void
 }) => {
 
-    // const { data, loading, error } = useGetDishQuery(id)
+    const { data, loading, error } = useGetDishQuery(id)
 
-    // if (loading) return <LoadingScreen/>
-    // if (error) return <LoadingScreen/>
+    if (loading) return <LoadingScreen/>
+    if (error) return <LoadingScreen/>
 
-    let dish = emptyDish
+    let dish = data.dish
 
     return (
         <Dialog open={open} onClose={onClose}>

@@ -50,7 +50,7 @@ export const Brands = ({
     <>
 <Grid container spacing={2} xs={12}>
 <Grid key={0} item>
- <Typography>Zoek op seizoen:</Typography>
+ <H5 title="Zoek op merken:"/>
  {brands && (
   <Autocomplete
 multiple

@@ -6,6 +6,7 @@ import { FaFilter } from "react-icons/fa";
 import {useNavigate} from 'react-router-dom';
 import { DishFilterInput } from "src/globalTypes";
 import { AutoSubmitToken, ExpandMore } from "../../Menus/filtermenus";
+import { Comments } from "../../Menus/filtermenus/components/comment";
 import { Ingredients } from "../../Menus/filtermenus/components/ingredients";
 import { Menus } from "../../Menus/filtermenus/components/menus";
 import { Products } from "../../Menus/filtermenus/components/products";
@@ -32,9 +33,11 @@ export const initialValues: DishFilterInput = {
   }
   
   export const DishFilter = ({
+    comments,
     themes,
     onChange,
   }: {
+    comments: string[] | null;
     themes: string[] | null;
     onChange: (values: DishFilterInput) => void;
   }) => {
@@ -85,7 +88,8 @@ export const initialValues: DishFilterInput = {
            setFieldValue={setFieldValue}/>
            </Grid>
            <Grid key={2} item xs={3}>
-           <Comment
+           <Comments
+           comments={comments}
             setFieldValue={setFieldValue} />
             </Grid>
             <Grid key={3} item xs={3}>

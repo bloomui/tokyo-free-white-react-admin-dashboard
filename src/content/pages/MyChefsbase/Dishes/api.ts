@@ -122,6 +122,7 @@ export const DishesData = gql`
 query Dishes {
   allThemes
   allTypes
+  allComments
 }
 `;
 

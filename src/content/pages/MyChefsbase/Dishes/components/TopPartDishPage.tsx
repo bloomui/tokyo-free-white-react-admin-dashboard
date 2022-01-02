@@ -18,6 +18,7 @@ export const TopPartDishPage = ({
   return (
     <DishFilter
     themes={data.allThemes}
+    comments={data.allComments}
     onChange={(values) => setInput(values)}
     />
   )
