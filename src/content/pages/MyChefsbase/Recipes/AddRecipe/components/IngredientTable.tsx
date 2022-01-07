@@ -77,7 +77,7 @@ export  const TableData = ({
         <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component={Paper}
-              count={data.numberOfIngredients ? data.numberOfIngredients : 1000}
+              count={data.ingredients.length}
               rowsPerPage={ingredientRowsPerPage}
               page={page}
               onPageChange={handleChangePage}
@@ -89,19 +89,18 @@ export  const TableData = ({
 
 const Row = ({data, setIngredient}: {data: ingredients_ingredients, setIngredient: (a) => void}) => {
 
-  const formState: ingredientToQ = {
-  name: data.name,
-  id: data.id,
+  const formState: { quantity: string, unit: string } = {
   quantity: '',
   unit: ''
 }
+  
 const  [open, setOpen] = useState<boolean>(false)
 
   return (
     <Formik
         initialValues={formState}
         onSubmit={(values) => {
-          setIngredient(values);
+          setIngredient({ name: data.name, id: data.id, ...values})
         }}
       >
         {({ setFieldValue, submitForm }) => {
