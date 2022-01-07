@@ -23,10 +23,11 @@ const SignUpForm = () => {
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   
+  const navigate = useNavigate()
+  
   const { signUp, loading, error } = useSignUp({
-    onCompleted: () => {}
-    // navigate('/authorize/SignIn')
-    },
+    onCompleted: () => {navigate('/authorize/SignIn')}
+  },
   );
     return (
     <Container maxWidth="lg" sx={{ textAlign: 'center' }}>

@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { Button, Container, Grid, Paper, Table, TableCell, TableContainer, TableRow, TextField, TextFieldProps, Typography } from "@material-ui/core";
+import { Button, Container, Dialog, DialogContent, Grid, Paper, Table, TableCell, TableContainer, TableRow, TextField, TextFieldProps, Typography } from "@material-ui/core";
 import { FieldArray, Formik, useField } from "formik";
 import React from "react";
 import { useState } from "react";
@@ -17,9 +17,13 @@ import { AddRecipeVariables } from "../types/AddRecipe";
 import { TableData } from "./components/IngredientTable";
 import { VscTrash } from "react-icons/vsc";
 import { H3, H5 } from "src/content/pages/Components/TextTypes";
+import { AddIngredientPage } from "../../Ingredients/AddIngredient";
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 export const AddRecipePage = () => {
 
+  const navigate = useNavigate()
+    const [dialog,  openDialog] = useState(false)
     const { addRecipe, loading, error } = useAddRecipe({
         onCompleted: () => window.location.reload()
         },
@@ -218,11 +222,25 @@ export const AddRecipePage = () => {
                   <Grid xs={12}>
                 <H3 title="Ingredienten"/>
                 </Grid>
+                <Grid xs={12}>
+                <Button
+                  onClick={() => navigate("/mychefsbase/addingredient")}
+                  // onClick={() => openDialog(true)}
+                  color="primary"
+                  variant="contained"
+                >
+                  Ingredient toevoegen
+                </Button>
+                </Grid>
                 <Grid xs={6}>
                   <TableData 
                   setIngredients={(selected) => setIngredients([...selectedIngredients, selected])
                   }/>
                   </Grid>
+                  {/* <AddIngrDialog
+                  open={dialog}
+                  onClose={() => openDialog(false)}
+                  /> */}
                   <Grid xs={6}>
                   <TableContainer>
                 <Table size="small">
@@ -271,6 +289,22 @@ export const AddRecipePage = () => {
       </Container>
       </>
           )
+}
+
+export const AddIngrDialog = ({
+  open, onClose
+}: {
+  open: boolean,
+  onClose: () => void
+}) => {
+
+  return (
+    <Dialog open={open} onClose={onClose}>
+      <DialogContent>
+    <AddIngredientPage />
+    </DialogContent>
+    </Dialog>
+  )
 }
 
 export type ingredientToQ = {
