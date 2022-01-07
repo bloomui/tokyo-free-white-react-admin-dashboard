@@ -4,8 +4,8 @@ import Autocomplete from "@material-ui/lab/Autocomplete"
 import React from "react"
 import { useState } from "react"
 import { AutoSubmitToken } from ".."
-import { useSearchMenuFilterQuery } from "./api"
 import { searchMenu_searchMenu } from "./types/searchMenu"
+import { useSearchMenuFilterQuery } from "./api"
 
 export const Menus = ({
     setFieldValue
