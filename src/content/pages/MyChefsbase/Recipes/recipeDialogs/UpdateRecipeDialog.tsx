@@ -12,10 +12,11 @@ import { useGetIngredientsForRecipe, useGetRecipeQuery, useUpdateRecipe } from "
 import { FilterRecipes_filterRecipes } from "../types/FilterRecipes";
 import { UpdateRecipeVariables } from "../types/UpdateRecipe";
 import { H3, H5 } from "src/content/pages/Components/TextTypes";
-import { ingredientToQ, mapIngredientToQToInput } from "../AddRecipe";
+import { ingredientToQ, mapIngredientForRecipeToIngredientToQuantity, mapIngredientToQToInput } from "../AddRecipe";
 import { TableData } from "../AddRecipe/components/IngredientTable";
 import { LoadingScreen } from "src/components/layout";
 import { recipe_recipe } from "../types/recipe";
+import { Loader } from "src/components/search/Loader";
 
 export const emptyRecipe: recipe_recipe = {
   __typename: "Recipe",
@@ -46,12 +47,9 @@ export const UpdateRecipeDialog = ({
 })
 
 const { updateRecipe, loading, error } = useUpdateRecipe({
-  onCompleted: () => window.location.reload(),
+  onCompleted: () => {}
+  // window.location.reload(),
 });
-
-  
-    let recipe = data.recipe
-
 
       const [stepHere, setStep] = useState(1)
       const [selectedIngredients, setIngredients] = React.useState<ingredientToQ[]>([]);
@@ -59,39 +57,7 @@ const { updateRecipe, loading, error } = useUpdateRecipe({
         selectedIngredients.splice(index, 1)
         setIngredients([...selectedIngredients])
       }
-      const emptyStep: StepToMethodInput = {
-        step: stepHere,
-        method: ''
-        }
-
-    const formInput: RecipeInput = {
-        id: id,
-        name: recipe.name,
-        rating: recipe.rating,
-        type: recipe.type
-    }
-    const formIngredients: QuantityToId[] | null = (data2.ingredientsForRecipe.map((quantityToIngr) => (
-            {
-                quantity: quantityToIngr.quantity.quantity,
-                unit: quantityToIngr.quantity.unit,
-                id: quantityToIngr.ingredient.id,
-            }
-    )))
-
-    const formMethods: StepToMethodInput[] | null = (recipe.method? (recipe.method.map((method) => (
-        {
-            step: method.step,
-            method: method.method,
-        }
-)
-)) : null)
-
-const formState : UpdateRecipeVariables = {
-        input: formInput,
-        ingredients: formIngredients,
-        method: formMethods
-    }
-
+     
     if (loading1) return <LoadingScreen/>
     if (error1) return <LoadingScreen/>
 
@@ -103,6 +69,47 @@ const formState : UpdateRecipeVariables = {
     if (error2) return (
         <Dialog open={open} onClose={onClose}><CircularProgress /></Dialog>
         )
+
+    let recipe = data.recipe
+
+    const emptyStep: StepToMethodInput = {
+      step: stepHere,
+      method: ''
+      }
+
+  const formInput: RecipeInput = {
+      id: id,
+      name: recipe.name,
+      rating: recipe.rating,
+      type: recipe.type
+  }
+  const formIngredients: QuantityToId[] | null = (data2.ingredientsForRecipe.map((quantityToIngr) => (
+          {
+              quantity: quantityToIngr.quantity.quantity,
+              unit: quantityToIngr.quantity.unit,
+              id: quantityToIngr.ingredient.id,
+          }
+  )))
+
+  const formMethods: StepToMethodInput[] | null = (recipe.method? (recipe.method.map((method) => (
+      {
+          step: method.step,
+          method: method.method,
+      }
+)
+)) : null)
+
+const formState : UpdateRecipeVariables = {
+      input: formInput,
+      ingredients: formIngredients,
+      method: formMethods
+  }
+
+  // const ingredients = mapIngredientForRecipeToIngredientToQuantity(data2.ingredientsForRecipe)
+
+  // ingredients.forEach((i)=> {
+  //   setIngredients([...selectedIngredients, i])
+  // }) 
 
     return (
     <Dialog fullScreen open={open} onClose={onClose}>
@@ -269,7 +276,7 @@ const formState : UpdateRecipeVariables = {
                       onChange={(e) => setUnit(e.target.value)}
                       variant="filled"
                     >
-                      {["gram", "kg", "milliliter", "liter"].map((option) => (
+                      {["gram", "milliliter"].map((option) => (
                         <MenuItem key={option} value={option}>
                           {option}
                         </MenuItem>

@@ -22,8 +22,7 @@ import { units } from "../../Ingredients/ingredientDialogs/UpdateIngredientDialo
 export const AddProductPage = () => {
 
     const { addProduct, loading, error } = useAddProduct({
-        onCompleted: () => {},
-        // window.location.reload()
+        onCompleted: () => {window.location.reload()}
         },
       );
       const [selectedSuppliers, setSuppliers] = React.useState<supplierToQ[]>([]);
@@ -41,8 +40,6 @@ export const AddProductPage = () => {
         rating: 0,
     }
 
-            
-    
     const formSuppliers: string[] | null = []
         
     
@@ -125,13 +122,13 @@ export const AddProductPage = () => {
                 setFieldValue={setFieldValue}
                 />
                 </Grid>
-                <Grid xs={1}></Grid>
-                <Grid xs={3}>
+                {/* <Grid xs={1}></Grid> */}
+                {/* <Grid xs={3}>
                 <H5 title="Hoeveelheid"/>
                 <Grid xs={5}>
                 <FormField
                   name="input.quantity"
-                  label="Herkomst"
+                  label="Hoeveelheid"
                 />
                 </Grid>
                 <Grid xs={1}></Grid>
@@ -143,9 +140,9 @@ export const AddProductPage = () => {
           <MenuItem key={unit} value={unit}>{unit}</MenuItem>
         ))}
       </FormikSelect></Grid>
-                </Grid> 
-                <Grid xs={1}></Grid>
-                <Grid xs={3}>
+                </Grid>  */}
+                {/* <Grid xs={1}></Grid> */}
+                <Grid xs={6}>
                 <H5 title="Prijs (€)"/>
                 <Price 
                 setFieldValue={setFieldValue}

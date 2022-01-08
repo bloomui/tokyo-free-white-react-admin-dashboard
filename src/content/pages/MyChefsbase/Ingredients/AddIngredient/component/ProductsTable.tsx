@@ -36,6 +36,7 @@ export  const TableProductData = ({
     });
   if (loading) return <LoadingScreen />;
   if (error) return <LoadingScreen />;
+  console.log(data.products)
 
   return (
     <TableContainer component={Paper}>
@@ -47,7 +48,6 @@ export  const TableProductData = ({
  <TextField
     onKeyPress= {(e) => {
         if (e.key === 'Enter') {
-          console.log(e.key);
         refetch({name: name})
       }
       }}      
@@ -73,7 +73,7 @@ export  const TableProductData = ({
         <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component={Paper}
-              count={data.numberOfProducts ? data.numberOfProducts : 1000}
+              count={data.products.length}
               rowsPerPage={productsRowsPerPage}
               page={page}
               onPageChange={handleChangePage}

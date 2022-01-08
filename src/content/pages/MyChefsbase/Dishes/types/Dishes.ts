@@ -10,4 +10,5 @@
 export interface Dishes {
   allThemes: string[] | null;
   allTypes: string[] | null;
+  allComments: string[] | null;
 }

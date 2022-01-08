@@ -125,7 +125,7 @@ if (loading) return <LoadingScreen />
                 <Grid xs={5}>
                 <FormField
                   name="input.quantity"
-                  label="Herkomst"
+                  label="Hoeveelheid"
                 />
                 </Grid>
                 <Grid xs={1}></Grid>

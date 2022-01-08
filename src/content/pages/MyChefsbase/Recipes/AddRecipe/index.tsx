@@ -19,6 +19,7 @@ import { VscTrash } from "react-icons/vsc";
 import { H3, H5 } from "src/content/pages/Components/TextTypes";
 import { AddIngredientPage } from "../../Ingredients/AddIngredient";
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { ingredientsForRecipe_ingredientsForRecipe } from "../types/ingredientsForRecipe";
 
 export const AddRecipePage = () => {
 
@@ -237,10 +238,6 @@ export const AddRecipePage = () => {
                   setIngredients={(selected) => setIngredients([...selectedIngredients, selected])
                   }/>
                   </Grid>
-                  {/* <AddIngrDialog
-                  open={dialog}
-                  onClose={() => openDialog(false)}
-                  /> */}
                   <Grid xs={6}>
                   <TableContainer>
                 <Table size="small">
@@ -323,3 +320,15 @@ export const mapIngredientToQToInput = (selected: ingredientToQ[]): QuantityToId
     }
   ))
 }
+
+export const mapIngredientForRecipeToIngredientToQuantity = (selected: ingredientsForRecipe_ingredientsForRecipe[]): ingredientToQ[] => {
+    return selected.map((a) => (
+      {
+        id: a.ingredient.id,
+        name: a.ingredient.name,
+        quantity: String(a.quantity.quantity),
+        unit: a.quantity.unit
+      }
+    ))
+  }
+

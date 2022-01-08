@@ -13,7 +13,7 @@ import { Search } from "../../../Menus/filtermenus/components/search";
 import { ingredientRowsPerPage, useSearchIngredientQuery } from "../api";
 import { ingredients_ingredients } from "../types/ingredients";
 
-export const units = ["gram", "miligram", "kilogram", "theelepel(s)", "eetlepel(s)", "stuk(s)", "mililiter", "liter"]
+export const units = ["gram", "mililiter"]
 
 export  const TableData = ({
   setIngredients
