@@ -17,6 +17,7 @@ import { units } from "../ingredientDialogs/UpdateIngredientDialog";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import { H3, H5, H5Left } from "src/content/pages/Components/TextTypes";
 import { Quantity } from "../../Menus/filtermenus/components/quantity";
+import { useNavigate } from "react-router";
 
 export const emptyNutrition: NutritionInput = {
   kcal: 0,
@@ -38,6 +39,8 @@ export const AddIngredientPage = () => {
         onCompleted: () => {window.location.reload()}
         },
       );
+      const navigate =  useNavigate()
+      
       const [stepHere, setStep] = useState(1)
       const [selectedProducts, setProducts] = React.useState<productToQ[]>([]);
 
@@ -217,6 +220,15 @@ export const AddIngredientPage = () => {
                 <Grid container xs={12}>
                   <Grid xs={12}>
                 <H3 title="Productopties"/>
+                </Grid>
+                <Grid xs={12}>
+                <Button
+                  onClick={() => navigate("/mychefsbase/addproduct")}
+                  color="primary"
+                  variant="contained"
+                >
+                  Product toevoegen
+                </Button>
                 </Grid>
                 <Grid xs={6}>
                   <TableProductData 

@@ -179,7 +179,7 @@ export const RecipeDialog = ({
                       onChange={(e) => setUnit(e.target.value)}
                       variant="filled"
                     >
-                      {["gram", "kg", "milliliter", "liter"].map((option) => (
+                      {["gram", "liter"].map((option) => (
                         <MenuItem key={option} value={option}>
                           {option}
                         </MenuItem>

@@ -68,7 +68,7 @@ export const Price = ({
     <Grid xs={7}>
                 <FormField
                   name="input.quantity"
-                  label="Naam"
+                  label="Hoeveelheid"
                   validator={composeValidators(required)}
                 />
                 </Grid>
