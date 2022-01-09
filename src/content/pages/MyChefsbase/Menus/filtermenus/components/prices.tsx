@@ -37,6 +37,43 @@ function valuetext(value: number) {
   return `€${value}`;
 }
 
+export const PriceInput = () => {
+
+  return (
+    <Grid container xs={12}>
+  <Grid xs={3}>
+    <H5 title="Prijs"/>
+    <FormField
+    name="input.price"
+    label="Prijs"
+    validator={composeValidators(required)}
+  />
+    </Grid>
+    <Grid xs={1}>
+    <H5 title="Per"/>
+    </Grid>
+    <Grid xs={3}>
+    <H5 title="Hoeveelheid"/>
+    <FormField
+    name="input.quantity"
+    label="Hoeveelheid"
+    validator={composeValidators(required)}
+  />
+    </Grid>
+    <Grid xs={1}></Grid>
+    <Grid xs={3}>
+    <H5 title="Eenheid"/>
+    <FormikSelect
+     name="input.unit"
+     >
+        {units.map((unit) => (
+          <MenuItem key={unit} value={unit}>{unit}</MenuItem>
+        ))}
+      </FormikSelect>
+    </Grid>
+    </Grid>
+  )
+}
 export const Price = ({
   setFieldValue
 }: {
@@ -87,6 +124,7 @@ export const Price = ({
 </>
   )
   }  
+
 export const PriceRange = ({
   setFieldValue
 }: {

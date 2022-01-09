@@ -29,8 +29,7 @@ export const UpdateDishDialog = ({
 
   const { data, loading: loading1, error: error1 } = useGetDishQuery(id)
 
-    let dish = data.dish
-
+    
     const { updateDish, loading, error } = useUpdateDish({
         onCompleted: () => window.location.reload(),
       });
@@ -41,6 +40,10 @@ export const UpdateDishDialog = ({
           selectedRecipes.splice(index, 1)
           setRecipes([...selectedRecipes])
         }
+
+        if (loading1) return <LoadingScreen/>
+        
+        let dish = data.dish
 
     const formInput: DishInput = {
         id: dish.id,
@@ -76,9 +79,6 @@ const formState : UpdateDishVariables = {
         recipes: formRecipes,
         method: formMethods
     }
-
-    if (loading1) return <LoadingScreen/>
-    if (error1) return <LoadingScreen/>
 
     return (
     <Dialog 

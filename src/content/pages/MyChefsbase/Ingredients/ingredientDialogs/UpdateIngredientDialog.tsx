@@ -34,8 +34,7 @@ export const UpdateIngredientDialog = ({
 
   const { data, loading: loading1, error: error1 } = useGetIngredientQuery(id)
 
-    let ingredient = data.ingredient
-
+    
     const { updateIngredient, loading, error } = useUpdateIngredient({
         onCompleted: () => window.location.reload(),
       });
@@ -46,7 +45,9 @@ export const UpdateIngredientDialog = ({
                 selectedProducts.splice(index, 1)
                 setProducts([...selectedProducts])
             }
+            if (loading1) return <LoadingScreen/>
 
+            let ingredient = data.ingredient
 
 const quantityToNutrition: QuantityToNutritionInput = {
               quantity: ingredient.nutrition.quantity.quantity,
@@ -66,8 +67,6 @@ const formState : UpdateIngredientVariables = {
   products: ingredient.products.map((it) => it.id),
 }
 
-
-if (loading1) return <LoadingScreen/>
 
     return (
     <Dialog fullScreen open={open} onClose={onClose}>
