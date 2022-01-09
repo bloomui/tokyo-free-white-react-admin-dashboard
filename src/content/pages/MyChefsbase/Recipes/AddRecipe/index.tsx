@@ -24,7 +24,6 @@ import { ingredientsForRecipe_ingredientsForRecipe } from "../types/ingredientsF
 export const AddRecipePage = () => {
 
   const navigate = useNavigate()
-    const [dialog,  openDialog] = useState(false)
     const { addRecipe, loading, error } = useAddRecipe({
         onCompleted: () => window.location.reload()
         },

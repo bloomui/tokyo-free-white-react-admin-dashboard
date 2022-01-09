@@ -41,7 +41,6 @@ export const AddIngredientPage = () => {
       );
       const navigate =  useNavigate()
       
-      const [stepHere, setStep] = useState(1)
       const [selectedProducts, setProducts] = React.useState<productToQ[]>([]);
 
       const formInput: AddIngredientInput = {
