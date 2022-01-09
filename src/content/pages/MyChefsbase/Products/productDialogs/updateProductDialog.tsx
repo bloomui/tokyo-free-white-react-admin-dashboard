@@ -15,7 +15,7 @@ import { FilterProducts_filterProducts } from "../types/FilterProducts";
 import { UpdateProductVariables } from "../types/UpdateProduct";
 import { H3, H5 } from "src/content/pages/Components/TextTypes";
 import { TableSupplierData } from "../AddProduct/components/SuppliersTable";
-import { Price } from "../../Menus/filtermenus/components/prices";
+import { Price, PriceInput } from "../../Menus/filtermenus/components/prices";
 import { supplierToQ } from "../AddProduct";
 import { units } from "../../Ingredients/ingredientDialogs/UpdateIngredientDialog";
 import { LoadingScreen } from "src/components/layout";
@@ -32,6 +32,17 @@ export const UpdateProductDialog = ({
 
   const { data, loading: loading1, error: error1} = useGetProductQuery(id)
 
+    const { updateProduct, loading, error } = useUpdateProduct({
+        onCompleted: () => window.location.reload(),
+      });
+      const [selectedSuppliers, setSuppliers] = React.useState<supplierToQ[]>([]);
+      function handleDelete(index) {
+        selectedSuppliers.splice(index, 1)
+        setSuppliers([...selectedSuppliers])
+      }
+
+      if (loading1) return <LoadingScreen/>
+  
   let product = data.product
 
   const suppliers: supplierToQ[] = product.suppliers.map((supp) => ({
@@ -39,15 +50,6 @@ export const UpdateProductDialog = ({
     id: id,
     email: supp.email
   }))
-
-    const { updateProduct, loading, error } = useUpdateProduct({
-        onCompleted: () => window.location.reload(),
-      });
-      const [selectedSuppliers, setSuppliers] = React.useState<supplierToQ[]>(suppliers);
-      function handleDelete(index) {
-        selectedSuppliers.splice(index, 1)
-        setSuppliers([...selectedSuppliers])
-      }
 
 const formInput: ProductInput = {
   price: product.price.price,
@@ -120,24 +122,15 @@ if (loading) return <LoadingScreen />
                   label="Herkomst"
                 />
                 </Grid> 
-                <Grid xs={3}>
-                <H5 title="Hoeveelheid"/>
-                <Grid xs={5}>
-                <FormField
-                  name="input.quantity"
-                  label="Hoeveelheid"
-                />
-                </Grid>
                 <Grid xs={1}></Grid>
-                <Grid xs={6}>
-                <FormikSelect
-                name="unit"
-                >
-        {units.map((unit) => (
-          <MenuItem key={unit} value={unit}>{unit}</MenuItem>
-        ))}
-      </FormikSelect></Grid>
+                <Grid xs={7}>
+                {/* <H5 title="Prijs (€)"/> */}
+                <PriceInput />
+                {/* <Price 
+                setFieldValue={setFieldValue}
+                /> */}
                 </Grid> 
+                <Grid xs={1}></Grid>
                 <Grid xs={3}>
                 <Rating1
                 updateField="input.rating"
@@ -146,14 +139,7 @@ if (loading) return <LoadingScreen />
                 </Grid>
                 <Grid xs={1}></Grid>
                 <Grid xs={3}>
-                <H5 title="Prijs (€)"/>
-                <Price 
-                setFieldValue={setFieldValue}
-                />
-                </Grid> 
-                <Grid xs={1}></Grid>
-                <Grid xs={3}>
-                <H5 title="Toevoegen"/>
+                {/* <H5 title="Toevoegen"/> */}
                 <Button
                   disabled={loading}
                   onClick={() => submitForm()}
