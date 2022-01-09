@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, Card, CardActionArea, Grid, Typography, TableContainer, TableBody, TableCell, TableHead, TableRow, List, ListItem, Button, DialogActions, TextField, MenuItem, Select, CircularProgress } from "@material-ui/core"
+import { Dialog, DialogTitle, DialogContent, Card, CardActionArea, Grid, Typography, TableContainer, TableBody, TableCell, TableHead, TableRow, List, ListItem, Button, DialogActions, TextField, MenuItem, Select, CircularProgress, Box } from "@material-ui/core"
 import React, { useState } from "react"
 import { H5 } from "src/content/pages/Components/TextTypes"
 import { DefaultNutritionOptions, NutritionOptionDropDown } from "../../Components/NutrutitionOptions"
@@ -129,6 +129,9 @@ export const RecipeDialog = ({
              <>
                 <DialogTitle style={{ fontWeight: 600 }} id="form-dialog-title">Recept: {recipe.name}</DialogTitle>
                 <DialogActions>
+                <Button variant="contained" onClick={() => {}}>
+                  Download PDF van recept 
+                </Button>
                 <Button variant="contained" onClick={onClose}>
                   Terug
                 </Button>
@@ -142,19 +145,18 @@ export const RecipeDialog = ({
               </DialogActions>
               <DialogContent>
                   <Card>
-                      <Grid container spacing={2} xs={12}>
+                      <Grid container xs={12}>
                        <ItemString 
-                       title="Type"
+                       title="Type recept"
                        item={recipe.type}
                        />
                        <ItemInt 
-                       title="rating"
+                       title="Beoordeling"
                        item={recipe.rating}
                        />
-                           <Grid xs={12}>
+                               <Grid xs={12}>
                            <H5 title="Toon voedingswaarden en ingredienten per:"/>
                            </Grid>
-                           <Grid xs={2}></Grid>
                           <Grid xs={4}>
                               <TextField 
                               onKeyPress= {(e) => {
@@ -191,15 +193,21 @@ export const RecipeDialog = ({
                       setFieldValue={(selected) => setNutritionsToDisplay(selected)}
                       />
                       </Grid>
+                      <Grid container  xs={12}>
+                          <Grid xs={6}>
                        <ItemNutrition
                        nutritionsToDisplay={nutritionsToDisplay}
                        title="Voedingswaarde"
                        item={data1.nutritionForRecipe}
                        />
+                       </Grid>
+                       <Grid xs={6}>
                       <ItemIngredients
-                      title="Recepten"
+                      title="Ingredienten"
                       item={data2.ingredientsForRecipe}
                       />
+                      </Grid>
+                      </Grid>
                       <ItemMethods
                       title="Methode"
                       item={recipe.method}

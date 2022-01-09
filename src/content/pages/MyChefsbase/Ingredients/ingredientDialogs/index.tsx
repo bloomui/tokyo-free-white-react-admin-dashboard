@@ -140,7 +140,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                 <TableContainer>
                     <TableHead>
                         <TableRow>
-                            <TableCell align="center">Gram per voedingswaarden</TableCell>
+                            <TableCell colSpan={2} align="center">Voedingswaarden</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -150,7 +150,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Calorieën:</TableCell>
-                            <TableCell> {item.kcal}
+                            <TableCell> {roundTo2Decimals(item.kcal * 100)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -160,7 +160,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Totale eiwitten: </TableCell>
-                            <TableCell>{item.protein.total}
+                            <TableCell>{roundTo2Decimals(item.protein.total)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -170,7 +170,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Dierlijke eiwitten: </TableCell>
-                            <TableCell>{item.protein.animal}
+                            <TableCell>{roundTo2Decimals(item.protein.animal)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -180,7 +180,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Plantaardige eiwitten: </TableCell>
-                            <TableCell>{item.protein.plant}
+                            <TableCell>{roundTo2Decimals(item.protein.plant)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -190,7 +190,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Totale vetten: </TableCell>
-                            <TableCell>{item.fat.total}
+                            <TableCell>{roundTo2Decimals(item.fat.total)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -200,7 +200,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Onverzadigde vetten: </TableCell>
-                            <TableCell>{item.fat.compoundUnsat}
+                            <TableCell>{roundTo2Decimals(item.fat.compoundUnsat)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -210,7 +210,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Verzadigde vetten: </TableCell>
-                            <TableCell>{item.fat.satured}
+                            <TableCell>{roundTo2Decimals(item.fat.satured)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -220,7 +220,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Totale koolhydraten: </TableCell>
-                            <TableCell>{item.carbs.carbs}
+                            <TableCell>{roundTo2Decimals(item.carbs.carbs)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -230,7 +230,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Suikers: </TableCell>
-                            <TableCell>{item.carbs.sugar}
+                            <TableCell>{roundTo2Decimals(item.carbs.sugar)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -240,7 +240,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Vitamine D: </TableCell>
-                            <TableCell>{item.vitamins.dTotal}
+                            <TableCell>{roundTo2Decimals(item.vitamins.dTotal)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -250,7 +250,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Vitamine E: </TableCell>
-                            <TableCell>{item.vitamins.e}
+                            <TableCell>{roundTo2Decimals(item.vitamins.e)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -260,7 +260,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Vitamine C: </TableCell>
-                            <TableCell>{item.vitamins.c}
+                            <TableCell>{roundTo2Decimals(item.vitamins.c)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -270,7 +270,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Vitamine B12: </TableCell>
-                            <TableCell>{item.vitamins.b12}
+                            <TableCell>{roundTo2Decimals(item.vitamins.b12)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -280,7 +280,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Zetmeel: </TableCell>
-                            <TableCell>{item.starch}
+                            <TableCell>{roundTo2Decimals(item.starch)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -290,7 +290,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Vezels: </TableCell>
-                            <TableCell>{item.fibres}
+                            <TableCell>{roundTo2Decimals(item.fibres)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -300,7 +300,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Zout: </TableCell>
-                            <TableCell>{item.ash}
+                            <TableCell>{roundTo2Decimals(item.ash)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -310,7 +310,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Magnesium: </TableCell>
-                            <TableCell>{item.magnesium}
+                            <TableCell>{roundTo2Decimals(item.magnesium)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -320,7 +320,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Cholesterol: </TableCell>
-                            <TableCell>{item.cholesterol}
+                            <TableCell>{roundTo2Decimals(item.cholesterol)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -330,7 +330,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Kalk: </TableCell>
-                            <TableCell>{item.calcium}
+                            <TableCell>{roundTo2Decimals(item.calcium)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -340,7 +340,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Zink: </TableCell>
-                            <TableCell>{item.sink}
+                            <TableCell>{roundTo2Decimals(item.sink)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -350,7 +350,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Natrium: </TableCell>
-                            <TableCell>{item.natrium}
+                            <TableCell>{roundTo2Decimals(item.natrium)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -360,7 +360,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Fosfor: </TableCell>
-                            <TableCell>{item.fosfor}
+                            <TableCell>{roundTo2Decimals(item.fosfor)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -370,7 +370,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Water: </TableCell>
-                            <TableCell>{item.water}
+                            <TableCell>{roundTo2Decimals(item.water)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -380,7 +380,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Nitrogen: </TableCell>
-                            <TableCell>{item.nitrogen}
+                            <TableCell>{roundTo2Decimals(item.nitrogen)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -390,7 +390,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Ijzer: </TableCell>
-                            <TableCell>{item.iron.total}
+                            <TableCell>{roundTo2Decimals(item.iron.total)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -400,7 +400,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Kalium: </TableCell>
-                            <TableCell>{item.kalium}
+                            <TableCell>{roundTo2Decimals(item.kalium)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -410,7 +410,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Koper: </TableCell>
-                            <TableCell>{item.cupper}
+                            <TableCell>{roundTo2Decimals(item.cupper)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -420,7 +420,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Jodium: </TableCell>
-                            <TableCell>{item.jodium}
+                            <TableCell>{roundTo2Decimals(item.jodium)}
                             </TableCell>
                             </TableRow>
                     </>
@@ -434,3 +434,5 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
             </>
     )
 }
+
+export const roundTo2Decimals = (a: number) => (Math.round(a * 100) / 100).toFixed(2)

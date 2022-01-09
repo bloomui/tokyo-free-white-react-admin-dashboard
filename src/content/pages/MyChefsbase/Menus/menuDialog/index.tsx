@@ -106,10 +106,10 @@ export const ItemCourses2 = ({title, item}: {title: string, item: menu_menu_cour
 export const ItemString = ({title, item}: {title: string, item: string | null}) => {
     return (
         <>
-        <Grid key={0} item xs={3}>
+        <Grid key={0} item xs={6}>
         <Typography style={{ fontWeight: 600 }}>{title}</Typography>
         </Grid>  
-        <Grid key={1} item xs={9}>
+        <Grid key={1} item xs={6}>
         {item? item : "Geen "+ title + "bekend"}
         </Grid> 
         </> 
@@ -132,10 +132,10 @@ export const ItemDouble = ({title, item}: {title: string, item: number | null}) 
 export const ItemInt = ({title, item}: {title: string, item: number | null}) => {
     return (
         <>
-        <Grid key={0} item xs={3}>
+        <Grid key={0} item xs={6}>
         <Typography style={{ fontWeight: 600 }}>{title}</Typography>
         </Grid>  
-        <Grid key={1} item xs={9}>
+        <Grid key={1} item xs={6}>
         {item}
         </Grid> 
         </> 

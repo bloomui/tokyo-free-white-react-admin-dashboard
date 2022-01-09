@@ -18,6 +18,7 @@ import { FilterIngredients_filterIngredients } from "../types/FilterIngredients"
 import { UpdateIngredientVariables } from "../types/UpdateIngredient";
 import { emptyIngredient } from ".";
 import { LoadingScreen } from "src/components/layout";
+import { ingredient_ingredient_nutrition_nutrition } from "../types/ingredient";
 
 export const units = ["grams", "mililiter"]
 
@@ -52,7 +53,7 @@ export const UpdateIngredientDialog = ({
 const quantityToNutrition: QuantityToNutritionInput = {
               quantity: ingredient.nutrition.quantity.quantity,
               unit: ingredient.nutrition.quantity.unit,
-              nutrition: ingredient.nutrition.nutrition
+              nutrition: mapNutritionToInput(ingredient.nutrition.nutrition)
             }
 
 const formInput: IngredientInput = {
@@ -174,6 +175,7 @@ const formState : UpdateIngredientVariables = {
                         <TableRow>
                       <TableCell>Kilocalorieën</TableCell>
                       <TableCell><FormField
+                  validator={composeValidators(required)}
                   name="input.nutrition.nutrition.kcal"
                   label="Kcal"
                 /></TableCell>
@@ -282,3 +284,77 @@ const formState : UpdateIngredientVariables = {
     </Dialog>
   );
 };
+
+const mapNutritionToInput = (nutrition: ingredient_ingredient_nutrition_nutrition): NutritionInput => {
+
+  return ({
+    kcal: nutrition.kcal,
+  carbscarbs: nutrition.carbs.carbs,
+  carbssugar: nutrition.carbs.sugar,
+  fatstotal: nutrition.fat.total,
+  // fatsfacid: nutrition.fat., 
+  // fatstotalfacid: nutrition.fat.fatstotalfacid,
+  fatssatured: nutrition.fat.satured,
+  fatssingleUnsat: nutrition.fat.singleUnsat,
+  fatscompoundUnsat: nutrition.fat.compoundUnsat,
+  // fatsn3: nutrition.fats.fatsn3,
+  // fatsn6: nutrition.fats.fatsn6,
+  // fatsother: nutrition.fat,
+  protplant: nutrition.protein.plant,
+  protanimal: nutrition.protein.animal,
+  prottotal: nutrition.protein.total,
+  starch: nutrition.starch,
+  polyols: nutrition.polyols,
+  fibres: nutrition.fibres,
+  nitrogen: nutrition.nitrogen,
+  polysachhariden: nutrition.polysachhariden,
+  alcohol: nutrition.alcohol,
+  water: nutrition.water,
+  organicAcids: nutrition.organicAcids,
+  vite: nutrition.vitamins.e,
+  vitc: nutrition.vitamins.c,
+  vitkTotal: nutrition.vitamins.kTotal,
+  vitb12: nutrition.vitamins.b12,
+  // vitb6: nutrition.vitamins.,
+  // vitb2: nutrition.vitamins.b2,
+  // vitb1: nutrition.vitamins.b1,
+  // vitk2: nutrition.vitamins.k2,
+  // vitk1: nutrition.vitamins.k1,
+  // vitcholecalciferolE: nutrition.vitamins.c,
+  // vithidro25D: nutrition.vithidro25D,
+  vitdTotal: nutrition.vitamins.dTotal,
+  foliumAcid: nutrition.foliumAcid,
+  pholate: nutrition.pholate,
+  pholatEquivalents: nutrition.pholatEquivalents,
+  nicotinAcid: nutrition.nicotinAcid,
+  // tocoalfa: nutrition..alfa,
+  // tocobeta: nutrition.toco.beta,
+  // tocogamma: nutrition.toco.gamma,
+  // tocodelta: nutrition.toco.delta,
+  lycopeans: nutrition.lycopeans,
+  betaCrypto: nutrition.betaCrypto,
+  zeacanthine: nutrition.zeacanthine,
+  lutein: nutrition.lutein,
+  // caralfa: nutrition.,
+  // carbeta: nutrition.carbeta,
+  // retrae: nutrition.ret,
+  // retre: nutrition.retre,
+  // rettotal: nutrition.rettotal,
+  ash: nutrition.ash,
+  jodium: nutrition.jodium,
+  sink: nutrition.sink,
+  selenium: nutrition.selenium,
+  cupper: nutrition.cupper,
+  irontotal: nutrition.iron.total,
+  // ironnonhaem: nutrition.iron,
+  // ironhaem: nutrition.ironhaem,
+  magnesium: nutrition.magnesium,
+  fosfor: nutrition.fosfor,
+  calcium: nutrition.calcium,
+  kalium: nutrition.kalium,
+  natrium: nutrition.natrium,
+  cholesterol: nutrition.cholesterol,
+  famstxr: nutrition.famstxr
+}
+  )
+}
