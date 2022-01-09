@@ -47,8 +47,7 @@ export const UpdateRecipeDialog = ({
 })
 
 const { updateRecipe, loading, error } = useUpdateRecipe({
-  onCompleted: () => {}
-  // window.location.reload(),
+  onCompleted: () => {window.location.reload()}
 });
 
       const [stepHere, setStep] = useState(1)
@@ -105,10 +104,11 @@ const formState : UpdateRecipeVariables = {
       method: formMethods
   }
 
-  // const ingredients = mapIngredientForRecipeToIngredientToQuantity(data2.ingredientsForRecipe)
-
-  // ingredients.forEach((i)=> {
-  //   setIngredients([...selectedIngredients, i])
+  // const ingredients: ingredientToQ[] = mapIngredientForRecipeToIngredientToQuantity(data2.ingredientsForRecipe)
+  
+  // setIngredients([...selectedIngredients, ingredients])
+  // selectedIngredients.forEach((i)=> {
+  //   
   // }) 
 
     return (

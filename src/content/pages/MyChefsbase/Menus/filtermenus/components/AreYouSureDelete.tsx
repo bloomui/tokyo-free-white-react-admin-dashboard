@@ -26,12 +26,15 @@ import { H5 } from "src/content/pages/Components/TextTypes"
         <Grid container xs={12}>
           <Grid item xs={6}>
           <Button
-          onClick={() => remove({
+          onClick={() => {
+            remove({
             variables: {
               id: id,
               kitchenType: kitchenType
             }
-          })}>
+          });
+        // window.location.reload()
+          }}>
           Ja
         </Button>
           </Grid>
