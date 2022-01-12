@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { Button, Container, Dialog, DialogContent, Grid, Paper, Table, TableCell, TableContainer, TableRow, TextField, TextFieldProps, Typography } from "@material-ui/core";
+import { Button, Container, Dialog, DialogContent, DialogTitle, Grid, Paper, Table, TableCell, TableContainer, TableRow, TextField, TextFieldProps, Typography } from "@material-ui/core";
 import { FieldArray, Formik, useField } from "formik";
 import React from "react";
 import { useState } from "react";
@@ -7,7 +7,7 @@ import { Helmet } from "react-helmet-async";
 import { PageHeader } from "src/components/pageHeader/PageHeader";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import { FormField } from "src/components/form/FormField";
-import { AddRecipeInput, QuantityToId, StepToMethodInput } from "src/globalTypes";
+import { AddIngredientInput, AddRecipeInput, QuantityToId, StepToMethodInput } from "src/globalTypes";
 import { composeValidators, required, Validator } from "src/utilities/formikValidators";
 import { user } from "../..";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
@@ -16,13 +16,17 @@ import { Divider } from '@mui/material';
 import { AddRecipeVariables } from "../types/AddRecipe";
 import { TableData } from "./components/IngredientTable";
 import { VscTrash } from "react-icons/vsc";
-import { H3, H5 } from "src/content/pages/Components/TextTypes";
+import { H3, H5, H5Left } from "src/content/pages/Components/TextTypes";
 import { AddIngredientPage } from "../../Ingredients/AddIngredient";
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { ingredientsForRecipe_ingredientsForRecipe } from "../types/ingredientsForRecipe";
+import { useAddQuickIngredients } from "./api";
+import { AddQuickIngredientsVariables } from "./types/AddQuickIngredients";
+import { AddIngrDialog } from "./components/AddQuickIngredients";
 
 export const AddRecipePage = () => {
 
+  const [ dialog, openDialog] = useState(false)
   const navigate = useNavigate()
     const { addRecipe, loading, error } = useAddRecipe({
         onCompleted: () => window.location.reload()
@@ -224,14 +228,17 @@ export const AddRecipePage = () => {
                 </Grid>
                 <Grid xs={12}>
                 <Button
-                  onClick={() => navigate("/mychefsbase/addingredient")}
-                  // onClick={() => openDialog(true)}
+                  // onClick={() => navigate("/mychefsbase/addingredient")}
+                  onClick={() => openDialog(true)}
                   color="primary"
                   variant="contained"
                 >
-                  Ingredient toevoegen
+                  Snel ingredienten toevoegen
                 </Button>
                 </Grid>
+                <AddIngrDialog
+                open={dialog}
+                onClose={() => openDialog(false)} />
                 <Grid xs={6}>
                   <TableData 
                   setIngredients={(selected) => setIngredients([...selectedIngredients, selected])
@@ -285,22 +292,6 @@ export const AddRecipePage = () => {
       </Container>
       </>
           )
-}
-
-export const AddIngrDialog = ({
-  open, onClose
-}: {
-  open: boolean,
-  onClose: () => void
-}) => {
-
-  return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogContent>
-    <AddIngredientPage />
-    </DialogContent>
-    </Dialog>
-  )
 }
 
 export type ingredientToQ = {

@@ -150,7 +150,7 @@ export const ItemNutrition = ({nutritionsToDisplay, title, item}: {nutritionsToD
                             <TableRow>
                             <TableCell align="center">
                             Calorieën:</TableCell>
-                            <TableCell> {roundTo2Decimals(item.kcal * 100)}
+                            <TableCell> {roundTo2Decimals(item.kcal)}
                             </TableCell>
                             </TableRow>
                     </>

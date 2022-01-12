@@ -151,15 +151,6 @@ export interface NutritionInput {
   protplant?: number | null;
   protanimal?: number | null;
   prottotal?: number | null;
-  fattotal?: number | null;
-  fatfacid?: number | null;
-  fattotalfacid?: number | null;
-  fatsatured?: number | null;
-  fatsingleUnsat?: number | null;
-  fatcompoundUnsat?: number | null;
-  fatn3?: number | null;
-  fatn6?: number | null;
-  fatother?: number | null;
   starch?: number | null;
   polyols?: number | null;
   fibres?: number | null;
