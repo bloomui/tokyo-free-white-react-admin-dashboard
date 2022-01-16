@@ -245,7 +245,7 @@ const navigate = useNavigate()
                    </Table>
                    </TableContainer>
                    <TablePagination
-              rowsPerPageOptions={[10, 25, 100]}
+              rowsPerPageOptions={[10]}
               component="div"
               count={data? (data.filterMenus? (data.filterMenus.length) : 1000) : 1000}
               rowsPerPage={rowsPerPage}

@@ -28,9 +28,9 @@ export const useAddQuickIngredients = ({
   };
   
 export const ingredientsQuery =  gql`
-    query ingredients ($name: String, $offset: Int, $limit: Int) {
+    query ingredients ($name: String, $offset: Int, $limit: Int, $exact: Int!) {
         numberOfIngredients
-        ingredients (name: $name, offset: $offset, limit: $limit) {
+        ingredients (name: $name, offset: $offset, limit: $limit, exact: $exact) {
             id
             name
             category
@@ -43,9 +43,11 @@ export const ingredientsQuery =  gql`
 
 export const ingredientRowsPerPage = 10;
 export const useSearchIngredientQuery = ({
+    exact,
     page, 
     name
 }: {
+  exact: number,
     name: string,
     page: number
 }) => {
@@ -57,7 +59,8 @@ export const useSearchIngredientQuery = ({
       variables: {
         input: name,
         offset: offset,
-        limit: ingredientRowsPerPage
+        limit: ingredientRowsPerPage,
+        exact: exact
       },
     });
     return { loading, data, error, refetch};

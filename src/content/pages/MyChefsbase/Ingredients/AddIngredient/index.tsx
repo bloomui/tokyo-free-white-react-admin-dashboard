@@ -13,12 +13,12 @@ import { Rating1 } from "../../Menus/filtermenus/components/rating";
 import { useAddIngredient } from "../api";
 import { Divider } from '@mui/material';import { AddIngredientVariables } from "../types/AddIngredient";
 import { TableProductData } from "./component/ProductsTable";
-import { units } from "../ingredientDialogs/UpdateIngredientDialog";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import { H3, H5, H5Left } from "src/content/pages/Components/TextTypes";
 import { Quantity } from "../../Menus/filtermenus/components/quantity";
 import { useNavigate } from "react-router";
 import { AddQuickProductsDialog } from "./component/AddQuickProductsDialog";
+import { units } from "../../Recipes/AddRecipe/components/IngredientTable";
 
 export const emptyNutrition: NutritionInput = {
   kcal: 0,

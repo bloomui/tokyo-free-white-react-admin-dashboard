@@ -19,9 +19,7 @@ import { UpdateIngredientVariables } from "../types/UpdateIngredient";
 import { emptyIngredient } from ".";
 import { LoadingScreen } from "src/components/layout";
 import { ingredient_ingredient_nutrition_nutrition } from "../types/ingredient";
-
-export const units = ["grams", "mililiter"]
-
+import { units } from "../../Recipes/AddRecipe/components/IngredientTable";
 
 export const UpdateIngredientDialog = ({
     id,

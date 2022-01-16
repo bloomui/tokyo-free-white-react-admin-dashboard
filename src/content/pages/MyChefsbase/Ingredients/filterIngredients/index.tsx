@@ -1,4 +1,4 @@
-import { Grid, Button, CardActions, Collapse, CardContent, Card } from "@material-ui/core";
+import { Grid, Button, CardActions, Collapse, CardContent, Card, Checkbox } from "@material-ui/core";
 import { Formik } from "formik";
 import React from "react";
 import { FaFilter } from "react-icons/fa";
@@ -13,8 +13,6 @@ import { Rating1 } from "../../Menus/filtermenus/components/rating";
 import { Recipes } from "../../Menus/filtermenus/components/recipes";
 import { Search } from "../../Menus/filtermenus/components/search";
 import { Suppliers } from "../../Menus/filtermenus/components/suppliers";
-import { Types } from "../../Menus/filtermenus/components/types";
-import { initialRecipeValues } from "../../Recipes/filterrecipes";
 import {useNavigate} from 'react-router-dom';
 
 
@@ -26,7 +24,8 @@ export const initialIngredientValues: IngredientFilterInput = {
     categories: [],
     rating: 0,
     menus: [],
-    name: ''
+    name: '',
+    exact: 0
   }
   
   export const IngredientFilter = ({
@@ -48,13 +47,18 @@ export const initialIngredientValues: IngredientFilterInput = {
          onChange(values)
         }}
         >
-        {({ setFieldValue }) => {
+        {({ values, setFieldValue }) => {
           return (
             <>
            <Grid container xs={12}>
             <CardActions disableSpacing>
             <Grid key={0} item>
            <Search placeholder="Zoek Ingredient" setFieldValue={setFieldValue}/>
+           Zoek exact: <Checkbox
+                  color="primary"
+                  checked={(values.exact == 0)? false : true}
+                  onChange={(event, value) => {(value == true)? setFieldValue("exact", 1) : setFieldValue("exact", 0)}}
+                  />
            </Grid>
         <Grid key={1} item>
             <ExpandMore

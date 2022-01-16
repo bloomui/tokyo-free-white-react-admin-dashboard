@@ -102,20 +102,21 @@ export const useSearchProductFilterQuery = ({
 
 export const productsRowsPerPage = 10;
 export const useSearchProductQuery = ({
-  limit,
-    name
+    name,
+    page
 }: {
-  limit: number,
     name: string,
-}) => {
+    page: number
+  }) => {
+      const offset = page * productsRowsPerPage
 
     const { loading, data, error, refetch } = useSimpleQuery<
     products
       >(productsQuery, {
       variables: {
         input: name,
-        offset: 0,
-        limit: limit
+        offset: offset,
+        limit: productsRowsPerPage
       },
     });
     return { loading, data, error, refetch};

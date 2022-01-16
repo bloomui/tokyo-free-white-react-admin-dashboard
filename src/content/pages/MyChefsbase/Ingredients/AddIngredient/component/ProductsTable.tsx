@@ -20,6 +20,7 @@ export  const TableProductData = ({
         newPage: React.SetStateAction<number>
       ) => {
         setPage(newPage as number);
+        refetch({name: name, page: newPage});
       };
       const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
           setRowsPerPage(parseInt(event.target.value, 10));
@@ -71,10 +72,10 @@ export  const TableProductData = ({
         ))}
         </Table>
         <TablePagination
-              rowsPerPageOptions={[10, 25, 100]}
+              rowsPerPageOptions={[10]}
               component={Paper}
-              count={data.products.length}
-              rowsPerPage={productsRowsPerPage}
+              count={data.numberOfProducts}
+              rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}

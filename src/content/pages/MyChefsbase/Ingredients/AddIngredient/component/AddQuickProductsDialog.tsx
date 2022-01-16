@@ -4,7 +4,7 @@ import React from "react";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import { H5Left } from "src/content/pages/Components/TextTypes";
 import { AddProductInput } from "src/globalTypes";
-import { units } from "../../ingredientDialogs/UpdateIngredientDialog";
+import { units } from "../../../Recipes/AddRecipe/components/IngredientTable";
 import { useAddQuickProducts } from "../api";
 import { AddQuickProductsVariables } from "../types/AddQuickProducts";
 

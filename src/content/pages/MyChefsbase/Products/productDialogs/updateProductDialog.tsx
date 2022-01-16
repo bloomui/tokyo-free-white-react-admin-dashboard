@@ -17,11 +17,10 @@ import { H3, H5 } from "src/content/pages/Components/TextTypes";
 import { TableSupplierData } from "../AddProduct/components/SuppliersTable";
 import { Price, PriceInput } from "../../Menus/filtermenus/components/prices";
 import { supplierToQ } from "../AddProduct";
-import { units } from "../../Ingredients/ingredientDialogs/UpdateIngredientDialog";
 import { LoadingScreen } from "src/components/layout";
 
 export const UpdateProductDialog = ({
-  id,
+    id,
     open,
     onClose,
 }: {

@@ -8,7 +8,7 @@ import { FormField } from "src/components/form/FormField";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import { MenuItem } from "@mui/material";
 import { composeValidators, required } from "src/utilities/formikValidators";
-import { units } from "../../../Ingredients/ingredientDialogs/UpdateIngredientDialog";
+import { units } from "../../../Recipes/AddRecipe/components/IngredientTable";
 
 const marks = [
   {

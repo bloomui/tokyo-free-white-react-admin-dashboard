@@ -189,7 +189,7 @@ headCells={headCellsIngredients}
             </TableBody>
                    </Table>
                    <TablePagination
-              rowsPerPageOptions={[10, 25, 100]}
+              rowsPerPageOptions={[10]}
               component={Paper}
               count={data.numberOfIngredients}
               rowsPerPage={rowsPerPage}

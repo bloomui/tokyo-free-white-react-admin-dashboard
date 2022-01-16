@@ -44,7 +44,6 @@ import { AddIngredientDialog } from "./ingredientDialogs/AddIngredientDialog";
       <>
       <TopPartIngredientPage
           setInput={(values) => setInput(values)}/>
-        <Box height={3}>{loading && <LinearProgress />}</Box>
         {content}
       </>
     );

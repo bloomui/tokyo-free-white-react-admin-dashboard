@@ -138,11 +138,24 @@ export const AddIngrDialog = ({
                   <Grid xs={3}>
                   <Button
                     disabled={loading}
-                    onClick={() => submitForm()}
+                    onClick={() => {
+                      submitForm();
+                      onClose();
+                    }}
                     color="primary"
                     variant="contained"
                   >
                     Gegevens toevoegen
+                  </Button>
+                  </Grid> 
+                  <Grid xs={3}>
+                  <Button
+                    disabled={loading}
+                    onClick={() => onClose()}
+                    color="primary"
+                    variant="contained"
+                  >
+                    Cancel
                   </Button>
                   </Grid> 
                   </Grid>
