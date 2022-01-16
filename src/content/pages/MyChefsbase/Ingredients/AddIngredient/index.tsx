@@ -18,6 +18,7 @@ import { FormikSelect } from "src/components/form/FormikSelect";
 import { H3, H5, H5Left } from "src/content/pages/Components/TextTypes";
 import { Quantity } from "../../Menus/filtermenus/components/quantity";
 import { useNavigate } from "react-router";
+import { AddQuickProductsDialog } from "./component/AddQuickProductsDialog";
 
 export const emptyNutrition: NutritionInput = {
   kcal: 0,
@@ -34,6 +35,7 @@ export const emptyQuantityToNutrition: QuantityToNutritionInput = {
 }
 
 export const AddIngredientPage = () => {
+  const [ dialog, openDialog] = useState(false)
 
     const { addIngredient, loading, error } = useAddIngredient({
         onCompleted: () => {window.location.reload()}
@@ -216,11 +218,6 @@ export const AddIngredientPage = () => {
                     </Grid>
           
                 <Divider/>
-                <Grid container xs={12}>
-                  <Grid xs={12}>
-                <H3 title="Productopties"/>
-                </Grid>
-                <Grid xs={12}>
                 <Button
                   onClick={() => navigate("/mychefsbase/addproduct")}
                   color="primary"
@@ -228,8 +225,26 @@ export const AddIngredientPage = () => {
                 >
                   Product toevoegen
                 </Button>
+                <Grid container xs={12}>
+                  <Grid xs={12}>
+                <H3 title="Productopties"/>
+                </Grid>
+                <Grid xs={12}>
                 </Grid>
                 <Grid xs={6}>
+                  <Grid xs={12}>
+                <Button
+                  // onClick={() => navigate("/mychefsbase/addingredient")}
+                  onClick={() => openDialog(true)}
+                  color="primary"
+                  variant="contained"
+                >
+                  Snel producten toevoegen
+                </Button>
+                </Grid>
+                <AddQuickProductsDialog
+                open={dialog}
+                onClose={() => openDialog(false)} />
                   <TableProductData 
                   setProduct={(selected) => setProducts([...selectedProducts, selected])
                   }/>
