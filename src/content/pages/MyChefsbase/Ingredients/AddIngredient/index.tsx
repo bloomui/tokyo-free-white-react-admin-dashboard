@@ -17,8 +17,8 @@ import { FormikSelect } from "src/components/form/FormikSelect";
 import { H3, H5, H5Left } from "src/content/pages/Components/TextTypes";
 import { Quantity } from "../../Menus/filtermenus/components/quantity";
 import { useNavigate } from "react-router";
-import { AddQuickProductsDialog } from "./component/AddQuickProductsDialog";
 import { units } from "../../Recipes/AddRecipe/components/IngredientTable";
+import { AddQuickProductsDialog } from "./component/AddQuickProductsDialog";
 
 export const emptyNutrition: NutritionInput = {
   kcal: 0,
