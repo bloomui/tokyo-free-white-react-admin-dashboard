@@ -1,4 +1,5 @@
 import { useQuery } from "@apollo/client";
+import { CircularProgress } from "@material-ui/core";
 import React, { useState } from "react";
 import { LoadingScreen } from "src/components/layout";
 import { IngredientFilterInput } from "src/globalTypes";
@@ -12,8 +13,8 @@ export const TopPartIngredientPage = ({
   setInput: (values: IngredientFilterInput) => void;
 }) => {
   const { loading, data, error } = useQuery(IngredientsData)
-  if (loading) return <LoadingScreen />;
-  if (error) return <LoadingScreen />;
+  if (loading) return <CircularProgress />;
+  if (error) return <CircularProgress />;
 
   return (
     <IngredientFilter

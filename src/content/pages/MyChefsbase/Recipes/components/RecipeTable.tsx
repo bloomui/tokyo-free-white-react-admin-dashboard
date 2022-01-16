@@ -192,10 +192,10 @@ headCells={headCellsRecipes}
             </Table>
               {/* <TableRow> */}
               <TablePagination
-              rowsPerPageOptions={[10, 25, 100]}
+              rowsPerPageOptions={[10]}
               component={Paper}
-              count={data.numberOfRecipes ? data.numberOfRecipes : 1000}
-              rowsPerPage={recipeRowsPerPage}
+              count={data.numberOfRecipes}
+              rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}

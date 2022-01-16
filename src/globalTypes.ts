@@ -100,6 +100,7 @@ export interface IngredientFilterInput {
   rating?: number | null;
   menus?: string[] | null;
   name?: string | null;
+  exact: number;
 }
 
 export interface IngredientInput {

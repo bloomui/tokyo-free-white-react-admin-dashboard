@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import { LoadingScreen } from "src/components/layout";
 import { recipeToQ } from "..";
-import { units } from "../../../Ingredients/ingredientDialogs/UpdateIngredientDialog";
+import { units } from "../../../Recipes/AddRecipe/components/IngredientTable";
 import { recipeRowsPerPage, useSearchRecipeQuery } from "../api";
 import { recipes_recipes } from "../types/recipes";
 
@@ -70,10 +70,10 @@ export  const TableRecipeData = ({
         ))}
         </Table>
         <TablePagination
-              rowsPerPageOptions={[10, 25, 100]}
+              rowsPerPageOptions={[10]}
               component={Paper}
-              count={data.numberOfRecipes ? data.numberOfRecipes : 1000}
-              rowsPerPage={recipeRowsPerPage}
+              count={data.numberOfRecipes}
+              rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}

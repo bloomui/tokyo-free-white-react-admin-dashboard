@@ -17,7 +17,6 @@ import { TableSupplierData } from "./components/SuppliersTable";
 import { H3, H5 } from "src/content/pages/Components/TextTypes";
 import { Price } from "../../Menus/filtermenus/components/prices";
 import { FormikSelect } from "src/components/form/FormikSelect";
-import { units } from "../../Ingredients/ingredientDialogs/UpdateIngredientDialog";
 
 export const AddProductPage = () => {
 

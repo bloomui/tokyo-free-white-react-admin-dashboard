@@ -6,7 +6,6 @@ import { FormikSelect } from "src/components/form/FormikSelect";
 import { LoadingScreen } from "src/components/layout";
 import { AddCourseToDishesInput } from "src/globalTypes";
 import { dishForCourse } from "..";
-import { units } from "../../../Ingredients/ingredientDialogs/UpdateIngredientDialog";
 import { dishRowsPerPage, useSearchDishesQuery } from "../api";
 import { dishes_dishes } from "../types/dishes";
 
@@ -74,10 +73,10 @@ export  const TableDishData = ({
         ))}
         </Table>
         <TablePagination
-              rowsPerPageOptions={[10, 25, 100]}
+              rowsPerPageOptions={[10]}
               component={Paper}
               count={data.numberOfDishes}
-              rowsPerPage={dishRowsPerPage}
+              rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}

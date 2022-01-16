@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Paper, Table, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, TextFieldProps } from "@material-ui/core";
+import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Paper, Table, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, TextFieldProps } from "@material-ui/core";
 import { Typography } from "@mui/material";
 import { Formik, useField } from "formik";
 import React, { useState } from "react";
@@ -13,13 +13,15 @@ import { Search } from "../../../Menus/filtermenus/components/search";
 import { ingredientRowsPerPage, useSearchIngredientQuery } from "../api";
 import { ingredients_ingredients } from "../types/ingredients";
 
-export const units = ["gram", "mililiter"]
+export const units = ["gram", "milliliter"]
 
 export  const TableData = ({
   setIngredients
 }: {
   setIngredients: (selected: ingredientToQ) => void
 }) => {
+  const  [ exactBoolean, setExact ] = React.useState(0)
+
     const [pageNumber, setPageNumber] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const handleChangePage = (
@@ -38,6 +40,7 @@ export  const TableData = ({
     const [page, setPage] = useState<number>(0)
 
   const { loading, data, error, refetch } = useSearchIngredientQuery({
+    exact: exactBoolean,
     name: name,
     page: page
     });
@@ -60,7 +63,13 @@ export  const TableData = ({
       fullWidth
       placeholder="Zoek op naam"
       onChange={(e) => setName(e.target.value)}    />
+      Zoek exact: <Checkbox
+                  color="primary"
+                  checked={(exactBoolean == 0)? false : true}
+                  onChange={(event, value) => {(value == true)? setExact(1) : setExact(0)}}
+                  />
     </Grid>
+    
     </Grid>
               </TableRow>
         <TableRow>
@@ -75,10 +84,10 @@ export  const TableData = ({
         ))}
         </Table>
         <TablePagination
-              rowsPerPageOptions={[10, 25, 100]}
+              rowsPerPageOptions={[10]}
               component={Paper}
-              count={data.ingredients.length}
-              rowsPerPage={ingredientRowsPerPage}
+              count={data.numberOfIngredients}
+              rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}

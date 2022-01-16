@@ -70,10 +70,10 @@ export  const TableSupplierData = ({
         ))}
         </Table>
         <TablePagination
-              rowsPerPageOptions={[10, 25, 100]}
+              rowsPerPageOptions={[10]}
               component={Paper}
               count={data.numberOfSuppliers}
-              rowsPerPage={suppliersRowsPerPage}
+              rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}

@@ -1,37 +1,44 @@
-import { Button, Container, Dialog, DialogContent, DialogTitle, Grid, Paper, Table, TableCell, TableContainer, TableRow, TextField, TextFieldProps, Typography } from "@material-ui/core";
+import { Button, Container, Dialog, DialogContent, DialogTitle, Grid, MenuItem, Paper, Table, TableCell, TableContainer, TableRow, TextField, TextFieldProps, Typography } from "@material-ui/core";
 import { FieldArray, Formik } from "formik";
 import React from "react";
+import { FormikSelect } from "src/components/form/FormikSelect";
 import { H5Left } from "src/content/pages/Components/TextTypes";
-import { AddIngredientInput } from "src/globalTypes";
-import { useAddQuickIngredients } from "../api";
-import { AddQuickIngredientsVariables } from "../types/AddQuickIngredients";
+import { AddProductInput } from "src/globalTypes";
+import { units } from "../../../Recipes/AddRecipe/components/IngredientTable";
+import { useAddQuickProducts } from "../api";
+import { AddQuickProductsVariables } from "../types/AddQuickProducts";
 
-export const AddIngrDialog = ({
+export const AddQuickProductsDialog = ({
     open, onClose
   }: {
     open: boolean,
     onClose: () => void
   }) => {
   
-    const emptyIngredientInput: AddIngredientInput = {
+    const emptyProductInput: AddProductInput = {
       name:  '',
       rating: 0,
-      category: ''
+      price: 0.0,
+      quantity: 0.0,
+      unit: 'gram',
+      brand: '',
+      origin: ''
     }
-    const formInput: AddIngredientInput[] = [emptyIngredientInput]
+    const formInput: AddProductInput[] = [emptyProductInput]
       
-  const formState : AddQuickIngredientsVariables = {
+  const formState : AddQuickProductsVariables = {
           input: formInput,
       }
   
-    const { addQuickIngredients, loading, error } = useAddQuickIngredients({
-      onCompleted: () => {window.location.reload()},
+    const { addQuickProducts, loading, error } = useAddQuickProducts({
+      onCompleted: () => {},
+    //   window.location.reload()
       },
     );
   
     return (
       <Dialog open={open} onClose={onClose}>
-        <DialogTitle>Snel ingredienten toevoegen</DialogTitle>
+        <DialogTitle>Snel Producten toevoegen</DialogTitle>
         <DialogContent>
         <Container maxWidth="lg">
           <Grid
@@ -45,7 +52,7 @@ export const AddIngrDialog = ({
         <Formik
           initialValues={formState}
           onSubmit={(values) => {
-            addQuickIngredients({
+            addQuickProducts({
               variables: {
                   input: values.input,
               },
@@ -65,10 +72,22 @@ export const AddIngrDialog = ({
                       <Table>
                         <TableRow>
                           <TableCell>
-                            <H5Left title="Ingredient"/>
+                            <H5Left title="Product"/>
                           </TableCell>
                           <TableCell>
-                          <H5Left title="Categorie"/>
+                          <H5Left title="Hoeveelheid"/>
+                          </TableCell>
+                          <TableCell>
+                          <H5Left title="Eenheid"/>
+                          </TableCell>
+                          <TableCell>
+                          <H5Left title="Herkomst"/>
+                          </TableCell>
+                          <TableCell>
+                          <H5Left title="Merk"/>
+                          </TableCell>
+                          <TableCell>
+                          <H5Left title="Prijs (€)"/>
                           </TableCell>
                           <TableCell>
                           <H5Left title="Beoordeling"/>
@@ -83,17 +102,53 @@ export const AddIngrDialog = ({
                           <TextField
                           id={`input.${index}.name`}
                           name={`input.${index}.name`}
-                         label="Ingredient"
+                         label="Product"
                          value={input.name}
                          onChange={handleChange}
                           />
                           </TableCell>
                           <TableCell>
                           <TextField
-                          id={`input.${index}.category`}
-                          name={`input.${index}.category`}
-                         label="Categorie"
-                         value={input.category}
+                          id={`input.${index}.quantity`}
+                          name={`input.${index}.quantity`}
+                         label="Hoeveelheid"
+                         value={input.quantity}
+                         onChange={handleChange}
+                          />
+                          </TableCell>
+                          <TableCell>
+                        <FormikSelect
+                      name={`input.${index}.unit`}
+                      >
+              {units.map((unit) => (
+                <MenuItem key={unit} value={unit}>{unit}</MenuItem>
+              ))}
+            </FormikSelect>
+                        </TableCell>
+                          <TableCell>
+                          <TextField
+                          id={`input.${index}.origin`}
+                          name={`input.${index}.origin`}
+                         label="Herkomst"
+                         value={input.origin}
+                         onChange={handleChange}
+                          />
+                          </TableCell>
+                          <TableCell>
+                          <TextField
+                          id={`input.${index}.brand`}
+                          name={`input.${index}.brand`}
+                         label="Merk"
+                         value={input.origin}
+                         onChange={handleChange}
+                          />
+                          </TableCell>
+                          <TableCell>
+                          <TextField
+                          id={`input.${index}.price`}
+                          name={`input.${index}.price`}
+                         label="Prijs"
+                         value={input.price}
                          onChange={handleChange}
                           />
                           </TableCell>
@@ -122,7 +177,7 @@ export const AddIngrDialog = ({
                          color="secondary"
                           style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
                            onClick={() => {
-                           arrayHelpers.push(emptyIngredientInput)}}>
+                           arrayHelpers.push(emptyProductInput)}}>
                           +
                          </Button>
                           </TableCell>
@@ -138,24 +193,11 @@ export const AddIngrDialog = ({
                   <Grid xs={3}>
                   <Button
                     disabled={loading}
-                    onClick={() => {
-                      submitForm();
-                      onClose();
-                    }}
+                    onClick={() => submitForm()}
                     color="primary"
                     variant="contained"
                   >
                     Gegevens toevoegen
-                  </Button>
-                  </Grid> 
-                  <Grid xs={3}>
-                  <Button
-                    disabled={loading}
-                    onClick={() => onClose()}
-                    color="primary"
-                    variant="contained"
-                  >
-                    Cancel
                   </Button>
                   </Grid> 
                   </Grid>

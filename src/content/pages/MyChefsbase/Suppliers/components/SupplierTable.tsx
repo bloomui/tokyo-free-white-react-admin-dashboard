@@ -190,10 +190,10 @@ headCells={headCellsSuppliers}
             </TableBody>
                    </Table>
                    <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[10]}
         component={Paper}
         count={data.numberOfSuppliers}
-        rowsPerPage={10}
+        rowsPerPage={rowsPerPage}
         page={page}
         backIconButtonProps={{
           'aria-label': 'Previous Page',
