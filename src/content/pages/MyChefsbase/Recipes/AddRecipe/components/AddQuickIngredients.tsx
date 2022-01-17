@@ -25,7 +25,7 @@ export const AddIngrDialog = ({
       }
   
     const { addQuickIngredients, loading, error } = useAddQuickIngredients({
-      onCompleted: () => {window.location.reload()},
+      onCompleted: () => {},
       },
     );
   
