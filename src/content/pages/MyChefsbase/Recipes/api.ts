@@ -8,181 +8,202 @@ import { AllIngredients } from "./types/AllIngredients";
 import { FilterRecipes } from "./types/FilterRecipes";
 import { recipe, recipeVariables } from "./types/recipe";
 import { UpdateRecipe, UpdateRecipeVariables } from "./types/UpdateRecipe";
-import { NutritionForRecipe, NutritionForRecipeVariables } from "./types/NutritionForRecipe";
-import { ingredientsForRecipe, ingredientsForRecipeVariables } from "./types/ingredientsForRecipe";
+import {
+  NutritionForRecipe,
+  NutritionForRecipeVariables,
+} from "./types/NutritionForRecipe";
+import {
+  ingredientsForRecipe,
+  ingredientsForRecipeVariables,
+} from "./types/ingredientsForRecipe";
 
 const getRecipeQuery = gql`
- query recipe ($id: String!) {
-   recipe (id: $id) {
-        id
-        name
-        rating
-        type
-        method {
-          step
-          method
-        }
+  query recipe($id: String!) {
+    recipe(id: $id) {
+      id
+      name
+      rating
+      type
+      method {
+        step
+        method
       }
-    }`;
+    }
+  }
+`;
 
 export const useGetRecipeQuery = (id: string) => {
-
-    const { loading, data, error } = useSimpleQuery<
-    recipe,
-    recipeVariables
-    >(getRecipeQuery, {
+  const { loading, data, error } = useSimpleQuery<recipe, recipeVariables>(
+    getRecipeQuery,
+    {
       variables: {
         id: id,
       },
-    });
-    return { loading, data, error};
-  };
+    }
+  );
+  return { loading, data, error };
+};
 
 export const FilterRecipesQuery = gql`
-query FilterRecipes ($input: RecipeFilterInput, $offset: Int, $limit: Int) {
-  numberOfRecipes  
-  filterRecipes (input: $input, offset: $offset, limit: $limit) {
-        id
-        name
-        rating
-        type
-      }
-    }`;
+  query FilterRecipes($input: RecipeFilterInput, $offset: Int, $limit: Int) {
+    numberOfRecipes
+    filterRecipes(input: $input, offset: $offset, limit: $limit) {
+      id
+      name
+      rating
+      type
+    }
+  }
+`;
 
 export const RecipesData = gql`
-query Recipes {
-  allTypes
-}
+  query Recipes {
+    allTypes
+  }
 `;
 
 export const IngredientsForRecipeQuery = gql`
-query ingredientsForRecipe ($id: String!, $quantity: Float!, $unit: String!) {
-  ingredientsForRecipe (id: $id, quantity: $quantity, unit: $unit) { 
-    quantity {
-      quantity
-      unit
-    }
-    ingredient {
-      id
-    	name
+  query ingredientsForRecipe($id: String!, $quantity: Float!, $unit: String!) {
+    ingredientsForRecipe(id: $id, quantity: $quantity, unit: $unit) {
+      quantity {
+        quantity
+        unit
+      }
+      ingredient {
+        id
+        name
+      }
     }
   }
-}
-    `;
+`;
 export const NutritionForRecipeQuery = gql`
-query NutritionForRecipe ($id: String!, $quantity: Float!, $unit: String!) {
-  nutritionForRecipe (id: $id, quantity: $quantity, unit: $unit) {
+  query NutritionForRecipe($id: String!, $quantity: Float!, $unit: String!) {
+    nutritionForRecipe(id: $id, quantity: $quantity, unit: $unit) {
       kcal
       protein {
-      plant
-      animal
-      total
+        plant
+        animal
+        total
       }
-  carbs {
-    carbs
-    sugar
-  }
-  fat {
-    satured
-    singleUnsat 
-    compoundUnsat
-    total
-  }
-     starch
-polyols
-fibres
-nitrogen,
-polysachhariden
-alcohol
-water
-organicAcids
-vitamins {
-e
-c
-kTotal
-b12
-dTotal
-}   
-        foliumAcid
-pholate
-pholatEquivalents
-nicotinAcid
-lycopeans
-betaCrypto
-zeacanthine
-lutein    
-ash
-jodium
-sink
-selenium
-cupper
-iron {
-total
-} 
-        magnesium
-fosfor
-calcium
-kalium
-natrium
-cholesterol
-famstxr
+      carbs {
+        carbs
+        sugar
+      }
+      fat {
+        satured
+        singleUnsat
+        compoundUnsat
+        total
+      }
+      starch
+      polyols
+      fibres
+      nitrogen
+      polysachhariden
+      alcohol
+      water
+      organicAcids
+      vitamins {
+        e
+        c
+        kTotal
+        b12
+        dTotal
+      }
+      foliumAcid
+      pholate
+      pholatEquivalents
+      nicotinAcid
+      lycopeans
+      betaCrypto
+      zeacanthine
+      lutein
+      ash
+      jodium
+      sink
+      selenium
+      cupper
+      iron {
+        total
+      }
+      magnesium
+      fosfor
+      calcium
+      kalium
+      natrium
+      cholesterol
+      famstxr
     }
-  }`;
-
+  }
+`;
 
 export const UpdateRecipeMutation = gql`
-mutation UpdateRecipe ($input: RecipeInput!, $ingredients: [QuantityToId!], $method: [StepToMethodInput!]) {
-  updateRecipe (input: $input, ingredients: $ingredients, method: $method)
-}
+  mutation UpdateRecipe(
+    $input: RecipeInput!
+    $ingredients: [QuantityToId!]
+    $method: [StepToMethodInput!]
+  ) {
+    updateRecipe(input: $input, ingredients: $ingredients, method: $method)
+  }
 `;
 
 export const AddRecipeMutation = gql`
-mutation AddRecipe ($input: AddRecipeInput!, $ingredients: [QuantityToId!], $method: [StepToMethodInput!]) {
-  addRecipe(input: $input, ingredients: $ingredients, method: $method)
-}`;
+  mutation AddRecipe(
+    $input: AddRecipeInput!
+    $ingredients: [QuantityToId!]
+    $method: [StepToMethodInput!]
+  ) {
+    addRecipe(input: $input, ingredients: $ingredients, method: $method)
+  }
+`;
 
 export const useGetNutritionForRecipe = ({
   id,
   quantity,
-  unit
+  unit,
 }: {
-  id: string,
-  quantity: number,
-  unit: string
+  id: string;
+  quantity: number;
+  unit: string;
 }) => {
   const { loading, data, error, refetch } = useSimpleQuery<
-  NutritionForRecipe,
-  NutritionForRecipeVariables
+    NutritionForRecipe,
+    NutritionForRecipeVariables
   >(NutritionForRecipeQuery, {
     variables: {
       id: id,
       quantity: quantity,
-      unit: unit
+      unit: unit,
     },
   });
-  return { loading, data, error, refetch};
+  return { loading, data, error, refetch };
 };
 
 export const useGetIngredientsForRecipe = ({
   id,
   quantity,
-  unit
+  unit,
+  onCompleted,
 }: {
-  id: string,
-  quantity: number,
-  unit: string
+  id: string;
+  quantity: number;
+  unit: string;
+  onCompleted?: (ingredientsForRecipe: ingredientsForRecipe) => void;
 }) => {
   const { loading, data, error, refetch } = useSimpleQuery<
-  ingredientsForRecipe,
-  ingredientsForRecipeVariables
+    ingredientsForRecipe,
+    ingredientsForRecipeVariables
   >(IngredientsForRecipeQuery, {
     variables: {
       id: id,
       quantity: quantity,
-      unit: unit
+      unit: unit,
+    },
+    onCompleted: (result) => {
+      onCompleted(result);
     },
   });
-  return { loading, data, error, refetch};
+  return { loading, data, error, refetch };
 };
 
 export const recipeRowsPerPage = 10;
@@ -193,18 +214,18 @@ export const useFilterRecipesQuery = ({
   page: number;
   input: RecipeFilterInput | null;
 }) => {
-
-  const offset = page * recipeRowsPerPage
-  const { loading, data, error } = useSimpleQuery<
-  FilterRecipes
-    >(FilterRecipesQuery, {
-    variables: {
-      input: input,
-      offset: offset,
-      limit: recipeRowsPerPage,
-    },
-  });
-  return { loading, data, error};
+  const offset = page * recipeRowsPerPage;
+  const { loading, data, error } = useSimpleQuery<FilterRecipes>(
+    FilterRecipesQuery,
+    {
+      variables: {
+        input: input,
+        offset: offset,
+        limit: recipeRowsPerPage,
+      },
+    }
+  );
+  return { loading, data, error };
 };
 
 export const useUpdateRecipe = ({
@@ -226,11 +247,7 @@ export const useUpdateRecipe = ({
   };
 };
 
-export const useAddRecipe = ({
-  onCompleted,
-}: {
-  onCompleted: () => void;
-}) => {
+export const useAddRecipe = ({ onCompleted }: { onCompleted: () => void }) => {
   const [addRecipe, { loading, error }] = useMutation<
     AddRecipe,
     AddRecipeVariables
