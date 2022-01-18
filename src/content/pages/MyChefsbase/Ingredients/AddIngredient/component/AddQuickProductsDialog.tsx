@@ -200,6 +200,15 @@ export const AddQuickProductsDialog = ({
                     Gegevens toevoegen
                   </Button>
                   </Grid> 
+                  <Grid xs={3}>
+                  <Button
+                    onClick={() => onClose()}
+                    color="primary"
+                    variant="contained"
+                  >
+                    Cancel
+                  </Button>
+                  </Grid> 
                   </Grid>
                   <Grid xs={4}>  
                   {error && (
