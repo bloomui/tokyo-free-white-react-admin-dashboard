@@ -40,7 +40,6 @@ import { UpdateRecipeVariables } from "../types/UpdateRecipe";
 import { H3, H5 } from "src/content/pages/Components/TextTypes";
 import {
   ingredientToQ,
-  mapIngredientForRecipeToIngredientToQuantity,
   mapIngredientToQToInput,
 } from "../AddRecipe";
 import { TableData } from "../AddRecipe/components/IngredientTable";
@@ -48,6 +47,7 @@ import { LoadingScreen } from "src/components/layout";
 import { recipe_recipe } from "../types/recipe";
 import { Loader } from "src/components/search/Loader";
 import { ingredientsForRecipe_ingredientsForRecipe } from "../types/ingredientsForRecipe";
+import { dishForCourse } from "../../Menus/AddMenu";
 
 export const emptyRecipe: recipe_recipe = {
   __typename: "Recipe",
@@ -161,13 +161,6 @@ export const UpdateRecipeDialog = ({
     ingredients: formIngredients,
     method: formMethods,
   };
-
-  // const ingredients: ingredientToQ[] = mapIngredientForRecipeToIngredientToQuantity(data2.ingredientsForRecipe)
-
-  // setIngredients([...selectedIngredients, ingredients])
-  // selectedIngredients.forEach((i)=> {
-  //
-  // })
 
   return (
     <Dialog fullScreen open={open} onClose={onClose}>

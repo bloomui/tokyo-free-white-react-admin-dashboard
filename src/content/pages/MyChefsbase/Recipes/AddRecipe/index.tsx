@@ -228,7 +228,6 @@ export const AddRecipePage = () => {
                 </Grid>
                 <Grid xs={12}>
                 <Button
-                  // onClick={() => navigate("/mychefsbase/addingredient")}
                   onClick={() => openDialog(true)}
                   color="primary"
                   variant="contained"

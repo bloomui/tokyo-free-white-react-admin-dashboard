@@ -92,15 +92,6 @@ export  const TableData = ({
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-        {/* <TablePagination
-              rowsPerPageOptions={[10, 20]}
-              component={Paper}
-              count={data.numberOfIngredients}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            /> */}
       </TableContainer>
   )
 }

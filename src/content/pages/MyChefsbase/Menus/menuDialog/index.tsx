@@ -18,7 +18,7 @@ export const MenuDialog = ({
     onClose: () => void
 }) => {
 
-    const { data, loading, error } = useGetMenuQuery(id)
+    const { data, loading, error } = useGetMenuQuery({id, onCompleted: (values) => {}})
     const [updateOpen, setUpdateOpen] = useState(false)
 
     if (loading) return <LoadingScreen/>
