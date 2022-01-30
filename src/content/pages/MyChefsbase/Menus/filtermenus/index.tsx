@@ -10,7 +10,7 @@ import { MenuFilterInput } from "src/globalTypes";
 import { MenusData } from "../api";
 import { Dishes } from "./components/dishes";
 import { Ingredients } from "./components/ingredients";
-import { Period } from "./components/period";
+import { InsertPeriod } from "./components/period";
 import { FilterProducts, Products } from "./components/products";
 import { Rating1 } from "./components/rating";
 import { Recipes } from "./components/recipes";
@@ -47,21 +47,7 @@ import { searchProduct_searchProduct } from "../../Ingredients/AddIngredient/typ
     const [selectedProducts, setProducts] = React.useState<searchProduct_searchProduct[]>([emptyOne]);
 
     const { data, loading, error, refetch } = useSearchProductFilterQuery({productname: productname})
-    
-    const [timer, setTimer] = useState(null);
-    
-  function changeDelay(change) {
-    if (timer) {
-      clearTimeout(timer);
-      setTimer(null);
-    }
-    setTimer(
-      setTimeout(() => {
-        setProductname(change);
-        refetch({productname: productname})
-      }, 100)
-    );
-  }
+        
     return (
       <Card>
         <Formik
@@ -70,7 +56,7 @@ import { searchProduct_searchProduct } from "../../Ingredients/AddIngredient/typ
          onChange(values)
         }}
         >
-        {({ setFieldValue, submitForm, handleChange, values }) => {
+        {({ setFieldValue }) => {
           return (
             <>
       <Grid container xs={12}>
@@ -99,7 +85,7 @@ import { searchProduct_searchProduct } from "../../Ingredients/AddIngredient/typ
         <CardContent>   
                   <Grid container spacing={2} xs={12}>
            <Grid item xs={3}>
-            <Period setFieldValue={setFieldValue}/>
+            <InsertPeriod setFieldValue={setFieldValue}/>
             </Grid>
             <Grid xs={1}></Grid>
             <Grid item xs={3}>

@@ -21,7 +21,9 @@ import {
   CircularProgress,
   Box,
 } from "@material-ui/core";
+import { Formik } from "formik";
 import React, { useState } from "react";
+import { FormikSelect } from "src/components/form/FormikSelect";
 import { H5 } from "src/content/pages/Components/TextTypes";
 import { NutritionInput } from "src/globalTypes";
 import {
@@ -40,6 +42,7 @@ import {
 import { ingredientsForRecipe_ingredientsForRecipe } from "../types/ingredientsForRecipe";
 import {
   NutritionForRecipe,
+  NutritionForRecipeVariables,
   NutritionForRecipe_nutritionForRecipe,
 } from "../types/NutritionForRecipe";
 import { UpdateRecipeDialog } from "./UpdateRecipeDialog";
@@ -168,7 +171,7 @@ export const RecipeDialog = ({
   const [nutritionsToDisplay, setNutritionsToDisplay] = useState<string[]>(
     DefaultNutritionOptions
   );
-  const [unit, setUnit] = useState("gram");
+  const [unit, setUnit] = useState("");
   const [quantity, setQuantity] = useState(100);
   const { data, loading, error } = useGetRecipeQuery(id);
 
@@ -225,6 +228,29 @@ export const RecipeDialog = ({
 
   let recipe = data.recipe;
 
+  const quantities = ["50", "100", "500", "1000"]
+  var unitsHere;
+  switch(recipe.quantity.unit) {
+    case "milliliter":
+    unitsHere = ["milliliter"];
+    break;
+    case "liter":
+    unitsHere = ["milliliter"];
+    break;
+    case "gram":
+    unitsHere = ["gram"];
+    break;
+    case "kg":
+    unitsHere = ["gram"];
+    break;
+    default: 
+    unitsHere = ["eenheid"];
+  }
+
+  const formState: NutritionForRecipeVariables = {
+    id: recipe.id, unit: unitsHere[0],  quantity: quantity
+  }
+
   return (
     <>
       <Dialog open={open} onClose={onClose}>
@@ -261,38 +287,47 @@ export const RecipeDialog = ({
                   </Grid>
                   <Grid xs={4}>
                     <TextField
-                      onKeyPress={(e) => {
-                        if (e.key === "Enter") {
-                          refetch1({
-                            id: id,
-                            quantity: quantity,
-                            unit: unit,
-                          });
-                          refetch2({
-                            id: id,
-                            quantity: quantity,
-                            unit: unit,
-                          });
-                        }
-                      }}
                       defaultValue={quantity}
-                      onChange={(e) => setQuantity(Number(e.target.value))}
-                    />
-                  </Grid>
-                  <Grid xs={2}></Grid>
-                  <Grid xs={4}>
-                    <TextField
                       select
-                      onChange={(e) => setUnit(e.target.value)}
+                      onChange={(e) => setQuantity(Number(e.target.value))}
                       variant="filled"
                     >
-                      {["gram", "liter"].map((option) => (
+                      {quantities.map((option) => (
                         <MenuItem key={option} value={option}>
                           {option}
                         </MenuItem>
                       ))}
                     </TextField>
                   </Grid>
+                  <Grid xs={4}>
+                    <TextField
+                      defaultValue={unit}
+                      select
+                      onChange={(e) => setUnit(e.target.value)}
+                      variant="filled"
+                    >
+                      {unitsHere.map((option) => (
+                        <MenuItem key={option} value={option}>
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    </Grid>
+                    <Grid xs={2}>
+                      <Button onClick={() => {
+                        refetch1({
+                            id: id,
+                            quantity: quantity,
+                            unit: unit,
+                        });
+                        refetch2({
+                            id: id,
+                            quantity: quantity,
+                            unit: unit,
+                        });
+                      }}>Toepassen</Button>
+                    </Grid>
+
                   <Grid xs={12}>
                     <NutritionOptionDropDown
                       setFieldValue={(selected) =>
@@ -399,47 +434,6 @@ export const ItemIngredients = ({
                     <TableCell align="left">
                       {quantityToIngr.quantity.quantity}{" "}
                       {quantityToIngr.quantity.unit}
-                    </TableCell>
-                  </TableRow>
-                </>
-              ))}
-          </TableBody>
-        </TableContainer>
-      </Grid>
-    </>
-  );
-};
-
-export const ItemRecipes = ({
-  title,
-  item,
-}: {
-  title: string;
-  item: recipes_recipes[] | null;
-}) => {
-  return (
-    <>
-      <Grid key={0} item xs={12}>
-        <Typography style={{ fontWeight: 600 }}>{title}</Typography>
-      </Grid>
-      <Grid key={1} item xs={12}>
-        <TableContainer>
-          <TableHead>
-            <TableRow>
-              <TableCell>recept</TableCell>
-              <TableCell>Hoeveelheid</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {item &&
-              item.map((quantityToRecipe) => (
-                <>
-                  <TableRow>
-                    <TableCell align="left">
-                      {/* {quantityToRecipe.recipe.name} */}
-                    </TableCell>
-                    <TableCell align="left">
-                      {/* {quantityToRecipe.quantity.quantity} {quantityToRecipe.quantity.unit} */}
                     </TableCell>
                   </TableRow>
                 </>

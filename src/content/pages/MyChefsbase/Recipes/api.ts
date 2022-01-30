@@ -24,6 +24,10 @@ const getRecipeQuery = gql`
       name
       rating
       type
+      quantity {
+        unit
+        quantity
+      }
       method {
         step
         method

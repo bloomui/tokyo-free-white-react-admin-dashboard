@@ -56,6 +56,11 @@ export const emptyRecipe: recipe_recipe = {
   method: [],
   rating: 0,
   type: "a",
+  quantity: {
+    __typename: "Quantity",
+    unit: "",
+    quantity: 0
+  }
 };
 
 export const UpdateRecipeDialog = ({

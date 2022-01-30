@@ -24,7 +24,6 @@ import { AddMenuPage } from "./AddMenu";
   }) => {
     const [menuForProductOverview, setMenuForProductOverview] = useState<FilterMenus_filterMenus>()
     const [openProductsForMenu, openProductOverview] = useState(false)
-    const [openAddMenu, setOpenAddMenu] = useState(false)
     const [ input, setInput] = useState<MenuFilterInput>(initialMenuValues);
     const { loading, data } = useFilterMenuQuery({
         input: input,

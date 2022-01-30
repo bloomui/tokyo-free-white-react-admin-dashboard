@@ -13,7 +13,7 @@ import { Search } from "../../../Menus/filtermenus/components/search";
 import { ingredientRowsPerPage, useSearchIngredientQuery } from "../api";
 import { ingredients_ingredients } from "../types/ingredients";
 
-export const units = ["gram", "milliliter"]
+export const units = ["gram", "milliliter", "eenheid"]
 
 export  const TableData = ({
   setIngredients
@@ -84,14 +84,23 @@ export  const TableData = ({
         ))}
         </Table>
         <TablePagination
-              rowsPerPageOptions={[10]}
+          rowsPerPageOptions={[5, 10, 25]}
+          component={Paper}
+          count={data.numberOfIngredients}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+        {/* <TablePagination
+              rowsPerPageOptions={[10, 20]}
               component={Paper}
               count={data.numberOfIngredients}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+            /> */}
       </TableContainer>
   )
 }
