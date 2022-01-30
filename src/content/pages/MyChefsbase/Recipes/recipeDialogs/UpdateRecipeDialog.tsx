@@ -42,7 +42,7 @@ import {
   ingredientToQ,
   mapIngredientToQToInput,
 } from "../AddRecipe";
-import { TableData } from "../AddRecipe/components/IngredientTable";
+import { TableData, units } from "../AddRecipe/components/IngredientTable";
 import { LoadingScreen } from "src/components/layout";
 import { recipe_recipe } from "../types/recipe";
 import { Loader } from "src/components/search/Loader";
@@ -140,6 +140,8 @@ export const UpdateRecipeDialog = ({
     name: recipe.name,
     rating: recipe.rating,
     type: recipe.type,
+    unit: recipe.quantity.unit,
+    quantity: recipe.quantity.quantity
   };
   const formIngredients: QuantityToId[] | null = data2.ingredientsForRecipe.map(
     (quantityToIngr) => ({
@@ -176,6 +178,8 @@ export const UpdateRecipeDialog = ({
                 name: values.input.name,
                 rating: values.input.rating,
                 type: values.input.type,
+                unit: values.input.unit,
+                quantity: values.input.quantity
               },
             },
           });
@@ -199,6 +203,20 @@ export const UpdateRecipeDialog = ({
                     />
                   </Grid>
                   <Grid xs={1}></Grid>
+                  <Grid xs={6}>
+                <Typography>Per hoeveelheid</Typography>
+                <FormField
+                  name="input.quantity"
+                  label="Hoeveelheid"
+                />
+                <FormikSelect
+                      name="input.unit"
+                      >
+              {units.map((unit) => (
+                <MenuItem key={unit} value={unit}>{unit}</MenuItem>
+              ))}
+            </FormikSelect>
+                </Grid>
                   <Grid xs={3}>
                     <Typography>Geef het recept type aan</Typography>
                     <FormFieldEdit
