@@ -150,13 +150,6 @@ export const AddIngredientPage = () => {
                 />
                     </Grid>
                 <Divider/>
-                <Button
-                  onClick={() => navigate("/mychefsbase/addproduct")}
-                  color="primary"
-                  variant="contained"
-                >
-                  Product toevoegen
-                </Button>
                 <Grid container xs={12}>
                   <Grid xs={12}>
                 <H3 title="Productopties"/>

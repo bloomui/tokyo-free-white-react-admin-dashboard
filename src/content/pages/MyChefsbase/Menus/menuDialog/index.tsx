@@ -110,7 +110,7 @@ export const ItemString = ({title, item}: {title: string, item: string | null}) 
         <Typography style={{ fontWeight: 600 }}>{title}</Typography>
         </Grid>  
         <Grid key={1} item xs={6}>
-        {item? item : "Geen "+ title + "bekend"}
+        {item? item : "Geen "+ title + " bekend"}
         </Grid> 
         </> 
     )
@@ -123,7 +123,7 @@ export const ItemDouble = ({title, item}: {title: string, item: number | null}) 
         <Typography style={{ fontWeight: 600 }}>{title}</Typography>
         </Grid>  
         <Grid key={1} item xs={9}>
-        {item? item : "Geen "+ title + "bekend"}
+        {item? item : "Geen "+ title + " bekend"}
         </Grid> 
         </> 
     )
