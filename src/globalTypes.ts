@@ -60,6 +60,8 @@ export interface AddRecipeInput {
   name: string;
   rating?: number | null;
   type?: string | null;
+  quantity?: number | null;
+  unit?: string | null;
 }
 
 export interface AddSupplierInput {
@@ -259,6 +261,8 @@ export interface RecipeInput {
   name: string;
   rating?: number | null;
   type?: string | null;
+  quantity?: number | null;
+  unit?: string | null;
 }
 
 export interface StepToMethodInput {

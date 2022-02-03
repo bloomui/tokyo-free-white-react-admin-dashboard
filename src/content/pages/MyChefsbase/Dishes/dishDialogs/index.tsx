@@ -44,7 +44,10 @@ export const DishDialog = ({
     onClose: () => void
 }) => {
 
-    const { data, loading, error } = useGetDishQuery(id)
+    const { data, loading, error } = useGetDishQuery({
+        id: id, 
+        onCompleted: () => {}
+    })
 
     if (loading) return <LoadingScreen/>
     if (error) return <LoadingScreen/>

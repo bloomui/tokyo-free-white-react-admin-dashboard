@@ -5,7 +5,7 @@ import { Delete, DeleteVariables } from "./types/Delete";
 import { addToFavorites, addToFavoritesVariables } from "./types/addToFavorites";
 import { UpdateMenu, UpdateMenuVariables } from "./types/UpdateMenu";
 import { AddMenu, AddMenuVariables } from "./types/AddMenu";
-import { MenuFilterInput } from "src/globalTypes";
+import { AddCourseToDishesInput, MenuFilterInput } from "src/globalTypes";
 import { useSimpleQuery } from "src/utilities/apollo";
 import { DeleteMultiple, DeleteMultipleVariables } from "./types/DeleteMultiple";
 import { addToFavoritesMultiple, addToFavoritesMultipleVariables } from "./types/addToFavoritesMultiple";
@@ -127,17 +127,26 @@ export const useFilterMenuQuery = ({
   return { loading, data, error};
 };
 
-export const useGetMenuQuery = (id: string) => {
+export const useGetMenuQuery = ({
+  id, 
+  onCompleted
+}: {
+  id: string,
+  onCompleted?: (menu: menu) => void;
+}) => {
 
-  const { loading, data, error } = useSimpleQuery<
+  const { loading, data, error, refetch } = useSimpleQuery<
   menu,
   menuVariables
   >(getMenuQuery, {
     variables: {
       id: id,
     },
+    onCompleted: (result) => {
+      onCompleted(result);
+    },
   });
-  return { loading, data, error};
+  return { refetch, loading, data, error};
 };
 
 export const useMenuQuery = ({

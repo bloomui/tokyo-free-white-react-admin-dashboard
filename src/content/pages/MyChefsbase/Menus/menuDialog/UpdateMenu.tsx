@@ -14,8 +14,27 @@ import { H3, H5 } from "src/content/pages/Components/TextTypes";
 import { TableDishData } from "../AddMenu/components/DishTable";
 import { Grid } from "@mui/material";
 import { dishForCourse, mapCoursesToInput } from "../AddMenu";
-import { menu_menu } from "../types/menu";
+import { menu_menu, menu_menu_courses } from "../types/menu";
 import { LoadingScreen } from "src/components/layout";
+import { recipeToQ } from "../../Dishes/AddDish";
+
+const mapToDishesForCourses = (
+  a: menu_menu_courses[]
+): dishForCourse[] => {
+
+  const map = []
+  a.forEach((course) => {
+    course.dishes.forEach((dish) => {
+      map.push({
+        coursetype: course.course.courseType,
+        dishid: dish.id,
+        dishname: dish.name,
+      });
+    });
+  });
+
+  return map;
+}
 
 export const UpdateMenuDialog = ({
     id,
@@ -27,13 +46,30 @@ export const UpdateMenuDialog = ({
     onClose: () => void
 }) => {
   
-    const {data, loading: loading1,  error: error1} = useGetMenuQuery(id)
+
+  const [selectedDishes, setDishes] = React.useState<dishForCourse[]>([]);
+  function handleDelete(index) {
+    selectedDishes.splice(index, 1)
+    setDishes([...selectedDishes])
+  }
+
+    const {data, loading: loading1,  error: error1} = useGetMenuQuery({
+      id,
+      onCompleted: (values) => {setDishes(
+        mapToDishesForCourses(values.menu.courses)
+      );},
+    })
 
     const { updateMenu, loading, error } = useUpdateMenu({
         onCompleted: () => window.location.reload(),
       });
 
-    const formInput: MenuInput = data? {
+    
+
+      if (loading1) return <LoadingScreen/>
+      if (loading) return <LoadingScreen/>
+
+      const formInput: MenuInput = data? {
         id: data.menu.id,
         name: data.menu.name,
         rating: data.menu.rating,
@@ -55,14 +91,6 @@ export const UpdateMenuDialog = ({
         input: formInput,
         courses: formcourses
     }
-
-    const [selectedDishes, setDishes] = React.useState<dishForCourse[]>([]);
-      function handleDelete(index) {
-        selectedDishes.splice(index, 1)
-        setDishes([...selectedDishes])
-      }
-
-      if (loading) return <LoadingScreen/>
 
     return (
     <Dialog fullScreen open={open} onClose={onClose}>

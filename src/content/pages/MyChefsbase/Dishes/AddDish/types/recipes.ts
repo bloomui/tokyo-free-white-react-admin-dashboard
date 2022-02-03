@@ -7,12 +7,18 @@
 // GraphQL query operation: recipes
 // ====================================================
 
+export interface recipes_recipes_quantity {
+  __typename: "Quantity";
+  unit: string;
+}
+
 export interface recipes_recipes {
   __typename: "Recipe";
   id: string;
   name: string;
   type: string | null;
   rating: number | null;
+  quantity: recipes_recipes_quantity | null;
 }
 
 export interface recipes {

@@ -24,5 +24,5 @@ export interface ingredientsVariables {
   name?: string | null;
   offset?: number | null;
   limit?: number | null;
-  exact?: number | null;
+  exact: number;
 }

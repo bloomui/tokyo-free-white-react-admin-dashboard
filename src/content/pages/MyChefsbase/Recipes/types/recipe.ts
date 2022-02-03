@@ -7,6 +7,12 @@
 // GraphQL query operation: recipe
 // ====================================================
 
+export interface recipe_recipe_quantity {
+  __typename: "Quantity";
+  unit: string;
+  quantity: number;
+}
+
 export interface recipe_recipe_method {
   __typename: "StepToMethod";
   step: number;
@@ -19,6 +25,7 @@ export interface recipe_recipe {
   name: string;
   rating: number | null;
   type: string | null;
+  quantity: recipe_recipe_quantity | null;
   method: recipe_recipe_method[] | null;
 }
 

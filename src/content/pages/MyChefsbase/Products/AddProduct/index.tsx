@@ -11,14 +11,17 @@ import { composeValidators, required, Validator } from "src/utilities/formikVali
 import { user } from "../..";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
 import { useAddProduct } from "../api";
-import { Divider } from '@mui/material';
+import { ButtonBase, Divider } from '@mui/material';
 import { AddProductVariables } from "../types/AddProduct";
 import { TableSupplierData } from "./components/SuppliersTable";
 import { H3, H5 } from "src/content/pages/Components/TextTypes";
 import { Price } from "../../Menus/filtermenus/components/prices";
 import { FormikSelect } from "src/components/form/FormikSelect";
+import { AddSupplierDialog } from "../../Suppliers/supplierDialogs/AddSupplierDialog";
+import { AddSuppliersDialog } from "./components/AddQuickSuppliers";
 
 export const AddProductPage = () => {
+  const [ dialog, openDialog] = useState(false)
 
     const { addProduct, loading, error } = useAddProduct({
         onCompleted: () => {window.location.reload()}
@@ -121,26 +124,6 @@ export const AddProductPage = () => {
                 setFieldValue={setFieldValue}
                 />
                 </Grid>
-                {/* <Grid xs={1}></Grid> */}
-                {/* <Grid xs={3}>
-                <H5 title="Hoeveelheid"/>
-                <Grid xs={5}>
-                <FormField
-                  name="input.quantity"
-                  label="Hoeveelheid"
-                />
-                </Grid>
-                <Grid xs={1}></Grid>
-                <Grid xs={6}>
-                <FormikSelect
-                name="unit"
-                >
-        {units.map((unit) => (
-          <MenuItem key={unit} value={unit}>{unit}</MenuItem>
-        ))}
-      </FormikSelect></Grid>
-                </Grid>  */}
-                {/* <Grid xs={1}></Grid> */}
                 <Grid xs={6}>
                 <H5 title="Prijs (€)"/>
                 <Price 
@@ -162,6 +145,18 @@ export const AddProductPage = () => {
                 </Grid>
                 <Divider/>
                 <Grid container xs={12}>
+                <Grid xs={12}>
+                <Button
+                  onClick={() => openDialog(true)}
+                  color="primary"
+                  variant="contained"
+                >
+                  Leveranciers toevoegen
+                </Button>
+                </Grid>
+                <AddSuppliersDialog
+                open={dialog}
+                onClose={() => openDialog(false)} />
                 <Grid xs={6}>
                 <H3 title="Leveranciers om toe te voegen"/>
                         </Grid>

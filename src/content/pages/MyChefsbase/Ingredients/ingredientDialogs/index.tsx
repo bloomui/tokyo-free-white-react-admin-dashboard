@@ -31,7 +31,10 @@ export const IngredientDialog = ({
 }) => {
     const [nutritionsToDisplay, setNutritionsToDisplay] = useState<string[]>(DefaultNutritionOptions)
 
-    const { data, loading, error } = useGetIngredientQuery(id)
+    const { data, loading, error } = useGetIngredientQuery({
+        id: id,
+        onCompleted: () => {}
+    })
 
     const [openUpdateDialog, setUpdateDialog] = useState(false)
 

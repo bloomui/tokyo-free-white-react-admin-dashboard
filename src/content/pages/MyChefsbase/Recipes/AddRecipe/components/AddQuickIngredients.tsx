@@ -1,10 +1,17 @@
-import { Button, Container, Dialog, DialogContent, DialogTitle, Grid, Paper, Table, TableCell, TableContainer, TableRow, TextField, TextFieldProps, Typography } from "@material-ui/core";
+import { Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Paper, Table, TableCell, TableContainer, TableRow, TextField, TextFieldProps, Typography } from "@material-ui/core";
 import { FieldArray, Formik } from "formik";
-import React from "react";
-import { H5Left } from "src/content/pages/Components/TextTypes";
+import React, { useState } from "react";
+import { FormikSelect } from "src/components/form/FormikSelect";
+import { H3, H5Left } from "src/content/pages/Components/TextTypes";
+import { FormField } from "src/content/pages/SignIn";
 import { AddIngredientInput } from "src/globalTypes";
+import { composeValidators, required } from "src/utilities/formikValidators";
+import { InsertNutrition } from "../../../Ingredients/AddIngredient/component/AddNutrition";
+import { Quantity } from "../../../Menus/filtermenus/components/quantity";
+import { zeroNutrition, zeroNutritionInput } from "../../recipeDialogs";
 import { useAddQuickIngredients } from "../api";
 import { AddQuickIngredientsVariables } from "../types/AddQuickIngredients";
+import { units } from "./IngredientTable";
 
 export const AddIngrDialog = ({
     open, onClose
@@ -13,10 +20,17 @@ export const AddIngrDialog = ({
     onClose: () => void
   }) => {
   
+    const [nutr, setNutr] =  useState(false)
+
     const emptyIngredientInput: AddIngredientInput = {
       name:  '',
       rating: 0,
-      category: ''
+      category: '',
+      nutrition: {
+        quantity: 100.0,
+        unit: "gram",
+        nutrition: zeroNutritionInput,
+      }
     }
     const formInput: AddIngredientInput[] = [emptyIngredientInput]
       
@@ -107,6 +121,21 @@ export const AddIngrDialog = ({
                           />
                           </TableCell>
                           <TableCell>
+                            <Button
+                            onClick={() => setNutr(true)}
+                            variant="outlined"
+                            >Voedingswaarden toevoegen</Button>
+                          </TableCell>
+                          <Grid xs={12}>
+                <InsertNutritionHere
+                ingredientName={values.input[index].name}
+                open={nutr}
+                onClose={() => setNutr(false)}
+                index={index}
+                onChange={handleChange}
+                />
+                    </Grid>
+                          <TableCell>
                           <Button
                               variant="contained" 
                               color="secondary"
@@ -145,7 +174,7 @@ export const AddIngrDialog = ({
                     color="primary"
                     variant="contained"
                   >
-                    Gegevens toevoegen
+                    Toevoegen
                   </Button>
                   </Grid> 
                   <Grid xs={3}>
@@ -178,3 +207,121 @@ export const AddIngrDialog = ({
       </Dialog>
     )
   }
+
+  const InsertNutritionHere = ({
+    ingredientName,
+    open, 
+    onClose,
+    index,
+    onChange,
+  }: {
+    ingredientName: string;
+    open: boolean;
+    onClose: () => void;
+    index: number;
+    onChange: {
+      (e: React.ChangeEvent<any>): void;
+      <T = string | React.ChangeEvent<any>>(field: T): T extends React.ChangeEvent<any> ? void : (e: string | React.ChangeEvent<any>) => void;
+  };
+}) => {
+  
+    return (
+      <Dialog open={open} onClose={onClose}>
+        <DialogActions>
+          <Button  onClick={() => onClose()}>-</Button>
+        </DialogActions>
+        <DialogContent>
+        <TableContainer>
+                      <Table>
+                          <TableRow>
+                              <TableCell colSpan={6}>
+                              <H3 title="Voedingswaarden "/>
+                              </TableCell>
+                          </TableRow>
+                          <TableRow>
+                          <TableCell colSpan={2}></TableCell>
+                              <TableCell colSpan={2}>
+                              <H5Left title="Hoeveelheid"/>
+                              </TableCell>
+                              <TableCell colSpan={2}>
+                              <H5Left title="Eenheid"/>
+                              </TableCell>
+                          </TableRow>
+                          <TableRow>
+                          <TableCell colSpan={2} align="center">Per</TableCell>
+                          <TableCell colSpan={2}>
+                          <FormField
+                    name={`input.${index}.nutrition.quantity`}
+                    label="Hoeveelheid"
+                  validator={composeValidators(required)}
+                  />
+                              </TableCell>
+                              <TableCell colSpan={2}>
+                              <FormikSelect
+                      name={`input.${index}.nutrition.unit`}
+                      >
+              {units.map((unit) => (
+                <MenuItem key={unit} value={unit}>{unit}</MenuItem>
+              ))}
+            </FormikSelect>
+                              </TableCell>
+                          </TableRow>
+                          <TableRow></TableRow>
+                          <TableRow>
+                        <TableCell>Kilocalorieën</TableCell>
+                        <TableCell>
+                        <FormField
+                    name={`input.${index}.nutrition.nutrition.kcal`}
+                    label="Kilocalorieën"
+                  validator={composeValidators(required)}
+                  />
+                  </TableCell>
+                        <TableCell>Eiwitten</TableCell>
+                        <TableCell>
+                        <FormField
+                    name={`input.${index}.nutrition.nutrition.prottotal`}
+                    label="Kilocalorieën"
+                  validator={composeValidators(required)}
+                  /></TableCell>
+                        <TableCell>Koolhydraten</TableCell>
+                        <TableCell>
+                        <FormField
+                    name={`input.${index}.nutrition.nutrition.carbscarbs`}
+                    label="Kilocalorieën"
+                  validator={composeValidators(required)}
+                  /></TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Suikers</TableCell>
+                        <TableCell>
+                        <FormField
+                    name={`input.${index}.nutrition.nutrition.carbssugar`}
+                    label="Kilocalorieën"
+                  validator={composeValidators(required)}
+                  /></TableCell>
+                        <TableCell>Vetten</TableCell>
+                        <TableCell>
+                        <FormField
+                    name={`input.${index}.nutrition.nutrition.fatstotal`}
+                    label="Kilocalorieën"
+                  validator={composeValidators(required)}
+                  />
+                  </TableCell>
+                        <TableCell>Vezels</TableCell>
+                        <TableCell>
+                        <FormField
+                    name={`input.${index}.nutrition.nutrition.fibres`}
+                    label="Kilocalorieën"
+                  validator={composeValidators(required)}
+                  /></TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <Button onClick={() => onClose()}>+</Button>
+                      </TableRow>
+                      </Table>
+                      </TableContainer>
+        </DialogContent>
+      </Dialog>
+    )
+  }
+  

@@ -8,6 +8,7 @@ import { ingredient, ingredientVariables } from "./types/ingredient";
 import { UpdateIngredient, UpdateIngredientVariables } from "./types/UpdateIngredient";
 import { allProducts } from "./types/AllProducts";
 import { ingredientRowsPerPage } from "../Recipes/AddRecipe/api";
+import { initialIngredientValues } from "./filterIngredients";
 
 const getIngredientQuery = gql`
  query ingredient ($id: String!) {
@@ -85,7 +86,7 @@ famstxr
 }
 }`;
 
-export const useGetIngredientQuery = (id: string) => {
+export const useGetIngredientQuery = ({id, onCompleted}: {id: string, onCompleted: (ingredient: ingredient) => void}) => {
 
     const { loading, data, error } = useSimpleQuery<
     ingredient,
@@ -93,6 +94,9 @@ export const useGetIngredientQuery = (id: string) => {
     >(getIngredientQuery, {
       variables: {
         id: id,
+      },
+      onCompleted: (result) => {
+        onCompleted(result);
       },
     });
     return { loading, data, error};
@@ -127,6 +131,7 @@ mutation AddIngredient ($input: AddIngredientInput!, $products: [String!]) {
   addIngredient(input: $input, products: $products)
 }`;
 
+
 export const useFilterIngredientsQuery = ({
   input,
   page
@@ -134,6 +139,8 @@ export const useFilterIngredientsQuery = ({
   page: number,
   input: IngredientFilterInput | null;
 }) => {
+  const newPage  = (input  == initialIngredientValues)? page : 0
+  console.log(newPage)
   const offset = page * ingredientRowsPerPage
 
   const { loading, data, error } = useSimpleQuery<

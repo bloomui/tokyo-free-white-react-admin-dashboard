@@ -41,7 +41,7 @@ export const ingredientsQuery =  gql`
 
 
 
-export const ingredientRowsPerPage = 10;
+export const ingredientRowsPerPage = 20;
 export const useSearchIngredientQuery = ({
     exact,
     page, 

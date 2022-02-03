@@ -85,10 +85,8 @@ export  const TableSupplierData = ({
 
 const Row = ({data, setSupplier}: {data: suppliers_suppliers, setSupplier: (a) => void}) => {
 
-    const formState: supplierToQ = {
-    name: data.name,
-    id: data.id,
-    email: data.email,
+  const formState: { email: string } = {
+    email: ''
   }
   const  [open, setOpen] = useState<boolean>(false)
   
@@ -96,7 +94,7 @@ const Row = ({data, setSupplier}: {data: suppliers_suppliers, setSupplier: (a) =
       <Formik
           initialValues={formState}
           onSubmit={(values) => {
-            setSupplier(values);
+            setSupplier({ name: data.name, id: data.id, ...values})
           }}
         >
           {({ setFieldValue, submitForm }) => {

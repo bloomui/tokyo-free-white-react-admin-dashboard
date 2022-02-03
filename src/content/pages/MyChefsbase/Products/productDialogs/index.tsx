@@ -18,7 +18,7 @@ export const ProductDialog = ({
     onClose: () => void
 }) => {
 
-    const { data, loading, error } = useGetProductQuery(id)
+    const { data, loading, error } = useGetProductQuery({id: id, onCompleted: (result) =>  {}})
 
     const [openUpdateDialog, setUpdateDialog] = useState(false)
 
