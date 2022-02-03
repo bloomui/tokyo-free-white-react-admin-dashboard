@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { Button, Container, Dialog, DialogContent, DialogTitle, Grid, Paper, Table, TableCell, TableContainer, TableRow, TextField, TextFieldProps, Typography } from "@material-ui/core";
+import { Button, Container, Dialog, DialogContent, DialogTitle, Grid, MenuItem, Paper, Table, TableCell, TableContainer, TableRow, TextField, TextFieldProps, Typography } from "@material-ui/core";
 import { FieldArray, Formik, useField } from "formik";
 import React from "react";
 import { useState } from "react";
@@ -14,7 +14,7 @@ import { Rating1 } from "../../Menus/filtermenus/components/rating";
 import { useAddRecipe } from "../api";
 import { Divider } from '@mui/material';
 import { AddRecipeVariables } from "../types/AddRecipe";
-import { TableData } from "./components/IngredientTable";
+import { TableData, units } from "./components/IngredientTable";
 import { VscTrash } from "react-icons/vsc";
 import { H3, H5, H5Left } from "src/content/pages/Components/TextTypes";
 import { AddIngredientPage } from "../../Ingredients/AddIngredient";
@@ -23,6 +23,7 @@ import { ingredientsForRecipe_ingredientsForRecipe } from "../types/ingredientsF
 import { useAddQuickIngredients } from "./api";
 import { AddQuickIngredientsVariables } from "./types/AddQuickIngredients";
 import { AddIngrDialog } from "./components/AddQuickIngredients";
+import { FormikSelect } from "src/components/form/FormikSelect";
 
 export const AddRecipePage = () => {
 
@@ -39,6 +40,8 @@ export const AddRecipePage = () => {
         name: '',
         rating: 0,
         type: '',
+        quantity: 0,
+        unit: ''
     }
     const emptyIngredientEntry: QuantityToId = {
         quantity: 0,
@@ -100,7 +103,9 @@ export const AddRecipePage = () => {
                 input: {
                 type: values.input.type,
                 name: values.input.name,
-                rating: values.input.rating
+                rating: values.input.rating,
+                quantity: values.input.quantity,
+                unit: values.input.unit
               },
             },
           });
@@ -119,6 +124,21 @@ export const AddRecipePage = () => {
                   validator={composeValidators(required)}
                 />
                 </Grid>
+                <Grid xs={1}></Grid>
+                <Grid xs={6}>
+                <Typography>Per hoeveelheid</Typography>
+                <FormField
+                  name="input.quantity"
+                  label="Hoeveelheid"
+                />
+                <FormikSelect
+                      name="input.unit"
+                      >
+              {units.map((unit) => (
+                <MenuItem key={unit} value={unit}>{unit}</MenuItem>
+              ))}
+            </FormikSelect>
+                </Grid>  
                 <Grid xs={1}></Grid>
                 <Grid xs={3}>
                 <Typography>Geef het recept type aan</Typography>
@@ -228,7 +248,6 @@ export const AddRecipePage = () => {
                 </Grid>
                 <Grid xs={12}>
                 <Button
-                  // onClick={() => navigate("/mychefsbase/addingredient")}
                   onClick={() => openDialog(true)}
                   color="primary"
                   variant="contained"

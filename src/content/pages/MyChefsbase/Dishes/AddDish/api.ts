@@ -10,6 +10,9 @@ export const recipesQuery =  gql`
             name
             type
             rating
+            quantity {
+                unit
+            }
         }
     }
 `;

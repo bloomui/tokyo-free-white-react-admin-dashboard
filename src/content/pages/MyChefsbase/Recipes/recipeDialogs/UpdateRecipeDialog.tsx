@@ -40,14 +40,15 @@ import { UpdateRecipeVariables } from "../types/UpdateRecipe";
 import { H3, H5 } from "src/content/pages/Components/TextTypes";
 import {
   ingredientToQ,
-  mapIngredientForRecipeToIngredientToQuantity,
   mapIngredientToQToInput,
 } from "../AddRecipe";
-import { TableData } from "../AddRecipe/components/IngredientTable";
+import { TableData, units } from "../AddRecipe/components/IngredientTable";
 import { LoadingScreen } from "src/components/layout";
 import { recipe_recipe } from "../types/recipe";
 import { Loader } from "src/components/search/Loader";
 import { ingredientsForRecipe_ingredientsForRecipe } from "../types/ingredientsForRecipe";
+import { dishForCourse } from "../../Menus/AddMenu";
+import { getAvailableUnitsLarge } from ".";
 
 export const emptyRecipe: recipe_recipe = {
   __typename: "Recipe",
@@ -56,6 +57,11 @@ export const emptyRecipe: recipe_recipe = {
   method: [],
   rating: 0,
   type: "a",
+  quantity: {
+    __typename: "Quantity",
+    unit: "",
+    quantity: 0
+  }
 };
 
 export const UpdateRecipeDialog = ({
@@ -70,10 +76,18 @@ export const UpdateRecipeDialog = ({
   const [selectedIngredients, setIngredients] = React.useState<ingredientToQ[]>(
     []
   );
-  const [unit, setUnit] = useState("gram");
+  const  [unitsHere,  setUnits]  = React.useState<string[]>()
+  const [unit, setUnit] = useState<string>("")
   const [quantity, setQuantity] = useState(100);
 
-  const { data, loading: loading1, error: error1 } = useGetRecipeQuery(id);
+  const { data, loading: loading1, error: error1 } = useGetRecipeQuery({
+    id: id, 
+    onCompleted: (recipe) => {
+    setUnit(recipe.recipe.quantity.unit);
+    setUnits(getAvailableUnitsLarge(recipe.recipe.quantity.unit))
+  }
+});
+
   const {
     data: data2,
     loading: loading2,
@@ -135,6 +149,8 @@ export const UpdateRecipeDialog = ({
     name: recipe.name,
     rating: recipe.rating,
     type: recipe.type,
+    unit: recipe.quantity.unit,
+    quantity: recipe.quantity.quantity
   };
   const formIngredients: QuantityToId[] | null = data2.ingredientsForRecipe.map(
     (quantityToIngr) => ({
@@ -157,13 +173,6 @@ export const UpdateRecipeDialog = ({
     method: formMethods,
   };
 
-  // const ingredients: ingredientToQ[] = mapIngredientForRecipeToIngredientToQuantity(data2.ingredientsForRecipe)
-
-  // setIngredients([...selectedIngredients, ingredients])
-  // selectedIngredients.forEach((i)=> {
-  //
-  // })
-
   return (
     <Dialog fullScreen open={open} onClose={onClose}>
       <Formik
@@ -178,6 +187,8 @@ export const UpdateRecipeDialog = ({
                 name: values.input.name,
                 rating: values.input.rating,
                 type: values.input.type,
+                unit: values.input.unit,
+                quantity: values.input.quantity
               },
             },
           });
@@ -201,6 +212,20 @@ export const UpdateRecipeDialog = ({
                     />
                   </Grid>
                   <Grid xs={1}></Grid>
+                  <Grid xs={6}>
+                <Typography>Per hoeveelheid</Typography>
+                <FormField
+                  name="input.quantity"
+                  label="Hoeveelheid"
+                />
+                <FormikSelect
+                      name="input.unit"
+                      >
+              {unitsHere.map((unit) => (
+                <MenuItem key={unit} value={unit}>{unit}</MenuItem>
+              ))}
+            </FormikSelect>
+                </Grid>
                   <Grid xs={3}>
                     <Typography>Geef het recept type aan</Typography>
                     <FormFieldEdit
@@ -427,3 +452,4 @@ const mapToIngredientToQ = (
     unit: a.quantity.unit,
   };
 };
+

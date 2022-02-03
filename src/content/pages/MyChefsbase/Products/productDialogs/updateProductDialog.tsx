@@ -18,6 +18,7 @@ import { TableSupplierData } from "../AddProduct/components/SuppliersTable";
 import { Price, PriceInput } from "../../Menus/filtermenus/components/prices";
 import { supplierToQ } from "../AddProduct";
 import { LoadingScreen } from "src/components/layout";
+import { product_product_suppliers } from "../types/product";
 
 export const UpdateProductDialog = ({
     id,
@@ -29,7 +30,6 @@ export const UpdateProductDialog = ({
     onClose: () => void
 }) => {
 
-  const { data, loading: loading1, error: error1} = useGetProductQuery(id)
 
     const { updateProduct, loading, error } = useUpdateProduct({
         onCompleted: () => window.location.reload(),
@@ -39,6 +39,11 @@ export const UpdateProductDialog = ({
         selectedSuppliers.splice(index, 1)
         setSuppliers([...selectedSuppliers])
       }
+      const { data, loading: loading1, error: error1} = useGetProductQuery({
+        id: id,
+        onCompleted: (result) => setSuppliers(
+          mapToSupplierToQ(result.product.suppliers)
+        )})
 
       if (loading1) return <LoadingScreen/>
   
@@ -220,3 +225,13 @@ if (loading) return <LoadingScreen />
     </Dialog>
   );
 };
+
+const mapToSupplierToQ = (a: product_product_suppliers[]): supplierToQ[] => {
+
+  const map = a.map((supplier) => ({
+    name: supplier.name,
+    id: supplier.id,
+    email: ''
+  }))
+  return map
+}

@@ -19,6 +19,7 @@ import { Quantity } from "../../Menus/filtermenus/components/quantity";
 import { useNavigate } from "react-router";
 import { units } from "../../Recipes/AddRecipe/components/IngredientTable";
 import { AddQuickProductsDialog } from "./component/AddQuickProductsDialog";
+import { InsertNutrition } from "./component/AddNutrition";
 
 export const emptyNutrition: NutritionInput = {
   kcal: 0,
@@ -38,7 +39,7 @@ export const AddIngredientPage = () => {
   const [ dialog, openDialog] = useState(false)
 
     const { addIngredient, loading, error } = useAddIngredient({
-        onCompleted: () => {window.location.reload()}
+        onCompleted: () => {window.location.reload()},
         },
       );
       const navigate =  useNavigate()
@@ -144,87 +145,11 @@ export const AddIngredientPage = () => {
                 </Grid>
                 <Divider/>
                 <Grid xs={12}>
-                <TableContainer>
-                    <Table>
-                        <TableRow>
-                            <TableCell colSpan={6}>
-                            <H3 title="Voedingswaarde"/>
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                        <TableCell colSpan={2}></TableCell>
-                            <TableCell colSpan={2}>
-                            <H5Left title="Hoeveelheid"/>
-                            </TableCell>
-                            <TableCell colSpan={2}>
-                            <H5Left title="Eenheid"/>
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                        <TableCell colSpan={2} align="center">Per</TableCell>
-                        <TableCell colSpan={2}>
-                        <Quantity
-                  name="input.nutrition.quantity"
-                  setFieldValue={setFieldValue}
+                <InsertNutrition
+                setFieldValue={setFieldValue}
                 />
-                            </TableCell>
-                            <TableCell colSpan={2}>
-                            <FormikSelect
-                      name="input.nutrition.unit"
-                      >
-              {units.map((unit) => (
-                <MenuItem key={unit} value={unit}>{unit}</MenuItem>
-              ))}
-            </FormikSelect>
-                            </TableCell>
-                        </TableRow>
-                        <TableRow></TableRow>
-                        <TableRow>
-                      <TableCell>Kilocalorieën</TableCell>
-                      <TableCell><FormField
-                  name="input.nutrition.nutrition.kcal"
-                  label="Kcal"
-                /></TableCell>
-                      <TableCell>Eiwitten</TableCell>
-                      <TableCell><FormField
-                  name="input.nutrition.nutrition.prottotal"
-                  label="Eiwitten"
-                /></TableCell>
-                      <TableCell>Koolhydraten</TableCell>
-                      <TableCell><FormField
-                  name="input.nutrition.nutrition.carbscarbs"
-                  label="Koolhydraten"
-                /></TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Suikers</TableCell>
-                      <TableCell><FormField
-                  name="input.nutrition.nutrition.carbssugar"
-                  label="Suikers"
-                /></TableCell>
-                      <TableCell>Vetten</TableCell>
-                      <TableCell><FormField
-                  name="input.nutrition.nutrition.fatstotal"
-                  label="Vetten"
-                /></TableCell>
-                      <TableCell>Vezels</TableCell>
-                      <TableCell><FormField
-                  name="input.nutrition.nutrition.fibres"
-                  label="Vezels"
-                /></TableCell>
-                    </TableRow>
-                    </Table>
-                    </TableContainer>
                     </Grid>
-          
                 <Divider/>
-                <Button
-                  onClick={() => navigate("/mychefsbase/addproduct")}
-                  color="primary"
-                  variant="contained"
-                >
-                  Product toevoegen
-                </Button>
                 <Grid container xs={12}>
                   <Grid xs={12}>
                 <H3 title="Productopties"/>
@@ -312,3 +237,4 @@ export type productToQ = {
   quantity: number,
   unit: string,
 }
+

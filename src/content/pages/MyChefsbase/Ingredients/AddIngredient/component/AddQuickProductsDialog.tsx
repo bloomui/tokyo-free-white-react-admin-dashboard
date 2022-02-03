@@ -37,7 +37,9 @@ export const AddQuickProductsDialog = ({
     );
   
     return (
-      <Dialog open={open} onClose={onClose}>
+      <Dialog 
+      PaperProps={{ sx: { width: "200%", height: "30%" } }}
+       open={open} onClose={onClose}>
         <DialogTitle>Snel Producten toevoegen</DialogTitle>
         <DialogContent>
         <Container maxWidth="lg">
@@ -149,6 +151,7 @@ export const AddQuickProductsDialog = ({
                           name={`input.${index}.price`}
                          label="Prijs"
                          value={input.price}
+                         fullWidth
                          onChange={handleChange}
                           />
                           </TableCell>
@@ -193,11 +196,23 @@ export const AddQuickProductsDialog = ({
                   <Grid xs={3}>
                   <Button
                     disabled={loading}
-                    onClick={() => submitForm()}
+                    onClick={() => {
+                      submitForm();
+                      onClose()
+                    }}
                     color="primary"
                     variant="contained"
                   >
-                    Gegevens toevoegen
+                    Toevoegen
+                  </Button>
+                  </Grid> 
+                  <Grid xs={3}>
+                  <Button
+                    onClick={() => onClose()}
+                    color="primary"
+                    variant="contained"
+                  >
+                    Cancel
                   </Button>
                   </Grid> 
                   </Grid>

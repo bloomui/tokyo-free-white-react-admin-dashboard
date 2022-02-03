@@ -87,10 +87,8 @@ export  const TableDishData = ({
 
 const Row = ({courses, data, setDish}: {courses: string[], data: dishes_dishes, setDish: (a) => void}) => {
 
-  const formState: dishForCourse = {
-  dishid: data.id,
+  const formState: { coursetype: string }  = {
   coursetype: '',
-  dishname: data.name
 }
 const  [open, setOpen] = useState<boolean>(false)
 
@@ -98,7 +96,8 @@ const  [open, setOpen] = useState<boolean>(false)
     <Formik
         initialValues={formState}
         onSubmit={(values) => {
-          setDish(values);
+          console.log(data.name);
+          setDish({ dishname: data.name, dishid: data.id, ...values});
         }}
       >
         {({ setFieldValue, submitForm }) => {

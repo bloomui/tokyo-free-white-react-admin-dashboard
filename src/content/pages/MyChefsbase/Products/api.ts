@@ -32,7 +32,7 @@ const getProductQuery = gql`
 }
 }`;
 
-export const useGetProductQuery = (id: string) => {
+export const useGetProductQuery = ({id, onCompleted}: {id: string,  onCompleted: (product: product) => void}) => {
 
     const { loading, data, error, refetch } = useSimpleQuery<
     product,
@@ -41,6 +41,7 @@ export const useGetProductQuery = (id: string) => {
       variables: {
         id: id,
       },
+      onCompleted: (result) => onCompleted(result),
     });
     return { loading, data, error, refetch};
   };

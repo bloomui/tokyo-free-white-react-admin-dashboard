@@ -1,26 +1,22 @@
 import { Autocomplete, Button, Container, Divider, Grid, MenuItem, Table, TableCell, TableContainer, TableRow, TextField, TextFieldProps, Typography } from "@material-ui/core";
 import { FieldArray, Formik, useField } from "formik";
 import React from "react";
-import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageHeader } from "src/components/pageHeader/PageHeader";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import { FormField } from "src/components/form/FormField";
 import { AddCourseToDishesInput, AddDishInput, AddIngredientInput, AddMenuInput, AddProductInput, AddRecipeInput, QuantityToId, StepToMethodInput } from "src/globalTypes";
-import { composeValidators, mustBeDate, required, Validator } from "src/utilities/formikValidators";
 import { user } from "../..";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
-import { FormikSelect } from "src/components/form/FormikSelect";
 import { useAddMenu, useAllDishesQuery } from "../api";
-import { AddMenuVariables } from "../types/AddMenu";
-import { AllDishes_dishes } from "../types/AllDishes";
 import { H3, H5 } from "src/content/pages/Components/TextTypes";
 import { TableDishData } from "./components/DishTable";
+import { InputPeriod } from "../filtermenus/components/period";
 
 
 export const AddMenuPage = () => {
     const { addMenu, loading, error } = useAddMenu({
-        onCompleted: () => window.location.reload(),
+        onCompleted: () => {window.location.reload()},
       });
 
       const [selectedDishes, setDishes] = React.useState<dishForCourse[]>([]);
@@ -65,7 +61,6 @@ export const AddMenuPage = () => {
       <Container maxWidth="lg">
         <Grid
           container
-        //   direction="row"
           justifyContent="center"
           alignItems="stretch"
           spacing={3}
@@ -122,18 +117,10 @@ export const AddMenuPage = () => {
                     <Grid xs={12}>
                 <H5 title="Geef een periode op"/>
                 </Grid>
-                <Grid xs={5}>
-                <FormField
-                  name="input.periodstartdate"
-                  label="Vanaf"
-                />
-                </Grid>
-                <Grid xs={2}></Grid>
-                <Grid xs={5}>
-                <FormField
-                  name="input.periodenddate"
-                  label="Tot"
-                />
+                <Grid xs={10}>
+                  <InputPeriod
+                    setFieldValue={setFieldValue}
+                    />
                 </Grid>
                 </Grid>
                 <Grid xs={1}></Grid>
@@ -154,7 +141,6 @@ export const AddMenuPage = () => {
                 setFieldValue={setFieldValue}
                 />
                 </Grid>
-                     
                 </Grid> 
                 </Grid>       
                 <Divider/>

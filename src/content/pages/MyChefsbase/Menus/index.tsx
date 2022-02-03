@@ -22,9 +22,8 @@ import { AddMenuPage } from "./AddMenu";
     page: number;
     setPage: (newPage: number) => void;
   }) => {
-    const [menuForProductOverview, setMenuForProductOverview] = useState<FilterMenus_filterMenus>()
-    const [openProductsForMenu, openProductOverview] = useState(false)
-    const [openAddMenu, setOpenAddMenu] = useState(false)
+    // const [menuForProductOverview, setMenuForProductOverview] = useState<FilterMenus_filterMenus>()
+    // const [openProductsForMenu, openProductOverview] = useState(false)
     const [ input, setInput] = useState<MenuFilterInput>(initialMenuValues);
     const { loading, data } = useFilterMenuQuery({
         input: input,
@@ -37,8 +36,8 @@ import { AddMenuPage } from "./AddMenu";
       content = (
         <>
         <MenuTable
-        setMenuForProductOverview={(menu) => setMenuForProductOverview(menu)}
-        setOpenProductOverview={() => openProductOverview(true)}
+        // setMenuForProductOverview={(menu) => setMenuForProductOverview(menu)}
+        // setOpenProductOverview={() => openProductOverview(true)}
         data={data}
         page={page}
         setPage={setPage}
@@ -48,19 +47,20 @@ import { AddMenuPage } from "./AddMenu";
     }
   
 
-    if (menuForProductOverview) return (
-      <>
-      <TopPartMenuPage 
-      setInput={(values) => setInput(values)}/>
-          <Box height={3}>{loading && <LinearProgress />}</Box>
-        {content}
-        <Orders
-        open={openProductsForMenu}
-        onClose={() => openProductOverview(false)}
-        menu={menuForProductOverview}
-        />
-      </>
-    ); else return (
+    // if (menuForProductOverview) return (
+    //   <>
+    //   <TopPartMenuPage 
+    //   setInput={(values) => setInput(values)}/>
+    //       <Box height={3}>{loading && <LinearProgress />}</Box>
+    //     {content}
+    //     <Orders
+    //     open={openProductsForMenu}
+    //     onClose={() => openProductOverview(false)}
+    //     menu={menuForProductOverview}
+    //     />
+    //   </>
+    // ); else 
+    return (
       <>
       <TopPartMenuPage 
       setInput={(values) => setInput(values)}/>

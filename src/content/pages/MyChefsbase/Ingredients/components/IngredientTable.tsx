@@ -40,7 +40,7 @@ export const IngredientTable = ({
     
     // TablePagination
     const [pageNumber, setPageNumber] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rowsPerPage, setRowsPerPage] = React.useState(20);
     const handleChangePage = (
       event: any,
       newPage: React.SetStateAction<number>
@@ -189,7 +189,7 @@ headCells={headCellsIngredients}
             </TableBody>
                    </Table>
                    <TablePagination
-              rowsPerPageOptions={[10]}
+              rowsPerPageOptions={[20]}
               component={Paper}
               count={data.numberOfIngredients}
               rowsPerPage={rowsPerPage}
