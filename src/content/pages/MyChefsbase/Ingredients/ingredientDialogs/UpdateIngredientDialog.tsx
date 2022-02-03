@@ -18,7 +18,7 @@ import { FilterIngredients_filterIngredients } from "../types/FilterIngredients"
 import { UpdateIngredientVariables } from "../types/UpdateIngredient";
 import { emptyIngredient } from ".";
 import { LoadingScreen } from "src/components/layout";
-import { ingredient_ingredient_nutrition_nutrition } from "../types/ingredient";
+import { ingredient_ingredient_nutrition_nutrition, ingredient_ingredient_products } from "../types/ingredient";
 import { units } from "../../Recipes/AddRecipe/components/IngredientTable";
 
 export const UpdateIngredientDialog = ({
@@ -31,14 +31,21 @@ export const UpdateIngredientDialog = ({
     onClose: () => void
 }) => {
 
-  const { data, loading: loading1, error: error1 } = useGetIngredientQuery(id)
+  const [selectedProducts, setProducts] = React.useState<productToQ[]>([]);
+
+  const { data, loading: loading1, error: error1 } = useGetIngredientQuery({
+    id: id,
+    onCompleted: (result) => { setProducts(
+      mapToProductToQ(result.ingredient.products)
+    )
+    }
+  })
 
     
     const { updateIngredient, loading, error } = useUpdateIngredient({
         onCompleted: () => window.location.reload(),
       });
 
-      const [selectedProducts, setProducts] = React.useState<productToQ[]>([]);
 
             function handleDelete(index) {
                 selectedProducts.splice(index, 1)
@@ -356,3 +363,17 @@ const mapNutritionToInput = (nutrition: ingredient_ingredient_nutrition_nutritio
 }
   )
 }
+
+const mapToProductToQ = (a: ingredient_ingredient_products[]): productToQ[] => {
+  
+    const map = a.map((product) => ({
+      name: product.name,
+      id: product.id,
+      brand: '',
+      origin: '',
+      price: 0,
+      quantity: 0,
+      unit: ''
+      }))
+    return map
+  }

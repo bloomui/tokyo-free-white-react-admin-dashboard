@@ -157,6 +157,74 @@ export const zeroNutritionInput: NutritionInput = {
   famstxr: 0,
 };
 
+export const getAvailableUnits = (a: string): string[] => {
+
+  var unitsHere;
+  switch(a) {
+    case "milliliter":
+    unitsHere = ["milliliter"];
+    break;
+    case "liter":
+    unitsHere = ["milliliter"];
+    break;
+    case "gram":
+    unitsHere = ["gram"];
+    break;
+    case "kg":
+    unitsHere = ["gram"];
+    break;
+    default: 
+    unitsHere = ["eenheid"];
+  }
+
+  return unitsHere
+}
+
+export const getAvailableUnitsLarge= (a: string): string[] => {
+
+  var unitsHere;
+  switch(a) {
+    case "milliliter":
+    unitsHere = ["milliliter", "liter"];
+    break;
+    case "liter":
+    unitsHere = ["milliliter", "liter"];
+    break;
+    case "gram":
+    unitsHere = ["gram", "kg"];
+    break;
+    case "kg":
+    unitsHere = ["gram", "kg"];
+    break;
+    default: 
+    unitsHere = ["eenheid"];
+  }
+
+return unitsHere
+}
+
+export const minimizeUnit = (a: string): string =>  {
+  var unitHere;
+  switch(a) {
+    case "milliliter":
+    unitHere = "milliliter";
+    break;
+    case "liter":
+      unitHere = "milliliter";
+    break;
+    case "gram":
+      unitHere = "gram";
+    break;
+    case "kg":
+      unitHere = "gram";
+    break;
+    default: 
+    unitHere = "eenheid";
+  }
+
+  return unitHere
+}
+
 export const RecipeDialog = ({
   setId,
   id,
@@ -171,9 +239,9 @@ export const RecipeDialog = ({
   const [nutritionsToDisplay, setNutritionsToDisplay] = useState<string[]>(
     DefaultNutritionOptions
   );
-  const [unit, setUnit] = useState("");
+  const [unit, setUnit] = useState<string>("");
   const [quantity, setQuantity] = useState(100);
-  const { data, loading, error } = useGetRecipeQuery(id);
+  const { data, loading, error } = useGetRecipeQuery({id: id, onCompleted: (recipe) => setUnit(minimizeUnit(recipe.recipe.quantity.unit))});
 
   const [openUpdateDialog, setUpdateDialog] = useState(false);
 
@@ -229,24 +297,8 @@ export const RecipeDialog = ({
   let recipe = data.recipe;
 
   const quantities = ["50", "100", "500", "1000"]
-  var unitsHere;
-  switch(recipe.quantity.unit) {
-    case "milliliter":
-    unitsHere = ["milliliter"];
-    break;
-    case "liter":
-    unitsHere = ["milliliter"];
-    break;
-    case "gram":
-    unitsHere = ["gram"];
-    break;
-    case "kg":
-    unitsHere = ["gram"];
-    break;
-    default: 
-    unitsHere = ["eenheid"];
-  }
-
+  const unitsHere = getAvailableUnits(recipe.quantity.unit)
+  
   const formState: NutritionForRecipeVariables = {
     id: recipe.id, unit: unitsHere[0],  quantity: quantity
   }
@@ -301,7 +353,7 @@ export const RecipeDialog = ({
                   </Grid>
                   <Grid xs={4}>
                     <TextField
-                      defaultValue={unit}
+                      defaultValue={unitsHere[0]}
                       select
                       onChange={(e) => setUnit(e.target.value)}
                       variant="filled"

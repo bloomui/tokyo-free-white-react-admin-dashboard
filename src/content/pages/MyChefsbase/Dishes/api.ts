@@ -92,7 +92,11 @@ famstxr
   }
 }`;
 
-export const useGetDishQuery = (id: string) => {
+export const useGetDishQuery = ({
+  id, 
+  onCompleted}: {
+    id: string, 
+    onCompleted: (dish: dish) => void}) => {
 
     const { loading, data, error } = useSimpleQuery<
     dish,
@@ -100,6 +104,9 @@ export const useGetDishQuery = (id: string) => {
     >(getDishQuery, {
       variables: {
         id: id,
+      },
+      onCompleted: (result) => {
+        onCompleted(result);
       },
     });
     return { loading, data, error};

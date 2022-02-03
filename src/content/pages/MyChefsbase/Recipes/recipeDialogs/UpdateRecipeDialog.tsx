@@ -48,6 +48,7 @@ import { recipe_recipe } from "../types/recipe";
 import { Loader } from "src/components/search/Loader";
 import { ingredientsForRecipe_ingredientsForRecipe } from "../types/ingredientsForRecipe";
 import { dishForCourse } from "../../Menus/AddMenu";
+import { getAvailableUnitsLarge } from ".";
 
 export const emptyRecipe: recipe_recipe = {
   __typename: "Recipe",
@@ -75,10 +76,18 @@ export const UpdateRecipeDialog = ({
   const [selectedIngredients, setIngredients] = React.useState<ingredientToQ[]>(
     []
   );
-  const [unit, setUnit] = useState("gram");
+  const  [unitsHere,  setUnits]  = React.useState<string[]>()
+  const [unit, setUnit] = useState<string>("")
   const [quantity, setQuantity] = useState(100);
 
-  const { data, loading: loading1, error: error1 } = useGetRecipeQuery(id);
+  const { data, loading: loading1, error: error1 } = useGetRecipeQuery({
+    id: id, 
+    onCompleted: (recipe) => {
+    setUnit(recipe.recipe.quantity.unit);
+    setUnits(getAvailableUnitsLarge(recipe.recipe.quantity.unit))
+  }
+});
+
   const {
     data: data2,
     loading: loading2,
@@ -212,7 +221,7 @@ export const UpdateRecipeDialog = ({
                 <FormikSelect
                       name="input.unit"
                       >
-              {units.map((unit) => (
+              {unitsHere.map((unit) => (
                 <MenuItem key={unit} value={unit}>{unit}</MenuItem>
               ))}
             </FormikSelect>
@@ -443,3 +452,4 @@ const mapToIngredientToQ = (
     unit: a.quantity.unit,
   };
 };
+

@@ -86,7 +86,7 @@ famstxr
 }
 }`;
 
-export const useGetIngredientQuery = (id: string) => {
+export const useGetIngredientQuery = ({id, onCompleted}: {id: string, onCompleted: (ingredient: ingredient) => void}) => {
 
     const { loading, data, error } = useSimpleQuery<
     ingredient,
@@ -94,6 +94,9 @@ export const useGetIngredientQuery = (id: string) => {
     >(getIngredientQuery, {
       variables: {
         id: id,
+      },
+      onCompleted: (result) => {
+        onCompleted(result);
       },
     });
     return { loading, data, error};

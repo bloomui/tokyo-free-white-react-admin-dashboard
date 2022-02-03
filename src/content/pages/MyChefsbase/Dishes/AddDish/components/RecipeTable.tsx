@@ -6,6 +6,7 @@ import { FormikSelect } from "src/components/form/FormikSelect";
 import { LoadingScreen } from "src/components/layout";
 import { recipeToQ } from "..";
 import { units } from "../../../Recipes/AddRecipe/components/IngredientTable";
+import { getAvailableUnits } from "../../../Recipes/recipeDialogs";
 import { recipeRowsPerPage, useSearchRecipeQuery } from "../api";
 import { recipes_recipes } from "../types/recipes";
 
@@ -92,6 +93,8 @@ const Row = ({data, setRecipe}: {data: recipes_recipes, setRecipe: (a) => void})
 }
 const  [open, setOpen] = useState<boolean>(false)
 
+const unitsHere = getAvailableUnits(data.quantity.unit)
+
   return (
     <Formik
         initialValues={formState}
@@ -145,7 +148,7 @@ const  [open, setOpen] = useState<boolean>(false)
                         <FormikSelect
                       name="unit"
                       >
-              {units.map((unit) => (
+              {unitsHere.map((unit) => (
                 <MenuItem key={unit} value={unit}>{unit}</MenuItem>
               ))}
             </FormikSelect>

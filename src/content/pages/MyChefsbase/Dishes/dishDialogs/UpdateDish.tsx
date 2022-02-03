@@ -14,6 +14,7 @@ import { Rating1, RatingEdit } from "../../Menus/filtermenus/components/rating";
 import { mapRecipeToQToInput, recipeToQ } from "../AddDish";
 import { TableRecipeData } from "../AddDish/components/RecipeTable";
 import { useGetDishQuery, useUpdateDish } from "../api";
+import { dish_dish_recipes } from "../types/dish";
 import { FilterDishes, FilterDishes_filterDishes } from "../types/FilterDishes";
 import { UpdateDishVariables } from "../types/UpdateDish";
 
@@ -27,15 +28,21 @@ export const UpdateDishDialog = ({
     onClose: () => void
 }) => {
 
-  const { data, loading: loading1, error: error1 } = useGetDishQuery(id)
+  const [stepHere, setStep] = useState(1)
+  const [selectedRecipes, setRecipes] = React.useState<recipeToQ[]>([]);
+
+  const { data, loading: loading1, error: error1 } = useGetDishQuery({
+    id: id,
+    onCompleted: (values) => {setRecipes(
+      mapToRecipeToQ(values.dish.recipes)
+    );},
+  })
 
     
     const { updateDish, loading, error } = useUpdateDish({
         onCompleted: () => window.location.reload(),
       });
-      const [stepHere, setStep] = useState(1)
-      const [selectedRecipes, setRecipes] = React.useState<recipeToQ[]>([]);
-
+     
       function handleDelete(index) {
           selectedRecipes.splice(index, 1)
           setRecipes([...selectedRecipes])
@@ -309,3 +316,16 @@ const formState : UpdateDishVariables = {
     </Dialog>
   );
 };
+
+export const mapToRecipeToQ = (
+  a: dish_dish_recipes[]
+): recipeToQ[] => {
+
+  const map = a.map((recipeToQ) => ({
+      name: recipeToQ.recipe.name,
+      id: recipeToQ.recipe.id,
+      quantity: String(recipeToQ.quantity.quantity),
+      unit: recipeToQ.quantity.unit
+    }))
+  return map
+}

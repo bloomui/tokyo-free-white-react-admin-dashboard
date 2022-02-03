@@ -36,13 +36,17 @@ const getRecipeQuery = gql`
   }
 `;
 
-export const useGetRecipeQuery = (id: string) => {
+export const useGetRecipeQuery = ({id, onCompleted}: {
+  id: string,
+  onCompleted?: (result: recipe) => void;
+}) => {
   const { loading, data, error } = useSimpleQuery<recipe, recipeVariables>(
     getRecipeQuery,
     {
       variables: {
         id: id,
       },
+      onCompleted: (result) => onCompleted(result),
     }
   );
   return { loading, data, error };

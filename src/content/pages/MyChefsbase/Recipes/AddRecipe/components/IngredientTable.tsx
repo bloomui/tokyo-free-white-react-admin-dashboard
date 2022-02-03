@@ -102,6 +102,8 @@ const Row = ({data, setIngredient}: {data: ingredients_ingredients, setIngredien
   quantity: '',
   unit: ''
 }
+
+// const unitsHere = getAvailableUnits(units)
   
 const  [open, setOpen] = useState<boolean>(false)
 

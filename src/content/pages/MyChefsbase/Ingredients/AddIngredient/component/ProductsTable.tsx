@@ -37,7 +37,6 @@ export  const TableProductData = ({
     });
   if (loading) return <LoadingScreen />;
   if (error) return <LoadingScreen />;
-  console.log(data.products)
 
   return (
     <TableContainer component={Paper}>
