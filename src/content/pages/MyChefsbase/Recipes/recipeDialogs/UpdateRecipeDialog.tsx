@@ -44,7 +44,7 @@ import {
 } from "../AddRecipe";
 import { TableData, units } from "../AddRecipe/components/IngredientTable";
 import { LoadingScreen } from "src/components/layout";
-import { recipe_recipe } from "../types/recipe";
+import { recipe_recipe, recipe_recipe_method } from "../types/recipe";
 import { Loader } from "src/components/search/Loader";
 import { ingredientsForRecipe_ingredientsForRecipe } from "../types/ingredientsForRecipe";
 import { dishForCourse } from "../../Menus/AddMenu";
@@ -64,6 +64,14 @@ export const emptyRecipe: recipe_recipe = {
   }
 };
 
+const mapMethodToInput = (a: recipe_recipe_method[]): StepToMethodInput[] => {
+
+  const map = a.map((method) => ({
+    step: method.step, 
+    method: method.method
+  }))
+  return map
+}
 export const UpdateRecipeDialog = ({
   id,
   open,
@@ -80,11 +88,20 @@ export const UpdateRecipeDialog = ({
   const [unit, setUnit] = useState<string>("")
   const [quantity, setQuantity] = useState(100);
 
+  const [stepHere, setStep] = useState(1);
+  const emptyStep: StepToMethodInput = {
+    step: stepHere,
+    method: "",
+  };
+  const [methodHere, setMethod] = useState<StepToMethodInput[]>([emptyStep])
+  
+
   const { data, loading: loading1, error: error1 } = useGetRecipeQuery({
     id: id, 
     onCompleted: (recipe) => {
     setUnit(recipe.recipe.quantity.unit);
-    setUnits(getAvailableUnitsLarge(recipe.recipe.quantity.unit))
+    setUnits(getAvailableUnitsLarge(recipe.recipe.quantity.unit));
+    setMethod(mapMethodToInput(recipe.recipe.method));
   }
 });
 
@@ -112,8 +129,6 @@ export const UpdateRecipeDialog = ({
     },
   });
 
-  const [stepHere, setStep] = useState(1);
-
   function handleDelete(index) {
     selectedIngredients.splice(index, 1);
     setIngredients([...selectedIngredients]);
@@ -139,11 +154,6 @@ export const UpdateRecipeDialog = ({
 
   let recipe = data.recipe;
 
-  const emptyStep: StepToMethodInput = {
-    step: stepHere,
-    method: "",
-  };
-
   const formInput: RecipeInput = {
     id: id,
     name: recipe.name,
@@ -160,17 +170,10 @@ export const UpdateRecipeDialog = ({
     })
   );
 
-  const formMethods: StepToMethodInput[] | null = recipe.method
-    ? recipe.method.map((method) => ({
-        step: method.step,
-        method: method.method,
-      }))
-    : null;
-
   const formState: UpdateRecipeVariables = {
     input: formInput,
     ingredients: formIngredients,
-    method: formMethods,
+    method: methodHere,
   };
 
   return (
@@ -180,7 +183,7 @@ export const UpdateRecipeDialog = ({
         onSubmit={(values) => {
           updateRecipe({
             variables: {
-              method: values.method,
+              method: values.method? values.method : [emptyStep],
               ingredients: mapIngredientToQToInput(selectedIngredients),
               input: {
                 id: recipe.id,
@@ -217,7 +220,8 @@ export const UpdateRecipeDialog = ({
                 <FormField
                   name="input.quantity"
                   label="Hoeveelheid"
-                />
+                  validator={composeValidators(required)}
+                  />
                 <FormikSelect
                       name="input.unit"
                       >
@@ -232,6 +236,7 @@ export const UpdateRecipeDialog = ({
                       placeholder={recipe.type}
                       name="input.type"
                       label="Type"
+                      validator={composeValidators(required)}
                     />
                   </Grid>
                   <Grid xs={5}></Grid>
@@ -271,7 +276,7 @@ export const UpdateRecipeDialog = ({
                                       Nog een stap toevoegen
                                     </TableCell>
                                   </TableRow>
-                                  {values.method?.map((stepToMethod, index) => (
+                                  {values.method.map((stepToMethod, index) => (
                                     <TableRow>
                                       <>
                                         <TableCell>{index + 1}</TableCell>
@@ -286,23 +291,15 @@ export const UpdateRecipeDialog = ({
                                           />
                                         </TableCell>
                                         <TableCell>
-                                          <Button
-                                            variant="contained"
-                                            color="secondary"
-                                            style={{
-                                              maxWidth: "30px",
-                                              maxHeight: "30px",
-                                              minWidth: "30px",
-                                              minHeight: "30px",
-                                            }}
-                                            type="button"
-                                            onClick={() => {
-                                              setStep(stepHere - 1);
-                                              arrayHelpers.remove(index);
-                                            }}
-                                          >
-                                            -
-                                          </Button>
+                                        {(index <=1 )? (<Button
+                            variant="contained" 
+                            color="secondary"
+                        style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
+                         onClick={() => {
+                             setStep(stepHere -1);
+                             arrayHelpers.remove(index)}}>
+                        -
+                       </Button>) : (<div />)}
                                         </TableCell>
                                         <TableCell>
                                           <Button

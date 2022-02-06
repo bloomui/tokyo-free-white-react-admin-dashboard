@@ -149,7 +149,7 @@ export const UpdateRecipeMutation = gql`
   mutation UpdateRecipe(
     $input: RecipeInput!
     $ingredients: [QuantityToId!]
-    $method: [StepToMethodInput!]
+    $method: [StepToMethodInput!]!
   ) {
     updateRecipe(input: $input, ingredients: $ingredients, method: $method)
   }
@@ -159,7 +159,7 @@ export const AddRecipeMutation = gql`
   mutation AddRecipe(
     $input: AddRecipeInput!
     $ingredients: [QuantityToId!]
-    $method: [StepToMethodInput!]
+    $method: [StepToMethodInput!]!
   ) {
     addRecipe(input: $input, ingredients: $ingredients, method: $method)
   }

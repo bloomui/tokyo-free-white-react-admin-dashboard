@@ -302,7 +302,6 @@ export const RecipeDialog = ({
   const formState: NutritionForRecipeVariables = {
     id: recipe.id, unit: unitsHere[0],  quantity: quantity
   }
-
   return (
     <>
       <Dialog open={open} onClose={onClose}>

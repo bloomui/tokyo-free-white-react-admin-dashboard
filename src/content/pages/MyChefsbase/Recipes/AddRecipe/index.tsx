@@ -41,7 +41,7 @@ export const AddRecipePage = () => {
         rating: 0,
         type: '',
         quantity: 0,
-        unit: ''
+        unit: units[0]
     }
     const emptyIngredientEntry: QuantityToId = {
         quantity: 0,
@@ -130,6 +130,7 @@ export const AddRecipePage = () => {
                 <FormField
                   name="input.quantity"
                   label="Hoeveelheid"
+                  validator={composeValidators(required)}
                 />
                 <FormikSelect
                       name="input.unit"
@@ -145,6 +146,8 @@ export const AddRecipePage = () => {
                 <FormField
                   name="input.type"
                   label="Type"
+                  validator={composeValidators(required)}
+
                 />
                 </Grid>  
                 <Grid xs={5}></Grid>
@@ -207,7 +210,7 @@ export const AddRecipePage = () => {
                         />
                         </TableCell>
                         <TableCell>
-                        <Button
+                        {(index === 0)? (<Button
                             variant="contained" 
                             color="secondary"
                         style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
@@ -215,7 +218,7 @@ export const AddRecipePage = () => {
                              setStep(stepHere -1);
                              arrayHelpers.remove(index)}}>
                         -
-                       </Button>
+                       </Button>) : (<div />)}
                         </TableCell>
                         <TableCell>
                         <Button

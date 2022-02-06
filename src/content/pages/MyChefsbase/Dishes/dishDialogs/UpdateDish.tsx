@@ -14,9 +14,18 @@ import { Rating1, RatingEdit } from "../../Menus/filtermenus/components/rating";
 import { mapRecipeToQToInput, recipeToQ } from "../AddDish";
 import { TableRecipeData } from "../AddDish/components/RecipeTable";
 import { useGetDishQuery, useUpdateDish } from "../api";
-import { dish_dish_recipes } from "../types/dish";
+import { dish_dish_recipes,  dish_dish_method } from "../types/dish";
 import { FilterDishes, FilterDishes_filterDishes } from "../types/FilterDishes";
 import { UpdateDishVariables } from "../types/UpdateDish";
+
+const mapMethodToInput = (a: dish_dish_method[]): StepToMethodInput[] => {
+
+  const map = a.map((method) => ({
+    step: method.step, 
+    method: method.method
+  }))
+  return map
+}
 
 export const UpdateDishDialog = ({
     id,
@@ -28,14 +37,27 @@ export const UpdateDishDialog = ({
     onClose: () => void
 }) => {
 
-  const [stepHere, setStep] = useState(1)
+
+  const [stepHere, setStep] = useState(1);
+  const emptyStep: StepToMethodInput = {
+    step: stepHere,
+    method: "",
+  };
+  const [methodHere, setMethod] = useState<StepToMethodInput[]>([emptyStep])
+
   const [selectedRecipes, setRecipes] = React.useState<recipeToQ[]>([]);
 
   const { data, loading: loading1, error: error1 } = useGetDishQuery({
     id: id,
-    onCompleted: (values) => {setRecipes(
+    onCompleted: (values) => {
+      setRecipes(
       mapToRecipeToQ(values.dish.recipes)
-    );},
+    );
+      setMethod(
+        mapMethodToInput(values.dish.method)
+      )
+  
+  },
   })
 
     
@@ -60,10 +82,6 @@ export const UpdateDishDialog = ({
         theme: dish.theme,
         type: dish.type
     }
-    const emptyStep: StepToMethodInput = {
-      step: stepHere,
-      method: ''
-      }
     const formRecipes: QuantityToId[] | null = (dish.recipes? (dish.recipes.map((quantityToRecipe) => (
             {
                 quantity: quantityToRecipe.quantity.quantity,
@@ -73,18 +91,10 @@ export const UpdateDishDialog = ({
     )
     )) : null)
 
-    const formMethods: StepToMethodInput[] | null = (dish.method? (dish.method.map((method) => (
-        {
-            step: method.step,
-            method: method.method,
-        }
-)
-)) : null)
-
 const formState : UpdateDishVariables = {
         input: formInput,
         recipes: formRecipes,
-        method: formMethods
+        method: methodHere
     }
 
     return (

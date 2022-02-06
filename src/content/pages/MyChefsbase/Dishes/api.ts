@@ -134,13 +134,13 @@ query Dishes {
 `;
 
 export const UpdateDishMutation = gql`
-mutation UpdateDish ($input: DishInput!, $recipes: [QuantityToId!], $method: [StepToMethodInput!]) {
+mutation UpdateDish ($input: DishInput!, $recipes: [QuantityToId!], $method: [StepToMethodInput!]!) {
   updateDish (input: $input, recipes: $recipes, method: $method)
 }
 `;
 
 export const AddDishMutation = gql`
-mutation AddDish ($input: AddDishInput!, $recipes: [QuantityToId!], $method: [StepToMethodInput!]) {
+mutation AddDish ($input: AddDishInput!, $recipes: [QuantityToId!], $method: [StepToMethodInput!]!) {
   addDish(input: $input, recipes: $recipes, method: $method)
 }`;
 

@@ -16,5 +16,5 @@ export interface UpdateDish {
 export interface UpdateDishVariables {
   input: DishInput;
   recipes?: QuantityToId[] | null;
-  method?: StepToMethodInput[] | null;
+  method: StepToMethodInput[];
 }

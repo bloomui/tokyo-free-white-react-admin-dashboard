@@ -16,5 +16,5 @@ export interface AddRecipe {
 export interface AddRecipeVariables {
   input: AddRecipeInput;
   ingredients?: QuantityToId[] | null;
-  method?: StepToMethodInput[] | null;
+  method: StepToMethodInput[];
 }

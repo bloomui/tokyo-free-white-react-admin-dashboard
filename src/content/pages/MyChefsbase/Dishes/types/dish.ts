@@ -113,7 +113,7 @@ export interface dish_dish {
   rating: number | null;
   theme: string | null;
   nutrition: dish_dish_nutrition | null;
-  method: dish_dish_method[] | null;
+  method: dish_dish_method[];
   recipes: dish_dish_recipes[] | null;
 }
 
