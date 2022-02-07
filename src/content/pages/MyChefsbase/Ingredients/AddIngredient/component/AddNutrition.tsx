@@ -13,7 +13,9 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { H3, H5Left } from "src/content/pages/Components/TextTypes";
+import { Material } from "src/globalTypes";
 import { Quantity } from "../../../Menus/filtermenus/components/quantity";
+import { getUnitsForMaterial } from "../../../Recipes/AddRecipe/components/IngredientTable";
 
 export const InsertNutrition = ({
   setFieldValue,
@@ -26,7 +28,7 @@ export const InsertNutrition = ({
     shouldValidate?: boolean | undefined
   ) => void;
 }) => {
-  const unitsForMaterial = unitsForMaterial(material);
+  const unitsForMaterial = getUnitsForMaterial(material);
 
   return (
     <TableContainer>

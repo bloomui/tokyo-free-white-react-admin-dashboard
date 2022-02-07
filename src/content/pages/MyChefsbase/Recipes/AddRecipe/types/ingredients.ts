@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { Material } from "./../../../../../../globalTypes";
+
 // ====================================================
 // GraphQL query operation: ingredients
 // ====================================================
@@ -13,6 +15,7 @@ export interface ingredients_ingredients {
   name: string;
   category: string | null;
   rating: number | null;
+  material: Material | null;
 }
 
 export interface ingredients {

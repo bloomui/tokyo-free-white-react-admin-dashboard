@@ -19,7 +19,8 @@ import { FieldArray, Formik } from "formik";
 import React from "react";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import { H5Left } from "src/content/pages/Components/TextTypes";
-import { AddProductInput } from "src/globalTypes";
+import { AddProductInput, Material } from "src/globalTypes";
+import { getUnitsForMaterial } from "../../../Recipes/AddRecipe/components/IngredientTable";
 import { useAddQuickProducts } from "../api";
 import { AddQuickProductsVariables } from "../types/AddQuickProducts";
 
@@ -51,7 +52,7 @@ export const AddQuickProductsDialog = ({
     onCompleted: () => {},
     //   window.location.reload()
   });
-  const unitsForMaterial = unitsForMaterial(material);
+  const unitsForMaterial = getUnitsForMaterial(material);
 
   return (
     <Dialog

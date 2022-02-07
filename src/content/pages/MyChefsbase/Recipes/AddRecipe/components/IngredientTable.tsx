@@ -23,6 +23,7 @@ import { Formik, useField } from "formik";
 import React, { useState } from "react";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import { LoadingScreen } from "src/components/layout";
+import { Material } from "src/globalTypes";
 import { formikFieldErrorProps } from "src/utilities/formikError";
 import {
   composeValidators,
@@ -47,13 +48,13 @@ export const unitsSolid = ["milligram", "gram", "kilogram"];
 export const unitsLiquid = ["milliliter", "liter"];
 export const unitsUnit = ["eenheid"];
 
-export const unitsForMaterial = (material: Material): string[] => {
+export const getUnitsForMaterial = (material: Material): string[] => {
   var result;
   switch (material) {
     case Material.SOLID:
       result = unitsSolid;
       break;
-    case Material.Liquid:
+    case Material.LIQUID:
       result = unitsLiquid;
       break;
     default:
@@ -161,9 +162,7 @@ const Row = ({
     quantity: "",
     unit: "",
   };
-  const unitsForMaterial = unitsForMaterial(data.material);
-
-  // const unitsHere = getAvailableUnits(units)
+  const unitsForMaterial = getUnitsForMaterial(data.material);
 
   const [open, setOpen] = useState<boolean>(false);
 

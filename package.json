@@ -78,8 +78,8 @@
     ]
   },
   "devDependencies": {
-    "@types/numeral": "2.0.1",
     "@babel/eslint-parser": "7.14.7",
+    "@types/numeral": "2.0.1",
     "@typescript-eslint/eslint-plugin": "4.28.5",
     "@typescript-eslint/parser": "4.28.5",
     "eslint": "7.31.0",
@@ -91,8 +91,8 @@
     "eslint-plugin-prettier": "3.4.0",
     "eslint-plugin-react": "7.24.0",
     "eslint-plugin-react-hooks": "4.2.0",
+    "node-sass": "6.0.1",
     "prettier": "2.3.2",
-    "typescript": "4.3.5",
-    "node-sass": "6.0.1"
+    "typescript": "4.3.5"
   }
 }

@@ -20,12 +20,12 @@ const getIngredientQuery = gql`
       id
       name
       rating
+      material
       nutrition {
         quantity {
           quantity
           unit
         }
-        material
         nutrition {
           kcal
           protein {

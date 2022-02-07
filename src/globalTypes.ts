@@ -17,6 +17,12 @@ export enum KitchenType {
   Supplier = "Supplier",
 }
 
+export enum Material {
+  LIQUID = "LIQUID",
+  SOLID = "SOLID",
+  UNIT = "UNIT",
+}
+
 export interface AddCourseToDishesInput {
   coursetype: string;
   dishes?: string[] | null;
@@ -35,6 +41,7 @@ export interface AddIngredientInput {
   rating?: number | null;
   category?: string | null;
   nutrition?: QuantityToNutritionInput | null;
+  material?: Material | null;
 }
 
 export interface AddMenuInput {
@@ -111,6 +118,7 @@ export interface IngredientInput {
   rating?: number | null;
   category?: string | null;
   nutrition?: QuantityToNutritionInput | null;
+  material?: Material | null;
 }
 
 export interface MenuFilterInput {

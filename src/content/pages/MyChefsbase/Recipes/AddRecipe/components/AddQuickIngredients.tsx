@@ -21,14 +21,14 @@ import React, { useState } from "react";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import { H3, H5Left } from "src/content/pages/Components/TextTypes";
 import { FormField } from "src/content/pages/SignIn";
-import { AddIngredientInput } from "src/globalTypes";
+import { AddIngredientInput, Material } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
 import { materialOptions } from "../../../Ingredients/AddIngredient";
 import { Quantity } from "../../../Menus/filtermenus/components/quantity";
 import { zeroNutrition, zeroNutritionInput } from "../../recipeDialogs";
 import { useAddQuickIngredients } from "../api";
 import { AddQuickIngredientsVariables } from "../types/AddQuickIngredients";
-import { unitsForMaterial } from "./IngredientTable";
+import { getUnitsForMaterial } from "./IngredientTable";
 
 export const AddIngrDialog = ({
   open,
@@ -43,7 +43,7 @@ export const AddIngrDialog = ({
     name: "",
     rating: 0,
     category: "",
-    material: Material.Solid,
+    material: Material.SOLID,
     nutrition: {
       quantity: 100.0,
       unit: "gram",
@@ -161,8 +161,8 @@ export const AddIngrDialog = ({
                                           </TableCell>
                                           <Grid xs={12}>
                                             <InsertNutritionHere
-                                              ingredientName={
-                                                values.input[index].name
+                                              material={
+                                                values.input[index].material
                                               }
                                               open={nutr}
                                               onClose={() => setNutr(false)}
@@ -261,13 +261,13 @@ export const AddIngrDialog = ({
 };
 
 const InsertNutritionHere = ({
-  ingredientName,
+  material,
   open,
   onClose,
   index,
   onChange,
 }: {
-  ingredientName: string;
+  material: Material;
   open: boolean;
   onClose: () => void;
   index: number;
@@ -315,7 +315,7 @@ const InsertNutritionHere = ({
               </TableCell>
               <TableCell colSpan={2}>
                 <FormikSelect name={`input.${index}.nutrition.unit`}>
-                  {unitsForMaterial(input.values.material).map((unit) => (
+                  {getUnitsForMaterial(material).map((unit) => (
                     <MenuItem key={unit} value={unit}>
                       {unit}
                     </MenuItem>

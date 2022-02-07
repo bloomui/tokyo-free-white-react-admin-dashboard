@@ -26,7 +26,7 @@ export interface recipe_recipe {
   rating: number | null;
   type: string | null;
   quantity: recipe_recipe_quantity | null;
-  method: recipe_recipe_method[];
+  method: recipe_recipe_method[] | null;
 }
 
 export interface recipe {

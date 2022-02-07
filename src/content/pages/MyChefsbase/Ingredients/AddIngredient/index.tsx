@@ -20,17 +20,13 @@ import PageTitleWrapper from "src/components/PageTitleWrapper";
 import { FormField } from "src/components/form/FormField";
 import {
   AddIngredientInput,
-  AddProductInput,
-  AddRecipeInput,
+  Material,
   NutritionInput,
-  QuantityToId,
   QuantityToNutritionInput,
-  StepToMethodInput,
 } from "src/globalTypes";
 import {
   composeValidators,
   required,
-  Validator,
 } from "src/utilities/formikValidators";
 import { user } from "../..";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
@@ -39,8 +35,7 @@ import { Divider } from "@mui/material";
 import { AddIngredientVariables } from "../types/AddIngredient";
 import { TableProductData } from "./component/ProductsTable";
 import { FormikSelect } from "src/components/form/FormikSelect";
-import { H3, H5, H5Left } from "src/content/pages/Components/TextTypes";
-import { Quantity } from "../../Menus/filtermenus/components/quantity";
+import { H3, H5 } from "src/content/pages/Components/TextTypes";
 import { useNavigate } from "react-router";
 import { AddQuickProductsDialog } from "./component/AddQuickProductsDialog";
 import { InsertNutrition } from "./component/AddNutrition";
