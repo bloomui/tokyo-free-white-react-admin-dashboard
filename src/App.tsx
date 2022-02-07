@@ -23,9 +23,9 @@ const authLink = setContext((_, { headers }) => {
   const token = getToken();
   // return the headers to the context so httpLink can read them
   return {
-    // uri: `http://localhost:8080/graphql?access_token=accesstoken`,
+    uri: `http://localhost:8080/graphql?access_token=accesstoken`,
     // uri: `http://localhost:8080/graphql?access_token=2116aec7-4a79-36fe-bc44-921b88aac782`,
-    uri: `${config.endpoint}?access_token=${token}`,
+    // uri: `${config.endpoint}?access_token=${token}`,
   };
 });
 
