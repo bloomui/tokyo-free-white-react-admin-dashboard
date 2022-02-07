@@ -42,9 +42,25 @@ import { FormikSelect } from "src/components/form/FormikSelect";
 import { H3, H5, H5Left } from "src/content/pages/Components/TextTypes";
 import { Quantity } from "../../Menus/filtermenus/components/quantity";
 import { useNavigate } from "react-router";
-import { units } from "../../Recipes/AddRecipe/components/IngredientTable";
 import { AddQuickProductsDialog } from "./component/AddQuickProductsDialog";
 import { InsertNutrition } from "./component/AddNutrition";
+
+export const materialOptions = ["In gram", "In liters", "In stuks"];
+export const parseMaterialInput = (a: string): Material => {
+  var result;
+  switch (a) {
+    case "In gram":
+      result = Material.SOLID;
+      break;
+    case "In liters":
+      result = Material.LIQUID;
+      break;
+    default:
+      result = Material.UNIT;
+  }
+
+  return result;
+};
 
 export const emptyNutrition: NutritionInput = {
   kcal: 0,
@@ -77,7 +93,7 @@ export const AddIngredientPage = () => {
     rating: 0,
     category: "",
     nutrition: emptyQuantityToNutrition,
-    material: "SOLID",
+    material: Material.SOLID,
   };
 
   function handleDelete(index) {
@@ -126,6 +142,7 @@ export const AddIngredientPage = () => {
                       rating: values.input.rating,
                       category: values.input.category,
                       nutrition: values.input.nutrition,
+                      material: parseMaterialInput(values.input.material),
                     },
                   },
                 });
@@ -152,13 +169,11 @@ export const AddIngredientPage = () => {
                       <Grid xs={3}>
                         <H5 title="Soort" />
                         <FormikSelect validate={required} name="input.material">
-                          {["In gram", "In liters", "In stuks"].map(
-                            (material) => (
-                              <MenuItem value={material} key={material}>
-                                {material}
-                              </MenuItem>
-                            )
-                          )}
+                          {materialOptions.map((material) => (
+                            <MenuItem value={material} key={material}>
+                              {material}
+                            </MenuItem>
+                          ))}
                         </FormikSelect>
                       </Grid>
                       <Grid xs={4}></Grid>
@@ -183,7 +198,10 @@ export const AddIngredientPage = () => {
                     </Grid>
                     <Divider />
                     <Grid xs={12}>
-                      <InsertNutrition setFieldValue={setFieldValue} />
+                      <InsertNutrition
+                        material={values.input.material}
+                        setFieldValue={setFieldValue}
+                      />
                     </Grid>
                     <Divider />
                     <Grid container xs={12}>
@@ -194,7 +212,6 @@ export const AddIngredientPage = () => {
                       <Grid xs={6}>
                         <Grid xs={12}>
                           <Button
-                            // onClick={() => navigate("/mychefsbase/addingredient")}
                             onClick={() => openDialog(true)}
                             color="primary"
                             variant="contained"
@@ -203,6 +220,7 @@ export const AddIngredientPage = () => {
                           </Button>
                         </Grid>
                         <AddQuickProductsDialog
+                          material={values.input.material}
                           open={dialog}
                           onClose={() => openDialog(false)}
                         />

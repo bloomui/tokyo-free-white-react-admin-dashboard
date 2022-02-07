@@ -11,7 +11,7 @@ import { initialValues } from "../../Dishes/filterdishes";
 import { UpdateDishVariables } from "../../Dishes/types/UpdateDish";
 import { Products } from "../../Menus/filtermenus/components/products";
 import { Quantity } from "../../Menus/filtermenus/components/quantity";
-import { productToQ } from "../AddIngredient";
+import { materialOptions, parseMaterialInput, productToQ } from "../AddIngredient";
 import { TableProductData } from "../AddIngredient/component/ProductsTable";
 import { useGetIngredientQuery, useUpdateIngredient } from "../api";
 import { FilterIngredients_filterIngredients } from "../types/FilterIngredients";
@@ -19,7 +19,7 @@ import { UpdateIngredientVariables } from "../types/UpdateIngredient";
 import { emptyIngredient } from ".";
 import { LoadingScreen } from "src/components/layout";
 import { ingredient_ingredient_nutrition_nutrition, ingredient_ingredient_products } from "../types/ingredient";
-import { units } from "../../Recipes/AddRecipe/components/IngredientTable";
+import { unitsForMaterial } from "../../Recipes/AddRecipe/components/IngredientTable";
 
 export const UpdateIngredientDialog = ({
     id,
@@ -67,12 +67,12 @@ const formInput: IngredientInput = {
   rating: ingredient.rating,
   category: ingredient.category,
   nutrition: quantityToNutrition,
+  material: ingredient.material)
 }
 const formState : UpdateIngredientVariables = {
   input: formInput,
   products: ingredient.products.map((it) => it.id),
 }
-
 
     return (
     <Dialog fullScreen open={open} onClose={onClose}>
@@ -87,7 +87,8 @@ const formState : UpdateIngredientVariables = {
                 name: values.input.name,
                 category: values.input.category,
                 rating: values.input.rating,
-                nutrition: values.input.nutrition
+                nutrition: values.input.nutrition,
+                material: parseMaterialInput(values.input.material)
               },
             },
           });
@@ -111,6 +112,17 @@ const formState : UpdateIngredientVariables = {
                 />
                 </Grid>
                 <Grid xs={1}></Grid>
+                <Grid xs={3}>
+                        <H5 title="Soort" />
+                        <FormikSelect validate={required} name="input.material">
+                          {materialOptions.map((material) => (
+                            <MenuItem value={material} key={material}>
+                              {material}
+                            </MenuItem>
+                          ))}
+                        </FormikSelect>
+                      </Grid>
+                      <Grid xs={1}></Grid>
                 <Grid xs={3}>
                 <H5 title="Categorie"/>
                 <FormFieldEdit
@@ -170,7 +182,7 @@ const formState : UpdateIngredientVariables = {
                             <FormikSelect
                       name="input.nutrition.unit"
                       >
-              {units.map((unit) => (
+              {unitsForMaterial(values.input.material).map((unit) => (
                 <MenuItem key={unit} value={unit}>{unit}</MenuItem>
               ))}
             </FormikSelect>
