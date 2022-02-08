@@ -40,7 +40,7 @@ import { useNavigate } from "react-router";
 import { AddQuickProductsDialog } from "./component/AddQuickProductsDialog";
 import { InsertNutrition } from "./component/AddNutrition";
 
-export const materialOptions = ["In gram", "In liters", "In stuks"];
+export const materialOptions = ["In gram", "In milliliters", "In stuk(s)"];
 export const parseMaterialInput = (a: string): Material => {
   var result;
   switch (a) {
@@ -57,6 +57,7 @@ export const parseMaterialInput = (a: string): Material => {
   return result;
 };
 
+
 export const stringForMaterial = (a: Material): string => {
   var result;
   switch (a) {
@@ -68,6 +69,22 @@ export const stringForMaterial = (a: Material): string => {
       break;
     default:
       result = "In stuk(s)";
+  }
+
+  return result;
+};
+
+export const unitForMaterial = (a: Material): string => {
+  var result;
+  switch (a) {
+    case Material.SOLID:
+      result = "gram";
+      break;
+    case Material.LIQUID:
+      result = "milliliters";
+      break;
+    default:
+      result = "Stuk(s)";
   }
 
   return result;
@@ -213,7 +230,7 @@ export const AddIngredientPage = () => {
                         <Button
                           disabled={loading}
                           onClick={() => {
-                            setFieldValue("input.nutrition.unit", material);
+                            setFieldValue("input.nutrition.unit", unitForMaterial(material));
                             submitForm()}
                           }
                           color="primary"

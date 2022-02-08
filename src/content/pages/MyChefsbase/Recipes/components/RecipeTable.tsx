@@ -89,6 +89,7 @@ export const RecipeTable = ({
     const [openUpdate, setOpenUpdate] = React.useState(false)
     const [areYouSureDelete, setAreYouSureDelete] = useState<boolean>(false);
     const [id, setId] = React.useState<string>()
+    const [unitHere, setUnitHere] = React.useState<string>()
     const [recipe, setRecipe] = React.useState<FilterRecipes_filterRecipes>()
 
     // recipe Data
@@ -145,6 +146,7 @@ headCells={headCellsRecipes}
                     style={{ cursor: 'pointer' }}
                     onClick={() => {
                       setId(recipe.id);
+                      setUnitHere(recipe.quantity.unit);
                       setOpen(true)
                     }}
                     >{recipe.name}</TableCell>
@@ -205,6 +207,7 @@ headCells={headCellsRecipes}
             {id &&  (
               <>
               <RecipeDialog
+              unitHere={unitHere}
               setId={() => setId(id)}
               id={id}
               open={open}
@@ -220,6 +223,7 @@ headCells={headCellsRecipes}
             )}
             {recipe && (
               <UpdateRecipeDialog 
+                unitHere={recipe.quantity.unit}
                  id={recipe.id}
                  open={openUpdate}
                  onClose={() => setOpenUpdate(false)}

@@ -62,6 +62,10 @@ export const FilterRecipesQuery = gql`
       name
       rating
       type
+      quantity {
+        quantity 
+        unit
+      }
     }
   }
 `;

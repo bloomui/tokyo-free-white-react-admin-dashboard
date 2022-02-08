@@ -25,6 +25,7 @@ import {
   NutritionOptionDropDown,
 } from "../../Components/NutrutitionOptions";
 import { ItemString, ItemInt } from "../../Menus/menuDialog";
+import { stringForMaterial } from "../AddIngredient";
 import { useGetIngredientQuery } from "../api";
 import {
   ingredient,

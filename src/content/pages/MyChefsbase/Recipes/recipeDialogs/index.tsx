@@ -226,11 +226,13 @@ export const minimizeUnit = (a: string): string =>  {
 }
 
 export const RecipeDialog = ({
+  unitHere,
   setId,
   id,
   open,
   onClose,
 }: {
+  unitHere: string;
   id: string;
   setId: () => void;
   open: boolean;
@@ -239,7 +241,7 @@ export const RecipeDialog = ({
   const [nutritionsToDisplay, setNutritionsToDisplay] = useState<string[]>(
     DefaultNutritionOptions
   );
-  const [unit, setUnit] = useState<string>("");
+  const [unit, setUnit] = useState<string>(unitHere);
   const [quantity, setQuantity] = useState(100);
   const { data, loading, error } = useGetRecipeQuery({id: id, onCompleted: (recipe) => setUnit(minimizeUnit(recipe.recipe.quantity.unit))});
 
@@ -253,7 +255,7 @@ export const RecipeDialog = ({
   } = useGetNutritionForRecipe({
     id: id,
     quantity: quantity,
-    unit: unit,
+    unit: unitHere,
   });
   const {
     data: data2,
@@ -264,7 +266,7 @@ export const RecipeDialog = ({
     onCompleted: (values) => {},
     id: id,
     quantity: quantity,
-    unit: unit,
+    unit: unitHere,
   });
 
   if (loading) return <CircularProgress />;
@@ -296,12 +298,10 @@ export const RecipeDialog = ({
 
   let recipe = data.recipe;
 
-  const quantities = ["50", "100", "500", "1000"]
+  const quantities = ["0.125", "0.25", "0.333" , "0.5", "0.75", "1",  "50", "100", "500", "1000"]
   const unitsHere = getAvailableUnits(recipe.quantity.unit)
   
-  const formState: NutritionForRecipeVariables = {
-    id: recipe.id, unit: unitsHere[0],  quantity: quantity
-  }
+  
   return (
     <>
       <Dialog open={open} onClose={onClose}>
@@ -409,6 +409,7 @@ export const RecipeDialog = ({
         )}
       </Dialog>
       <UpdateRecipeDialog
+        unitHere={recipe.quantity.unit}
         id={recipe.id}
         open={openUpdateDialog}
         onClose={() => setUpdateDialog(false)}
