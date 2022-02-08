@@ -21,14 +21,13 @@ export const InsertNutrition = ({
   setFieldValue,
   material,
 }: {
-  material: Material;
+  material: string;
   setFieldValue: (
     field: string,
     value: any,
     shouldValidate?: boolean | undefined
   ) => void;
 }) => {
-  const unitsForMaterial = getUnitsForMaterial(material);
 
   return (
     <TableContainer>
@@ -58,18 +57,7 @@ export const InsertNutrition = ({
             />
           </TableCell>
           <TableCell colSpan={2}>
-            <TextField
-              select
-              onChange={(e) =>
-                setFieldValue("input.nutrition.unit", e.target.value)
-              }
-            >
-              {unitsForMaterial.map((unit) => (
-                <MenuItem key={unit} value={unit}>
-                  {unit}
-                </MenuItem>
-              ))}
-            </TextField>
+            {material}
           </TableCell>
         </TableRow>
         <TableRow></TableRow>
@@ -79,7 +67,7 @@ export const InsertNutrition = ({
             <TextField
               fullWidth
               placeholder={"0"}
-              onChange={(e) =>
+              onChange={(e) => 
                 setFieldValue(
                   "input.nutrition.nutrition.kcal",
                   Number(e.target.value)

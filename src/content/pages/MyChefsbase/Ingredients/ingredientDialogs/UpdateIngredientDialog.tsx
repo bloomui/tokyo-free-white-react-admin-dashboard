@@ -147,7 +147,7 @@ export const UpdateIngredientDialog = ({
                   </Grid>
                   <Grid xs={1}></Grid>
                   <Grid xs={3}>
-                    <H5 title="Soort" />
+                    <H5 title="Meeteenheid" />
                     <FormikSelect validate={required} name="input.material">
                       {materialOptions.map((material) => (
                         <MenuItem value={material} key={material}>

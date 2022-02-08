@@ -29,6 +29,7 @@ import { zeroNutrition, zeroNutritionInput } from "../../recipeDialogs";
 import { useAddQuickIngredients } from "../api";
 import { AddQuickIngredientsVariables } from "../types/AddQuickIngredients";
 import { getUnitsForMaterial } from "./IngredientTable";
+import { parseMaterialInput } from "../../../Ingredients/AddIngredient";
 
 export const AddIngrDialog = ({
   open,
@@ -315,8 +316,8 @@ const InsertNutritionHere = ({
               </TableCell>
               <TableCell colSpan={2}>
                 <FormikSelect name={`input.${index}.nutrition.unit`}>
-                  {getUnitsForMaterial(material).map((unit) => (
-                    <MenuItem key={unit} value={unit}>
+                  {[material].map((unit) => (
+                    <MenuItem key={unit} value={parseMaterialInput(unit)}>
                       {unit}
                     </MenuItem>
                   ))}
