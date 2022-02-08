@@ -4,7 +4,6 @@ import { useMutation } from "@apollo/client";
 import { DishFilterInput, RecipeFilterInput } from "src/globalTypes";
 import { useSimpleQuery } from "src/utilities/apollo";
 import { AddRecipe, AddRecipeVariables } from "./types/AddRecipe";
-import { AllIngredients } from "./types/AllIngredients";
 import { FilterRecipes } from "./types/FilterRecipes";
 import { recipe, recipeVariables } from "./types/recipe";
 import { UpdateRecipe, UpdateRecipeVariables } from "./types/UpdateRecipe";
@@ -36,8 +35,11 @@ const getRecipeQuery = gql`
   }
 `;
 
-export const useGetRecipeQuery = ({id, onCompleted}: {
-  id: string,
+export const useGetRecipeQuery = ({
+  id,
+  onCompleted,
+}: {
+  id: string;
   onCompleted?: (result: recipe) => void;
 }) => {
   const { loading, data, error } = useSimpleQuery<recipe, recipeVariables>(
@@ -60,6 +62,10 @@ export const FilterRecipesQuery = gql`
       name
       rating
       type
+      quantity {
+        quantity 
+        unit
+      }
     }
   }
 `;

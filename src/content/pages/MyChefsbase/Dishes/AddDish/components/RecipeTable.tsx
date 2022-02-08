@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import { LoadingScreen } from "src/components/layout";
 import { recipeToQ } from "..";
-import { units } from "../../../Recipes/AddRecipe/components/IngredientTable";
 import { getAvailableUnits } from "../../../Recipes/recipeDialogs";
 import { recipeRowsPerPage, useSearchRecipeQuery } from "../api";
 import { recipes_recipes } from "../types/recipes";

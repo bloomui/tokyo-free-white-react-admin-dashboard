@@ -9,12 +9,19 @@ import { RecipeFilterInput } from "./../../../../../globalTypes";
 // GraphQL query operation: FilterRecipes
 // ====================================================
 
+export interface FilterRecipes_filterRecipes_quantity {
+  __typename: "Quantity";
+  quantity: number;
+  unit: string;
+}
+
 export interface FilterRecipes_filterRecipes {
   __typename: "Recipe";
   id: string;
   name: string;
   rating: number | null;
   type: string | null;
+  quantity: FilterRecipes_filterRecipes_quantity | null;
 }
 
 export interface FilterRecipes {

@@ -38,17 +38,15 @@ import {
 import { FilterRecipes_filterRecipes } from "../types/FilterRecipes";
 import { UpdateRecipeVariables } from "../types/UpdateRecipe";
 import { H3, H5 } from "src/content/pages/Components/TextTypes";
-import {
-  ingredientToQ,
-  mapIngredientToQToInput,
-} from "../AddRecipe";
-import { TableData, units } from "../AddRecipe/components/IngredientTable";
+import { ingredientToQ, mapIngredientToQToInput } from "../AddRecipe";
+import { TableData } from "../AddRecipe/components/IngredientTable";
 import { LoadingScreen } from "src/components/layout";
 import { recipe_recipe, recipe_recipe_method } from "../types/recipe";
 import { Loader } from "src/components/search/Loader";
 import { ingredientsForRecipe_ingredientsForRecipe } from "../types/ingredientsForRecipe";
 import { dishForCourse } from "../../Menus/AddMenu";
 import { getAvailableUnitsLarge } from ".";
+import { AddIngrDialog } from "../AddRecipe/components/AddQuickIngredients";
 
 export const emptyRecipe: recipe_recipe = {
   __typename: "Recipe",
@@ -60,23 +58,24 @@ export const emptyRecipe: recipe_recipe = {
   quantity: {
     __typename: "Quantity",
     unit: "",
-    quantity: 0
-  }
+    quantity: 0,
+  },
 };
 
 const mapMethodToInput = (a: recipe_recipe_method[]): StepToMethodInput[] => {
-
   const map = a.map((method) => ({
-    step: method.step, 
-    method: method.method
-  }))
-  return map
-}
+    step: method.step,
+    method: method.method,
+  }));
+  return map;
+};
 export const UpdateRecipeDialog = ({
+  unitHere,
   id,
   open,
   onClose,
 }: {
+  unitHere: string;
   id: string;
   open: boolean;
   onClose: () => void;
@@ -84,8 +83,11 @@ export const UpdateRecipeDialog = ({
   const [selectedIngredients, setIngredients] = React.useState<ingredientToQ[]>(
     []
   );
-  const  [unitsHere,  setUnits]  = React.useState<string[]>()
-  const [unit, setUnit] = useState<string>("")
+
+  const [dialog, openDialog] = useState(false);
+
+  const [unitsHere, setUnits] = React.useState<string[]>();
+  const [unit, setUnit] = useState<string>(unitHere);
   const [quantity, setQuantity] = useState(100);
 
   const [stepHere, setStep] = useState(1);
@@ -93,23 +95,26 @@ export const UpdateRecipeDialog = ({
     step: stepHere,
     method: "",
   };
-  const [methodHere, setMethod] = useState<StepToMethodInput[]>([emptyStep])
-  
+  const [methodHere, setMethod] = useState<StepToMethodInput[]>([emptyStep]);
 
-  const { data, loading: loading1, error: error1 } = useGetRecipeQuery({
-    id: id, 
+  const {
+    data,
+    loading: loading1,
+    error: error1,
+  } = useGetRecipeQuery({
+    id: id,
     onCompleted: (recipe) => {
-    setUnit(recipe.recipe.quantity.unit);
-    setUnits(getAvailableUnitsLarge(recipe.recipe.quantity.unit));
-    setMethod(mapMethodToInput(recipe.recipe.method));
-  }
-});
+      setUnit(recipe.recipe.quantity.unit);
+      setUnits(getAvailableUnitsLarge(recipe.recipe.quantity.unit));
+      setQuantity(recipe.recipe.quantity.quantity);
+      setMethod(mapMethodToInput(recipe.recipe.method));
+    },
+  });
 
   const {
     data: data2,
     loading: loading2,
     error: error2,
-    refetch: refetch,
   } = useGetIngredientsForRecipe({
     onCompleted: (ingredientsForRecipe) => {
       setIngredients(
@@ -133,7 +138,6 @@ export const UpdateRecipeDialog = ({
     selectedIngredients.splice(index, 1);
     setIngredients([...selectedIngredients]);
   }
-
   if (loading1) return <LoadingScreen />;
   if (error1) return <LoadingScreen />;
 
@@ -160,7 +164,7 @@ export const UpdateRecipeDialog = ({
     rating: recipe.rating,
     type: recipe.type,
     unit: recipe.quantity.unit,
-    quantity: recipe.quantity.quantity
+    quantity: recipe.quantity.quantity,
   };
   const formIngredients: QuantityToId[] | null = data2.ingredientsForRecipe.map(
     (quantityToIngr) => ({
@@ -183,7 +187,7 @@ export const UpdateRecipeDialog = ({
         onSubmit={(values) => {
           updateRecipe({
             variables: {
-              method: values.method? values.method : [emptyStep],
+              method: values.method ? values.method : [emptyStep],
               ingredients: mapIngredientToQToInput(selectedIngredients),
               input: {
                 id: recipe.id,
@@ -191,7 +195,7 @@ export const UpdateRecipeDialog = ({
                 rating: values.input.rating,
                 type: values.input.type,
                 unit: values.input.unit,
-                quantity: values.input.quantity
+                quantity: values.input.quantity,
               },
             },
           });
@@ -216,20 +220,23 @@ export const UpdateRecipeDialog = ({
                   </Grid>
                   <Grid xs={1}></Grid>
                   <Grid xs={6}>
-                <Typography>Per hoeveelheid</Typography>
-                <FormField
-                  name="input.quantity"
-                  label="Hoeveelheid"
-                  validator={composeValidators(required)}
-                  />
-                <FormikSelect
-                      name="input.unit"
-                      >
-              {unitsHere.map((unit) => (
-                <MenuItem key={unit} value={unit}>{unit}</MenuItem>
-              ))}
-            </FormikSelect>
-                </Grid>
+                    <Typography>Per hoeveelheid</Typography>
+                   
+                    <FormFieldEdit
+                      placeholder={String(recipe.quantity.quantity)}
+                      name="input.quantity"
+                      label="Hoeveelheid"
+                      validator={composeValidators(required)}
+                    />
+                    <FormikSelect name="input.unit">
+                      {unitsHere.map((unit) => (
+                        <MenuItem key={unit} value={unit}>
+                          {unit}
+                        </MenuItem>
+                      ))}
+                    </FormikSelect>
+                  
+                  </Grid>
                   <Grid xs={3}>
                     <Typography>Geef het recept type aan</Typography>
                     <FormFieldEdit
@@ -291,15 +298,27 @@ export const UpdateRecipeDialog = ({
                                           />
                                         </TableCell>
                                         <TableCell>
-                                        {(index <=1 )? (<Button
-                            variant="contained" 
-                            color="secondary"
-                        style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
-                         onClick={() => {
-                             setStep(stepHere -1);
-                             arrayHelpers.remove(index)}}>
-                        -
-                       </Button>) : (<div />)}
+                                          {index >= 1 ? (
+                                            <Button
+                                              variant="contained"
+                                              color="secondary"
+                                              style={{
+                                                maxWidth: "30px",
+                                                maxHeight: "30px",
+                                                minWidth: "30px",
+                                                minHeight: "30px",
+                                              }}
+                                              type="button"
+                                              onClick={() => {
+                                                setStep(stepHere - 1);
+                                                arrayHelpers.remove(index);
+                                              }}
+                                            >
+                                              -
+                                            </Button>
+                                          ) : (
+                                            <div />
+                                          )}
                                         </TableCell>
                                         <TableCell>
                                           <Button
@@ -335,39 +354,21 @@ export const UpdateRecipeDialog = ({
                 <Grid xs={12}></Grid>
                 <Divider />
                 <Grid container xs={12}>
-                  <Grid xs={12}>
-                    <H5 title="Toon voedingswaarden en ingredienten per:" />
-                  </Grid>
-                  <Grid xs={2}></Grid>
-                  <Grid xs={4}>
-                    <TextField
-                      onKeyPress={(e) => {
-                        if (e.key === "Enter") {
-                          refetch({
-                            id: recipe.id,
-                            quantity: quantity,
-                            unit: unit,
-                          });
-                        }
-                      }}
-                      defaultValue={quantity}
-                      onChange={(e) => setQuantity(Number(e.target.value))}
-                    />
-                  </Grid>
-                  <Grid xs={2}></Grid>
-                  <Grid xs={4}>
-                    <TextField
-                      select
-                      onChange={(e) => setUnit(e.target.value)}
-                      variant="filled"
-                    >
-                      {["gram", "milliliter"].map((option) => (
-                        <MenuItem key={option} value={option}>
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </Grid>
+                  <Grid  xs={12}>
+                <Button
+                          onClick={() => openDialog(true)}
+                          color="primary"
+                          variant="contained"
+                        >
+                          Snel ingredienten toevoegen
+                        </Button>
+                        </Grid>
+                        <Grid>
+                        <AddIngrDialog
+                        open={dialog}
+                        onClose={() => openDialog(false)}
+                      />
+                        </Grid>
                   <Grid xs={6}>
                     <TableData
                       setIngredients={(selected) =>
@@ -449,4 +450,3 @@ const mapToIngredientToQ = (
     unit: a.quantity.unit,
   };
 };
-
