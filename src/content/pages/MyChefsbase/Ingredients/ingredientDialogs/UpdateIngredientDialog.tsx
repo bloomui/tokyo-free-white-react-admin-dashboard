@@ -31,6 +31,7 @@ import {
   IngredientInput,
   QuantityToNutritionInput,
   NutritionInput,
+  Material,
 } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
 import { initialValues } from "../../Dishes/filterdishes";
@@ -41,6 +42,8 @@ import {
   materialOptions,
   parseMaterialInput,
   productToQ,
+  stringForMaterial,
+  unitForMaterial,
 } from "../AddIngredient";
 import { TableProductData } from "../AddIngredient/component/ProductsTable";
 import { useGetIngredientQuery, useUpdateIngredient } from "../api";
@@ -54,6 +57,8 @@ import {
 } from "../types/ingredient";
 import { getUnitsForMaterial } from "../../Recipes/AddRecipe/components/IngredientTable";
 import { getAvailableUnits } from "../../Recipes/recipeDialogs";
+import { Select } from "@mui/material";
+import { AddQuickProductsDialog } from "../AddIngredient/component/AddQuickProductsDialog";
 
 export const UpdateIngredientDialog = ({
   id,
@@ -65,6 +70,8 @@ export const UpdateIngredientDialog = ({
   onClose: () => void;
 }) => {
   const [selectedProducts, setProducts] = React.useState<productToQ[]>([]);
+  const  [material, setMaterial] = useState<Material>(Material.SOLID)
+  const [dialog, openDialog] = useState(false);
 
   const {
     data,
@@ -74,11 +81,14 @@ export const UpdateIngredientDialog = ({
     id: id,
     onCompleted: (result) => {
       setProducts(mapToProductToQ(result.ingredient.products));
+      setMaterial(result.ingredient.material)
     },
   });
 
   const { updateIngredient, loading, error } = useUpdateIngredient({
-    onCompleted: () => window.location.reload(),
+    onCompleted: () => {
+      window.location.reload()
+    },
   });
 
   function handleDelete(index) {
@@ -122,7 +132,7 @@ export const UpdateIngredientDialog = ({
                 category: values.input.category,
                 rating: values.input.rating,
                 nutrition: values.input.nutrition,
-                material: parseMaterialInput(values.input.material),
+                material: material,
               },
             },
           });
@@ -148,13 +158,20 @@ export const UpdateIngredientDialog = ({
                   <Grid xs={1}></Grid>
                   <Grid xs={3}>
                     <H5 title="Meeteenheid" />
-                    <FormikSelect validate={required} name="input.material">
-                      {materialOptions.map((material) => (
-                        <MenuItem value={material} key={material}>
-                          {material}
-                        </MenuItem>
-                      ))}
-                    </FormikSelect>
+                    <Grid xs={3}>
+                        <H5 title="Meeteenheid" />
+                        <Select
+                        value={stringForMaterial(material)}
+                        onChange={(e) => setMaterial(parseMaterialInput(e.target.value))}
+                        required
+                        >
+                          {materialOptions.map((material) => (
+                            <MenuItem value={material} key={material}>
+                              {material}
+                            </MenuItem>
+                          ))}
+                          </Select>
+                      </Grid>
                   </Grid>
                   <Grid xs={1}></Grid>
                   <Grid xs={3}>
@@ -215,15 +232,7 @@ export const UpdateIngredientDialog = ({
                           />
                         </TableCell>
                         <TableCell colSpan={2}>
-                          <FormikSelect name="input.nutrition.unit">
-                            {getUnitsForMaterial(values.input.material).map(
-                              (unit) => (
-                                <MenuItem key={unit} value={unit}>
-                                  {unit}
-                                </MenuItem>
-                              )
-                            )}
-                          </FormikSelect>
+                          {stringForMaterial(material)}
                         </TableCell>
                       </TableRow>
                       <TableRow></TableRow>
@@ -279,56 +288,72 @@ export const UpdateIngredientDialog = ({
                 </Grid>
 
                 <Divider />
-                <Grid container xs={12}>
-                  <Grid xs={12}>
-                    <H3 title="Productopties" />
-                  </Grid>
-                  <Grid xs={6}>
-                    <TableProductData
-                      setProduct={(selected) =>
-                        setProducts([...selectedProducts, selected])
-                      }
-                    />
-                  </Grid>
-                  <Grid xs={6}>
-                    <TableContainer>
-                      <Table size="small">
-                        <TableRow>
-                          <TableCell>Naam</TableCell>
-                          <TableCell>email</TableCell>
-                          <TableCell>Herkomst</TableCell>
-                          <TableCell>Prijs</TableCell>
-                        </TableRow>
-                        {selectedProducts.map((product, index) => (
-                          <TableRow>
-                            <TableCell>{product.name}</TableCell>
-                            <TableCell>{product.brand}</TableCell>
-                            <TableCell>{product.origin}</TableCell>
-                            <TableCell>{product.price}</TableCell>
-                            <TableCell>
-                              <Button
-                                variant="contained"
-                                color="secondary"
-                                style={{
-                                  maxWidth: "30px",
-                                  maxHeight: "30px",
-                                  minWidth: "30px",
-                                  minHeight: "30px",
-                                }}
-                                type="button"
-                                onClick={() => {
-                                  handleDelete(index);
-                                }}
-                              >
-                                -
-                              </Button>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </Table>
-                    </TableContainer>
-                  </Grid>
-                </Grid>
+                <Divider />
+                    <Grid container xs={12}>
+                      <Grid xs={12}>
+                        <H3 title="Productopties" />
+                      </Grid>
+                      <Grid xs={12}></Grid>
+                      <Grid xs={6}>
+                        <Grid xs={12}>
+                          <Button
+                            onClick={() => openDialog(true)}
+                            color="primary"
+                            variant="contained"
+                          >
+                            Snel producten toevoegen
+                          </Button>
+                        </Grid>
+                        <AddQuickProductsDialog
+                          material={values.input.material}
+                          open={dialog}
+                          onClose={() => openDialog(false)}
+                        />
+                        <TableProductData
+                          setProduct={(selected) =>
+                            setProducts([...selectedProducts, selected])
+                          }
+                        />
+                      </Grid>
+                      <Grid xs={6}>
+                        <TableContainer>
+                          <Table size="small">
+                            <TableRow>
+                              <TableCell>Naam</TableCell>
+                              <TableCell>email</TableCell>
+                              <TableCell>Herkomst</TableCell>
+                              <TableCell>Prijs</TableCell>
+                            </TableRow>
+                            {selectedProducts.map((product, index) => (
+                              <TableRow>
+                                <TableCell>{product.name}</TableCell>
+                                <TableCell>{product.brand}</TableCell>
+                                <TableCell>{product.origin}</TableCell>
+                                <TableCell>{product.price}</TableCell>
+                                <TableCell>
+                                  <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    style={{
+                                      maxWidth: "30px",
+                                      maxHeight: "30px",
+                                      minWidth: "30px",
+                                      minHeight: "30px",
+                                    }}
+                                    type="button"
+                                    onClick={() => {
+                                      handleDelete(index);
+                                    }}
+                                  >
+                                    -
+                                  </Button>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </Table>
+                        </TableContainer>
+                      </Grid>
+                    </Grid>
                 {error && (
                   <Typography color="error">
                     Er is een fout opgetreden, probeer het opnieuw.
@@ -341,7 +366,10 @@ export const UpdateIngredientDialog = ({
                 </Button>
                 <Button
                   disabled={loading}
-                  onClick={() => submitForm()}
+                  onClick={() => {
+                    setFieldValue("input.nutrition.unit", unitForMaterial(material));
+                    submitForm()}
+                  }
                   color="primary"
                 >
                   Gegevens toevoegen

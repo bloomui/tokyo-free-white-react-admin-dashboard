@@ -3,6 +3,7 @@ import {
   Container,
   Grid,
   MenuItem,
+  Select,
   Table,
   TableCell,
   TableContainer,
@@ -107,7 +108,7 @@ export const emptyQuantityToNutrition: QuantityToNutritionInput = {
 export const AddIngredientPage = () => {
   const [dialog, openDialog] = useState(false);
 
-  const  [material, setMaterial] = useState<Material>(Material.UNIT)
+  const  [material, setMaterial] = useState<Material>(Material.SOLID)
   const { addIngredient, loading, error } = useAddIngredient({
     onCompleted: () => {
       window.location.reload();
@@ -198,24 +199,17 @@ export const AddIngredientPage = () => {
                       <Grid xs={4}></Grid>
                       <Grid xs={3}>
                         <H5 title="Meeteenheid" />
-                        <TextField
+                        <Select
+                        value={stringForMaterial(material)}
                         onChange={(e) => setMaterial(parseMaterialInput(e.target.value))}
-                        select
+                        required
                         >
                           {materialOptions.map((material) => (
                             <MenuItem value={material} key={material}>
                               {material}
                             </MenuItem>
                           ))}
-                          </TextField>
-{/*                         
-                        <FormikSelect validate={required} name="input.material">
-                          {materialOptions.map((material) => (
-                            <MenuItem value={material} key={material}>
-                              {material}
-                            </MenuItem>
-                          ))}
-                        </FormikSelect> */}
+                          </Select>
                       </Grid>
                       <Grid xs={4}></Grid>
                       <Grid xs={3}>
