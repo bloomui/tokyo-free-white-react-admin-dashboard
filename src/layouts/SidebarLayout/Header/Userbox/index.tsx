@@ -23,6 +23,7 @@ import AccountBoxTwoToneIcon from '@material-ui/icons/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@material-ui/icons/LockOpenTwoTone';
 import AccountTreeTwoToneIcon from '@material-ui/icons/AccountTreeTwoTone';
 import { clearAuth } from 'src/utilities/auth';
+import { User } from 'src/content/pages/MyChefsbase';
 
 const UserBoxButton = experimentalStyled(Button)(
   ({ theme }) => `
@@ -59,14 +60,7 @@ const UserBoxDescription = experimentalStyled(Typography)(
 `
 );
 
-function HeaderUserbox() {
-
-  const user =
-  {
-    name: 'Soup Bros',
-    avatar: '/static/images/avatars/SB_logo.png',
-    jobtitle: 'Soup To Go'
-  };
+const HeaderUserbox = ({user}: {user: User}) => {
 
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
@@ -88,7 +82,7 @@ function HeaderUserbox() {
           <UserBoxText>
             <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user.jobtitle}
+              {user.title}
             </UserBoxDescription>
           </UserBoxText>
         </Hidden>
@@ -114,7 +108,7 @@ function HeaderUserbox() {
           <UserBoxText>
             <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user.jobtitle}
+              {user.title}
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>

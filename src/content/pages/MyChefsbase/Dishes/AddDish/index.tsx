@@ -66,8 +66,8 @@ export const AddDishPage = () => {
       <PageTitleWrapper>
       <PageHeader
         title="Nieuw gerecht"
-        name="Soup Bros"
-        avatar={user.avatar}
+        name=""
+        avatar=""
          />
       </PageTitleWrapper>
       <Container maxWidth="lg">
