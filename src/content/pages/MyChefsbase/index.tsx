@@ -12,6 +12,8 @@ import { SupplierPage } from './Suppliers';
 import { ProductPage } from './Products';
 import { clearAuth } from 'src/utilities/auth';
 import { useNavigate } from 'react-router';
+import { useViewerQuery } from './api';
+import { LoadingScreen } from 'src/components/layout';
 
 export enum ChefsTab {
   Menus = "Menus",
@@ -67,12 +69,18 @@ const determineTab = (tab?: string): ChefsTab => {
   }
 };
 
+export  type User = {
+  name: string;
+  avatar: string;
+  title: string;
+}
+
 function MyChefsBase() {
   const [value, setValue] = useState(0);
   const [page, setPage] = useState<number>(0);
   const [open, setOpen] = useState<boolean>(false);
   const navigate = useNavigate()
-
+    
   // const selectedTab = determineTab(tab);
 
   // console.log(selectedTab);
@@ -111,9 +119,9 @@ function MyChefsBase() {
       </Helmet>
       <PageTitleWrapper>
         <PageHeader
-        title={user.title}
-        name={user.name}
-        avatar={user.avatar} />
+        title="MyChefsbase haalt het beste uit iedere chef!"
+        name=""
+        avatar='/static/images/avatars/SB_logo.png' />
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid

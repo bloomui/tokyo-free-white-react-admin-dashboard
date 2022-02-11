@@ -8,8 +8,8 @@ function PageHeader() {
 
   const user =
   {
-    name: 'Soup Bros',
-    avatar: '/static/images/avatars/SB_logo.png'
+    name: '',
+    avatar: ''
   };
   const theme = useTheme();
 

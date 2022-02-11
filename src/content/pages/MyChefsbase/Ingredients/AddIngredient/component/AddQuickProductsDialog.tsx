@@ -2,6 +2,7 @@ import {
   Button,
   Container,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   Grid,
@@ -16,10 +17,13 @@ import {
   Typography,
 } from "@material-ui/core";
 import { FieldArray, Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
+import { FormField } from "src/components/form/FormField";
 import { FormikSelect } from "src/components/form/FormikSelect";
-import { H5Left } from "src/content/pages/Components/TextTypes";
+import { H3, H5Left } from "src/content/pages/Components/TextTypes";
 import { AddProductInput, Material } from "src/globalTypes";
+import { composeValidators, required } from "src/utilities/formikValidators";
+import { Rating1 } from "../../../Menus/filtermenus/components/rating";
 import { getUnitsForMaterial } from "../../../Recipes/AddRecipe/components/IngredientTable";
 import { useAddQuickProducts } from "../api";
 import { AddQuickProductsVariables } from "../types/AddQuickProducts";
@@ -33,6 +37,8 @@ export const AddQuickProductsDialog = ({
   open: boolean;
   onClose: () => void;
 }) => {
+  const [info, setInfo] = useState(false);
+
   const emptyProductInput: AddProductInput = {
     name: "",
     rating: 0,
@@ -97,19 +103,7 @@ export const AddQuickProductsDialog = ({
                                         <H5Left title="Product" />
                                       </TableCell>
                                       <TableCell>
-                                        <H5Left title="Hoeveelheid" />
-                                      </TableCell>
-                                      <TableCell>
-                                        <H5Left title="Eenheid" />
-                                      </TableCell>
-                                      <TableCell>
-                                        <H5Left title="Herkomst" />
-                                      </TableCell>
-                                      <TableCell>
                                         <H5Left title="Merk" />
-                                      </TableCell>
-                                      <TableCell>
-                                        <H5Left title="Prijs (€)" />
                                       </TableCell>
                                       <TableCell>
                                         <H5Left title="Beoordeling" />
@@ -131,64 +125,45 @@ export const AddQuickProductsDialog = ({
                                           </TableCell>
                                           <TableCell>
                                             <TextField
-                                              id={`input.${index}.quantity`}
-                                              name={`input.${index}.quantity`}
-                                              label="Hoeveelheid"
-                                              value={input.quantity}
-                                              onChange={handleChange}
-                                            />
-                                          </TableCell>
-                                          <TableCell>
-                                            <FormikSelect
-                                              name={`input.${index}.unit`}
-                                            >
-                                              {unitsForMaterial.map((unit) => (
-                                                <MenuItem
-                                                  key={unit}
-                                                  value={unit}
-                                                >
-                                                  {unit}
-                                                </MenuItem>
-                                              ))}
-                                            </FormikSelect>
-                                          </TableCell>
-                                          <TableCell>
-                                            <TextField
-                                              id={`input.${index}.origin`}
-                                              name={`input.${index}.origin`}
-                                              label="Herkomst"
-                                              value={input.origin}
-                                              onChange={handleChange}
-                                            />
-                                          </TableCell>
-                                          <TableCell>
-                                            <TextField
                                               id={`input.${index}.brand`}
                                               name={`input.${index}.brand`}
                                               label="Merk"
-                                              value={input.origin}
+                                              value={input.brand}
                                               onChange={handleChange}
                                             />
                                           </TableCell>
                                           <TableCell>
-                                            <TextField
-                                              id={`input.${index}.price`}
-                                              name={`input.${index}.price`}
-                                              label="Prijs"
-                                              value={input.price}
-                                              fullWidth
-                                              onChange={handleChange}
+                                            <Rating1
+                                              updateField={`input.${index}.rating`}
+                                              setFieldValue={setFieldValue}
                                             />
-                                          </TableCell>
-                                          <TableCell>
-                                            <TextField
+                                            {/* <TextField
                                               id={`input.${index}.rating`}
                                               name={`input.${index}.rating`}
                                               label="Beoordeling"
                                               value={input.rating}
                                               onChange={handleChange}
-                                            />
+                                            /> */}
                                           </TableCell>
+                                          <TableCell>
+                                            <Button
+                                              onClick={() => setInfo(true)}
+                                              variant="outlined"
+                                            >
+                                              Product toevoegen
+                                            </Button>
+                                          </TableCell>
+                                          <Grid xs={12}>
+                                            <InsertInfoHere
+                                              unitsForMaterial={
+                                                unitsForMaterial
+                                              }
+                                              open={info}
+                                              onClose={() => setInfo(false)}
+                                              index={index}
+                                              onChange={handleChange}
+                                            />
+                                          </Grid>
                                           <TableCell>
                                             <Button
                                               variant="contained"
@@ -273,6 +248,97 @@ export const AddQuickProductsDialog = ({
             </Grid>
           </Grid>
         </Container>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const InsertInfoHere = ({
+  unitsForMaterial,
+  open,
+  onClose,
+  index,
+  onChange,
+}: {
+  unitsForMaterial: string[];
+  open: boolean;
+  onClose: () => void;
+  index: number;
+  onChange: {
+    (e: React.ChangeEvent<any>): void;
+    <T = string | React.ChangeEvent<any>>(
+      field: T
+    ): T extends React.ChangeEvent<any>
+      ? void
+      : (e: string | React.ChangeEvent<any>) => void;
+  };
+}) => {
+  return (
+    <Dialog open={open} onClose={onClose}>
+      <DialogActions>
+        <Button onClick={() => onClose()}>-</Button>
+      </DialogActions>
+      <DialogContent>
+        <TableContainer>
+          <Table>
+            <TableRow>
+              <TableCell colSpan={6}>
+                <H3 title="Product informatie" />
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell colSpan={2}></TableCell>
+              <TableCell colSpan={2}>
+                <H5Left title="Herkomst" />
+              </TableCell>
+              <TableCell colSpan={2}>
+                <H5Left title="Prijs" />
+              </TableCell>
+              <TableCell colSpan={2}>
+                <H5Left title="Hoeveelheid" />
+              </TableCell>
+              <TableCell colSpan={2}>
+                <H5Left title="Eenheid" />
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell colSpan={2}>
+                <FormField
+                  name={`input.${index}.origin`}
+                  label="Herkomst"
+                  validator={composeValidators(required)}
+                />
+              </TableCell>
+              <TableCell colSpan={2}>
+                <FormField
+                  name={`input.${index}.price`}
+                  label="Prijs"
+                  validator={composeValidators(required)}
+                />
+              </TableCell>
+              <TableCell colSpan={2} align="center">
+                Per
+              </TableCell>
+              <TableCell colSpan={2}>
+                <FormField
+                  name={`input.${index}.quantity`}
+                  label="Hoeveelheid"
+                  validator={composeValidators(required)}
+                />
+              </TableCell>
+              <TableCell colSpan={2}>
+                <FormikSelect name={`input.${index}.unit`}>
+                  {unitsForMaterial.map((unit) => (
+                    <MenuItem key={unit} value={unit}>
+                      {unit}
+                    </MenuItem>
+                  ))}
+                </FormikSelect>
+              </TableCell>
+              <Button onClick={() => onClose()}>+</Button>
+            </TableRow>
+          </Table>
+        </TableContainer>
       </DialogContent>
     </Dialog>
   );
