@@ -105,9 +105,6 @@ export const AddQuickProductsDialog = ({
                                       <TableCell>
                                         <H5Left title="Merk" />
                                       </TableCell>
-                                      <TableCell>
-                                        <H5Left title="Beoordeling" />
-                                      </TableCell>
                                       <TableCell></TableCell>
                                       <TableCell></TableCell>
                                     </TableRow>
@@ -133,28 +130,16 @@ export const AddQuickProductsDialog = ({
                                             />
                                           </TableCell>
                                           <TableCell>
-                                            <Rating1
-                                              updateField={`input.${index}.rating`}
-                                              setFieldValue={setFieldValue}
-                                            />
-                                            {/* <TextField
-                                              id={`input.${index}.rating`}
-                                              name={`input.${index}.rating`}
-                                              label="Beoordeling"
-                                              value={input.rating}
-                                              onChange={handleChange}
-                                            /> */}
-                                          </TableCell>
-                                          <TableCell>
                                             <Button
                                               onClick={() => setInfo(true)}
                                               variant="outlined"
                                             >
-                                              Product toevoegen
+                                              Info toevoegen
                                             </Button>
                                           </TableCell>
                                           <Grid xs={12}>
                                             <InsertInfoHere
+                                              setFieldValue={setFieldValue}
                                               unitsForMaterial={
                                                 unitsForMaterial
                                               }
@@ -254,12 +239,14 @@ export const AddQuickProductsDialog = ({
 };
 
 const InsertInfoHere = ({
+  setFieldValue,
   unitsForMaterial,
   open,
   onClose,
   index,
   onChange,
 }: {
+  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   unitsForMaterial: string[];
   open: boolean;
   onClose: () => void;
@@ -300,6 +287,9 @@ const InsertInfoHere = ({
               <TableCell colSpan={2}>
                 <H5Left title="Eenheid" />
               </TableCell>
+              <TableCell colSpan={2}>
+                <H5Left title="Beoordeling" />
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell colSpan={2}>
@@ -335,6 +325,10 @@ const InsertInfoHere = ({
                   ))}
                 </FormikSelect>
               </TableCell>
+              <Rating1
+                updateField={`input.${index}.rating`}
+                setFieldValue={setFieldValue}
+              />
               <Button onClick={() => onClose()}>+</Button>
             </TableRow>
           </Table>
