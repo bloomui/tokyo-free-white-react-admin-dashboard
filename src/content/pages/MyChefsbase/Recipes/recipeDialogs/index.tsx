@@ -219,7 +219,7 @@ export const minimizeUnit = (a: string): string =>  {
       unitHere = "gram";
     break;
     default: 
-    unitHere = "eenheid";
+    unitHere = "stuk(s)";
   }
 
   return unitHere

@@ -16,6 +16,7 @@ import { AddDishPage } from './content/pages/MyChefsbase/Dishes/AddDish';
 import { AddMenuPage } from './content/pages/MyChefsbase/Menus/AddMenu';
 import { AddSupplierPage } from './content/pages/MyChefsbase/Suppliers/AddSupplier';
 import { Orders } from './content/pages/Orders';
+import { RecipesAndIngredients } from './content/pages/MyChefsbase/Content';
 
 const Loader = (Component) => (props) => (
   <Suspense fallback={<SuspenseLoader />}>
@@ -197,7 +198,7 @@ const routes = (isLoggedIn: boolean) => [
       },
       {
         path: 'chefsbase',
-        element: isLoggedIn ? <MyChefsBase /> : <Navigate to="/authorize/signin" />
+        element: isLoggedIn ? <RecipesAndIngredients /> : <Navigate to="/authorize/signin" />
       },
       {
         path: 'inventaris',
