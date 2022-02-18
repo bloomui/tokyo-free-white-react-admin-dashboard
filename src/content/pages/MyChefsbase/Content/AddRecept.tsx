@@ -5,8 +5,9 @@ import {
   Tab,
   Tabs,
   TextField,
+  Button,
 } from "@material-ui/core";
-import { Formik } from "formik";
+import { FieldArray, Formik } from "formik";
 import { useState } from "react";
 import {
   AddRecipeInput,
@@ -31,9 +32,7 @@ export const AddRecept = ({
     onCompleted: () => window.location.reload(),
   });
   const [stepHere, setStep] = useState(1);
-  const [selectedIngredients, setIngredients] = useState<ingredientToQ[]>(
-    []
-  );
+  const [selectedIngredients, setIngredients] = useState<ingredientToQ[]>([]);
   const formInput: AddRecipeInput = {
     name: "",
     rating: 0,
@@ -64,17 +63,6 @@ export const AddRecept = ({
     ingredients: formIngredients,
     method: formMethods,
   };
-  let content;
-
-  switch (value) {
-    case 0:
-      content = <AddIngredientsForRecipe />;
-      break;
-
-    default:
-      content = <AddMethodForRecipe />;
-      break;
-  }
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -131,7 +119,15 @@ export const AddRecept = ({
                     <Tab label={`Voedingswaaarden`} />
                   </Tabs>
                 </DialogTitle>
-                {content}
+                {value == 0 ? (
+                  <AddIngredientsForRecipe setFieldValue={setFieldValue} />
+                ) : (
+                  <AddMethodsForRecipe
+                    handleChange={handleChange}
+                    values={values}
+                    setFieldValue={setFieldValue}
+                  />
+                )}
               </>
             );
           }}
@@ -140,12 +136,99 @@ export const AddRecept = ({
     </Dialog>
   );
 };
-function addRecipe(arg0: {
-  variables: {
-    method: any;
-    ingredients: any;
-    input: { type: any; name: any; rating: any; quantity: any; unit: any };
+
+const AddIngredientsForRecipe = ({
+  setFieldValue,
+}: {
+  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
+}) => {
+  return <></>;
+};
+
+const AddMethodsForRecipe = ({
+  setFieldValue,
+  values,
+  handleChange,
+}: {
+  handleChange: (e: React.ChangeEvent<any>) => void;
+  values: AddRecipeVariables;
+  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
+}) => {
+  const [stepHere, setStep] = useState(1);
+  const emptyStep: StepToMethodInput = {
+    step: stepHere,
+    method: "",
   };
-}) {
-  throw new Error("Function not implemented.");
-}
+  return (
+    <FieldArray
+      name="method"
+      render={(arrayHelpers) => (
+        <div>
+          <Grid container xs={12}>
+            <Grid xs={2}>Stap</Grid>
+            <Grid xs={6}>Actie</Grid>
+            <Grid xs={2}>Verwijder</Grid>
+            <Grid xs={2}>Voeg toe</Grid>
+            {values.method?.map((stepToMethod, index) => (
+              <>
+                <Grid xs={2}>{index + 1}</Grid>
+                <Grid xs={6}>
+                  <TextField
+                    id={`method.${index}.method`}
+                    name={`method.${index}.method`}
+                    label="Methode"
+                    value={stepToMethod.method}
+                    multiline
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid xs={2}>
+                  {index === 0 ? (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      style={{
+                        maxWidth: "30px",
+                        maxHeight: "30px",
+                        minWidth: "30px",
+                        minHeight: "30px",
+                      }}
+                      type="button"
+                      onClick={() => {
+                        setStep(stepHere - 1);
+                        arrayHelpers.remove(index);
+                      }}
+                    >
+                      -
+                    </Button>
+                  ) : (
+                    <div />
+                  )}
+                </Grid>
+                <Grid xs={2}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    style={{
+                      maxWidth: "30px",
+                      maxHeight: "30px",
+                      minWidth: "30px",
+                      minHeight: "30px",
+                    }}
+                    type="button"
+                    onClick={() => {
+                      setStep(stepHere + 1);
+                      arrayHelpers.push(emptyStep);
+                    }}
+                  >
+                    +
+                  </Button>
+                </Grid>
+              </>
+            ))}
+          </Grid>
+        </div>
+      )}
+    />
+  );
+};
