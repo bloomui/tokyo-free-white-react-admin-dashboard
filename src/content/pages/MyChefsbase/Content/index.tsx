@@ -41,6 +41,7 @@ import {
 import { minimizeUnit } from "../Recipes/recipeDialogs";
 import { ingredientsForRecipe_ingredientsForRecipe } from "../Recipes/types/ingredientsForRecipe";
 import { recipe_recipe_method } from "../Recipes/types/recipe";
+import { AddRecept } from "./AddRecept";
 
 export const RecipesAndIngredients = () => {
   const navigate = useNavigate();
@@ -151,6 +152,7 @@ export const RecipeContent = () => {
             />
           </>
         )}
+        <AddRecept open={openNew} onClose={() => setOpenNew(false)} />
       </>
     );
   }

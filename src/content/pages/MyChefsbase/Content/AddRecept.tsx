@@ -6,6 +6,7 @@ import {
   Tabs,
   TextField,
   Button,
+  DialogActions,
 } from "@material-ui/core";
 import { FieldArray, Formik } from "formik";
 import { useState } from "react";
@@ -14,6 +15,7 @@ import {
   QuantityToId,
   StepToMethodInput,
 } from "src/globalTypes";
+import { required } from "src/utilities/formikValidators";
 import { H5 } from "../../Components/TextTypes";
 import { ingredientToQ, mapIngredientToQToInput } from "../Recipes/AddRecipe";
 import { units } from "../Recipes/AddRecipe/components/IngredientTable";
@@ -116,16 +118,17 @@ export const AddRecept = ({
                   >
                     <Tab label={`Ingredienten`} />
                     <Tab label={`Methode`} />
-                    <Tab label={`Voedingswaaarden`} />
                   </Tabs>
                 </DialogTitle>
                 {value == 0 ? (
-                  <AddIngredientsForRecipe setFieldValue={setFieldValue} />
+                  <AddIngredientsForRecipe
+                    handleChange={handleChange}
+                    values={values}
+                  />
                 ) : (
                   <AddMethodsForRecipe
                     handleChange={handleChange}
                     values={values}
-                    setFieldValue={setFieldValue}
                   />
                 )}
               </>
@@ -133,26 +136,130 @@ export const AddRecept = ({
           }}
         </Formik>
       </>
+      <DialogActions>
+        <Grid xs={12}>
+          <Button onClick={() => onClose()} color="primary" variant="outlined">
+            Terug
+          </Button>
+        </Grid>
+      </DialogActions>
     </Dialog>
   );
 };
 
 const AddIngredientsForRecipe = ({
-  setFieldValue,
-}: {
-  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
-}) => {
-  return <></>;
-};
-
-const AddMethodsForRecipe = ({
-  setFieldValue,
   values,
   handleChange,
 }: {
   handleChange: (e: React.ChangeEvent<any>) => void;
   values: AddRecipeVariables;
-  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
+}) => {
+  const [stepHere, setStep] = useState(1);
+  const emptyIngredientEntry: QuantityToId = {
+    quantity: 0,
+    unit: "",
+    id: "",
+  };
+  return (
+    <FieldArray
+      name="method"
+      render={(arrayHelpers) => (
+        <div>
+          <Grid container xs={12}>
+            <Grid xs={2}></Grid>
+            <Grid xs={6}>
+              <H5 title="Ingredient" />
+            </Grid>
+            <Grid xs={4}>
+              <H5 title="Hoeveelheid" />
+            </Grid>
+            {values.ingredients?.map((ingredient, index) => (
+              <>
+                <Grid xs={2}>{index + 1}</Grid>
+                <Grid xs={6}>
+                  <TextField
+                    id={`ingredients.${index}.name`}
+                    name={`ingredients.${index}.name`}
+                    fullWidth
+                    placeholder={"Ingredient"}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid xs={2}>
+                  <TextField
+                    id={`ingredients.${index}.quantity`}
+                    name={`ingredients.${index}.quantity`}
+                    fullWidth
+                    placeholder={"100.0"}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid xs={2}>
+                  <TextField
+                    id={`ingredients.${index}.unit`}
+                    name={`ingredients.${index}.unit`}
+                    fullWidth
+                    placeholder={"Gram"}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid xs={2}>
+                  {index === 0 ? (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      style={{
+                        maxWidth: "30px",
+                        maxHeight: "30px",
+                        minWidth: "30px",
+                        minHeight: "30px",
+                      }}
+                      type="button"
+                      onClick={() => {
+                        setStep(stepHere - 1);
+                        arrayHelpers.remove(index);
+                      }}
+                    >
+                      -
+                    </Button>
+                  ) : (
+                    <div />
+                  )}
+                </Grid>
+                <Grid xs={2}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    style={{
+                      maxWidth: "30px",
+                      maxHeight: "30px",
+                      minWidth: "30px",
+                      minHeight: "30px",
+                    }}
+                    type="button"
+                    onClick={() => {
+                      setStep(stepHere + 1);
+                      arrayHelpers.push(emptyIngredientEntry);
+                    }}
+                  >
+                    +
+                  </Button>
+                </Grid>
+              </>
+            ))}
+          </Grid>
+        </div>
+      )}
+    />
+  );
+};
+
+const AddMethodsForRecipe = ({
+  values,
+  handleChange,
+}: {
+  handleChange: (e: React.ChangeEvent<any>) => void;
+  values: AddRecipeVariables;
 }) => {
   const [stepHere, setStep] = useState(1);
   const emptyStep: StepToMethodInput = {
