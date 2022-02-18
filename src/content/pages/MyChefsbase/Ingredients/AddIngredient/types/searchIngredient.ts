@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { Material } from "./../../../../../../globalTypes";
+
 // ====================================================
 // GraphQL query operation: searchIngredient
 // ====================================================
@@ -11,6 +13,7 @@ export interface searchIngredient_searchIngredient {
   __typename: "Ingredient";
   id: string;
   name: string;
+  material: Material;
 }
 
 export interface searchIngredient {

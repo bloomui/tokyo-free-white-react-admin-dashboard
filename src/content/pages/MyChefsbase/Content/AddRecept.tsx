@@ -7,9 +7,19 @@ import {
   TextField,
   Button,
   DialogActions,
+  Autocomplete,
+  MenuItem,
+  DialogContent,
+  Table,
+  TableCell,
+  TableHead,
+  TableRow,
+  CircularProgress,
 } from "@material-ui/core";
 import { FieldArray, Formik } from "formik";
+import { StringValueNode } from "graphql";
 import { useState } from "react";
+import { FormikSelect } from "src/components/form/FormikSelect";
 import {
   AddRecipeInput,
   QuantityToId,
@@ -17,8 +27,15 @@ import {
 } from "src/globalTypes";
 import { required } from "src/utilities/formikValidators";
 import { H5 } from "../../Components/TextTypes";
+import { useSearchIngredientFilterQuery } from "../Ingredients/AddIngredient/api";
+import { searchIngredient_searchIngredient } from "../Ingredients/AddIngredient/types/searchIngredient";
+import { AutoSubmitToken } from "../Menus/filtermenus";
 import { ingredientToQ, mapIngredientToQToInput } from "../Recipes/AddRecipe";
-import { units } from "../Recipes/AddRecipe/components/IngredientTable";
+import {
+  getUnitsForMaterial,
+  units,
+} from "../Recipes/AddRecipe/components/IngredientTable";
+import { ingredients_ingredients } from "../Recipes/AddRecipe/types/ingredients";
 import { useAddRecipe } from "../Recipes/api";
 import { AddRecipeVariables } from "../Recipes/types/AddRecipe";
 
@@ -67,7 +84,7 @@ export const AddRecept = ({
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog fullScreen open={open} onClose={onClose}>
       <>
         <Formik
           initialValues={formState}
@@ -110,27 +127,33 @@ export const AddRecept = ({
                     />
                   </Grid>
                 </Grid>
-
-                <DialogTitle>
-                  <Tabs
-                    value={value}
-                    onChange={(e, newValue) => setValue(newValue as number)}
-                  >
-                    <Tab label={`Ingredienten`} />
-                    <Tab label={`Methode`} />
-                  </Tabs>
-                </DialogTitle>
-                {value == 0 ? (
-                  <AddIngredientsForRecipe
-                    handleChange={handleChange}
-                    values={values}
-                  />
-                ) : (
-                  <AddMethodsForRecipe
-                    handleChange={handleChange}
-                    values={values}
-                  />
-                )}
+                <Grid container xs={12}>
+                  {/* <DialogTitle> */}
+                  <Grid xs={12}>
+                    <Tabs
+                      value={value}
+                      onChange={(e, newValue) => setValue(newValue as number)}
+                    >
+                      <Tab label={`Ingredienten`} />
+                      <Tab label={`Methode`} />
+                    </Tabs>
+                  </Grid>
+                  {/* </DialogTitle> */}
+                  <Grid xs={1}></Grid>
+                  {value == 0 ? (
+                    <AddIngredientsForRecipe
+                      values={values.ingredients}
+                      setIngredients={(selected) =>
+                        setIngredients([...selectedIngredients, selected])
+                      }
+                    />
+                  ) : (
+                    <AddMethodsForRecipe
+                      handleChange={handleChange}
+                      values={values}
+                    />
+                  )}
+                </Grid>
               </>
             );
           }}
@@ -149,17 +172,39 @@ export const AddRecept = ({
 
 const AddIngredientsForRecipe = ({
   values,
-  handleChange,
+  setIngredients,
 }: {
-  handleChange: (e: React.ChangeEvent<any>) => void;
-  values: AddRecipeVariables;
+  values: QuantityToId[];
+  setIngredients: (selected: ingredientToQ) => void;
 }) => {
+  const [name, setName] = useState("");
+  const [ingredient, setIngredient] =
+    useState<searchIngredient_searchIngredient>();
   const [stepHere, setStep] = useState(1);
   const emptyIngredientEntry: QuantityToId = {
     quantity: 0,
     unit: "",
     id: "",
   };
+  const { data, loading, error, refetch } = useSearchIngredientFilterQuery({
+    name: name,
+  });
+
+  const [timer, setTimer] = useState(null);
+
+  function changeDelay(change) {
+    if (timer) {
+      clearTimeout(timer);
+      setTimer(null);
+    }
+    setTimer(
+      setTimeout(() => {
+        setName(change);
+        // refetch({ ingredientname: name });
+      }, 200)
+    );
+  }
+  if (loading) return <CircularProgress />;
   return (
     <FieldArray
       name="method"
@@ -173,36 +218,12 @@ const AddIngredientsForRecipe = ({
             <Grid xs={4}>
               <H5 title="Hoeveelheid" />
             </Grid>
-            {values.ingredients?.map((ingredient, index) => (
+            {values?.map((ingredient, index) => (
               <>
-                <Grid xs={2}>{index + 1}</Grid>
-                <Grid xs={6}>
-                  <TextField
-                    id={`ingredients.${index}.name`}
-                    name={`ingredients.${index}.name`}
-                    fullWidth
-                    placeholder={"Ingredient"}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid xs={2}>
-                  <TextField
-                    id={`ingredients.${index}.quantity`}
-                    name={`ingredients.${index}.quantity`}
-                    fullWidth
-                    placeholder={"100.0"}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid xs={2}>
-                  <TextField
-                    id={`ingredients.${index}.unit`}
-                    name={`ingredients.${index}.unit`}
-                    fullWidth
-                    placeholder={"Gram"}
-                    onChange={handleChange}
-                  />
-                </Grid>
+                <Row
+                  name={name}
+                  setIngredient={(a: ingredientToQ) => setIngredients(a)}
+                />
                 <Grid xs={2}>
                   {index === 0 ? (
                     <Button
@@ -251,6 +272,125 @@ const AddIngredientsForRecipe = ({
         </div>
       )}
     />
+  );
+};
+const Row = ({
+  name,
+  setIngredient,
+}: {
+  name: string;
+  setIngredient: (a) => void;
+}) => {
+  const formState: { quantity: string; unit: string } = {
+    quantity: "",
+    unit: "",
+  };
+  const [unitsForMaterial, setUnitsForMaterial] = useState([]);
+
+  const [open, setOpen] = useState<boolean>(false);
+
+  const { data, loading, error, refetch } = useSearchIngredientFilterQuery({
+    name: name,
+  });
+
+  if (loading) return <CircularProgress />;
+  return (
+    <>
+      {data.searchIngredient.map((ingredient) => (
+        <Formik
+          initialValues={formState}
+          onSubmit={(values) => {
+            setIngredient({
+              name: ingredient.name,
+              id: ingredient.id,
+              ...values,
+            });
+          }}
+        >
+          {({ setFieldValue, submitForm }) => {
+            return (
+              <>
+                <TableRow>
+                  <TableCell>{ingredient.name}</TableCell>
+                  <TableCell>
+                    <Button
+                      onClick={() => {
+                        setOpen(true);
+                      }}
+                      color="primary"
+                      variant="outlined"
+                    >
+                      +
+                    </Button>
+                  </TableCell>
+                </TableRow>
+                <Dialog open={open} onClose={() => setOpen(false)}>
+                  <DialogActions>
+                    <Grid xs={12}>
+                      <Button
+                        onClick={() => {
+                          setOpen(false);
+                        }}
+                        color="primary"
+                        variant="outlined"
+                      >
+                        Terug
+                      </Button>
+                    </Grid>
+                  </DialogActions>
+                  <DialogContent>
+                    <Grid container xs={12}>
+                      <Grid xs={6}>
+                        <H5 title="Ingredient" />
+                      </Grid>
+                      <Grid xs={6}>
+                        <H5 title="Hoeveelheid" />
+                      </Grid>
+                      <Grid xs={3}>
+                        <TextField
+                          variant="outlined"
+                          size="small"
+                          onChange={(e) =>
+                            setFieldValue("quantity", e.target.value)
+                          }
+                        />
+                      </Grid>
+                      <Grid xs={3}>
+                        <FormikSelect name="unit">
+                          {getUnitsForMaterial(ingredient.material).map(
+                            (unit) => (
+                              <MenuItem key={unit} value={unit}>
+                                {unit}
+                              </MenuItem>
+                            )
+                          )}
+                        </FormikSelect>
+                      </Grid>
+                      <Grid xs={6}>
+                        <Button
+                          onClick={() => {
+                            submitForm();
+                            setOpen(false);
+                          }}
+                          color="primary"
+                          variant="outlined"
+                        >
+                          Voeg Toe
+                        </Button>
+                      </Grid>
+                    </Grid>
+                    <Grid container spacing={2} xs={12}>
+                      <Grid item xs={6}></Grid>
+                      <Grid item xs={6}></Grid>
+                    </Grid>
+                  </DialogContent>
+                </Dialog>
+              </>
+            );
+          }}
+        </Formik>
+      ))}
+    </>
   );
 };
 
