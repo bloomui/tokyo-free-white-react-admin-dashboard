@@ -170,6 +170,155 @@ export const AddRecept = ({
   );
 };
 
+type InsertIngredient = {
+  name: string;
+  quantity: number;
+  unit: string;
+};
+const emptyInsertIngredient = {
+  name: "",
+  quantity: 100.0,
+  unit: "gram",
+};
+const initialValues = [
+  emptyInsertIngredient,
+  emptyInsertIngredient,
+  emptyInsertIngredient,
+];
+const [ingredientList, setIngredientList] = useState<InsertIngredient[]>([
+  emptyInsertIngredient,
+  emptyInsertIngredient,
+  emptyInsertIngredient,
+]);
+
+const fillForm = (values: InsertIngredient[]) 
+const Ingredients = () => {
+  return (
+    <>
+      <Formik initialValues={initialValues} onSubmit={(values) => {}}>
+        {({ setFieldValue, submitForm, handleChange, values }) => {
+          return (
+            <>
+              <FieldArray
+                name="values"
+                render={(arrayHelpers) => (
+                  <div>
+                    {values.map((value, index) => (
+                      <>
+                        <Ingredient value={value} setValue={fillForm()} />
+                        <Grid xs={2}>
+                          {index === 0 ? (
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              style={{
+                                maxWidth: "30px",
+                                maxHeight: "30px",
+                                minWidth: "30px",
+                                minHeight: "30px",
+                              }}
+                              type="button"
+                              onClick={() => {
+                                arrayHelpers.remove(index);
+                              }}
+                            >
+                              -
+                            </Button>
+                          ) : (
+                            <div />
+                          )}
+                        </Grid>
+                        <Grid xs={2}>
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            style={{
+                              maxWidth: "30px",
+                              maxHeight: "30px",
+                              minWidth: "30px",
+                              minHeight: "30px",
+                            }}
+                            type="button"
+                            onClick={() => {
+                              arrayHelpers.push(emptyInsertIngredient);
+                            }}
+                          >
+                            +
+                          </Button>
+                        </Grid>
+                      </>
+                    ))}
+                    <></>
+                  </div>
+                )}
+              />
+            </>
+          );
+        }}
+      </Formik>
+    </>
+  );
+};
+const Ingredient = ({
+  value,
+  setValue,
+}: {
+  value: InsertIngredient;
+  setValue: (value: InsertIngredient) => void;
+}) => {
+  return (
+    <>
+      <Formik
+        initialValues={emptyInsertIngredient}
+        onSubmit={(values) => {
+          setValue(values);
+        }}
+      >
+        <Grid container xs={12}>
+          <Grid xs={2}></Grid>
+          <Grid xs={6}>
+            <H5 title="Ingredient" />
+          </Grid>
+          <Grid xs={4}>
+            <H5 title="Hoeveelheid" />
+          </Grid>
+          <Grid xs={12}></Grid>
+          {({ setFieldValue }) => {
+            return (
+              <>
+                <Grid xs={2}></Grid>
+                <Grid xs={6}>
+                  <TextField
+                    variant="outlined"
+                    size="small"
+                    onChange={(e) => setFieldValue("name", e.target.value)}
+                  />
+                </Grid>
+                <Grid xs={3}>
+                  <TextField
+                    variant="outlined"
+                    size="small"
+                    onChange={(e) =>
+                      setFieldValue("quantity", Number(e.target.value))
+                    }
+                  />
+                </Grid>
+                <Grid xs={3}>
+                  <TextField
+                    variant="outlined"
+                    size="small"
+                    onChange={(e) => setFieldValue("unit", e.target.value)}
+                  />
+                </Grid>
+              </>
+            );
+          }}
+        </Grid>
+      </Formik>
+    </>
+  );
+};
+
 const AddIngredientsForRecipe = ({
   values,
   setIngredients,
