@@ -1,7 +1,6 @@
 import {
   Grid,
   Dialog,
-  DialogTitle,
   Tab,
   Tabs,
   TextField,
@@ -9,16 +8,9 @@ import {
   DialogActions,
   Autocomplete,
   MenuItem,
-  DialogContent,
-  Table,
-  TableCell,
-  TableHead,
-  TableRow,
-  CircularProgress,
   Divider,
 } from "@material-ui/core";
 import { FieldArray, Formik } from "formik";
-import { StringValueNode } from "graphql";
 import React, { useState } from "react";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import {
@@ -28,7 +20,6 @@ import {
   QuantityToId,
   StepToMethodInput,
 } from "src/globalTypes";
-import { required } from "src/utilities/formikValidators";
 import { H5 } from "../../Components/TextTypes";
 import { materialOptions, parseMaterialInput, stringForMaterial } from "../Ingredients/AddIngredient";
 import { useSearchIngredientFilterQuery } from "../Ingredients/AddIngredient/api";
@@ -44,6 +35,19 @@ import { ingredients_ingredients } from "../Recipes/AddRecipe/types/ingredients"
 import { useAddRecipe } from "../Recipes/api";
 import { AddRecipeVariables } from "../Recipes/types/AddRecipe";
 
+const emptyNewIngredientEntry: NewIngredientInput = {
+  quantity: 0,
+  unit: "",
+  name: "",
+  material: Material.SOLID
+};
+
+const emptyIngredientEntry: QuantityToId = {
+  quantity: 0,
+  unit: "",
+  id: "",
+};
+
 export const AddRecept = ({
   open,
   onClose,
@@ -53,7 +57,8 @@ export const AddRecept = ({
 }) => {
   const [value, setValue] = useState(0);
   const { addRecipe, loading, error } = useAddRecipe({
-    onCompleted: () => window.location.reload(),
+    onCompleted: () => {},
+    // window.location.reload(),
   });
   const [stepHere, setStep] = useState(1);
   const [selectedIngredients, setIngredients] = useState<ingredientToQ[]>([]);
@@ -64,34 +69,17 @@ export const AddRecept = ({
     quantity: 0,
     unit: units[0],
   };
-  const emptyIngredientEntry: QuantityToId = {
-    quantity: 0,
-    unit: "",
-    id: "",
-  };
-
-  const emptyNewIngredientEntry: NewIngredientInput = {
-    quantity: 0,
-    unit: "",
-    name: "",
-    material: Material.SOLID
-  };
 
   const emptyStep: StepToMethodInput = {
     step: stepHere,
     method: "",
   };
 
-  function handleDelete(index) {
-    selectedIngredients.splice(index, 1);
-    setIngredients([...selectedIngredients]);
-  }
-
   const formNewIngredients: NewIngredientInput[] | null = [emptyNewIngredientEntry, emptyNewIngredientEntry, emptyNewIngredientEntry];
 
   const formIngredients: QuantityToId[] | null = [emptyIngredientEntry, emptyIngredientEntry, emptyIngredientEntry];
 
-  const formMethods: StepToMethodInput[] | null = [emptyStep];
+  const formMethods: StepToMethodInput[] | null = [emptyStep,  emptyStep, emptyStep];
   const formState: AddRecipeVariables = {
     input: formInput,
     ingredients: formIngredients,
@@ -111,7 +99,8 @@ export const AddRecept = ({
                   step: index + 1,
                   method: stepToMethod.method,
                 })),
-                ingredients: mapIngredientToQToInput(selectedIngredients),
+                newIngredients: values.newIngredients,
+                ingredients: values.ingredients,
                 input: {
                   type: values.input.type,
                   name: values.input.name,
@@ -144,6 +133,28 @@ export const AddRecept = ({
                   </Grid>
                   <Grid xs={6}></Grid>
                   <Grid xs={3}>
+                    <H5 title="Hoeveelheid:" />
+                  </Grid>
+                  <Grid xs={3}>
+                    <TextField
+                      fullWidth
+                      placeholder={"Hoeveelheid"}
+                      onChange={(e) =>
+                        setFieldValue("input.quantity", Number(e.target.value))
+                      }
+                    />
+                  </Grid>
+                  <Grid xs={3}>
+                  <FormikSelect name={"input.unit"}>
+                        {units.map((unit) => (
+                          <MenuItem key={unit} value={unit}>
+                            {unit}
+                          </MenuItem>
+                        ))}
+                      </FormikSelect>
+                  </Grid>
+                  <Grid xs={3}></Grid>
+                  <Grid xs={3}>
                     <H5 title="Recepttype:" />
                   </Grid>
                   <Grid xs={3}>
@@ -157,7 +168,7 @@ export const AddRecept = ({
                   </Grid>
                   <Grid xs={6}></Grid>
                   <Grid xs={3}>
-                    <H5 title="Recepttype:" />
+                    <H5 title="Beoordeling:" />
                   </Grid>
                   <Grid xs={3}>
                   <Rating1
@@ -169,7 +180,6 @@ export const AddRecept = ({
                 </Grid>
                 <Divider />
                 <Grid container xs={12}>
-                  {/* <DialogTitle> */}
                   <Grid xs={12}>
                     <Tabs
                       centered
@@ -177,13 +187,19 @@ export const AddRecept = ({
                       onChange={(e, newValue) => setValue(newValue as number)}
                     >
                       <Tab label={`Ingredienten`} />
+                      <Tab label={`Nieuwe Ingredienten`} />
                       <Tab label={`Methode`} />
                     </Tabs>
                   </Grid>
-                  {/* </DialogTitle> */}
                   <Grid xs={1}></Grid>
                   {value == 0 ? (
                     <AddIngsForRecipe
+                    setFieldValue={setFieldValue}
+                    handleChange={handleChange}
+                      values={values}
+                    />
+                  ) : (value == 1 ? (
+                    <AddNewIngsForRecipe
                     setFieldValue={setFieldValue}
                     handleChange={handleChange}
                       values={values}
@@ -193,20 +209,26 @@ export const AddRecept = ({
                       handleChange={handleChange}
                       values={values}
                     />
-                  )}
+                  ))}
                 </Grid>
-              </>
-            );
-          }}
-        </Formik>
-      </>
-      <DialogActions>
+                <Divider/>
+                <DialogActions>
         <Grid xs={12}>
           <Button onClick={() => onClose()} color="primary" variant="outlined">
             Terug
           </Button>
         </Grid>
+        <Grid xs={12}>
+          <Button onClick={() => submitForm()} color="primary" variant="outlined">
+            Recept toevoegen
+          </Button>
+        </Grid>
       </DialogActions>
+              </>
+            );
+          }}
+        </Formik>
+      </>
     </Dialog>
   );
 };
@@ -313,10 +335,6 @@ const AddIngsForRecipe = ({
   values: AddRecipeVariables;
 }) => {
   const [stepHere, setStep] = useState(1);
-  const emptyStep: StepToMethodInput = {
-    step: stepHere,
-    method: "",
-  };
   return (
     <>
           <Grid container xs={12}>
@@ -382,7 +400,7 @@ const AddIngsForRecipe = ({
                     type="button"
                     onClick={() => {
                       setStep(stepHere + 1);
-                      arrayHelpers.push(emptyStep);
+                      arrayHelpers.push(emptyIngredientEntry);
                     }}
                   >
                      +
@@ -394,7 +412,26 @@ const AddIngsForRecipe = ({
       )}
     />
     </Grid>
-    <Divider/>
+    </>
+  );
+};
+
+const AddNewIngsForRecipe = ({
+  setFieldValue,
+  values,
+  handleChange,
+}: {
+  setFieldValue: (
+    field: string,
+    value: any,
+    shouldValidate?: boolean | undefined
+  ) => void;
+  handleChange: (e: React.ChangeEvent<any>) => void;
+  values: AddRecipeVariables;
+}) => {
+  const [stepHere, setStep] = useState(1);
+  return (
+    <>
     <Grid container xs={12}>
       <Grid xs={12}>
         <H5 title="Ingredienten die nog niet in de chefsbase staan:"/>
@@ -411,7 +448,7 @@ const AddIngsForRecipe = ({
             <Grid xs={4}>Ingredient</Grid>
             <Grid xs={2}>Hoeveelheid</Grid>
             <Grid xs={2}>Materiaal</Grid>
-            <Grid xs={2}>+ / -</Grid>
+            <Grid xs={2}>- / +</Grid>
             {values.newIngredients?.map((newIngredient, index) => (
               <>
                 <Grid xs={1}></Grid>
@@ -491,7 +528,7 @@ const AddIngsForRecipe = ({
                     type="button"
                     onClick={() => {
                       setStep(stepHere + 1);
-                      arrayHelpers.push(emptyStep);
+                      arrayHelpers.push(emptyNewIngredientEntry);
                     }}
                   >
                      +

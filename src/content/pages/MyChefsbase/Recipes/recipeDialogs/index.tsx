@@ -174,7 +174,7 @@ export const getAvailableUnits = (a: string): string[] => {
     unitsHere = ["gram"];
     break;
     default: 
-    unitsHere = ["eenheid"];
+    unitsHere = ["stuk(s)"];
   }
 
   return unitsHere
@@ -197,7 +197,7 @@ export const getAvailableUnitsLarge= (a: string): string[] => {
     unitsHere = ["gram", "kg"];
     break;
     default: 
-    unitsHere = ["eenheid"];
+    unitsHere = ["stuk(s)"];
   }
 
 return unitsHere

@@ -42,11 +42,11 @@ export const units = [
   "kilogram",
   "milliliter",
   "liter",
-  "eenheid",
+  "stuk(s)",
 ];
 export const unitsSolid = ["milligram", "gram", "kilogram"];
 export const unitsLiquid = ["milliliter", "liter"];
-export const unitsUnit = ["eenheid"];
+export const unitsUnit = ["stuk(s)"];
 
 export const getUnitsForMaterial = (material: Material): string[] => {
   var result;

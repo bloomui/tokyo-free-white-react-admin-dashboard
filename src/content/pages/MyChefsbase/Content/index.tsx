@@ -66,11 +66,12 @@ export const RecipesAndIngredients = () => {
           alignItems="stretch"
           spacing={3}
         >
-          <Grid item xs={12}>
-            <Tab label={`Recepten`} />
-            <Tab label={`Ingrediënten`} />
-            <RecipeContent />
-            {/* {content} */}
+          <Grid container xs={12}>
+                <Grid xs={3}></Grid>
+              <Grid xs={3}><Tab label={`Recepten`} /></Grid>
+              <Grid xs={3}> <Tab label={`Ingrediënten`} /></Grid>
+              <Grid xs={3}></Grid>
+              <RecipeContent />
           </Grid>
           <Grid item lg={8} xs={12}>
             <Button
@@ -121,13 +122,19 @@ export const RecipeContent = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>
+                <TableCell
+                // component="th"
+                scope="row"
+                // padding="none"
+                >
                   <H5 title="Recept" />
                 </TableCell>
               </TableRow>
               {data.recipes.map((recipe) => (
                 <TableRow>
                   <TableCell
+                  scope="row"
+                  style={{ cursor: 'pointer' }}
                     onClick={() => {
                       setId(recipe.id);
                       setUnitHere(recipe.quantity.unit);
