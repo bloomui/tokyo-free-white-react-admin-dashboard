@@ -41,7 +41,7 @@ export interface AddIngredientInput {
   rating?: number | null;
   category?: string | null;
   nutrition?: QuantityToNutritionInput | null;
-  material?: Material | null;
+  material: Material;
 }
 
 export interface AddMenuInput {
@@ -118,7 +118,7 @@ export interface IngredientInput {
   rating?: number | null;
   category?: string | null;
   nutrition?: QuantityToNutritionInput | null;
-  material?: Material | null;
+  material: Material;
 }
 
 export interface MenuFilterInput {
@@ -144,6 +144,13 @@ export interface MenuInput {
   theme?: string | null;
   periodstartdate?: string | null;
   periodenddate?: string | null;
+}
+
+export interface NewIngredientInput {
+  name: string;
+  material: Material;
+  quantity: number;
+  unit: string;
 }
 
 export interface NutritionInput {

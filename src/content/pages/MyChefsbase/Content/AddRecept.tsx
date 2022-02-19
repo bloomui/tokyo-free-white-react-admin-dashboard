@@ -23,11 +23,14 @@ import React, { useState } from "react";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import {
   AddRecipeInput,
+  Material,
+  NewIngredientInput,
   QuantityToId,
   StepToMethodInput,
 } from "src/globalTypes";
 import { required } from "src/utilities/formikValidators";
 import { H5 } from "../../Components/TextTypes";
+import { materialOptions, parseMaterialInput, stringForMaterial } from "../Ingredients/AddIngredient";
 import { useSearchIngredientFilterQuery } from "../Ingredients/AddIngredient/api";
 import { searchIngredient_searchIngredient } from "../Ingredients/AddIngredient/types/searchIngredient";
 import { AutoSubmitToken } from "../Menus/filtermenus";
@@ -66,6 +69,14 @@ export const AddRecept = ({
     unit: "",
     id: "",
   };
+
+  const emptyNewIngredientEntry: NewIngredientInput = {
+    quantity: 0,
+    unit: "",
+    name: "",
+    material: Material.SOLID
+  };
+
   const emptyStep: StepToMethodInput = {
     step: stepHere,
     method: "",
@@ -76,12 +87,15 @@ export const AddRecept = ({
     setIngredients([...selectedIngredients]);
   }
 
+  const formNewIngredients: NewIngredientInput[] | null = [emptyNewIngredientEntry, emptyNewIngredientEntry, emptyNewIngredientEntry];
+
   const formIngredients: QuantityToId[] | null = [emptyIngredientEntry, emptyIngredientEntry, emptyIngredientEntry];
 
   const formMethods: StepToMethodInput[] | null = [emptyStep];
   const formState: AddRecipeVariables = {
     input: formInput,
     ingredients: formIngredients,
+    newIngredients: formNewIngredients,
     method: formMethods,
   };
 
@@ -170,15 +184,10 @@ export const AddRecept = ({
                   <Grid xs={1}></Grid>
                   {value == 0 ? (
                     <AddIngsForRecipe
+                    setFieldValue={setFieldValue}
                     handleChange={handleChange}
                       values={values}
                     />
-                    // <AddIngredientsForRecipe
-                    //   values={values.ingredients}
-                    //   setIngredients={(selected) =>
-                    //     setIngredients([...selectedIngredients, selected])
-                    //   }
-                    // />
                   ) : (
                     <AddMethodsForRecipe
                       handleChange={handleChange}
@@ -199,154 +208,6 @@ export const AddRecept = ({
         </Grid>
       </DialogActions>
     </Dialog>
-  );
-};
-
-type InsertIngredient = {
-  name: string;
-  quantity: number;
-  unit: string;
-};
-const emptyInsertIngredient = {
-  name: "",
-  quantity: 100.0,
-  unit: "gram",
-};
-const initialValues = [
-  emptyInsertIngredient,
-  emptyInsertIngredient,
-  emptyInsertIngredient,
-];
-// const [ingredientList, setIngredientList] = useState<InsertIngredient[]>([
-//   emptyInsertIngredient,
-//   emptyInsertIngredient,
-//   emptyInsertIngredient,
-// ]);
-
-const Ingredients = () => {
-  return (
-    <>
-      <Formik initialValues={initialValues} onSubmit={(values) => {}}>
-        {({ setFieldValue, submitForm, handleChange, values }) => {
-          return (
-            <>
-              <FieldArray
-                name="values"
-                render={(arrayHelpers) => (
-                  <div>
-                    {values.map((value, index) => (
-                      <>
-                        {/* <Ingredient value={value} setValue={fillForm()} /> */}
-                        <Grid xs={2}>
-                          {index === 0 ? (
-                            <Button
-                              variant="contained"
-                              color="secondary"
-                              style={{
-                                maxWidth: "30px",
-                                maxHeight: "30px",
-                                minWidth: "30px",
-                                minHeight: "30px",
-                              }}
-                              type="button"
-                              onClick={() => {
-                                arrayHelpers.remove(index);
-                              }}
-                            >
-                              -
-                            </Button>
-                          ) : (
-                            <div />
-                          )}
-                        </Grid>
-                        <Grid xs={2}>
-                          <Button
-                            variant="contained"
-                            color="secondary"
-                            style={{
-                              maxWidth: "30px",
-                              maxHeight: "30px",
-                              minWidth: "30px",
-                              minHeight: "30px",
-                            }}
-                            type="button"
-                            onClick={() => {
-                              arrayHelpers.push(emptyInsertIngredient);
-                            }}
-                          >
-                            +
-                          </Button>
-                        </Grid>
-                      </>
-                    ))}
-                    <></>
-                  </div>
-                )}
-              />
-            </>
-          );
-        }}
-      </Formik>
-    </>
-  );
-};
-const Ingredient = ({
-  value,
-  setValue,
-}: {
-  value: InsertIngredient;
-  setValue: (value: InsertIngredient) => void;
-}) => {
-  return (
-    <>
-      <Formik
-        initialValues={emptyInsertIngredient}
-        onSubmit={(values) => {
-          setValue(values);
-        }}
-      >
-        <Grid container xs={12}>
-          <Grid xs={2}></Grid>
-          <Grid xs={6}>
-            <H5 title="Ingredient" />
-          </Grid>
-          <Grid xs={4}>
-            <H5 title="Hoeveelheid" />
-          </Grid>
-          <Grid xs={12}></Grid>
-          {({ setFieldValue }) => {
-            return (
-              <>
-                <Grid xs={2}></Grid>
-                <Grid xs={6}>
-                  <TextField
-                    variant="outlined"
-                    size="small"
-                    onChange={(e) => setFieldValue("name", e.target.value)}
-                  />
-                </Grid>
-                <Grid xs={3}>
-                  <TextField
-                    variant="outlined"
-                    size="small"
-                    onChange={(e) =>
-                      setFieldValue("quantity", Number(e.target.value))
-                    }
-                  />
-                </Grid>
-                <Grid xs={3}>
-                  <TextField
-                    variant="outlined"
-                    size="small"
-                    onChange={(e) => setFieldValue("unit", e.target.value)}
-                  />
-                </Grid>
-              </>
-            );
-          }}
-        </Grid>
-      </Formik>
-    </>
   );
 };
 
@@ -438,11 +299,16 @@ const AddMethodsForRecipe = ({
   );
 };
 
-
 const AddIngsForRecipe = ({
+  setFieldValue,
   values,
   handleChange,
 }: {
+  setFieldValue: (
+    field: string,
+    value: any,
+    shouldValidate?: boolean | undefined
+  ) => void;
   handleChange: (e: React.ChangeEvent<any>) => void;
   values: AddRecipeVariables;
 }) => {
@@ -452,8 +318,14 @@ const AddIngsForRecipe = ({
     method: "",
   };
   return (
+    <>
           <Grid container xs={12}>
-    <FieldArray
+          <Grid container xs={12}>
+      <Grid xs={12}>
+        <H5 title="Ingredienten die in de chefsbase staan:"/>
+      </Grid>
+    </Grid>
+    <FieldArray     
       name="ingredients"
       render={(arrayHelpers) => (
         <>
@@ -466,32 +338,12 @@ const AddIngsForRecipe = ({
               <>
                                   <Grid xs={1}></Grid>
                 <Grid xs={1}>{index + 1}</Grid>
-                <Grid xs={4}>
-                  <TextField
-                    id={`ingredients.${index}.id`}
-                    name={`ingredients.${index}.id`}
-                    label="Ingredient"
-                    value={ingredient.id}
-                    onChange={handleChange}
-                    fullWidth
-                  />
-                </Grid>
-                <Grid xs={2}>
-                  <TextField
-                    id={`ingredients.${index}.quantity`}
-                    name={`ingredients.${index}.quantity`}
-                    label="Hoeveelheid"
-                    value={ingredient.quantity}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid xs={2}>
-                  <TextField
-                    id={`ingredients.${index}.unit`}
-                    name={`ingredients.${index}.unit`}
-                    label="Eenheid"
-                    value={ingredient.unit}
-                    onChange={handleChange}
+                <Grid container xs={8}>
+                  <IngredientSelector
+                  index={index}
+                  setFieldValue={setFieldValue}
+                  handleChange={handleChange}
+                  quantity={ingredient.quantity}
                   />
                 </Grid>
                 <Grid xs={1}>
@@ -542,5 +394,201 @@ const AddIngsForRecipe = ({
       )}
     />
     </Grid>
+    <Divider/>
+    <Grid container xs={12}>
+      <Grid xs={12}>
+        <H5 title="Ingredienten die nog niet in de chefsbase staan:"/>
+      </Grid>
+    </Grid>
+    <Divider/>
+    <Grid container xs={12}>
+      <FieldArray
+      name="newIngredients"
+      render={(arrayHelpers) => (
+        <>
+                    <Grid xs={1}></Grid>
+            <Grid xs={1}>#</Grid>
+            <Grid xs={4}>Ingredient</Grid>
+            <Grid xs={2}>Hoeveelheid</Grid>
+            <Grid xs={2}>Materiaal</Grid>
+            <Grid xs={2}>+ / -</Grid>
+            {values.newIngredients?.map((newIngredient, index) => (
+              <>
+                <Grid xs={1}></Grid>
+                <Grid xs={1}>{index + 1}</Grid>
+                <Grid container xs={8}>
+                <Grid xs={4}>
+                  <TextField
+                    fullWidth
+                    id={`newIngredients.${index}.name`}
+                    name={`newIngredients.${index}.name`}
+                    label="Naam"
+                    value={newIngredient.name}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid xs={2}>
+                  <TextField
+                    id={`newIngredients.${index}.quantity`}
+                    name={`newIngredients.${index}.quantity`}
+                    label="Hoeveelheid"
+                    value={newIngredient.quantity}
+                    onChange={handleChange}
+                  />
+              </Grid>
+              <Grid xs={2}>
+              <FormikSelect name={`newIngredients.${index}.unit`}>
+                        {newIngredient && getUnitsForMaterial(newIngredient.material).map((unit) => (
+                          <MenuItem key={unit} value={unit}>
+                            {unit}
+                          </MenuItem>
+                        ))}
+                      </FormikSelect>
+              </Grid>
+              <Grid xs={2}>
+              <FormikSelect name={`newIngredients.${index}.material`}>
+                        {materialOptions.map((option) => (
+                          <MenuItem key={option} value={parseMaterialInput(option)}>
+                            {option}
+                          </MenuItem>
+                        ))}
+                      </FormikSelect>
+              </Grid>
+              </Grid>
+                <Grid xs={1}>
+                {index > 0 ? (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      style={{
+                        maxWidth: "30px",
+                        maxHeight: "30px",
+                        minWidth: "30px",
+                        minHeight: "30px",
+                      }}
+                      type="button"
+                      onClick={() => {
+                        setStep(stepHere - 1);
+                        arrayHelpers.remove(index);
+                      }}
+                    >
+                      -
+                    </Button>
+                  ) : (
+                    <Grid xs={1}></Grid>
+                    )}
+                </Grid>
+                <Grid xs={1}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    style={{
+                      maxWidth: "30px",
+                      maxHeight: "30px",
+                      minWidth: "30px",
+                      minHeight: "30px",
+                    }}
+                    type="button"
+                    onClick={() => {
+                      setStep(stepHere + 1);
+                      arrayHelpers.push(emptyStep);
+                    }}
+                  >
+                     +
+                  </Button>
+                </Grid>
+              </>
+            ))}
+        </>
+      )}
+    />
+    </Grid>
+    </>
   );
 };
+
+const IngredientSelector = ({
+    index,
+    setFieldValue,
+    handleChange,
+    quantity,
+  }: {
+    quantity: number;
+    index: number;
+    handleChange: (e: React.ChangeEvent<any>) => void;
+    setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
+    }) => {
+    const [name, setName] = useState("");
+  
+    const [ingredient, setIngredient] = useState<searchIngredient_searchIngredient>()
+    const { data, loading, error, refetch } = useSearchIngredientFilterQuery({
+      name: name,
+    });
+  
+    const [timer, setTimer] = useState(null);
+  
+    function changeDelay(change) {
+      if (timer) {
+        clearTimeout(timer);
+        setTimer(null);
+      }
+      setTimer(
+        setTimeout(() => {
+          setName(change);
+          refetch({ ingredientname: name });
+        }, 100)
+      );
+    }
+    return (
+      <>
+          <Grid xs={4}>
+            <Autocomplete
+              id="tags-standard"
+              options={
+                loading
+                  ? []
+                  : data &&
+                    data.searchIngredient &&
+                    data.searchIngredient.map((option) => option)
+              }
+              getOptionLabel={(option) => (option ? option.name : "")}
+              onChange={(event, value: searchIngredient_searchIngredient) => {
+                setIngredient(value);
+                setFieldValue(`ingredients.${index}.id`, value.id);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  placeholder={name}
+                  {...params}
+                  onChange={(e) => {
+                    changeDelay(e.target.value);
+                  }}
+                  fullWidth
+                  label="Ingredient"
+                />
+              )}
+            />
+            {/* <AutoSubmitToken /> */}
+          </Grid>
+          <Grid xs={2}>
+          <TextField
+                    id={`ingredients.${index}.quantity`}
+                    name={`ingredients.${index}.quantity`}
+                    label="Hoeveelheid"
+                    value={quantity}
+                    onChange={handleChange}
+                  />
+          </Grid>
+          <Grid xs={2}>
+          <FormikSelect name={`ingredients.${index}.unit`}>
+                        {ingredient && getUnitsForMaterial(ingredient.material).map((unit) => (
+                          <MenuItem key={unit} value={unit}>
+                            {unit}
+                          </MenuItem>
+                        ))}
+                      </FormikSelect>
+          </Grid>
+      </>
+    );
+  };
+  

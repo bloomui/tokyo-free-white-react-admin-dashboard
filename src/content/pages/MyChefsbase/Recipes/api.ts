@@ -165,6 +165,7 @@ export const AddRecipeMutation = gql`
   mutation AddRecipe(
     $input: AddRecipeInput!
     $ingredients: [QuantityToId!]
+    $newIngredients: [NewIngredientInput!]
     $method: [StepToMethodInput!]!
   ) {
     addRecipe(input: $input, ingredients: $ingredients, method: $method)
