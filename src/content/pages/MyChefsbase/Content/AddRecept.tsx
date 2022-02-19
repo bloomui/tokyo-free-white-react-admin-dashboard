@@ -15,10 +15,11 @@ import {
   TableHead,
   TableRow,
   CircularProgress,
+  Divider,
 } from "@material-ui/core";
 import { FieldArray, Formik } from "formik";
 import { StringValueNode } from "graphql";
-import { useState } from "react";
+import React, { useState } from "react";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import {
   AddRecipeInput,
@@ -30,6 +31,7 @@ import { H5 } from "../../Components/TextTypes";
 import { useSearchIngredientFilterQuery } from "../Ingredients/AddIngredient/api";
 import { searchIngredient_searchIngredient } from "../Ingredients/AddIngredient/types/searchIngredient";
 import { AutoSubmitToken } from "../Menus/filtermenus";
+import { Rating1 } from "../Menus/filtermenus/components/rating";
 import { ingredientToQ, mapIngredientToQToInput } from "../Recipes/AddRecipe";
 import {
   getUnitsForMaterial,
@@ -74,7 +76,7 @@ export const AddRecept = ({
     setIngredients([...selectedIngredients]);
   }
 
-  const formIngredients: QuantityToId[] | null = [emptyIngredientEntry];
+  const formIngredients: QuantityToId[] | null = [emptyIngredientEntry, emptyIngredientEntry, emptyIngredientEntry];
 
   const formMethods: StepToMethodInput[] | null = [emptyStep];
   const formState: AddRecipeVariables = {
@@ -126,11 +128,37 @@ export const AddRecept = ({
                       }
                     />
                   </Grid>
+                  <Grid xs={6}></Grid>
+                  <Grid xs={3}>
+                    <H5 title="Recepttype:" />
+                  </Grid>
+                  <Grid xs={3}>
+                    <TextField
+                      fullWidth
+                      placeholder={"Recept type"}
+                      onChange={(e) =>
+                        setFieldValue("input.type", e.target.value)
+                      }
+                    />
+                  </Grid>
+                  <Grid xs={6}></Grid>
+                  <Grid xs={3}>
+                    <H5 title="Recepttype:" />
+                  </Grid>
+                  <Grid xs={3}>
+                  <Rating1
+                updateField="input.rating"
+                setFieldValue={setFieldValue}
+                />
+                  </Grid>
+                  <Grid xs={6}></Grid>
                 </Grid>
+                <Divider />
                 <Grid container xs={12}>
                   {/* <DialogTitle> */}
                   <Grid xs={12}>
                     <Tabs
+                      centered
                       value={value}
                       onChange={(e, newValue) => setValue(newValue as number)}
                     >
@@ -141,12 +169,16 @@ export const AddRecept = ({
                   {/* </DialogTitle> */}
                   <Grid xs={1}></Grid>
                   {value == 0 ? (
-                    <AddIngredientsForRecipe
-                      values={values.ingredients}
-                      setIngredients={(selected) =>
-                        setIngredients([...selectedIngredients, selected])
-                      }
+                    <AddIngsForRecipe
+                    handleChange={handleChange}
+                      values={values}
                     />
+                    // <AddIngredientsForRecipe
+                    //   values={values.ingredients}
+                    //   setIngredients={(selected) =>
+                    //     setIngredients([...selectedIngredients, selected])
+                    //   }
+                    // />
                   ) : (
                     <AddMethodsForRecipe
                       handleChange={handleChange}
@@ -185,13 +217,12 @@ const initialValues = [
   emptyInsertIngredient,
   emptyInsertIngredient,
 ];
-const [ingredientList, setIngredientList] = useState<InsertIngredient[]>([
-  emptyInsertIngredient,
-  emptyInsertIngredient,
-  emptyInsertIngredient,
-]);
+// const [ingredientList, setIngredientList] = useState<InsertIngredient[]>([
+//   emptyInsertIngredient,
+//   emptyInsertIngredient,
+//   emptyInsertIngredient,
+// ]);
 
-const fillForm = (values: InsertIngredient[]) 
 const Ingredients = () => {
   return (
     <>
@@ -205,7 +236,7 @@ const Ingredients = () => {
                   <div>
                     {values.map((value, index) => (
                       <>
-                        <Ingredient value={value} setValue={fillForm()} />
+                        {/* <Ingredient value={value} setValue={fillForm()} /> */}
                         <Grid xs={2}>
                           {index === 0 ? (
                             <Button
@@ -319,230 +350,6 @@ const Ingredient = ({
   );
 };
 
-const AddIngredientsForRecipe = ({
-  values,
-  setIngredients,
-}: {
-  values: QuantityToId[];
-  setIngredients: (selected: ingredientToQ) => void;
-}) => {
-  const [name, setName] = useState("");
-  const [ingredient, setIngredient] =
-    useState<searchIngredient_searchIngredient>();
-  const [stepHere, setStep] = useState(1);
-  const emptyIngredientEntry: QuantityToId = {
-    quantity: 0,
-    unit: "",
-    id: "",
-  };
-  const { data, loading, error, refetch } = useSearchIngredientFilterQuery({
-    name: name,
-  });
-
-  const [timer, setTimer] = useState(null);
-
-  function changeDelay(change) {
-    if (timer) {
-      clearTimeout(timer);
-      setTimer(null);
-    }
-    setTimer(
-      setTimeout(() => {
-        setName(change);
-        // refetch({ ingredientname: name });
-      }, 200)
-    );
-  }
-  if (loading) return <CircularProgress />;
-  return (
-    <FieldArray
-      name="method"
-      render={(arrayHelpers) => (
-        <div>
-          <Grid container xs={12}>
-            <Grid xs={2}></Grid>
-            <Grid xs={6}>
-              <H5 title="Ingredient" />
-            </Grid>
-            <Grid xs={4}>
-              <H5 title="Hoeveelheid" />
-            </Grid>
-            {values?.map((ingredient, index) => (
-              <>
-                <Row
-                  name={name}
-                  setIngredient={(a: ingredientToQ) => setIngredients(a)}
-                />
-                <Grid xs={2}>
-                  {index === 0 ? (
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      style={{
-                        maxWidth: "30px",
-                        maxHeight: "30px",
-                        minWidth: "30px",
-                        minHeight: "30px",
-                      }}
-                      type="button"
-                      onClick={() => {
-                        setStep(stepHere - 1);
-                        arrayHelpers.remove(index);
-                      }}
-                    >
-                      -
-                    </Button>
-                  ) : (
-                    <div />
-                  )}
-                </Grid>
-                <Grid xs={2}>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    style={{
-                      maxWidth: "30px",
-                      maxHeight: "30px",
-                      minWidth: "30px",
-                      minHeight: "30px",
-                    }}
-                    type="button"
-                    onClick={() => {
-                      setStep(stepHere + 1);
-                      arrayHelpers.push(emptyIngredientEntry);
-                    }}
-                  >
-                    +
-                  </Button>
-                </Grid>
-              </>
-            ))}
-          </Grid>
-        </div>
-      )}
-    />
-  );
-};
-const Row = ({
-  name,
-  setIngredient,
-}: {
-  name: string;
-  setIngredient: (a) => void;
-}) => {
-  const formState: { quantity: string; unit: string } = {
-    quantity: "",
-    unit: "",
-  };
-  const [unitsForMaterial, setUnitsForMaterial] = useState([]);
-
-  const [open, setOpen] = useState<boolean>(false);
-
-  const { data, loading, error, refetch } = useSearchIngredientFilterQuery({
-    name: name,
-  });
-
-  if (loading) return <CircularProgress />;
-  return (
-    <>
-      {data.searchIngredient.map((ingredient) => (
-        <Formik
-          initialValues={formState}
-          onSubmit={(values) => {
-            setIngredient({
-              name: ingredient.name,
-              id: ingredient.id,
-              ...values,
-            });
-          }}
-        >
-          {({ setFieldValue, submitForm }) => {
-            return (
-              <>
-                <TableRow>
-                  <TableCell>{ingredient.name}</TableCell>
-                  <TableCell>
-                    <Button
-                      onClick={() => {
-                        setOpen(true);
-                      }}
-                      color="primary"
-                      variant="outlined"
-                    >
-                      +
-                    </Button>
-                  </TableCell>
-                </TableRow>
-                <Dialog open={open} onClose={() => setOpen(false)}>
-                  <DialogActions>
-                    <Grid xs={12}>
-                      <Button
-                        onClick={() => {
-                          setOpen(false);
-                        }}
-                        color="primary"
-                        variant="outlined"
-                      >
-                        Terug
-                      </Button>
-                    </Grid>
-                  </DialogActions>
-                  <DialogContent>
-                    <Grid container xs={12}>
-                      <Grid xs={6}>
-                        <H5 title="Ingredient" />
-                      </Grid>
-                      <Grid xs={6}>
-                        <H5 title="Hoeveelheid" />
-                      </Grid>
-                      <Grid xs={3}>
-                        <TextField
-                          variant="outlined"
-                          size="small"
-                          onChange={(e) =>
-                            setFieldValue("quantity", e.target.value)
-                          }
-                        />
-                      </Grid>
-                      <Grid xs={3}>
-                        <FormikSelect name="unit">
-                          {getUnitsForMaterial(ingredient.material).map(
-                            (unit) => (
-                              <MenuItem key={unit} value={unit}>
-                                {unit}
-                              </MenuItem>
-                            )
-                          )}
-                        </FormikSelect>
-                      </Grid>
-                      <Grid xs={6}>
-                        <Button
-                          onClick={() => {
-                            submitForm();
-                            setOpen(false);
-                          }}
-                          color="primary"
-                          variant="outlined"
-                        >
-                          Voeg Toe
-                        </Button>
-                      </Grid>
-                    </Grid>
-                    <Grid container spacing={2} xs={12}>
-                      <Grid item xs={6}></Grid>
-                      <Grid item xs={6}></Grid>
-                    </Grid>
-                  </DialogContent>
-                </Dialog>
-              </>
-            );
-          }}
-        </Formik>
-      ))}
-    </>
-  );
-};
-
 const AddMethodsForRecipe = ({
   values,
   handleChange,
@@ -556,30 +363,32 @@ const AddMethodsForRecipe = ({
     method: "",
   };
   return (
+    <Grid container xs={12}>
     <FieldArray
       name="method"
       render={(arrayHelpers) => (
-        <div>
-          <Grid container xs={12}>
-            <Grid xs={2}>Stap</Grid>
-            <Grid xs={6}>Actie</Grid>
-            <Grid xs={2}>Verwijder</Grid>
-            <Grid xs={2}>Voeg toe</Grid>
+        <>
+            <Grid xs={1}></Grid>
+            <Grid xs={1}>Stap</Grid>
+            <Grid xs={8}>Actie</Grid>
+            <Grid xs={2}></Grid>
             {values.method?.map((stepToMethod, index) => (
               <>
-                <Grid xs={2}>{index + 1}</Grid>
-                <Grid xs={6}>
+                <Grid xs={1}></Grid>
+                <Grid xs={1}>{index + 1}</Grid>
+                <Grid xs={8}>
                   <TextField
                     id={`method.${index}.method`}
                     name={`method.${index}.method`}
                     label="Methode"
                     value={stepToMethod.method}
+                    fullWidth
                     multiline
                     onChange={handleChange}
                   />
                 </Grid>
-                <Grid xs={2}>
-                  {index === 0 ? (
+                <Grid xs={1}>
+                  {index > 0 ? (
                     <Button
                       variant="contained"
                       color="secondary"
@@ -598,10 +407,10 @@ const AddMethodsForRecipe = ({
                       -
                     </Button>
                   ) : (
-                    <div />
-                  )}
+                    <Grid xs={1}></Grid>
+                    )}
                 </Grid>
-                <Grid xs={2}>
+                <Grid xs={1}>
                   <Button
                     variant="contained"
                     color="secondary"
@@ -622,9 +431,116 @@ const AddMethodsForRecipe = ({
                 </Grid>
               </>
             ))}
-          </Grid>
-        </div>
+        </>
       )}
     />
+    </Grid>
+  );
+};
+
+
+const AddIngsForRecipe = ({
+  values,
+  handleChange,
+}: {
+  handleChange: (e: React.ChangeEvent<any>) => void;
+  values: AddRecipeVariables;
+}) => {
+  const [stepHere, setStep] = useState(1);
+  const emptyStep: StepToMethodInput = {
+    step: stepHere,
+    method: "",
+  };
+  return (
+          <Grid container xs={12}>
+    <FieldArray
+      name="ingredients"
+      render={(arrayHelpers) => (
+        <>
+                    <Grid xs={1}></Grid>
+            <Grid xs={1}>#</Grid>
+            <Grid xs={4}>Ingredient</Grid>
+            <Grid xs={4}>Hoeveelheid</Grid>
+            <Grid xs={2}>- / +</Grid>
+            {values.ingredients?.map((ingredient, index) => (
+              <>
+                                  <Grid xs={1}></Grid>
+                <Grid xs={1}>{index + 1}</Grid>
+                <Grid xs={4}>
+                  <TextField
+                    id={`ingredients.${index}.id`}
+                    name={`ingredients.${index}.id`}
+                    label="Ingredient"
+                    value={ingredient.id}
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid xs={2}>
+                  <TextField
+                    id={`ingredients.${index}.quantity`}
+                    name={`ingredients.${index}.quantity`}
+                    label="Hoeveelheid"
+                    value={ingredient.quantity}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid xs={2}>
+                  <TextField
+                    id={`ingredients.${index}.unit`}
+                    name={`ingredients.${index}.unit`}
+                    label="Eenheid"
+                    value={ingredient.unit}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid xs={1}>
+                {index > 0 ? (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      style={{
+                        maxWidth: "30px",
+                        maxHeight: "30px",
+                        minWidth: "30px",
+                        minHeight: "30px",
+                      }}
+                      type="button"
+                      onClick={() => {
+                        setStep(stepHere - 1);
+                        arrayHelpers.remove(index);
+                      }}
+                    >
+                      -
+                    </Button>
+                  ) : (
+                    <Grid xs={1}></Grid>
+                    )}
+                </Grid>
+                <Grid xs={1}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    style={{
+                      maxWidth: "30px",
+                      maxHeight: "30px",
+                      minWidth: "30px",
+                      minHeight: "30px",
+                    }}
+                    type="button"
+                    onClick={() => {
+                      setStep(stepHere + 1);
+                      arrayHelpers.push(emptyStep);
+                    }}
+                  >
+                     +
+                  </Button>
+                </Grid>
+              </>
+            ))}
+        </>
+      )}
+    />
+    </Grid>
   );
 };
