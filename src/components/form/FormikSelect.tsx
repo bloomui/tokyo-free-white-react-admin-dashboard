@@ -23,7 +23,14 @@ export const FormikSelect = ({
   return (
     <>
       <InputLabel>{title}</InputLabel>
-      <Select variant="outlined" size="small" name={name} value={field.value} onChange={field.onChange}>
+      <Select
+        fullWidth
+        variant="outlined"
+        size="small"
+        name={name}
+        value={field.value}
+        onChange={field.onChange}
+      >
         {children}
       </Select>
       <FormikErrorText meta={meta} />

@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import { Formik } from "formik";
 import { useState } from "react";
+import { FormField } from "src/components/form/FormField";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import {
   AddRecipeInput,
@@ -18,6 +19,7 @@ import {
   QuantityToId,
   StepToMethodInput,
 } from "src/globalTypes";
+import { composeValidators, required } from "src/utilities/formikValidators";
 import { H5 } from "../../../../Components/TextTypes";
 import { Rating1 } from "../../../Menus/filtermenus/components/rating";
 import { units } from "../../../Recipes/AddRecipe/components/IngredientTable";
@@ -40,8 +42,9 @@ export const AddRecept = ({
 }) => {
   const [value, setValue] = useState(0);
   const { addRecipe, loading, error } = useAddRecipe({
-    onCompleted: () => {},
-    // window.location.reload(),
+    onCompleted: () => {
+      window.location.reload();
+    },
   });
   const [stepHere, setStep] = useState(1);
   const formInput: AddRecipeInput = {
@@ -117,12 +120,10 @@ export const AddRecept = ({
                     <H5 title="Recept:" />
                   </Grid>
                   <Grid xs={3}>
-                    <TextField
-                      fullWidth
-                      placeholder={"Recept naam"}
-                      onChange={(e) =>
-                        setFieldValue("input.name", e.target.value)
-                      }
+                    <FormField
+                      name={`input.name`}
+                      label="Recept naam"
+                      validator={composeValidators(required)}
                     />
                   </Grid>
                   <Grid xs={6}></Grid>
@@ -139,7 +140,10 @@ export const AddRecept = ({
                     />
                   </Grid>
                   <Grid xs={3}>
-                    <FormikSelect name={"input.unit"}>
+                    <FormikSelect
+                      validate={composeValidator(required)}
+                      name={"input.unit"}
+                    >
                       {units.map((unit) => (
                         <MenuItem key={unit} value={unit}>
                           {unit}
@@ -152,12 +156,10 @@ export const AddRecept = ({
                     <H5 title="Recepttype:" />
                   </Grid>
                   <Grid xs={3}>
-                    <TextField
-                      fullWidth
-                      placeholder={"Recept type"}
-                      onChange={(e) =>
-                        setFieldValue("input.type", e.target.value)
-                      }
+                    <FormField
+                      name={`input.type`}
+                      label="Recept type"
+                      validator={composeValidators(required)}
                     />
                   </Grid>
                   <Grid xs={6}></Grid>

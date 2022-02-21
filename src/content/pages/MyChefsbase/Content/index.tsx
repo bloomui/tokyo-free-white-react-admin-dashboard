@@ -18,14 +18,14 @@ import {
   Card,
   Tabs,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router";
 import Footer from "src/components/Footer";
 import { CenterInScreen, LoadingScreen } from "src/components/layout";
 import { PageHeader } from "src/components/pageHeader/PageHeader";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
-import { RecipeFilterInput } from "src/globalTypes";
+import { IngredientFilterInput, RecipeFilterInput } from "src/globalTypes";
 import { clearAuth } from "src/utilities/auth";
 import { H5 } from "../../Components/TextTypes";
 import {
@@ -33,6 +33,10 @@ import {
   NutritionOptionDropDown,
 } from "../Components/NutrutitionOptions";
 import { useSearchRecipeQuery } from "../Dishes/AddDish/api";
+import { useFilterIngredientsQuery } from "../Ingredients/api";
+import { TopPartIngredientPage } from "../Ingredients/components/IngredientPageTopPart";
+import { IngredientTable } from "../Ingredients/components/IngredientTable";
+import { initialIngredientValues } from "../Ingredients/filterIngredients";
 import { ItemNutrition } from "../Ingredients/ingredientDialogs";
 import {
   useFilterRecipesQuery,
@@ -48,7 +52,11 @@ import { ingredientsForRecipe_ingredientsForRecipe } from "../Recipes/types/ingr
 import { recipe_recipe_method } from "../Recipes/types/recipe";
 import { AddRecept } from "./Components/AddRecipe";
 
-export const RecipesAndIngredients = () => {
+export const RecipesAndIngredients = ({
+  content,
+}: {
+  content: ReactElement<any, any>;
+}) => {
   const navigate = useNavigate();
 
   return (
@@ -74,14 +82,17 @@ export const RecipesAndIngredients = () => {
           <Grid container xs={12}>
             <Grid xs={3}></Grid>
             <Grid xs={3}>
-              <Tab label={`Recepten`} />
+              <Button onClick={() => navigate("/mychefsbase/recipes")}>
+                <Tab label={`Recepten`} />
+              </Button>
             </Grid>
             <Grid xs={3}>
-              {" "}
-              <Tab label={`Ingrediënten`} />
+              <Button onClick={() => navigate("/mychefsbase/ingredients")}>
+                <Tab label={`Ingrediënten`} />
+              </Button>
             </Grid>
             <Grid xs={3}></Grid>
-            <RecipeContent />
+            {content}
           </Grid>
           <Grid item lg={8} xs={12}>
             <Button
@@ -101,25 +112,7 @@ export const RecipesAndIngredients = () => {
 };
 
 export const RecipeContent = () => {
-  const [name, setName] = useState<string>();
-
   const [page, setPage] = useState<number>(0);
-
-  const initialValues = {
-    name: "",
-    offset: 0,
-    limit: null,
-  };
-
-  // const { loading, data, error, refetch } = useSearchRecipeQuery({
-  //   name: name,
-  //   page: page,
-  // });
-  const [open, setOpen] = React.useState(false);
-  const [openNew, setOpenNew] = React.useState(false);
-  const [areYouSureDelete, setAreYouSureDelete] = useState<boolean>(false);
-  const [id, setId] = React.useState<string>();
-  const [unitHere, setUnitHere] = React.useState<string>();
 
   const [input, setInput] = useState<RecipeFilterInput>(initialRecipeValues);
 
@@ -151,83 +144,39 @@ export const RecipeContent = () => {
   );
 };
 
-//     content = (
-//       <>
-//         <TableContainer>
-//           <Table>
-//             <TableHead>
-//               <TableRow>
-//                 <TableCell
-//                 // component="th"
-//                 scope="row"
-//                 // padding="none"
-//                 >
-//                   <H5 title="Recept" />
-//                 </TableCell>
-//               </TableRow>
-//               {data.recipes.map((recipe) => (
-//                 <TableRow>
-//                   <TableCell
-//                   scope="row"
-//                   style={{ cursor: 'pointer' }}
-//                     onClick={() => {
-//                       setId(recipe.id);
-//                       setUnitHere(recipe.quantity.unit);
-//                       setOpen(true);
-//                     }}
-//                   >
-//                     <H5 title={recipe.name} />
-//                   </TableCell>
-//                 </TableRow>
-//               ))}
-//             </TableHead>
-//           </Table>
-//         </TableContainer>
-//         {id && (
-//           <>
-//             <DialogHere
-//               unitHere={unitHere}
-//               setId={() => setId(id)}
-//               id={id}
-//               open={open}
-//               onClose={() => setOpen(false)}
-//             />
-//           </>
-//         )}
-//         <AddRecept open={openNew} onClose={() => setOpenNew(false)} />
-//       </>
-//     );
-//   }
-//   return (
-//     <>
-//       <Grid container xs={12}>
-//         <Grid xs={3}>
-//           <H5 title="Zoek op naam" />
-//         </Grid>
-//         <Grid xs={6}>
-//           <TextField
-//             onKeyPress={(e) => {
-//               if (e.key === "Enter") {
-//                 console.log(e.key);
-//                 refetch({ name: name });
-//               }
-//             }}
-//             fullWidth
-//             placeholder="Zoek op naam"
-//             onChange={(e) => setName(e.target.value)}
-//           />
-//         </Grid>
-//         <Grid xs={3}>
-//           <Button variant="contained" onClick={() => setOpenNew(true)}>
-//             <H5 title="Nieuw recept toevoegen" />
-//           </Button>
-//         </Grid>
-//       </Grid>
-//       <Box height={3}>{loading && <LinearProgress />}</Box>
-//       {content}
-//     </>
-//   );
-// };
+export const IngredientContent = () => {
+  const [input, setInput] = useState<IngredientFilterInput>(
+    initialIngredientValues
+  );
+  const [page, setPage] = useState<number>(0);
+
+  const { loading, data } = useFilterIngredientsQuery({
+    page: page,
+    input: input,
+  });
+
+  let content;
+  if (loading && !data) content = <LoadingScreen />;
+  else if (data) {
+    content = (
+      <>
+        <IngredientTable data={data} page={page} setPage={setPage} />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Grid container xs={12}>
+        <Grid xs={12}>
+          <TopPartIngredientPage setInput={(values) => setInput(values)} />
+          <Box height={3}>{loading && <LinearProgress />}</Box>
+          <Grid xs={12}>{content}</Grid>{" "}
+        </Grid>
+      </Grid>
+    </>
+  );
+};
 
 export const DialogHere = ({
   unitHere,

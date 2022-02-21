@@ -73,7 +73,6 @@ export const IngredientSelector = ({
             />
           )}
         />
-        {/* <AutoSubmitToken /> */}
       </Grid>
       <Grid xs={2}>
         <FormField

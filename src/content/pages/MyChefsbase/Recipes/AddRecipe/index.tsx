@@ -2,13 +2,8 @@ import { useQuery } from "@apollo/client";
 import {
   Button,
   Container,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Grid,
   MenuItem,
-  Paper,
   Tab,
   Table,
   TableCell,
@@ -16,7 +11,6 @@ import {
   TableRow,
   Tabs,
   TextField,
-  TextFieldProps,
   Typography,
 } from "@material-ui/core";
 import { FieldArray, Formik, useField } from "formik";
@@ -27,7 +21,6 @@ import { PageHeader } from "src/components/pageHeader/PageHeader";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import { FormField } from "src/components/form/FormField";
 import {
-  AddIngredientInput,
   AddRecipeInput,
   NewIngredientInput,
   QuantityToId,
@@ -49,8 +42,6 @@ import { H3, H5, H5Left } from "src/content/pages/Components/TextTypes";
 import { AddIngredientPage } from "../../Ingredients/AddIngredient";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { ingredientsForRecipe_ingredientsForRecipe } from "../types/ingredientsForRecipe";
-import { useAddQuickIngredients } from "./api";
-import { AddQuickIngredientsVariables } from "./types/AddQuickIngredients";
 import { AddIngrDialog } from "./components/AddQuickIngredients";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import { AddIngsForRecipe } from "../../Content/Components/AddRecipe/Components/ingredients";
@@ -278,7 +269,6 @@ export const AddRecipePage1 = () => {
 
 export const AddRecipePage = () => {
   const [dialog, openDialog] = useState(false);
-  const navigate = useNavigate();
   const { addRecipe, loading, error } = useAddRecipe({
     onCompleted: () => window.location.reload(),
   });

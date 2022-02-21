@@ -19,7 +19,12 @@ import { AddDishPage } from "./content/pages/MyChefsbase/Dishes/AddDish";
 import { AddMenuPage } from "./content/pages/MyChefsbase/Menus/AddMenu";
 import { AddSupplierPage } from "./content/pages/MyChefsbase/Suppliers/AddSupplier";
 import { Orders } from "./content/pages/Orders";
-import { RecipesAndIngredients } from "./content/pages/MyChefsbase/Content";
+import {
+  IngredientContent,
+  RecipeContent,
+  RecipesAndIngredients,
+} from "./content/pages/MyChefsbase/Content";
+import { IngredientPage } from "./content/pages/MyChefsbase/Ingredients";
 
 const Loader = (Component) => (props) =>
   (
@@ -204,10 +209,18 @@ const routes = (isLoggedIn: boolean) => [
       {
         path: "chefsbase",
         element: isLoggedIn ? (
-          <RecipesAndIngredients />
+          <RecipesAndIngredients content={<RecipeContent />} />
         ) : (
           <Navigate to="/authorize/signin" />
         ),
+      },
+      {
+        path: "recipes",
+        element: <RecipesAndIngredients content={<RecipeContent />} />,
+      },
+      {
+        path: "ingredients",
+        element: <RecipesAndIngredients content={<IngredientContent />} />,
       },
       {
         path: "inventaris",
