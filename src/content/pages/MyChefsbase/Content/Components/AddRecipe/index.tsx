@@ -141,7 +141,7 @@ export const AddRecept = ({
                   </Grid>
                   <Grid xs={3}>
                     <FormikSelect
-                      validate={composeValidator(required)}
+                      validate={composeValidators(required)}
                       name={"input.unit"}
                     >
                       {units.map((unit) => (
