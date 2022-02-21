@@ -3,15 +3,18 @@ import {
   Button,
   Container,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   Grid,
   MenuItem,
   Paper,
+  Tab,
   Table,
   TableCell,
   TableContainer,
   TableRow,
+  Tabs,
   TextField,
   TextFieldProps,
   Typography,
@@ -26,6 +29,7 @@ import { FormField } from "src/components/form/FormField";
 import {
   AddIngredientInput,
   AddRecipeInput,
+  NewIngredientInput,
   QuantityToId,
   StepToMethodInput,
 } from "src/globalTypes";
@@ -49,6 +53,228 @@ import { useAddQuickIngredients } from "./api";
 import { AddQuickIngredientsVariables } from "./types/AddQuickIngredients";
 import { AddIngrDialog } from "./components/AddQuickIngredients";
 import { FormikSelect } from "src/components/form/FormikSelect";
+import { AddIngsForRecipe } from "../../Content/Components/AddRecipe/Components/ingredients";
+import { AddMethodsForRecipe } from "../../Content/Components/AddRecipe/Components/method";
+import { AddNewIngsForRecipe } from "../../Content/Components/AddRecipe/Components/newIngredients";
+import {
+  emptyNewIngredientEntry,
+  emptyIngredientEntry,
+} from "../../Content/Components/AddRecipe/Components/Utils/Conts";
+
+export const AddRecipePage1 = () => {
+  const [value, setValue] = useState(0);
+  const { addRecipe, loading, error } = useAddRecipe({
+    onCompleted: () => {},
+    // window.location.reload(),
+  });
+  const [stepHere, setStep] = useState(1);
+  const formInput: AddRecipeInput = {
+    name: "",
+    rating: 0,
+    type: "",
+    quantity: 0,
+    unit: units[0],
+  };
+
+  const emptyStep: StepToMethodInput = {
+    step: stepHere,
+    method: "",
+  };
+
+  const formNewIngredients: NewIngredientInput[] | null = [
+    emptyNewIngredientEntry,
+    emptyNewIngredientEntry,
+    emptyNewIngredientEntry,
+  ];
+
+  const formIngredients: QuantityToId[] | null = [
+    emptyIngredientEntry,
+    emptyIngredientEntry,
+    emptyIngredientEntry,
+  ];
+
+  const formMethods: StepToMethodInput[] | null = [
+    emptyStep,
+    emptyStep,
+    emptyStep,
+  ];
+  const formState: AddRecipeVariables = {
+    input: formInput,
+    ingredients: formIngredients,
+    newIngredients: formNewIngredients,
+    method: formMethods,
+  };
+
+  return (
+    <>
+      <Helmet>
+        <title>Nieuw recept</title>
+      </Helmet>
+      <PageTitleWrapper>
+        <PageHeader
+          title="Nieuw recept"
+          name="Soup Bros"
+          avatar={user.avatar}
+        />
+      </PageTitleWrapper>
+      <Container maxWidth="lg">
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={3}
+        >
+          <Grid item xs={12}>
+            <Formik
+              initialValues={formState}
+              onSubmit={(values) => {
+                addRecipe({
+                  variables: {
+                    method: values.method.map((stepToMethod, index) => ({
+                      step: index + 1,
+                      method: stepToMethod.method,
+                    })),
+                    newIngredients: values.newIngredients,
+                    ingredients: values.ingredients,
+                    input: {
+                      type: values.input.type,
+                      name: values.input.name,
+                      rating: values.input.rating,
+                      quantity: values.input.quantity,
+                      unit: values.input.unit,
+                    },
+                  },
+                });
+              }}
+            >
+              {({ values, handleChange, submitForm, setFieldValue }) => {
+                return (
+                  <>
+                    <Grid container xs={12}>
+                      <Grid xs={3}>
+                        <H5 title="Recept:" />
+                      </Grid>
+                      <Grid xs={3}>
+                        <TextField
+                          fullWidth
+                          placeholder={"Recept naam"}
+                          onChange={(e) =>
+                            setFieldValue("input.name", e.target.value)
+                          }
+                        />
+                      </Grid>
+                      <Grid xs={6}></Grid>
+                      <Grid xs={3}>
+                        <H5 title="Hoeveelheid:" />
+                      </Grid>
+                      <Grid xs={3}>
+                        <TextField
+                          fullWidth
+                          placeholder={"Hoeveelheid"}
+                          onChange={(e) =>
+                            setFieldValue(
+                              "input.quantity",
+                              Number(e.target.value)
+                            )
+                          }
+                        />
+                      </Grid>
+                      <Grid xs={3}>
+                        <FormikSelect name={"input.unit"}>
+                          {units.map((unit) => (
+                            <MenuItem key={unit} value={unit}>
+                              {unit}
+                            </MenuItem>
+                          ))}
+                        </FormikSelect>
+                      </Grid>
+                      <Grid xs={3}></Grid>
+                      <Grid xs={3}>
+                        <H5 title="Recepttype:" />
+                      </Grid>
+                      <Grid xs={3}>
+                        <TextField
+                          fullWidth
+                          placeholder={"Recept type"}
+                          onChange={(e) =>
+                            setFieldValue("input.type", e.target.value)
+                          }
+                        />
+                      </Grid>
+                      <Grid xs={6}></Grid>
+                      <Grid xs={3}>
+                        <H5 title="Beoordeling:" />
+                      </Grid>
+                      <Grid xs={3}>
+                        <Rating1
+                          updateField="input.rating"
+                          setFieldValue={setFieldValue}
+                        />
+                      </Grid>
+                      <Grid xs={6}></Grid>
+                    </Grid>
+                    <Divider />
+                    <Grid container xs={12}>
+                      <Grid xs={12}>
+                        <Tabs
+                          centered
+                          value={value}
+                          onChange={(e, newValue) =>
+                            setValue(newValue as number)
+                          }
+                        >
+                          <Tab label={`Ingredienten`} />
+                          <Tab label={`Nieuwe Ingredienten`} />
+                          <Tab label={`Methode`} />
+                        </Tabs>
+                      </Grid>
+                      <Grid xs={1}></Grid>
+                      {value == 0 ? (
+                        <AddIngsForRecipe
+                          setFieldValue={setFieldValue}
+                          handleChange={handleChange}
+                          values={values}
+                        />
+                      ) : value == 1 ? (
+                        <AddNewIngsForRecipe
+                          setFieldValue={setFieldValue}
+                          handleChange={handleChange}
+                          values={values}
+                        />
+                      ) : (
+                        <AddMethodsForRecipe values={values} />
+                      )}
+                    </Grid>
+                    <Divider />
+                    <Grid xs={12}>
+                      {/* <Button
+                          onClick={() => onClose()}
+                          color="primary"
+                          variant="outlined"
+                        >
+                          Terug
+                        </Button> */}
+                    </Grid>
+                    <Grid xs={12}>
+                      <Button
+                        onClick={() => submitForm()}
+                        color="primary"
+                        variant="outlined"
+                      >
+                        Recept toevoegen
+                      </Button>
+                    </Grid>
+                  </>
+                );
+              }}
+            </Formik>
+          </Grid>
+        </Grid>
+      </Container>
+    </>
+  );
+};
 
 export const AddRecipePage = () => {
   const [dialog, openDialog] = useState(false);
