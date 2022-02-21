@@ -148,7 +148,6 @@ export interface MenuInput {
 
 export interface NewIngredientInput {
   name: string;
-  material: Material;
   quantity: number;
   unit: string;
 }
