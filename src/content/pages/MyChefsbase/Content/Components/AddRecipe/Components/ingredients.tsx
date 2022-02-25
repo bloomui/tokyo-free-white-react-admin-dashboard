@@ -52,8 +52,7 @@ export const AddIngsForRecipe = ({
                       setFieldValue={setFieldValue}
                     />
                   </Grid>
-                  <Grid xs={1}></Grid>
-                  <Grid xs={1}>
+                  <Grid xs={2}>
                     {index > 0 ? (
                       <Grid container xs={12}>
                         <Grid>
