@@ -216,15 +216,18 @@ export const AddRecipePage1 = () => {
                       )}
                     </Grid>
                     <Divider />
-                    <Grid xs={12}>
-                      <Button
-                        onClick={() => submitForm()}
-                        color="primary"
-                        variant="outlined"
-                      >
-                        Recept toevoegen
-                      </Button>
-                    </Grid>
+                    <Grid container xs={12}>
+                    <Grid xs={10}></Grid>
+                  <Grid xs={2}>
+                    <Button
+                      onClick={() => submitForm()}
+                      color="primary"
+                      variant="outlined"
+                    >
+                      Recept toevoegen
+                    </Button>
+                  </Grid>
+                  </Grid>
                   </>
                 );
               }}
