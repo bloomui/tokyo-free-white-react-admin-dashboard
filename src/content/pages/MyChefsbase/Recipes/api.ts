@@ -63,7 +63,7 @@ export const FilterRecipesQuery = gql`
       rating
       type
       quantity {
-        quantity 
+        quantity
         unit
       }
     }
@@ -164,7 +164,7 @@ export const UpdateRecipeMutation = gql`
 export const AddRecipeMutation = gql`
   mutation AddRecipe(
     $input: AddRecipeInput!
-    $ingredients: [QuantityToId!]
+    $ingredients: [RecipeIngredientsForm!]
     $method: [StepToMethodInput!]!
   ) {
     addRecipe(input: $input, ingredients: $ingredients, method: $method)

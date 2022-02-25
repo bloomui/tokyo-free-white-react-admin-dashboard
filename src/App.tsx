@@ -16,6 +16,8 @@ import React from "react";
 import { setContext } from "@apollo/client/link/context";
 import { getToken, isLoggedIn } from "./utilities/auth";
 import config from "./config";
+import { ErrorProvider } from "./components/error";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const httpLink = createHttpLink();
 const authLink = setContext((_, { headers }) => {
@@ -38,14 +40,18 @@ const App = () => {
   const content = useRoutes(routes(isLoggedIn()));
 
   return (
-    <ApolloProvider client={client}>
-      <ThemeProvider>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <CssBaseline />
-          {content}
-        </LocalizationProvider>
-      </ThemeProvider>
-    </ApolloProvider>
+    <ErrorProvider>
+      <ErrorBoundary>
+        <ApolloProvider client={client}>
+          <ThemeProvider>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <CssBaseline />
+              {content}
+            </LocalizationProvider>
+          </ThemeProvider>
+        </ApolloProvider>
+      </ErrorBoundary>
+    </ErrorProvider>
   );
 };
 export default App;

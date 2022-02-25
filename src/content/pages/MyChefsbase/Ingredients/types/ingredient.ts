@@ -106,7 +106,7 @@ export interface ingredient_ingredient {
   id: string;
   name: string;
   rating: number | null;
-  material: Material | null;
+  material: Material;
   nutrition: ingredient_ingredient_nutrition | null;
   products: ingredient_ingredient_products[] | null;
 }

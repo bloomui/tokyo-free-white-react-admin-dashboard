@@ -158,12 +158,12 @@ function MyChefsBase() {
           label={`Favorieten`}
         />
       </Tabs>
-      {content}
+      {/* {content} */}
           </Grid>
           <Grid item lg={8} xs={12}>
-          <Button onClick={() => setOpen(true)} variant="contained" color="primary">
+          {/* <Button onClick={() => setOpen(true)} variant="contained" color="primary">
               Upload een document
-            </Button> 
+            </Button>  */}
             <Button onClick={() => {
               clearAuth();
               navigate(`/`)
@@ -173,7 +173,7 @@ function MyChefsBase() {
             </Grid>
         </Grid>
       </Container>
-      <UploadDocument open={open} onClose={() => setOpen(false)}/>
+      {/* <UploadDocument open={open} onClose={() => setOpen(false)}/> */}
       <Footer />
     </>
   );
