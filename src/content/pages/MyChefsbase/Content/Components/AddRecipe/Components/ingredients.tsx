@@ -31,7 +31,7 @@ export const AddIngsForRecipe = ({
           render={(arrayHelpers) => (
             <>
               <Grid xs={1}>#</Grid>
-              <Grid xs={3}>
+              <Grid xs={2}>
                 <H4 title="Ingredient (bestaand)" />
               </Grid>
               <Grid xs={2}>
@@ -40,7 +40,7 @@ export const AddIngsForRecipe = ({
               <Grid xs={4}>
                 <H4 title="Hoeveelheid en eenheid" />
               </Grid>
-              <Grid xs={1}>- / +</Grid>
+              <Grid xs={2}> (- / +)</Grid>
               {values.ingredients?.map((form, index) => (
                 <>
                   <Grid xs={1}></Grid>
