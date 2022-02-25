@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { AddRecipeInput, QuantityToId, StepToMethodInput } from "./../../../../../globalTypes";
+import { AddRecipeInput, RecipeIngredientsForm, StepToMethodInput } from "./../../../../../globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: AddRecipe
@@ -15,6 +15,6 @@ export interface AddRecipe {
 
 export interface AddRecipeVariables {
   input: AddRecipeInput;
-  ingredients?: QuantityToId[] | null;
+  ingredients?: RecipeIngredientsForm[] | null;
   method: StepToMethodInput[];
 }

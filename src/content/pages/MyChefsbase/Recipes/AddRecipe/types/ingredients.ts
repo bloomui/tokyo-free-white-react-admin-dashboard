@@ -15,7 +15,7 @@ export interface ingredients_ingredients {
   name: string;
   category: string | null;
   rating: number | null;
-  material: Material | null;
+  material: Material;
 }
 
 export interface ingredients {
