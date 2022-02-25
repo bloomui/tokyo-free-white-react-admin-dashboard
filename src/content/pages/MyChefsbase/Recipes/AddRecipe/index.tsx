@@ -52,8 +52,9 @@ import { emptyIngredientEntry } from "../../Content/Components/AddRecipe/Compone
 export const AddRecipePage1 = () => {
   const [value, setValue] = useState(0);
   const { addRecipe, loading, error } = useAddRecipe({
-    onCompleted: () => {},
-    // window.location.reload(),
+    onCompleted: () => {
+      window.location.reload();
+    },
   });
   const [stepHere, setStep] = useState(1);
   const formInput: AddRecipeInput = {
@@ -136,12 +137,10 @@ export const AddRecipePage1 = () => {
                         <H5 title="Recept:" />
                       </Grid>
                       <Grid xs={3}>
-                        <TextField
-                          fullWidth
-                          placeholder={"Recept naam"}
-                          onChange={(e) =>
-                            setFieldValue("input.name", e.target.value)
-                          }
+                        <FormField
+                          label="Recept naam"
+                          name="input.name"
+                          validator={composeValidators(required)}
                         />
                       </Grid>
                       <Grid xs={6}></Grid>
