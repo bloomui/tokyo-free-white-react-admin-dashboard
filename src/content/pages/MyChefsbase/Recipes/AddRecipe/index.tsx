@@ -22,12 +22,13 @@ import PageTitleWrapper from "src/components/PageTitleWrapper";
 import { FormField } from "src/components/form/FormField";
 import {
   AddRecipeInput,
-  NewIngredientInput,
   QuantityToId,
+  RecipeIngredientsForm,
   StepToMethodInput,
 } from "src/globalTypes";
 import {
   composeValidators,
+  mustBeNumber,
   required,
   Validator,
 } from "src/utilities/formikValidators";
@@ -46,11 +47,7 @@ import { AddIngrDialog } from "./components/AddQuickIngredients";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import { AddIngsForRecipe } from "../../Content/Components/AddRecipe/Components/ingredients";
 import { AddMethodsForRecipe } from "../../Content/Components/AddRecipe/Components/method";
-import { AddNewIngsForRecipe } from "../../Content/Components/AddRecipe/Components/newIngredients";
-import {
-  emptyNewIngredientEntry,
-  emptyIngredientEntry,
-} from "../../Content/Components/AddRecipe/Components/Utils/Conts";
+import { emptyIngredientEntry } from "../../Content/Components/AddRecipe/Components/Utils/Conts";
 
 export const AddRecipePage1 = () => {
   const [value, setValue] = useState(0);
@@ -72,12 +69,6 @@ export const AddRecipePage1 = () => {
     method: "",
   };
 
-  const formNewIngredients: NewIngredientInput[] | null = [
-    emptyNewIngredientEntry,
-    emptyNewIngredientEntry,
-    emptyNewIngredientEntry,
-  ];
-
   const formIngredients: QuantityToId[] | null = [
     emptyIngredientEntry,
     emptyIngredientEntry,
@@ -92,7 +83,6 @@ export const AddRecipePage1 = () => {
   const formState: AddRecipeVariables = {
     input: formInput,
     ingredients: formIngredients,
-    newIngredients: formNewIngredients,
     method: formMethods,
   };
 
@@ -126,7 +116,6 @@ export const AddRecipePage1 = () => {
                       step: index + 1,
                       method: stepToMethod.method,
                     })),
-                    newIngredients: values.newIngredients,
                     ingredients: values.ingredients,
                     input: {
                       type: values.input.type,
@@ -160,19 +149,17 @@ export const AddRecipePage1 = () => {
                         <H5 title="Hoeveelheid:" />
                       </Grid>
                       <Grid xs={3}>
-                        <TextField
-                          fullWidth
-                          placeholder={"Hoeveelheid"}
-                          onChange={(e) =>
-                            setFieldValue(
-                              "input.quantity",
-                              Number(e.target.value)
-                            )
-                          }
+                        <FormField
+                          name={"input.quantity"}
+                          label="Hoeveelheid"
+                          validator={composeValidators(required, mustBeNumber)}
                         />
                       </Grid>
                       <Grid xs={3}>
-                        <FormikSelect name={"input.unit"}>
+                        <FormikSelect
+                          validate={composeValidators(required)}
+                          name={"input.unit"}
+                        >
                           {units.map((unit) => (
                             <MenuItem key={unit} value={unit}>
                               {unit}
@@ -216,7 +203,6 @@ export const AddRecipePage1 = () => {
                           }
                         >
                           <Tab label={`Ingredienten`} />
-                          <Tab label={`Nieuwe Ingredienten`} />
                           <Tab label={`Methode`} />
                         </Tabs>
                       </Grid>
@@ -224,13 +210,6 @@ export const AddRecipePage1 = () => {
                       {value == 0 ? (
                         <AddIngsForRecipe
                           setFieldValue={setFieldValue}
-                          handleChange={handleChange}
-                          values={values}
-                        />
-                      ) : value == 1 ? (
-                        <AddNewIngsForRecipe
-                          setFieldValue={setFieldValue}
-                          handleChange={handleChange}
                           values={values}
                         />
                       ) : (
@@ -238,15 +217,6 @@ export const AddRecipePage1 = () => {
                       )}
                     </Grid>
                     <Divider />
-                    <Grid xs={12}>
-                      {/* <Button
-                          onClick={() => onClose()}
-                          color="primary"
-                          variant="outlined"
-                        >
-                          Terug
-                        </Button> */}
-                    </Grid>
                     <Grid xs={12}>
                       <Button
                         onClick={() => submitForm()}
@@ -284,10 +254,11 @@ export const AddRecipePage = () => {
     quantity: 0,
     unit: units[0],
   };
-  const emptyIngredientEntry: QuantityToId = {
+  const emptyIngredientEntry: RecipeIngredientsForm = {
     quantity: 0,
     unit: "",
     id: "",
+    name: "",
   };
   const emptyStep: StepToMethodInput = {
     step: stepHere,
@@ -299,7 +270,9 @@ export const AddRecipePage = () => {
     setIngredients([...selectedIngredients]);
   }
 
-  const formIngredients: QuantityToId[] | null = [emptyIngredientEntry];
+  const formIngredients: RecipeIngredientsForm[] | null = [
+    emptyIngredientEntry,
+  ];
 
   const formMethods: StepToMethodInput[] | null = [emptyStep];
   const formState: AddRecipeVariables = {

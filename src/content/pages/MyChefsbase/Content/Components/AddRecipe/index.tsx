@@ -15,11 +15,15 @@ import { FormField } from "src/components/form/FormField";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import {
   AddRecipeInput,
-  NewIngredientInput,
   QuantityToId,
+  RecipeIngredientsForm,
   StepToMethodInput,
 } from "src/globalTypes";
-import { composeValidators, required } from "src/utilities/formikValidators";
+import {
+  composeValidators,
+  mustBeNumber,
+  required,
+} from "src/utilities/formikValidators";
 import { H5 } from "../../../../Components/TextTypes";
 import { Rating1 } from "../../../Menus/filtermenus/components/rating";
 import { units } from "../../../Recipes/AddRecipe/components/IngredientTable";
@@ -27,11 +31,7 @@ import { useAddRecipe } from "../../../Recipes/api";
 import { AddRecipeVariables } from "../../../Recipes/types/AddRecipe";
 import { AddIngsForRecipe } from "./Components/ingredients";
 import { AddMethodsForRecipe } from "./Components/method";
-import { AddNewIngsForRecipe } from "./Components/newIngredients";
-import {
-  emptyNewIngredientEntry,
-  emptyIngredientEntry,
-} from "./Components/Utils/Conts";
+import { emptyIngredientEntry } from "./Components/Utils/Conts";
 
 export const AddRecept = ({
   open,
@@ -60,13 +60,7 @@ export const AddRecept = ({
     method: "",
   };
 
-  const formNewIngredients: NewIngredientInput[] | null = [
-    emptyNewIngredientEntry,
-    emptyNewIngredientEntry,
-    emptyNewIngredientEntry,
-  ];
-
-  const formIngredients: QuantityToId[] | null = [
+  const formIngredients: RecipeIngredientsForm[] | null = [
     emptyIngredientEntry,
     emptyIngredientEntry,
     emptyIngredientEntry,
@@ -80,7 +74,6 @@ export const AddRecept = ({
   const formState: AddRecipeVariables = {
     input: formInput,
     ingredients: formIngredients,
-    newIngredients: formNewIngredients,
     method: formMethods,
   };
 
@@ -96,7 +89,6 @@ export const AddRecept = ({
                   step: index + 1,
                   method: stepToMethod.method,
                 })),
-                newIngredients: values.newIngredients,
                 ingredients: values.ingredients,
                 input: {
                   type: values.input.type,
@@ -131,6 +123,11 @@ export const AddRecept = ({
                     <H5 title="Hoeveelheid:" />
                   </Grid>
                   <Grid xs={3}>
+                    <FormField
+                      name={"input.quantity"}
+                      label="Hoeveelheid"
+                      validator={composeValidators(required, mustBeNumber)}
+                    />
                     <TextField
                       fullWidth
                       placeholder={"Hoeveelheid"}
@@ -183,22 +180,14 @@ export const AddRecept = ({
                       onChange={(e, newValue) => setValue(newValue as number)}
                     >
                       <Tab label={`Ingredienten`} />
-                      <Tab label={`Nieuwe Ingredienten`} />
                       <Tab label={`Methode`} />
                     </Tabs>
                   </Grid>
                   <Grid xs={1}></Grid>
                   {value == 0 ? (
                     <AddIngsForRecipe
-                      setFieldValue={setFieldValue}
-                      handleChange={handleChange}
                       values={values}
-                    />
-                  ) : value == 1 ? (
-                    <AddNewIngsForRecipe
                       setFieldValue={setFieldValue}
-                      handleChange={handleChange}
-                      values={values}
                     />
                   ) : (
                     <AddMethodsForRecipe values={values} />

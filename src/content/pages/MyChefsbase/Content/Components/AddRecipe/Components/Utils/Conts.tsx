@@ -1,10 +1,4 @@
-import { NewIngredientInput, QuantityToId } from "src/globalTypes";
-
-export const emptyNewIngredientEntry: NewIngredientInput = {
-  quantity: 0,
-  unit: "",
-  name: "",
-};
+import { QuantityToId } from "src/globalTypes";
 
 export const emptyIngredientEntry: QuantityToId = {
   quantity: 0,
