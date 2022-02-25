@@ -12,7 +12,6 @@ import {
   TableRow,
   TableCell,
   Table,
-  TextField,
   DialogTitle,
   CircularProgress,
   Card,
@@ -50,7 +49,6 @@ import { initialRecipeValues } from "../Recipes/filterrecipes";
 import { minimizeUnit } from "../Recipes/recipeDialogs";
 import { ingredientsForRecipe_ingredientsForRecipe } from "../Recipes/types/ingredientsForRecipe";
 import { recipe_recipe_method } from "../Recipes/types/recipe";
-import { AddRecept } from "./Components/AddRecipe";
 
 export const RecipesAndIngredients = ({
   content,

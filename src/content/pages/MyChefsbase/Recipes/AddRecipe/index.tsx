@@ -52,9 +52,9 @@ import { emptyIngredientEntry } from "../../Content/Components/AddRecipe/Compone
 export const AddRecipePage1 = () => {
   const [value, setValue] = useState(0);
   const { addRecipe, loading, error } = useAddRecipe({
-    onCompleted: () => {
-      window.location.reload();
-    },
+    onCompleted: () => {},
+      // window.location.reload();
+    // },
   });
   const [stepHere, setStep] = useState(1);
   const formInput: AddRecipeInput = {
