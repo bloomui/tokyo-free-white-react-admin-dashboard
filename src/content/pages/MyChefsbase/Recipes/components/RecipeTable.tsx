@@ -34,6 +34,7 @@ import {
 import {
   FilterRecipes,
   FilterRecipes_filterRecipes,
+  FilterRecipes_filterRecipes_quantity,
 } from "../types/FilterRecipes";
 import { RecipeDialog } from "../recipeDialogs";
 import { UpdateRecipeDialog } from "../recipeDialogs/UpdateRecipeDialog";
@@ -101,8 +102,6 @@ export const RecipeTable = ({
   const [open, setOpen] = React.useState(false);
   const [openUpdate, setOpenUpdate] = React.useState(false);
   const [areYouSureDelete, setAreYouSureDelete] = useState<boolean>(false);
-  const [id, setId] = React.useState<string>();
-  const [unitHere, setUnitHere] = React.useState<string>();
   const [recipe, setRecipe] = React.useState<FilterRecipes_filterRecipes>();
 
   // recipe Data
@@ -158,8 +157,7 @@ export const RecipeTable = ({
                       padding="none"
                       style={{ cursor: "pointer" }}
                       onClick={() => {
-                        setId(recipe.id);
-                        setUnitHere(recipe.quantity.unit);
+                        setRecipe(recipe);
                         setOpen(true);
                       }}
                     >
@@ -182,7 +180,7 @@ export const RecipeTable = ({
                           <Grid item xs={4}>
                             <VscTrash
                               onClick={() => {
-                                setId(recipe.id);
+                                setRecipe(recipe);
                                 setAreYouSureDelete(true);
                               }}
                               style={{ cursor: "pointer" }}
@@ -222,37 +220,25 @@ export const RecipeTable = ({
         />
         {/* </TableRow> */}
       </TableContainer>
-      {id && (
+      {recipe && (
         <>
           <DialogHere
-            unitHere={unitHere}
-            setId={() => setId(id)}
-            id={id}
+            recipe={recipe}
             open={open}
             onClose={() => setOpen(false)}
           />
-          {/* <RecipeDialog
-              unitHere={unitHere}
-              setId={() => setId(id)}
-              id={id}
-              open={open}
-              onClose={() => setOpen(false)}
-              /> */}
           <AreYouSureDelete
             open={areYouSureDelete}
-            id={id}
+            id={recipe.id}
             kitchenType={KitchenType.Recipe}
             onClose={() => setAreYouSureDelete(false)}
           />
-        </>
-      )}
-      {recipe && (
-        <UpdateRecipeDialog
-          unitHere={recipe.quantity.unit}
-          id={recipe.id}
+          <UpdateRecipeDialog
+          recipe={recipe}
           open={openUpdate}
           onClose={() => setOpenUpdate(false)}
         />
+        </>
       )}
     </>
   );

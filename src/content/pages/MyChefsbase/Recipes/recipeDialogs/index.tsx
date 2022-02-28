@@ -243,7 +243,7 @@ export const RecipeDialog = ({
   );
   const [unit, setUnit] = useState<string>(unitHere);
   const [quantity, setQuantity] = useState(100);
-  const { data, loading, error } = useGetRecipeQuery({id: id, onCompleted: (recipe) => setUnit(minimizeUnit(recipe.recipe.quantity.unit))});
+  const { data, loading, error } = useGetRecipeQuery({id: id});
 
   const [openUpdateDialog, setUpdateDialog] = useState(false);
 
@@ -409,8 +409,7 @@ export const RecipeDialog = ({
         )}
       </Dialog>
       <UpdateRecipeDialog
-        unitHere={recipe.quantity.unit}
-        id={recipe.id}
+        recipe={recipe}
         open={openUpdateDialog}
         onClose={() => setUpdateDialog(false)}
       />

@@ -1,3 +1,4 @@
+import { ApolloQueryResult } from "@apollo/client";
 import {
   Box,
   Button,
@@ -44,6 +45,7 @@ import { ItemNutrition } from "../Ingredients/ingredientDialogs";
 import {
   useFilterRecipesQuery,
   useGetIngredientsForRecipe,
+  useGetMethodForRecipeQuery,
   useGetNutritionForRecipe,
   useGetRecipeQuery,
 } from "../Recipes/api";
@@ -51,7 +53,8 @@ import { RecipeTable } from "../Recipes/components/RecipeTable";
 import { TopPartRecipePage } from "../Recipes/components/TopPartRecipePage";
 import { initialRecipeValues } from "../Recipes/filterrecipes";
 import { minimizeUnit } from "../Recipes/recipeDialogs";
-import { ingredientsForRecipe_ingredientsForRecipe } from "../Recipes/types/ingredientsForRecipe";
+import { FilterRecipes_filterRecipes } from "../Recipes/types/FilterRecipes";
+import { ingredientsForRecipe, ingredientsForRecipeVariables, ingredientsForRecipe_ingredientsForRecipe } from "../Recipes/types/ingredientsForRecipe";
 import { recipe_recipe_method } from "../Recipes/types/recipe";
 
 export const RecipesAndIngredients = ({
@@ -180,78 +183,51 @@ export const IngredientContent = () => {
   );
 };
 
+export const MyDialog = () => {
+    return (
+        <Dialog maxWidth="md" open={true}>
+
+        </Dialog>
+    )
+}
+type Quantity = {
+    quantity: number,
+    unit: string
+}
 export const DialogHere = ({
-  unitHere,
-  setId,
-  id,
+  recipe,
   open,
   onClose,
 }: {
-  unitHere: string;
-  id: string;
-  setId: () => void;
+    recipe: FilterRecipes_filterRecipes;
   open: boolean;
   onClose: () => void;
 }) => {
-  const [unit, setUnitHere] = useState<string>(unitHere);
-  const [quantity, setQuantityHere] = useState<number>(100);
-  const [nutritionsToDisplay, setNutritionsToDisplay] = useState<string[]>(
-    DefaultNutritionOptions
-  );
+  const [unit, setUnitHere] = useState<string>(recipe.quantity.unit);
+  const [quantity, setQuantity] = useState<number>(recipe.quantity.quantity);
+  
   const initialValues = {
     quantity: quantity,
-    unit: unitHere,
+    unit: unit,
   };
   const [value, setValue] = useState(0);
-  const { data, loading, error } = useGetRecipeQuery({
-    id: id,
-    onCompleted: (recipe) =>
-      setUnitHere(minimizeUnit(recipe.recipe.quantity.unit)),
-  });
-  const {
-    data: data2,
-    loading: loading2,
-    error: error2,
-    refetch: refetch2,
-  } = useGetIngredientsForRecipe({
-    onCompleted: (values) => {},
-    id: id,
-    quantity: quantity,
-    unit: unit,
-  });
 
-  if (loading)
-    return (
-      <CenterInScreen>
-        <Dialog open={true} onClose={onClose}>
-          <CircularProgress />
-        </Dialog>
-      </CenterInScreen>
-    );
-  if (error) return <CircularProgress />;
-  if (loading2)
-    return (
-      <CenterInScreen>
-        <Dialog open={true} onClose={onClose}>
-          <CircularProgress />
-        </Dialog>
-      </CenterInScreen>
-    );
-  if (error2) return <CircularProgress />;
+  const [refetch, setRefetch] = useState();
 
+  
   let content;
 
   switch (value) {
     case 0:
-      content = <IngredientsTab ingredients={data2.ingredientsForRecipe} />;
+      content = <IngredientsTab id={recipe.id} unit={unit} quantity={quantity} />;
       break;
 
     case 1:
-      content = <MethodsTab method={data.recipe.method} />;
+      content = <MethodsTab id={recipe.id}/>;
       break;
     default:
       content = (
-        <NutritionTab id={data.recipe.id} unit={unit} quantity={quantity} />
+        <NutritionTab id={recipe.id} unit={unit} quantity={quantity} />
       );
       break;
   }
@@ -259,41 +235,43 @@ export const DialogHere = ({
   return (
     <>
       <CenterInScreen>
-        <Dialog open={open} onClose={onClose}>
-          {data && data.recipe && (
+        <Dialog maxWidth={"xl"} open={open} onClose={onClose}>
+          {recipe && (
             <>
               <Formik
                 initialValues={initialValues}
                 onSubmit={(values) => {
-                  setQuantityHere(values.quantity);
+                  setQuantity(values.quantity);
                   setUnitHere(values.unit);
-                  refetch2({
-                    quantity: values.quantity,
-                    unit: values.unit,
-                  });
                 }}
               >
                 {({ setFieldValue, submitForm }) => {
                   return (
                     <>
+                    <Grid container xs={12}>
                       <Grid xs={12}>
                         <H5 title="Toon hoeveelheid per:" />
-                        <TextField
-                          fullWidth
+                        </Grid>
+                        <Grid xs={4}></Grid>
+                        <Grid xs={6}>
+                            <TextField
                           placeholder={String(quantity)}
                           onChange={(e) =>
                             setFieldValue("quantity", Number(e.target.value))
                           }
                         />
-                      </Grid>
-                      <Grid xs={12}>
-                        <FormikSelect name={"unit"}>
+                     <Grid xs={2}></Grid>
+                      <Grid xs={4}></Grid>
+                        <Grid xs={6}>                       
+                         <FormikSelect name={"unit"}>
                           {getUnitsForUnit(unit).map((u) => (
                             <MenuItem key={u} value={u}>
                               {u}
                             </MenuItem>
                           ))}
                         </FormikSelect>
+                        </Grid>
+                      </Grid>
                       </Grid>
                       <Grid xs={12}>
                         <Button fullWidth onClick={() => submitForm()}>
@@ -306,6 +284,7 @@ export const DialogHere = ({
               </Formik>
               <DialogTitle>
                 <Tabs
+                centered
                   value={value}
                   onChange={(e, newValue) => setValue(newValue as number)}
                 >
@@ -315,6 +294,7 @@ export const DialogHere = ({
                 </Tabs>
               </DialogTitle>
               {content}
+              <Button onClick={() => onClose()}>Sluiten</Button>
             </>
           )}
         </Dialog>
@@ -324,10 +304,36 @@ export const DialogHere = ({
 };
 
 export const IngredientsTab = ({
-  ingredients,
-}: {
-  ingredients: ingredientsForRecipe_ingredientsForRecipe[];
-}) => {
+    id,
+    quantity,
+    unit,
+  }: {
+    id: string;
+    quantity: number;
+    unit: string;
+  }) => {
+    const {
+        data,
+        loading,
+        error,
+        refetch,
+      } = useGetIngredientsForRecipe({
+        onCompleted: (values) => {},
+        id: id,
+        quantity: quantity,
+        unit: unit,
+      });
+    
+      if (loading)
+        return (
+          <CenterInScreen>
+            <Dialog maxWidth="md" open={true}>
+              <CircularProgress />
+            </Dialog>
+          </CenterInScreen>
+        );
+      if (error) return <CircularProgress />;
+
   return (
     <DialogContent>
       <Card>
@@ -340,7 +346,7 @@ export const IngredientsTab = ({
                     <H5 title="Ingredienten" />
                   </TableRow>
                 </TableHead>
-                {ingredients.map((ingredient) => (
+                {data && data.ingredientsForRecipe && data.ingredientsForRecipe.map((ingredient) => (
                   <TableRow>
                     <TableCell>{ingredient.ingredient.name}</TableCell>
                     <TableCell>{ingredient.quantity.quantity}</TableCell>
@@ -356,14 +362,34 @@ export const IngredientsTab = ({
   );
 };
 
-export const MethodsTab = ({ method }: { method: recipe_recipe_method[] }) => {
+export const MethodsTab = ({ id }: { id: string }) => {
+
+    const {
+        data,
+        loading,
+        error,
+      } = useGetMethodForRecipeQuery({
+        id: id
+      });
+      
+    
+      if (loading)
+        return (
+          <CenterInScreen>
+            <Dialog maxWidth="md" open={true}>
+              <CircularProgress />
+            </Dialog>
+          </CenterInScreen>
+        );
+      if (error) return <CircularProgress />;
+
   return (
     <DialogContent>
       <Card>
         <Grid container xs={12}>
           <Grid xs={12}>
             <H5 title="Methode" />
-            {method.map((stepToMethod) => (
+            {data && data.methodForRecipe.map((stepToMethod) => (
               <Grid container xs={12}>
                 <Grid xs={2}>{stepToMethod.step}</Grid>
                 <Grid xs={10}>{stepToMethod.method}</Grid>

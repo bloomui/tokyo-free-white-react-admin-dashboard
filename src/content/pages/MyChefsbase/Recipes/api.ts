@@ -15,6 +15,7 @@ import {
   ingredientsForRecipe,
   ingredientsForRecipeVariables,
 } from "./types/ingredientsForRecipe";
+import { methodForRecipe, methodForRecipeVariables } from "./types/methodForRecipe";
 
 const getRecipeQuery = gql`
   query recipe($id: String!) {
@@ -34,13 +35,19 @@ const getRecipeQuery = gql`
     }
   }
 `;
+const getMethodForRecipeQuery = gql`
+  query methodForRecipe($id: String!) {
+    methodForRecipe(id: $id) {
+      step
+      method
+    }
+  }
+`;
 
 export const useGetRecipeQuery = ({
   id,
-  onCompleted,
 }: {
   id: string;
-  onCompleted?: (result: recipe) => void;
 }) => {
   const { loading, data, error } = useSimpleQuery<recipe, recipeVariables>(
     getRecipeQuery,
@@ -48,7 +55,22 @@ export const useGetRecipeQuery = ({
       variables: {
         id: id,
       },
-      onCompleted: (result) => onCompleted(result),
+    }
+  );
+  return { loading, data, error };
+};
+
+export const useGetMethodForRecipeQuery = ({
+  id,
+}: {
+  id: string;
+}) => {
+  const { loading, data, error } = useSimpleQuery<methodForRecipe, methodForRecipeVariables>(
+    getMethodForRecipeQuery,
+    {
+      variables: {
+        id: id,
+      },
     }
   );
   return { loading, data, error };

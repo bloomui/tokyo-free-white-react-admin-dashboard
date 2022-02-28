@@ -70,13 +70,11 @@ const mapMethodToInput = (a: recipe_recipe_method[]): StepToMethodInput[] => {
   return map;
 };
 export const UpdateRecipeDialog = ({
-  unitHere,
-  id,
+  recipe,
   open,
   onClose,
 }: {
-  unitHere: string;
-  id: string;
+  recipe: FilterRecipes_filterRecipes
   open: boolean;
   onClose: () => void;
 }) => {
@@ -87,8 +85,8 @@ export const UpdateRecipeDialog = ({
   const [dialog, openDialog] = useState(false);
 
   const [unitsHere, setUnits] = React.useState<string[]>();
-  const [unit, setUnit] = useState<string>(unitHere);
-  const [quantity, setQuantity] = useState(100);
+  const [unit, setUnit] = useState<string>(recipe.quantity.unit);
+  const [quantity, setQuantity] = useState(recipe.quantity.quantity);
 
   const [stepHere, setStep] = useState(1);
   const emptyStep: StepToMethodInput = {
@@ -96,20 +94,6 @@ export const UpdateRecipeDialog = ({
     method: "",
   };
   const [methodHere, setMethod] = useState<StepToMethodInput[]>([emptyStep]);
-
-  const {
-    data,
-    loading: loading1,
-    error: error1,
-  } = useGetRecipeQuery({
-    id: id,
-    onCompleted: (recipe) => {
-      setUnit(recipe.recipe.quantity.unit);
-      setUnits(getAvailableUnitsLarge(recipe.recipe.quantity.unit));
-      setQuantity(recipe.recipe.quantity.quantity);
-      setMethod(mapMethodToInput(recipe.recipe.method));
-    },
-  });
 
   const {
     data: data2,
@@ -123,7 +107,7 @@ export const UpdateRecipeDialog = ({
         )
       );
     },
-    id: id,
+    id: recipe.id,
     quantity: quantity,
     unit: unit,
   });
@@ -138,9 +122,6 @@ export const UpdateRecipeDialog = ({
     selectedIngredients.splice(index, 1);
     setIngredients([...selectedIngredients]);
   }
-  if (loading1) return <LoadingScreen />;
-  if (error1) return <LoadingScreen />;
-
   if (loading) return <CircularProgress />;
   if (error) return <CircularProgress />;
   if (loading2)
@@ -156,10 +137,8 @@ export const UpdateRecipeDialog = ({
       </Dialog>
     );
 
-  let recipe = data.recipe;
-
   const formInput: RecipeInput = {
-    id: id,
+    id: recipe.id,
     name: recipe.name,
     rating: recipe.rating,
     type: recipe.type,
