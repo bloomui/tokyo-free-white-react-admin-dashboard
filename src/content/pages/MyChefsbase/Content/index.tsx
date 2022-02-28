@@ -16,11 +16,15 @@ import {
   CircularProgress,
   Card,
   Tabs,
+  TextField,
+  MenuItem,
 } from "@material-ui/core";
+import { Formik } from "formik";
 import React, { ReactElement, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router";
 import Footer from "src/components/Footer";
+import { FormikSelect } from "src/components/form/FormikSelect";
 import { CenterInScreen, LoadingScreen } from "src/components/layout";
 import { PageHeader } from "src/components/pageHeader/PageHeader";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
@@ -189,12 +193,20 @@ export const DialogHere = ({
   open: boolean;
   onClose: () => void;
 }) => {
+  const [unit, setUnitHere] = useState<string>(unitHere);
+  const [quantity, setQuantityHere] = useState<number>(100);
+  const [nutritionsToDisplay, setNutritionsToDisplay] = useState<string[]>(
+    DefaultNutritionOptions
+  );
+  const initialValues = {
+    quantity: quantity,
+    unit: unitHere,
+  };
   const [value, setValue] = useState(0);
-  const [unit, setUnit] = useState<string>(unitHere);
-  const [quantity, setQuantity] = useState(100);
   const { data, loading, error } = useGetRecipeQuery({
     id: id,
-    onCompleted: (recipe) => setUnit(minimizeUnit(recipe.recipe.quantity.unit)),
+    onCompleted: (recipe) =>
+      setUnitHere(minimizeUnit(recipe.recipe.quantity.unit)),
   });
   const {
     data: data2,
@@ -205,12 +217,26 @@ export const DialogHere = ({
     onCompleted: (values) => {},
     id: id,
     quantity: quantity,
-    unit: unitHere,
+    unit: unit,
   });
 
-  if (loading) return <CircularProgress />;
+  if (loading)
+    return (
+      <CenterInScreen>
+        <Dialog open={true} onClose={onClose}>
+          <CircularProgress />
+        </Dialog>
+      </CenterInScreen>
+    );
   if (error) return <CircularProgress />;
-  if (loading2) return <CircularProgress />;
+  if (loading2)
+    return (
+      <CenterInScreen>
+        <Dialog open={true} onClose={onClose}>
+          <CircularProgress />
+        </Dialog>
+      </CenterInScreen>
+    );
   if (error2) return <CircularProgress />;
 
   let content;
@@ -225,7 +251,7 @@ export const DialogHere = ({
       break;
     default:
       content = (
-        <NutritionTab id={data.recipe.id} unit={unitHere} quantity={quantity} />
+        <NutritionTab id={data.recipe.id} unit={unit} quantity={quantity} />
       );
       break;
   }
@@ -236,7 +262,48 @@ export const DialogHere = ({
         <Dialog open={open} onClose={onClose}>
           {data && data.recipe && (
             <>
-              <H5 title={`${data.recipe.name} per ${quantity} ${unit}`} />
+              <Formik
+                initialValues={initialValues}
+                onSubmit={(values) => {
+                  setQuantityHere(values.quantity);
+                  setUnitHere(values.unit);
+                  refetch2({
+                    quantity: values.quantity,
+                    unit: values.unit,
+                  });
+                }}
+              >
+                {({ setFieldValue, submitForm }) => {
+                  return (
+                    <>
+                      <Grid xs={12}>
+                        <H5 title="Toon hoeveelheid per:" />
+                        <TextField
+                          fullWidth
+                          placeholder={String(quantity)}
+                          onChange={(e) =>
+                            setFieldValue("quantity", Number(e.target.value))
+                          }
+                        />
+                      </Grid>
+                      <Grid xs={12}>
+                        <FormikSelect name={"unit"}>
+                          {getUnitsForUnit(unit).map((u) => (
+                            <MenuItem key={u} value={u}>
+                              {u}
+                            </MenuItem>
+                          ))}
+                        </FormikSelect>
+                      </Grid>
+                      <Grid xs={12}>
+                        <Button fullWidth onClick={() => submitForm()}>
+                          Pas toe
+                        </Button>
+                      </Grid>
+                    </>
+                  );
+                }}
+              </Formik>
               <DialogTitle>
                 <Tabs
                   value={value}
@@ -333,21 +400,48 @@ export const NutritionTab = ({
   return (
     <DialogContent>
       <Card>
-        <Grid xs={12}>
-          <NutritionOptionDropDown
-            setFieldValue={(selected) => setNutritionsToDisplay(selected)}
-          />
-        </Grid>
         <Grid container xs={12}>
-          <Grid xs={6}>
-            <ItemNutrition
-              nutritionsToDisplay={nutritionsToDisplay}
-              title="Voedingswaarde"
-              item={data.nutritionForRecipe}
+          <Grid xs={12}>
+            <NutritionOptionDropDown
+              setFieldValue={(selected) => setNutritionsToDisplay(selected)}
             />
+          </Grid>
+          <Grid container xs={12}>
+            <Grid xs={6}>
+              <ItemNutrition
+                nutritionsToDisplay={nutritionsToDisplay}
+                title="Voedingswaarde"
+                item={data.nutritionForRecipe}
+              />
+            </Grid>
           </Grid>
         </Grid>
       </Card>
     </DialogContent>
   );
+};
+
+export const getUnitsForUnit = (u: string): string[] => {
+  var result;
+  switch (u) {
+    case "milligram":
+      result = ["milligram", "gram", "kg"];
+      break;
+    case "gram":
+      result = ["milligram", "gram", "kg"];
+      break;
+    case "kg":
+      result = ["milligram", "gram", "kg"];
+      break;
+    case "millilter":
+      result = ["millilter", "liter"];
+      break;
+    case "liter":
+      result = ["millilter", "liter"];
+      break;
+    default:
+      result = ["stuk(s)", "person(en)"];
+  }
+
+  return result;
 };
