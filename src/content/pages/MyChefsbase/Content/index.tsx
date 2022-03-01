@@ -54,7 +54,12 @@ import { TopPartRecipePage } from "../Recipes/components/TopPartRecipePage";
 import { initialRecipeValues } from "../Recipes/filterrecipes";
 import { minimizeUnit } from "../Recipes/recipeDialogs";
 import { FilterRecipes_filterRecipes } from "../Recipes/types/FilterRecipes";
-import { ingredientsForRecipe, ingredientsForRecipeVariables, ingredientsForRecipe_ingredientsForRecipe } from "../Recipes/types/ingredientsForRecipe";
+import {
+  ingredientsForRecipe,
+  ingredientsForRecipeVariables,
+  ingredientsForRecipe_ingredientsForRecipe_quantity,
+  ingredientsForRecipe_ingredientsForRecipe,
+} from "../Recipes/types/ingredientsForRecipe";
 import { recipe_recipe_method } from "../Recipes/types/recipe";
 
 export const RecipesAndIngredients = ({
@@ -184,28 +189,24 @@ export const IngredientContent = () => {
 };
 
 export const MyDialog = () => {
-    return (
-        <Dialog maxWidth="md" open={true}>
-
-        </Dialog>
-    )
-}
+  return <Dialog maxWidth="md" open={true}></Dialog>;
+};
 type Quantity = {
-    quantity: number,
-    unit: string
-}
+  quantity: number;
+  unit: string;
+};
 export const DialogHere = ({
   recipe,
   open,
   onClose,
 }: {
-    recipe: FilterRecipes_filterRecipes;
+  recipe: FilterRecipes_filterRecipes;
   open: boolean;
   onClose: () => void;
 }) => {
   const [unit, setUnitHere] = useState<string>(recipe.quantity.unit);
   const [quantity, setQuantity] = useState<number>(recipe.quantity.quantity);
-  
+
   const initialValues = {
     quantity: quantity,
     unit: unit,
@@ -214,21 +215,20 @@ export const DialogHere = ({
 
   const [refetch, setRefetch] = useState();
 
-  
   let content;
 
   switch (value) {
     case 0:
-      content = <IngredientsTab id={recipe.id} unit={unit} quantity={quantity} />;
+      content = (
+        <IngredientsTab id={recipe.id} unit={unit} quantity={quantity} />
+      );
       break;
 
     case 1:
-      content = <MethodsTab id={recipe.id}/>;
+      content = <MethodsTab id={recipe.id} />;
       break;
     default:
-      content = (
-        <NutritionTab id={recipe.id} unit={unit} quantity={quantity} />
-      );
+      content = <NutritionTab id={recipe.id} unit={unit} quantity={quantity} />;
       break;
   }
 
@@ -248,30 +248,30 @@ export const DialogHere = ({
                 {({ setFieldValue, submitForm }) => {
                   return (
                     <>
-                    <Grid container xs={12}>
-                      <Grid xs={12}>
-                        <H5 title="Toon hoeveelheid per:" />
+                      <Grid container xs={12}>
+                        <Grid xs={12}>
+                          <H5 title="Toon hoeveelheid per:" />
                         </Grid>
                         <Grid xs={4}></Grid>
                         <Grid xs={6}>
-                            <TextField
-                          placeholder={String(quantity)}
-                          onChange={(e) =>
-                            setFieldValue("quantity", Number(e.target.value))
-                          }
-                        />
-                     <Grid xs={2}></Grid>
-                      <Grid xs={4}></Grid>
-                        <Grid xs={6}>                       
-                         <FormikSelect name={"unit"}>
-                          {getUnitsForUnit(unit).map((u) => (
-                            <MenuItem key={u} value={u}>
-                              {u}
-                            </MenuItem>
-                          ))}
-                        </FormikSelect>
+                          <TextField
+                            placeholder={String(quantity)}
+                            onChange={(e) =>
+                              setFieldValue("quantity", Number(e.target.value))
+                            }
+                          />
+                          <Grid xs={2}></Grid>
+                          <Grid xs={4}></Grid>
+                          <Grid xs={6}>
+                            <FormikSelect name={"unit"}>
+                              {getUnitsForUnit(unit).map((u) => (
+                                <MenuItem key={u} value={u}>
+                                  {u}
+                                </MenuItem>
+                              ))}
+                            </FormikSelect>
+                          </Grid>
                         </Grid>
-                      </Grid>
                       </Grid>
                       <Grid xs={12}>
                         <Button fullWidth onClick={() => submitForm()}>
@@ -284,7 +284,7 @@ export const DialogHere = ({
               </Formik>
               <DialogTitle>
                 <Tabs
-                centered
+                  centered
                   value={value}
                   onChange={(e, newValue) => setValue(newValue as number)}
                 >
@@ -304,35 +304,30 @@ export const DialogHere = ({
 };
 
 export const IngredientsTab = ({
-    id,
-    quantity,
-    unit,
-  }: {
-    id: string;
-    quantity: number;
-    unit: string;
-  }) => {
-    const {
-        data,
-        loading,
-        error,
-        refetch,
-      } = useGetIngredientsForRecipe({
-        onCompleted: (values) => {},
-        id: id,
-        quantity: quantity,
-        unit: unit,
-      });
-    
-      if (loading)
-        return (
-          <CenterInScreen>
-            <Dialog maxWidth="md" open={true}>
-              <CircularProgress />
-            </Dialog>
-          </CenterInScreen>
-        );
-      if (error) return <CircularProgress />;
+  id,
+  quantity,
+  unit,
+}: {
+  id: string;
+  quantity: number;
+  unit: string;
+}) => {
+  const { data, loading, error, refetch } = useGetIngredientsForRecipe({
+    onCompleted: (values) => {},
+    id: id,
+    quantity: quantity,
+    unit: unit,
+  });
+
+  if (loading)
+    return (
+      <CenterInScreen>
+        <Dialog maxWidth="md" open={true}>
+          <CircularProgress />
+        </Dialog>
+      </CenterInScreen>
+    );
+  if (error) return <CircularProgress />;
 
   return (
     <DialogContent>
@@ -346,13 +341,18 @@ export const IngredientsTab = ({
                     <H5 title="Ingredienten" />
                   </TableRow>
                 </TableHead>
-                {data && data.ingredientsForRecipe && data.ingredientsForRecipe.map((ingredient) => (
-                  <TableRow>
-                    <TableCell>{ingredient.ingredient.name}</TableCell>
-                    <TableCell>{ingredient.quantity.quantity}</TableCell>
-                    <TableCell>{ingredient.quantity.unit}</TableCell>
-                  </TableRow>
-                ))}
+                {data &&
+                  data.ingredientsForRecipe &&
+                  data.ingredientsForRecipe.map((ingredient) => {
+                    const quantity = DisplayQuantity(ingredient.quantity);
+                    return (
+                      <TableRow>
+                        <TableCell>{ingredient.ingredient.name}</TableCell>
+                        <TableCell>{quantity.quantity}</TableCell>
+                        <TableCell>{quantity.unit}</TableCell>
+                      </TableRow>
+                    );
+                  })}
               </Table>
             </TableContainer>
           </Grid>
@@ -363,25 +363,19 @@ export const IngredientsTab = ({
 };
 
 export const MethodsTab = ({ id }: { id: string }) => {
+  const { data, loading, error } = useGetMethodForRecipeQuery({
+    id: id,
+  });
 
-    const {
-        data,
-        loading,
-        error,
-      } = useGetMethodForRecipeQuery({
-        id: id
-      });
-      
-    
-      if (loading)
-        return (
-          <CenterInScreen>
-            <Dialog maxWidth="md" open={true}>
-              <CircularProgress />
-            </Dialog>
-          </CenterInScreen>
-        );
-      if (error) return <CircularProgress />;
+  if (loading)
+    return (
+      <CenterInScreen>
+        <Dialog maxWidth="md" open={true}>
+          <CircularProgress />
+        </Dialog>
+      </CenterInScreen>
+    );
+  if (error) return <CircularProgress />;
 
   return (
     <DialogContent>
@@ -389,12 +383,13 @@ export const MethodsTab = ({ id }: { id: string }) => {
         <Grid container xs={12}>
           <Grid xs={12}>
             <H5 title="Methode" />
-            {data && data.methodForRecipe.map((stepToMethod) => (
-              <Grid container xs={12}>
-                <Grid xs={2}>{stepToMethod.step}</Grid>
-                <Grid xs={10}>{stepToMethod.method}</Grid>
-              </Grid>
-            ))}
+            {data &&
+              data.methodForRecipe.map((stepToMethod) => (
+                <Grid container xs={12}>
+                  <Grid xs={2}>{stepToMethod.step}</Grid>
+                  <Grid xs={10}>{stepToMethod.method}</Grid>
+                </Grid>
+              ))}
           </Grid>
         </Grid>
       </Card>
@@ -467,6 +462,46 @@ export const getUnitsForUnit = (u: string): string[] => {
       break;
     default:
       result = ["stuk(s)", "person(en)"];
+  }
+
+  return result;
+};
+
+const DisplayQuantity = (
+  quantity: ingredientsForRecipe_ingredientsForRecipe_quantity
+): ingredientsForRecipe_ingredientsForRecipe_quantity => {
+  var result;
+  switch (true) {
+    case quantity.unit == "kg" && quantity.quantity < 0.000001:
+      result = { quantity: quantity.quantity * 1000000, unit: "milligram" };
+      break;
+    case quantity.unit == "kg" &&
+      quantity.quantity < 1 &&
+      quantity.quantity > 0.001:
+      result = { quantity: quantity.quantity * 1000, unit: "gram" };
+      break;
+    case quantity.unit == "gram" && quantity.quantity > 1000:
+      result = { quantity: quantity.quantity / 1000, unit: "kg" };
+      break;
+    case quantity.unit == "gram" && quantity.quantity < 1:
+      result = { quantity: quantity.quantity * 1000, unit: "milligram" };
+      break;
+    case quantity.unit == "milligram" && quantity.quantity > 1000000:
+      result = { quantity: quantity.quantity / 1000000, unit: "kg" };
+      break;
+    case quantity.unit == "milligram" &&
+      quantity.quantity > 1000 &&
+      quantity.quantity < 1000000:
+      result = { quantity: quantity.quantity / 1000, unit: "gram" };
+      break;
+    case quantity.unit == "liter" && quantity.quantity < 1000:
+      result = { quantity: quantity.quantity * 1000, unit: "milliliter" };
+      break;
+    case quantity.unit == "milliliter" && quantity.quantity > 1000:
+      result = { quantity: quantity.quantity / 1000, unit: "liter" };
+      break;
+    default:
+      result = { quantity: quantity.quantity, unit: quantity.unit };
   }
 
   return result;

@@ -11,8 +11,6 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  List,
-  ListItem,
   Button,
   DialogActions,
 } from "@material-ui/core";
@@ -100,7 +98,10 @@ export const IngredientDialog = ({
               <Card>
                 <Grid container spacing={2} xs={12}>
                   <ItemString title="categorie" item={ingredient.category} />
-                  <ItemString title="Meeteenheid" item={stringForMaterial(ingredient.material)} />
+                  <ItemString
+                    title="Meeteenheid"
+                    item={stringForMaterial(ingredient.material)}
+                  />
                   <ItemInt title="rating" item={ingredient.rating} />
                   <ItemProducts title="Producten" item={ingredient.products} />
                   <Grid item xs={12}>
