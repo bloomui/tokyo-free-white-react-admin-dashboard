@@ -39,7 +39,7 @@ import { ingredients_ingredients } from "../types/ingredients";
 export const units = [
   "milligram",
   "gram",
-  "kilogram",
+  "kg",
   "milliliter",
   "liter",
   "stuk(s)",
