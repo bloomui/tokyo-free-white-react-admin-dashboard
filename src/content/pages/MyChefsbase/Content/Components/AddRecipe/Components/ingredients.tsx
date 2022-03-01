@@ -3,8 +3,9 @@ import { FieldArray } from "formik";
 import { useState } from "react";
 import { H5, H4, H2 } from "src/content/pages/Components/TextTypes";
 import { AddRecipeVariables } from "src/content/pages/MyChefsbase/Recipes/types/AddRecipe";
-import { emptyIngredientEntry } from "./Utils/Conts";
+import { emptyIngredientEntry, emptyIngredientEntryForm } from "./Utils/Conts";
 import { IngredientSelector } from "./Utils/IngredientSelector";
+import { Form } from "src/content/pages/MyChefsbase/Recipes/AddRecipe";
 
 export const AddIngsForRecipe = ({
   setFieldValue,
@@ -15,7 +16,7 @@ export const AddIngsForRecipe = ({
     value: any,
     shouldValidate?: boolean | undefined
   ) => void;
-  values: AddRecipeVariables;
+  values: Form;
 }) => {
   const [stepHere, setStep] = useState(1);
   return (
@@ -87,7 +88,7 @@ export const AddIngsForRecipe = ({
                             type="button"
                             onClick={() => {
                               setStep(stepHere + 1);
-                              arrayHelpers.push(emptyIngredientEntry);
+                              arrayHelpers.push(emptyIngredientEntryForm);
                             }}
                           >
                             +

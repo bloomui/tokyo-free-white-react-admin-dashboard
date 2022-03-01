@@ -1,16 +1,13 @@
 import { Grid, Button } from "@material-ui/core";
 import { FieldArray } from "formik";
 import { useState } from "react";
+import { Form } from "src/content/pages/MyChefsbase/Recipes/AddRecipe";
 import { AddRecipeVariables } from "src/content/pages/MyChefsbase/Recipes/types/AddRecipe";
 import { FormFieldMultiLine } from "src/content/pages/SignIn";
 import { StepToMethodInput } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
 
-export const AddMethodsForRecipe = ({
-  values,
-}: {
-  values: AddRecipeVariables;
-}) => {
+export const AddMethodsForRecipe = ({ values }: { values: Form }) => {
   const [stepHere, setStep] = useState(1);
   const emptyStep: StepToMethodInput = {
     step: stepHere,

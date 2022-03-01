@@ -47,9 +47,34 @@ import { AddIngrDialog } from "./components/AddQuickIngredients";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import { AddIngsForRecipe } from "../../Content/Components/AddRecipe/Components/ingredients";
 import { AddMethodsForRecipe } from "../../Content/Components/AddRecipe/Components/method";
-import { emptyIngredientEntry } from "../../Content/Components/AddRecipe/Components/Utils/Conts";
+import {
+  emptyIngredientEntry,
+  emptyIngredientEntryForm,
+} from "../../Content/Components/AddRecipe/Components/Utils/Conts";
 
-type AddRecipeForm = {
+export type Form = {
+  input: AddRecipeForm;
+  ingredients: RecipeFormIngredientsForm[];
+  method: StepToMethodInput[];
+};
+
+export type RecipeFormIngredientsForm = {
+  id?: string | null;
+  name?: string | null;
+  quantity: string;
+  unit: string;
+};
+export const recipeFormIngrToInput = (
+  form: RecipeFormIngredientsForm[]
+): RecipeIngredientsForm[] => {
+  return form.map((f) => ({
+    name: f.name,
+    id: f.id,
+    quantity: Number(f.quantity),
+    unit: f.unit,
+  }));
+};
+export type AddRecipeForm = {
   name: string;
   rating: string;
   type: string;
@@ -91,10 +116,10 @@ export const AddRecipePage1 = () => {
     method: "",
   };
 
-  const formIngredients: QuantityToId[] | null = [
-    emptyIngredientEntry,
-    emptyIngredientEntry,
-    emptyIngredientEntry,
+  const formIngredients: RecipeFormIngredientsForm[] | null = [
+    emptyIngredientEntryForm,
+    emptyIngredientEntryForm,
+    emptyIngredientEntryForm,
   ];
 
   const formMethods: StepToMethodInput[] | null = [
@@ -102,8 +127,9 @@ export const AddRecipePage1 = () => {
     emptyStep,
     emptyStep,
   ];
-  const formState: AddRecipeVariables = {
-    input: recipeFormToRecipeInput(formInput),
+
+  const form: Form = {
+    input: formInput,
     ingredients: formIngredients,
     method: formMethods,
   };
@@ -130,7 +156,7 @@ export const AddRecipePage1 = () => {
         >
           <Grid item xs={12}>
             <Formik
-              initialValues={formState}
+              initialValues={form}
               onSubmit={(values) => {
                 addRecipe({
                   variables: {
@@ -138,14 +164,8 @@ export const AddRecipePage1 = () => {
                       step: index + 1,
                       method: stepToMethod.method,
                     })),
-                    ingredients: values.ingredients,
-                    input: {
-                      type: values.input.type,
-                      name: values.input.name,
-                      rating: values.input.rating,
-                      quantity: values.input.quantity,
-                      unit: values.input.unit,
-                    },
+                    ingredients: recipeFormIngrToInput(values.ingredients),
+                    input: recipeFormToRecipeInput(values.input),
                   },
                 });
               }}

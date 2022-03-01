@@ -6,10 +6,13 @@ import { H3 } from "src/content/pages/Components/TextTypes";
 import { useSearchIngredientFilterQuery } from "src/content/pages/MyChefsbase/Ingredients/AddIngredient/api";
 import { searchIngredient_searchIngredient } from "src/content/pages/MyChefsbase/Ingredients/AddIngredient/types/searchIngredient";
 import {
+  Form,
+  RecipeFormIngredientsForm,
+} from "src/content/pages/MyChefsbase/Recipes/AddRecipe";
+import {
   getUnitsForMaterial,
   units,
 } from "src/content/pages/MyChefsbase/Recipes/AddRecipe/components/IngredientTable";
-import { RecipeIngredientsForm } from "src/globalTypes";
 import {
   composeValidators,
   required,
@@ -21,7 +24,7 @@ export const IngredientSelector = ({
   index,
   setFieldValue,
 }: {
-  form: RecipeIngredientsForm;
+  form: RecipeFormIngredientsForm;
   index: number;
   setFieldValue: (
     field: string,

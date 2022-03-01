@@ -43,7 +43,6 @@ export const units = [
   "milliliter",
   "liter",
   "stuk(s)",
-  "person(en)",
 ];
 export const unitsSolid = ["milligram", "gram", "kilogram"];
 export const unitsLiquid = ["milliliter", "liter"];
