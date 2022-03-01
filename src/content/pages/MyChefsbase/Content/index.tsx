@@ -235,7 +235,7 @@ export const DialogHere = ({
   return (
     <>
       <CenterInScreen>
-        <Dialog maxWidth={"xl"} open={open} onClose={onClose}>
+        <Dialog open={open} onClose={onClose}>
           {recipe && (
             <>
               <Formik
@@ -370,7 +370,7 @@ export const MethodsTab = ({ id }: { id: string }) => {
   if (loading)
     return (
       <CenterInScreen>
-        <Dialog maxWidth="md" open={true}>
+        <Dialog open={true}>
           <CircularProgress />
         </Dialog>
       </CenterInScreen>
@@ -382,14 +382,23 @@ export const MethodsTab = ({ id }: { id: string }) => {
       <Card>
         <Grid container xs={12}>
           <Grid xs={12}>
-            <H5 title="Methode" />
-            {data &&
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <H5 title="Methode" />
+                  </TableRow>
+                </TableHead>
+                {data &&
               data.methodForRecipe.map((stepToMethod) => (
-                <Grid container xs={12}>
-                  <Grid xs={2}>{stepToMethod.step}</Grid>
-                  <Grid xs={10}>{stepToMethod.method}</Grid>
-                </Grid>
-              ))}
+                      <TableRow>
+                        <TableCell>{stepToMethod.step}</TableCell>
+                        <TableCell>{stepToMethod.method}</TableCell>
+                      </TableRow>
+                    )
+                  )}
+              </Table>
+            </TableContainer>
           </Grid>
         </Grid>
       </Card>
