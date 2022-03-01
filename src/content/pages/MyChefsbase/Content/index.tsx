@@ -51,7 +51,7 @@ import { RecipeTable } from "../Recipes/components/RecipeTable";
 import { TopPartRecipePage } from "../Recipes/components/TopPartRecipePage";
 import { initialRecipeValues } from "../Recipes/filterrecipes";
 import { minimizeUnit } from "../Recipes/recipeDialogs";
-import { ingredientsForRecipe_ingredientsForRecipe } from "../Recipes/types/ingredientsForRecipe";
+import { ingredientsForRecipe_ingredientsForRecipe, ingredientsForRecipe_ingredientsForRecipe_quantity } from "../Recipes/types/ingredientsForRecipe";
 import { recipe_recipe_method } from "../Recipes/types/recipe";
 
 export const RecipesAndIngredients = ({
@@ -340,13 +340,16 @@ export const IngredientsTab = ({
                     <H5 title="Ingredienten" />
                   </TableRow>
                 </TableHead>
-                {ingredients.map((ingredient) => (
-                  <TableRow>
-                    <TableCell>{ingredient.ingredient.name}</TableCell>
-                    <TableCell>{ingredient.quantity.quantity}</TableCell>
-                    <TableCell>{ingredient.quantity.unit}</TableCell>
-                  </TableRow>
-                ))}
+                {ingredients.map((ingredient) => {
+                  const quantity = DisplayQuantity(ingredient.quantity);
+                  return (
+                    <TableRow>
+                      <TableCell>{ingredient.ingredient.name}</TableCell>
+                      <TableCell>{quantity.quantity}</TableCell>
+                      <TableCell>{quantity.unit}</TableCell>
+                    </TableRow>
+                  );
+                })}
               </Table>
             </TableContainer>
           </Grid>
@@ -441,6 +444,46 @@ export const getUnitsForUnit = (u: string): string[] => {
       break;
     default:
       result = ["stuk(s)", "person(en)"];
+  }
+
+  return result;
+};
+
+const DisplayQuantity = (
+  quantity: ingredientsForRecipe_ingredientsForRecipe_quantity
+): ingredientsForRecipe_ingredientsForRecipe_quantity => {
+  var result;
+  switch (true) {
+    case quantity.unit == "kg" && quantity.quantity < 0.000001:
+      result = { quantity: quantity.quantity * 1000000, unit: "milligram" };
+      break;
+    case quantity.unit == "kg" &&
+      quantity.quantity < 1 &&
+      quantity.quantity > 0.001:
+      result = { quantity: quantity.quantity * 1000, unit: "gram" };
+      break;
+    case quantity.unit == "gram" && quantity.quantity > 1000:
+      result = { quantity: quantity.quantity / 1000, unit: "kg" };
+      break;
+    case quantity.unit == "gram" && quantity.quantity < 1:
+      result = { quantity: quantity.quantity * 1000, unit: "milligram" };
+      break;
+    case quantity.unit == "milligram" && quantity.quantity > 1000000:
+      result = { quantity: quantity.quantity / 1000000, unit: "kg" };
+      break;
+    case quantity.unit == "milligram" &&
+      quantity.quantity > 1000 &&
+      quantity.quantity < 1000000:
+      result = { quantity: quantity.quantity / 1000, unit: "gram" };
+      break;
+    case quantity.unit == "liter" && quantity.quantity < 1000:
+      result = { quantity: quantity.quantity * 1000, unit: "milliliter" };
+      break;
+    case quantity.unit == "milliliter" && quantity.quantity > 1000:
+      result = { quantity: quantity.quantity / 1000, unit: "liter" };
+      break;
+    default:
+      result = { quantity: quantity.quantity, unit: quantity.unit };
   }
 
   return result;

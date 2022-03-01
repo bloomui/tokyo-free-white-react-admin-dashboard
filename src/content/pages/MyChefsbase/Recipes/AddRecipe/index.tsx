@@ -49,6 +49,34 @@ import { AddIngsForRecipe } from "../../Content/Components/AddRecipe/Components/
 import { AddMethodsForRecipe } from "../../Content/Components/AddRecipe/Components/method";
 import { emptyIngredientEntry } from "../../Content/Components/AddRecipe/Components/Utils/Conts";
 
+type AddRecipeForm = {
+  name: string;
+  rating: string;
+  type: string;
+  quantity: string;
+  unit: string;
+};
+
+const formInput: AddRecipeForm = {
+  name: "",
+  rating: "",
+  type: "",
+  quantity: "",
+  unit: units[0],
+};
+
+export const recipeFormToRecipeInput = (
+  form: AddRecipeForm
+): AddRecipeInput => {
+  return {
+    name: form.name,
+    rating: Number(form.rating),
+    type: form.type,
+    quantity: Number(form.quantity),
+    unit: form.unit,
+  };
+};
+
 export const AddRecipePage1 = () => {
   const [value, setValue] = useState(0);
   const { addRecipe, loading, error } = useAddRecipe({
@@ -57,13 +85,6 @@ export const AddRecipePage1 = () => {
     },
   });
   const [stepHere, setStep] = useState(1);
-  const formInput: AddRecipeInput = {
-    name: "",
-    rating: 0,
-    type: "",
-    quantity: 0,
-    unit: units[0],
-  };
 
   const emptyStep: StepToMethodInput = {
     step: stepHere,
@@ -82,7 +103,7 @@ export const AddRecipePage1 = () => {
     emptyStep,
   ];
   const formState: AddRecipeVariables = {
-    input: formInput,
+    input: recipeFormToRecipeInput(formInput),
     ingredients: formIngredients,
     method: formMethods,
   };
