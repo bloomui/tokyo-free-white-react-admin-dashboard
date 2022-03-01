@@ -463,11 +463,11 @@ export const getUnitsForUnit = (u: string): string[] => {
     case "kg":
       result = ["milligram", "gram", "kg"];
       break;
-    case "millilter":
-      result = ["millilter", "liter"];
+    case "milliliter":
+      result = ["milliliter", "liter"];
       break;
     case "liter":
-      result = ["millilter", "liter"];
+      result = ["milliliter", "liter"];
       break;
     default:
       result = ["stuk(s)", "person(en)"];
