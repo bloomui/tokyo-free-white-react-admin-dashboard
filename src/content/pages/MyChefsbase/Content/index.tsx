@@ -31,7 +31,7 @@ import { PageHeader } from "src/components/pageHeader/PageHeader";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import { IngredientFilterInput, RecipeFilterInput } from "src/globalTypes";
 import { clearAuth } from "src/utilities/auth";
-import { H5 } from "../../Components/TextTypes";
+import { H5, H3, H3Left } from "../../Components/TextTypes";
 import {
   DefaultNutritionOptions,
   NutritionOptionDropDown,
@@ -188,6 +188,11 @@ export const IngredientContent = () => {
   );
 };
 
+export type QuantityToUnit = {
+  quantity: number;
+  unit: string;
+};
+
 export const MyDialog = () => {
   return <Dialog maxWidth="md" open={true}></Dialog>;
 };
@@ -213,14 +218,17 @@ export const DialogHere = ({
   };
   const [value, setValue] = useState(0);
 
-  const [refetch, setRefetch] = useState();
+  const frac = getFrac({
+    original: recipe.quantity,
+    newQuantity: { quantity: quantity, unit: unit },
+  });
 
   let content;
 
   switch (value) {
     case 0:
       content = (
-        <IngredientsTab id={recipe.id} unit={unit} quantity={quantity} />
+        <IngredientsTab id={recipe.id} unit={unit} quantity={quantity * frac} />
       );
       break;
 
@@ -228,7 +236,9 @@ export const DialogHere = ({
       content = <MethodsTab id={recipe.id} />;
       break;
     default:
-      content = <NutritionTab id={recipe.id} unit={unit} quantity={quantity} />;
+      content = (
+        <NutritionTab id={recipe.id} unit={unit} quantity={quantity * frac} />
+      );
       break;
   }
 
@@ -238,6 +248,29 @@ export const DialogHere = ({
         <Dialog open={open} onClose={onClose}>
           {recipe && (
             <>
+              <Grid container xs={12}>
+                <Grid xs={3}>
+                  <H3Left title="Recept" />
+                </Grid>
+                <Grid xs={3}>
+                  <H3 title={recipe.name} />
+                </Grid>
+                <Grid xs={6}></Grid>
+                <Grid xs={3}>
+                  <H3Left title="Type" />
+                </Grid>
+                <Grid xs={3}>
+                  <H3 title={recipe.type} />
+                </Grid>
+                <Grid xs={6}></Grid>
+                <Grid xs={3}>
+                  <H3Left title="Beoordeling" />
+                </Grid>
+                <Grid xs={3}>
+                  <H3 title={String(recipe.rating)} />
+                </Grid>
+                <Grid xs={6}></Grid>
+              </Grid>
               <Formik
                 initialValues={initialValues}
                 onSubmit={(values) => {
@@ -390,13 +423,12 @@ export const MethodsTab = ({ id }: { id: string }) => {
                   </TableRow>
                 </TableHead>
                 {data &&
-              data.methodForRecipe.map((stepToMethod) => (
-                      <TableRow>
-                        <TableCell>{stepToMethod.step}</TableCell>
-                        <TableCell>{stepToMethod.method}</TableCell>
-                      </TableRow>
-                    )
-                  )}
+                  data.methodForRecipe.map((stepToMethod) => (
+                    <TableRow>
+                      <TableCell>{stepToMethod.step}</TableCell>
+                      <TableCell>{stepToMethod.method}</TableCell>
+                    </TableRow>
+                  ))}
               </Table>
             </TableContainer>
           </Grid>
@@ -511,6 +543,41 @@ const DisplayQuantity = (
       break;
     default:
       result = { quantity: quantity.quantity, unit: quantity.unit };
+  }
+
+  return result;
+};
+
+export const getFrac = ({
+  original,
+  newQuantity,
+}: {
+  original: QuantityToUnit;
+  newQuantity: QuantityToUnit;
+}): number => {
+  var result;
+  switch (true) {
+    case original.unit == newQuantity.unit:
+      result = original.quantity / newQuantity.quantity;
+      break;
+    case (original.unit == "liter" && newQuantity.unit == "milliliter") ||
+      (original.unit == "kg" && newQuantity.unit == "gram") ||
+      (original.unit == "gram" && newQuantity.unit == "milligram"):
+      result = (original.quantity / newQuantity.quantity) * 1000;
+      break;
+    case original.unit == "kg" && newQuantity.unit == "milligram":
+      result = (original.quantity / newQuantity.quantity) * 1000000;
+      break;
+    case original.unit == "milligram" && newQuantity.unit == "kg":
+      result = original.quantity / newQuantity.quantity / 1000000;
+      break;
+    case (original.unit == "milliliter" && newQuantity.unit == "liter") ||
+      (original.unit == "gram" && newQuantity.unit == "kg") ||
+      (original.unit == "milligram" && newQuantity.unit == "gram"):
+      result = original.quantity / newQuantity.quantity / 1000;
+      break;
+    default:
+      result = 1.0;
   }
 
   return result;
