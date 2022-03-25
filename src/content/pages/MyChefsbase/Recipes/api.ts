@@ -15,7 +15,11 @@ import {
   ingredientsForRecipe,
   ingredientsForRecipeVariables,
 } from "./types/ingredientsForRecipe";
-import { methodForRecipe, methodForRecipeVariables } from "./types/methodForRecipe";
+import { WriteRecipe, WriteRecipeVariables } from "./types/WriteRecipe";
+import {
+  methodForRecipe,
+  methodForRecipeVariables,
+} from "./types/methodForRecipe";
 
 const getRecipeQuery = gql`
   query recipe($id: String!) {
@@ -44,11 +48,7 @@ const getMethodForRecipeQuery = gql`
   }
 `;
 
-export const useGetRecipeQuery = ({
-  id,
-}: {
-  id: string;
-}) => {
+export const useGetRecipeQuery = ({ id }: { id: string }) => {
   const { loading, data, error } = useSimpleQuery<recipe, recipeVariables>(
     getRecipeQuery,
     {
@@ -60,19 +60,15 @@ export const useGetRecipeQuery = ({
   return { loading, data, error };
 };
 
-export const useGetMethodForRecipeQuery = ({
-  id,
-}: {
-  id: string;
-}) => {
-  const { loading, data, error } = useSimpleQuery<methodForRecipe, methodForRecipeVariables>(
-    getMethodForRecipeQuery,
-    {
-      variables: {
-        id: id,
-      },
-    }
-  );
+export const useGetMethodForRecipeQuery = ({ id }: { id: string }) => {
+  const { loading, data, error } = useSimpleQuery<
+    methodForRecipe,
+    methodForRecipeVariables
+  >(getMethodForRecipeQuery, {
+    variables: {
+      id: id,
+    },
+  });
   return { loading, data, error };
 };
 
@@ -193,6 +189,22 @@ export const AddRecipeMutation = gql`
   }
 `;
 
+export const WriteRecipeMutation = gql`
+  mutation WriteRecipe(
+    $boolean: Int!
+    $input: AddRecipeInput!
+    $ingredients: [RecipeIngredients!]
+    $method: [StepToMethodInput!]!
+  ) {
+    writeRecipe(
+      boolean: $boolean
+      input: $input
+      ingredients: $ingredients
+      method: $method
+    )
+  }
+`;
+
 export const useGetNutritionForRecipe = ({
   id,
   quantity,
@@ -278,6 +290,25 @@ export const useUpdateRecipe = ({
 
   return {
     updateRecipe,
+    loading,
+    error,
+  };
+};
+
+export const useWriteRecipe = ({
+  onCompleted,
+}: {
+  onCompleted: () => void;
+}) => {
+  const [writeRecipe, { loading, error }] = useMutation<
+    WriteRecipe,
+    WriteRecipeVariables
+  >(WriteRecipeMutation, {
+    onCompleted: () => onCompleted(),
+  });
+
+  return {
+    writeRecipe,
     loading,
     error,
   };

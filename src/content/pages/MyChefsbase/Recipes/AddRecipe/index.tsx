@@ -1,7 +1,10 @@
 import { useQuery } from "@apollo/client";
 import {
   Button,
+  Checkbox,
   Container,
+  Dialog,
+  DialogContent,
   Grid,
   MenuItem,
   Tab,
@@ -23,6 +26,7 @@ import { FormField } from "src/components/form/FormField";
 import {
   AddRecipeInput,
   QuantityToId,
+  RecipeIngredients,
   RecipeIngredientsForm,
   StepToMethodInput,
 } from "src/globalTypes";
@@ -34,7 +38,7 @@ import {
 } from "src/utilities/formikValidators";
 import { user } from "../..";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
-import { useAddRecipe } from "../api";
+import { useAddRecipe, useWriteRecipe } from "../api";
 import { Divider } from "@mui/material";
 import { AddRecipeVariables } from "../types/AddRecipe";
 import { TableData, units } from "./components/IngredientTable";
@@ -49,10 +53,12 @@ import { AddIngsForRecipe } from "../../Content/Components/AddRecipe/Components/
 import { AddMethodsForRecipe } from "../../Content/Components/AddRecipe/Components/method";
 import {
   emptyIngredientEntry,
+  emptyRecipeIngredientsForm,
   emptyIngredientEntryForm,
 } from "../../Content/Components/AddRecipe/Components/Utils/Conts";
 
 export type Form = {
+  boolean: number;
   input: AddRecipeForm;
   ingredients: RecipeFormIngredientsForm[];
   method: StepToMethodInput[];
@@ -60,10 +66,21 @@ export type Form = {
 
 export type RecipeFormIngredientsForm = {
   id?: string | null;
-  name?: string | null;
+  name: string;
   quantity: string;
   unit: string;
 };
+
+export const recipeFormIngredientToInput = (
+  form: RecipeFormIngredientsForm[]
+): RecipeIngredients[] => {
+  return form.map((f) => ({
+    name: f.name,
+    quantity: Number(f.quantity),
+    unit: f.unit,
+  }));
+};
+
 export const recipeFormIngrToInput = (
   form: RecipeFormIngredientsForm[]
 ): RecipeIngredientsForm[] => {
@@ -104,7 +121,8 @@ export const recipeFormToRecipeInput = (
 
 export const AddRecipePage1 = () => {
   const [value, setValue] = useState(0);
-  const { addRecipe, loading, error } = useAddRecipe({
+  const [openBoolean, setOpenBoolean] = useState(false);
+  const { writeRecipe, loading, error } = useWriteRecipe({
     onCompleted: () => {
       window.location.reload();
     },
@@ -117,9 +135,9 @@ export const AddRecipePage1 = () => {
   };
 
   const formIngredients: RecipeFormIngredientsForm[] | null = [
-    emptyIngredientEntryForm,
-    emptyIngredientEntryForm,
-    emptyIngredientEntryForm,
+    emptyRecipeIngredientsForm,
+    emptyRecipeIngredientsForm,
+    emptyRecipeIngredientsForm,
   ];
 
   const formMethods: StepToMethodInput[] | null = [
@@ -129,6 +147,7 @@ export const AddRecipePage1 = () => {
   ];
 
   const form: Form = {
+    boolean: 0,
     input: formInput,
     ingredients: formIngredients,
     method: formMethods,
@@ -158,13 +177,16 @@ export const AddRecipePage1 = () => {
             <Formik
               initialValues={form}
               onSubmit={(values) => {
-                addRecipe({
+                writeRecipe({
                   variables: {
+                    boolean: values.boolean,
                     method: values.method.map((stepToMethod, index) => ({
                       step: index + 1,
                       method: stepToMethod.method,
                     })),
-                    ingredients: recipeFormIngrToInput(values.ingredients),
+                    ingredients: recipeFormIngredientToInput(
+                      values.ingredients
+                    ),
                     input: recipeFormToRecipeInput(values.input),
                   },
                 });
@@ -256,17 +278,51 @@ export const AddRecipePage1 = () => {
                         <AddMethodsForRecipe values={values} />
                       )}
                     </Grid>
+
                     <Divider />
                     <Grid container xs={12}>
                       <Grid xs={10}></Grid>
                       <Grid xs={2}>
                         <Button
-                          onClick={() => submitForm()}
+                          onClick={() => setOpenBoolean(true)}
                           color="primary"
                           variant="outlined"
                         >
                           Recept toevoegen
                         </Button>
+                        <Dialog
+                          open={openBoolean}
+                          onClose={() => setOpenBoolean(false)}
+                        >
+                          <DialogContent>
+                            <Grid container xs={12}>
+                              <Grid item xs={8}>
+                                <H5 title="Ingredienten koppelen aan opgeslagen ingredienten?" />
+                              </Grid>
+                              <Grid item xs={2}></Grid>
+                              <Grid item xs={2}>
+                                <Checkbox
+                                  color="primary"
+                                  checked={values.boolean == 0 ? false : true}
+                                  onChange={(event, value) => {
+                                    value == true
+                                      ? setFieldValue("boolean", 1)
+                                      : setFieldValue("boolean", 0);
+                                  }}
+                                />
+                              </Grid>
+                              <Grid item xs={12}>
+                                <Button
+                                  onClick={() => submitForm()}
+                                  color="primary"
+                                  variant="outlined"
+                                >
+                                  Recept toevoegen
+                                </Button>
+                              </Grid>
+                            </Grid>
+                          </DialogContent>
+                        </Dialog>
                       </Grid>
                     </Grid>
                   </>

@@ -290,7 +290,7 @@ export const DialogHere = ({
                 >
                   <Tab label={`Ingredienten`} />
                   <Tab label={`Methode`} />
-                  <Tab label={`Voedingswaaarden`} />
+                  <Tab label={`Voedingswaarden`} />
                 </Tabs>
               </DialogTitle>
               {content}
