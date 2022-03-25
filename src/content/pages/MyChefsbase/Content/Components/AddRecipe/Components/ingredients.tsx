@@ -32,11 +32,8 @@ export const AddIngsForRecipe = ({
           render={(arrayHelpers) => (
             <>
               <Grid xs={1}>#</Grid>
-              <Grid xs={2}>
-                <H4 title="Ingredient (bestaand)" />
-              </Grid>
-              <Grid xs={2}>
-                <H4 title="Ingredient (nieuw)" />
+              <Grid xs={4}>
+                <H4 title="Ingredient" />
               </Grid>
               <Grid xs={4}>
                 <H4 title="Hoeveelheid en eenheid" />

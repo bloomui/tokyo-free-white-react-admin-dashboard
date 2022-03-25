@@ -32,32 +32,32 @@ export const IngredientSelector = ({
     shouldValidate?: boolean | undefined
   ) => void;
 }) => {
-  const [name, setName] = useState("");
+  // const [name, setName] = useState("");
 
-  const [ingredient, setIngredient] =
-    useState<searchIngredient_searchIngredient>();
-  const { data, loading, error, refetch } = useSearchIngredientFilterQuery({
-    name: name,
-  });
+  // const [ingredient, setIngredient] =
+  //   useState<searchIngredient_searchIngredient>();
+  // const { data, loading, error, refetch } = useSearchIngredientFilterQuery({
+  //   name: name,
+  // });
 
-  const [timer, setTimer] = useState(null);
+  // const [timer, setTimer] = useState(null);
 
-  function changeDelay(change) {
-    if (timer) {
-      clearTimeout(timer);
-      setTimer(null);
-    }
-    setTimer(
-      setTimeout(() => {
-        setName(change);
-        refetch({ ingredientname: name });
-      }, 50)
-    );
-  }
+  // function changeDelay(change) {
+  //   if (timer) {
+  //     clearTimeout(timer);
+  //     setTimer(null);
+  //   }
+  //   setTimer(
+  //     setTimeout(() => {
+  //       setName(change);
+  //       refetch({ ingredientname: name });
+  //     }, 50)
+  //   );
+  // }
   return (
     <>
       <Grid xs={3}>
-        <Autocomplete
+        {/* <Autocomplete
           id="tags-standard"
           options={
             loading
@@ -82,15 +82,16 @@ export const IngredientSelector = ({
               fullWidth
             />
           )}
-        />
+        /> */}
       </Grid>
-      <Grid xs={1}>Nieuw? Vul in:</Grid>
+      <Grid xs={1}></Grid>
       <Grid xs={2}>
-        {ingredient ? (
+        <FormField name={`ingredients.${index}.name`} label="Naam" />
+        {/* {ingredient ? (
           <TextField disabled placeholder={ingredient.name} />
         ) : (
           <FormField name={`ingredients.${index}.name`} label="Naam" />
-        )}
+        )} */}
       </Grid>
       <Grid xs={1}></Grid>
       <Grid xs={2}>
@@ -105,7 +106,12 @@ export const IngredientSelector = ({
           validate={composeValidators(required)}
           name={`ingredients.${index}.unit`}
         >
-          {ingredient
+          {units.map((unit) => (
+            <MenuItem key={unit} value={unit}>
+              {unit}
+            </MenuItem>
+          ))}
+          {/* {ingredient
             ? getUnitsForMaterial(ingredient.material).map((unit) => (
                 <MenuItem key={unit} value={unit}>
                   {unit}
@@ -115,7 +121,7 @@ export const IngredientSelector = ({
                 <MenuItem key={unit} value={unit}>
                   {unit}
                 </MenuItem>
-              ))}
+              ))} */}
         </FormikSelect>
       </Grid>
     </>
