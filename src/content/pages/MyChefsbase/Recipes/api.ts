@@ -15,7 +15,11 @@ import {
   ingredientsForRecipe,
   ingredientsForRecipeVariables,
 } from "./types/ingredientsForRecipe";
-import { methodForRecipe, methodForRecipeVariables } from "./types/methodForRecipe";
+import {
+  methodForRecipe,
+  methodForRecipeVariables,
+} from "./types/methodForRecipe";
+import { AddReceptVariables, AddRecept } from "./types/AddRecept";
 
 const getRecipeQuery = gql`
   query recipe($id: String!) {
@@ -44,11 +48,7 @@ const getMethodForRecipeQuery = gql`
   }
 `;
 
-export const useGetRecipeQuery = ({
-  id,
-}: {
-  id: string;
-}) => {
+export const useGetRecipeQuery = ({ id }: { id: string }) => {
   const { loading, data, error } = useSimpleQuery<recipe, recipeVariables>(
     getRecipeQuery,
     {
@@ -60,19 +60,15 @@ export const useGetRecipeQuery = ({
   return { loading, data, error };
 };
 
-export const useGetMethodForRecipeQuery = ({
-  id,
-}: {
-  id: string;
-}) => {
-  const { loading, data, error } = useSimpleQuery<methodForRecipe, methodForRecipeVariables>(
-    getMethodForRecipeQuery,
-    {
-      variables: {
-        id: id,
-      },
-    }
-  );
+export const useGetMethodForRecipeQuery = ({ id }: { id: string }) => {
+  const { loading, data, error } = useSimpleQuery<
+    methodForRecipe,
+    methodForRecipeVariables
+  >(getMethodForRecipeQuery, {
+    variables: {
+      id: id,
+    },
+  });
   return { loading, data, error };
 };
 
@@ -193,6 +189,22 @@ export const AddRecipeMutation = gql`
   }
 `;
 
+export const AddReceptMutation = gql`
+  mutation AddRecept(
+    $input: AddRecipeInput!
+    $newIngredients: [IngredientNames!]
+    $oldIngredients: [IngredientIds!]
+    $method: [StepToMethodInput!]!
+  ) {
+    addRecept(
+      input: $input
+      newIngredients: $newIngredients
+      oldIngredients: $oldIngredients
+      method: $method
+    )
+  }
+`;
+
 export const useGetNutritionForRecipe = ({
   id,
   quantity,
@@ -293,6 +305,21 @@ export const useAddRecipe = ({ onCompleted }: { onCompleted: () => void }) => {
 
   return {
     addRecipe,
+    loading,
+    error,
+  };
+};
+
+export const useAddRecept = ({ onCompleted }: { onCompleted: () => void }) => {
+  const [addRecept, { loading, error }] = useMutation<
+    AddRecept,
+    AddReceptVariables
+  >(AddReceptMutation, {
+    onCompleted: () => onCompleted(),
+  });
+
+  return {
+    addRecept,
     loading,
     error,
   };

@@ -21,7 +21,9 @@ import { PageHeader } from "src/components/pageHeader/PageHeader";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import { FormField } from "src/components/form/FormField";
 import {
+  IngredientNames,
   AddRecipeInput,
+  IngredientIds,
   QuantityToId,
   RecipeIngredientsForm,
   StepToMethodInput,
@@ -34,7 +36,7 @@ import {
 } from "src/utilities/formikValidators";
 import { user } from "../..";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
-import { useAddRecipe } from "../api";
+import { useAddRecept, useAddRecipe } from "../api";
 import { Divider } from "@mui/material";
 import { AddRecipeVariables } from "../types/AddRecipe";
 import { TableData, units } from "./components/IngredientTable";
@@ -50,11 +52,14 @@ import { AddMethodsForRecipe } from "../../Content/Components/AddRecipe/Componen
 import {
   emptyIngredientEntry,
   emptyIngredientEntryForm,
+  emptyIngredientIdsEntryForm,
+  emptyIngredientNamesEntryForm,
 } from "../../Content/Components/AddRecipe/Components/Utils/Conts";
 
 export type Form = {
   input: AddRecipeForm;
-  ingredients: RecipeFormIngredientsForm[];
+  oldIngredients: IngredientIdsForm[];
+  newIngredients: IngredientNamesForm[];
   method: StepToMethodInput[];
 };
 
@@ -63,6 +68,31 @@ export type RecipeFormIngredientsForm = {
   name?: string | null;
   quantity: string;
   unit: string;
+};
+
+export type IngredientNamesForm = {
+  name: string;
+  quantity: string;
+  unit: string;
+};
+export type IngredientIdsForm = {
+  id: string;
+  quantity: string;
+  unit: string;
+};
+export const oldFromForm = (form: IngredientIdsForm[]): IngredientIds[] => {
+  return form.map((f) => ({
+    id: f.id,
+    quantity: Number(f.quantity),
+    unit: f.unit,
+  }));
+};
+export const newFromForm = (form: IngredientNamesForm[]): IngredientNames[] => {
+  return form.map((f) => ({
+    name: f.name,
+    quantity: Number(f.quantity),
+    unit: f.unit,
+  }));
 };
 export const recipeFormIngrToInput = (
   form: RecipeFormIngredientsForm[]
@@ -104,7 +134,7 @@ export const recipeFormToRecipeInput = (
 
 export const AddRecipePage1 = () => {
   const [value, setValue] = useState(0);
-  const { addRecipe, loading, error } = useAddRecipe({
+  const { addRecept, loading, error } = useAddRecept({
     onCompleted: () => {
       window.location.reload();
     },
@@ -116,12 +146,17 @@ export const AddRecipePage1 = () => {
     method: "",
   };
 
-  const formIngredients: RecipeFormIngredientsForm[] | null = [
-    emptyIngredientEntryForm,
-    emptyIngredientEntryForm,
-    emptyIngredientEntryForm,
+  const ingredientNamesForm: IngredientNamesForm[] | null = [
+    emptyIngredientNamesEntryForm,
+    emptyIngredientNamesEntryForm,
+    emptyIngredientNamesEntryForm,
   ];
 
+  const ingredientIdsForm: IngredientIdsForm[] | null = [
+    emptyIngredientIdsEntryForm,
+    emptyIngredientIdsEntryForm,
+    emptyIngredientIdsEntryForm,
+  ];
   const formMethods: StepToMethodInput[] | null = [
     emptyStep,
     emptyStep,
@@ -130,7 +165,8 @@ export const AddRecipePage1 = () => {
 
   const form: Form = {
     input: formInput,
-    ingredients: formIngredients,
+    oldIngredients: ingredientIdsForm,
+    newIngredients: ingredientNamesForm,
     method: formMethods,
   };
 
@@ -158,13 +194,14 @@ export const AddRecipePage1 = () => {
             <Formik
               initialValues={form}
               onSubmit={(values) => {
-                addRecipe({
+                addRecept({
                   variables: {
                     method: values.method.map((stepToMethod, index) => ({
                       step: index + 1,
                       method: stepToMethod.method,
                     })),
-                    ingredients: recipeFormIngrToInput(values.ingredients),
+                    oldIngredients: oldFromForm(values.oldIngredients),
+                    newIngredients: newFromForm(values.newIngredients),
                     input: recipeFormToRecipeInput(values.input),
                   },
                 });

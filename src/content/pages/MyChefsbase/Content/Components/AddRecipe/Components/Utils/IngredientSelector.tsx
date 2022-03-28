@@ -7,6 +7,8 @@ import { useSearchIngredientFilterQuery } from "src/content/pages/MyChefsbase/In
 import { searchIngredient_searchIngredient } from "src/content/pages/MyChefsbase/Ingredients/AddIngredient/types/searchIngredient";
 import {
   Form,
+  IngredientIdsForm,
+  IngredientNamesForm,
   RecipeFormIngredientsForm,
 } from "src/content/pages/MyChefsbase/Recipes/AddRecipe";
 import {
@@ -19,12 +21,56 @@ import {
   mustBeNumber,
 } from "src/utilities/formikValidators";
 
+export const IngredientSelector1 = ({
+  form,
+  index,
+  setFieldValue,
+}: {
+  form: IngredientNamesForm;
+  index: number;
+  setFieldValue: (
+    field: string,
+    value: any,
+    shouldValidate?: boolean | undefined
+  ) => void;
+}) => {
+  return (
+    <>
+      <Grid xs={3}>
+        <FormField name={`ingredients.${index}.name`} label="Naam" />
+      </Grid>
+      <Grid xs={1}></Grid>
+      <Grid xs={2}></Grid>
+      <Grid xs={1}></Grid>
+      <Grid xs={2}>
+        <FormField
+          name={`ingredients.${index}.quantity`}
+          label="Hoeveelheid"
+          validator={composeValidators(required, mustBeNumber)}
+        />
+      </Grid>
+      <Grid xs={2}>
+        <FormikSelect
+          validate={composeValidators(required)}
+          name={`ingredients.${index}.unit`}
+        >
+          {units.map((unit) => (
+            <MenuItem key={unit} value={unit}>
+              {unit}
+            </MenuItem>
+          ))}
+        </FormikSelect>
+      </Grid>
+    </>
+  );
+};
+
 export const IngredientSelector = ({
   form,
   index,
   setFieldValue,
 }: {
-  form: RecipeFormIngredientsForm;
+  form: IngredientIdsForm;
   index: number;
   setFieldValue: (
     field: string,
@@ -70,11 +116,10 @@ export const IngredientSelector = ({
           onChange={(event, value: searchIngredient_searchIngredient) => {
             setIngredient(value);
             setFieldValue(`ingredients.${index}.id`, value.id);
-            setFieldValue(`ingredients.${index}.name`, value.name);
           }}
           renderInput={(params) => (
             <TextField
-              placeholder={form.name}
+              placeholder="ingredient"
               {...params}
               onChange={(e) => {
                 changeDelay(e.target.value);
@@ -84,14 +129,8 @@ export const IngredientSelector = ({
           )}
         />
       </Grid>
-      <Grid xs={1}>Nieuw? Vul in:</Grid>
-      <Grid xs={2}>
-        {ingredient ? (
-          <TextField disabled placeholder={ingredient.name} />
-        ) : (
-          <FormField name={`ingredients.${index}.name`} label="Naam" />
-        )}
-      </Grid>
+      <Grid xs={1}></Grid>
+      <Grid xs={2}></Grid>
       <Grid xs={1}></Grid>
       <Grid xs={2}>
         <FormField
