@@ -36,15 +36,13 @@ export const IngredientSelector1 = ({
 }) => {
   return (
     <>
-      <Grid xs={3}>
-        <FormField name={`ingredients.${index}.name`} label="Naam" />
+      <Grid xs={6}>
+        <FormField name={`newIngredients.${index}.name`} label="Naam" />
       </Grid>
-      <Grid xs={1}></Grid>
-      <Grid xs={2}></Grid>
       <Grid xs={1}></Grid>
       <Grid xs={2}>
         <FormField
-          name={`ingredients.${index}.quantity`}
+          name={`newIngredients.${index}.quantity`}
           label="Hoeveelheid"
           validator={composeValidators(required, mustBeNumber)}
         />
@@ -52,7 +50,7 @@ export const IngredientSelector1 = ({
       <Grid xs={2}>
         <FormikSelect
           validate={composeValidators(required)}
-          name={`ingredients.${index}.unit`}
+          name={`newIngredients.${index}.unit`}
         >
           {units.map((unit) => (
             <MenuItem key={unit} value={unit}>
@@ -102,7 +100,7 @@ export const IngredientSelector = ({
   }
   return (
     <>
-      <Grid xs={3}>
+      <Grid xs={6}>
         <Autocomplete
           id="tags-standard"
           options={
@@ -115,7 +113,7 @@ export const IngredientSelector = ({
           getOptionLabel={(option) => (option ? option.name : "")}
           onChange={(event, value: searchIngredient_searchIngredient) => {
             setIngredient(value);
-            setFieldValue(`ingredients.${index}.id`, value.id);
+            setFieldValue(`oldIngredients.${index}.id`, value.id);
           }}
           renderInput={(params) => (
             <TextField
@@ -130,11 +128,9 @@ export const IngredientSelector = ({
         />
       </Grid>
       <Grid xs={1}></Grid>
-      <Grid xs={2}></Grid>
-      <Grid xs={1}></Grid>
       <Grid xs={2}>
         <FormField
-          name={`ingredients.${index}.quantity`}
+          name={`oldIngredients.${index}.quantity`}
           label="Hoeveelheid"
           validator={composeValidators(required, mustBeNumber)}
         />
@@ -142,7 +138,7 @@ export const IngredientSelector = ({
       <Grid xs={2}>
         <FormikSelect
           validate={composeValidators(required)}
-          name={`ingredients.${index}.unit`}
+          name={`oldIngredients.${index}.unit`}
         >
           {ingredient
             ? getUnitsForMaterial(ingredient.material).map((unit) => (

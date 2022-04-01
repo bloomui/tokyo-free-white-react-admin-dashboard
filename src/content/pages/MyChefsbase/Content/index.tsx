@@ -31,7 +31,7 @@ import { PageHeader } from "src/components/pageHeader/PageHeader";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import { IngredientFilterInput, RecipeFilterInput } from "src/globalTypes";
 import { clearAuth } from "src/utilities/auth";
-import { H5 } from "../../Components/TextTypes";
+import { H5, H5Left, H3, H3Left } from "../../Components/TextTypes";
 import {
   DefaultNutritionOptions,
   NutritionOptionDropDown,
@@ -232,12 +232,35 @@ export const DialogHere = ({
       break;
   }
 
+  const Row = ({ title, word }: { title: string; word: string }) => {
+    return (
+      <TableRow>
+        <TableCell></TableCell>
+        <TableCell>
+          <H5Left title={title} />
+        </TableCell>
+        <TableCell></TableCell>
+        <TableCell colSpan={2}>
+          <H5 title={word} />
+        </TableCell>
+      </TableRow>
+    );
+  };
+
   return (
     <>
       <CenterInScreen>
         <Dialog open={open} onClose={onClose}>
           {recipe && (
             <>
+              <Grid container xs={12}>
+                <Grid xs={12}></Grid>
+                <TableContainer>
+                  <Row title="Recept" word={recipe.name} />
+                  <Row title="Type" word={recipe.type} />
+                  <Row title="Beoordeling" word={String(recipe.rating)} />
+                </TableContainer>
+              </Grid>
               <Formik
                 initialValues={initialValues}
                 onSubmit={(values) => {
@@ -390,13 +413,12 @@ export const MethodsTab = ({ id }: { id: string }) => {
                   </TableRow>
                 </TableHead>
                 {data &&
-              data.methodForRecipe.map((stepToMethod) => (
-                      <TableRow>
-                        <TableCell>{stepToMethod.step}</TableCell>
-                        <TableCell>{stepToMethod.method}</TableCell>
-                      </TableRow>
-                    )
-                  )}
+                  data.methodForRecipe.map((stepToMethod) => (
+                    <TableRow>
+                      <TableCell>{stepToMethod.step}</TableCell>
+                      <TableCell>{stepToMethod.method}</TableCell>
+                    </TableRow>
+                  ))}
               </Table>
             </TableContainer>
           </Grid>
