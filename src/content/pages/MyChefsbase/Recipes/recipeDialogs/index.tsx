@@ -24,7 +24,7 @@ import {
 import { Formik } from "formik";
 import React, { useState } from "react";
 import { FormikSelect } from "src/components/form/FormikSelect";
-import { H5 } from "src/content/pages/Components/TextTypes";
+import { H3Left, H3, H5 } from "src/content/pages/Components/TextTypes";
 import { NutritionInput } from "src/globalTypes";
 import {
   DefaultNutritionOptions,
@@ -158,72 +158,70 @@ export const zeroNutritionInput: NutritionInput = {
 };
 
 export const getAvailableUnits = (a: string): string[] => {
-
   var unitsHere;
-  switch(a) {
+  switch (a) {
     case "milliliter":
-    unitsHere = ["milliliter"];
-    break;
+      unitsHere = ["milliliter"];
+      break;
     case "liter":
-    unitsHere = ["milliliter"];
-    break;
+      unitsHere = ["milliliter"];
+      break;
     case "gram":
-    unitsHere = ["gram"];
-    break;
+      unitsHere = ["gram"];
+      break;
     case "kg":
-    unitsHere = ["gram"];
-    break;
-    default: 
-    unitsHere = ["stuk(s)"];
+      unitsHere = ["gram"];
+      break;
+    default:
+      unitsHere = ["stuk(s)"];
   }
 
-  return unitsHere
-}
+  return unitsHere;
+};
 
-export const getAvailableUnitsLarge= (a: string): string[] => {
-
+export const getAvailableUnitsLarge = (a: string): string[] => {
   var unitsHere;
-  switch(a) {
+  switch (a) {
     case "milliliter":
-    unitsHere = ["milliliter", "liter"];
-    break;
+      unitsHere = ["milliliter", "liter"];
+      break;
     case "liter":
-    unitsHere = ["milliliter", "liter"];
-    break;
+      unitsHere = ["milliliter", "liter"];
+      break;
     case "gram":
-    unitsHere = ["gram", "kg"];
-    break;
+      unitsHere = ["gram", "kg"];
+      break;
     case "kg":
-    unitsHere = ["gram", "kg"];
-    break;
-    default: 
-    unitsHere = ["stuk(s)"];
+      unitsHere = ["gram", "kg"];
+      break;
+    default:
+      unitsHere = ["stuk(s)"];
   }
 
-return unitsHere
-}
+  return unitsHere;
+};
 
-export const minimizeUnit = (a: string): string =>  {
+export const minimizeUnit = (a: string): string => {
   var unitHere;
-  switch(a) {
+  switch (a) {
     case "milliliter":
-    unitHere = "milliliter";
-    break;
+      unitHere = "milliliter";
+      break;
     case "liter":
       unitHere = "milliliter";
-    break;
+      break;
     case "gram":
       unitHere = "gram";
-    break;
+      break;
     case "kg":
       unitHere = "gram";
-    break;
-    default: 
-    unitHere = "stuk(s)";
+      break;
+    default:
+      unitHere = "stuk(s)";
   }
 
-  return unitHere
-}
+  return unitHere;
+};
 
 export const RecipeDialog = ({
   unitHere,
@@ -243,7 +241,7 @@ export const RecipeDialog = ({
   );
   const [unit, setUnit] = useState<string>(unitHere);
   const [quantity, setQuantity] = useState(100);
-  const { data, loading, error } = useGetRecipeQuery({id: id});
+  const { data, loading, error } = useGetRecipeQuery({ id: id });
 
   const [openUpdateDialog, setUpdateDialog] = useState(false);
 
@@ -298,17 +296,49 @@ export const RecipeDialog = ({
 
   let recipe = data.recipe;
 
-  const quantities = ["0.125", "0.25", "0.333" , "0.5", "0.75", "1",  "50", "100", "500", "1000"]
-  const unitsHere = getAvailableUnits(recipe.quantity.unit)
-  
-  
+  const quantities = [
+    "0.125",
+    "0.25",
+    "0.333",
+    "0.5",
+    "0.75",
+    "1",
+    "50",
+    "100",
+    "500",
+    "1000",
+  ];
+  const unitsHere = getAvailableUnits(recipe.quantity.unit);
+
   return (
     <>
       <Dialog open={open} onClose={onClose}>
         {recipe && (
           <>
             <DialogTitle style={{ fontWeight: 600 }} id="form-dialog-title">
-              Recept: {recipe.name}
+              <Grid container xs={8}>
+                <Grid xs={3}>
+                  <H3Left title="Recept" />
+                </Grid>
+                <Grid xs={1}> </Grid>
+                <Grid xs={4}>
+                  <H3 title={recipe.name} />
+                </Grid>
+                <Grid xs={3}>
+                  <H3Left title="Type" />
+                </Grid>
+                <Grid xs={1}> </Grid>
+                <Grid xs={4}>
+                  <H3 title={recipe.type} />
+                </Grid>
+                <Grid xs={3}>
+                  <H3Left title="Beoordeling" />
+                </Grid>
+                <Grid xs={1}> </Grid>
+                <Grid xs={4}>
+                  <H3 title={String(recipe.rating)} />
+                </Grid>
+              </Grid>
             </DialogTitle>
             <DialogActions>
               <Button variant="contained" onClick={() => {}}>
@@ -363,21 +393,25 @@ export const RecipeDialog = ({
                         </MenuItem>
                       ))}
                     </TextField>
-                    </Grid>
-                    <Grid xs={2}>
-                      <Button onClick={() => {
+                  </Grid>
+                  <Grid xs={2}>
+                    <Button
+                      onClick={() => {
                         refetch1({
-                            id: id,
-                            quantity: quantity,
-                            unit: unit,
+                          id: id,
+                          quantity: quantity,
+                          unit: unit,
                         });
                         refetch2({
-                            id: id,
-                            quantity: quantity,
-                            unit: unit,
+                          id: id,
+                          quantity: quantity,
+                          unit: unit,
                         });
-                      }}>Toepassen</Button>
-                    </Grid>
+                      }}
+                    >
+                      Toepassen
+                    </Button>
+                  </Grid>
 
                   <Grid xs={12}>
                     <NutritionOptionDropDown
@@ -389,6 +423,7 @@ export const RecipeDialog = ({
                   <Grid container xs={12}>
                     <Grid xs={6}>
                       <ItemNutrition
+                        factor={1}
                         nutritionsToDisplay={nutritionsToDisplay}
                         title="Voedingswaarde"
                         item={data1.nutritionForRecipe}

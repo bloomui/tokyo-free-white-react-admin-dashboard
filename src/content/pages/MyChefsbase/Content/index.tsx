@@ -31,7 +31,7 @@ import { PageHeader } from "src/components/pageHeader/PageHeader";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import { IngredientFilterInput, RecipeFilterInput } from "src/globalTypes";
 import { clearAuth } from "src/utilities/auth";
-import { H5 } from "../../Components/TextTypes";
+import { H5, H5Left, H3, H3Left } from "../../Components/TextTypes";
 import {
   DefaultNutritionOptions,
   NutritionOptionDropDown,
@@ -61,6 +61,44 @@ import {
   ingredientsForRecipe_ingredientsForRecipe,
 } from "../Recipes/types/ingredientsForRecipe";
 import { recipe_recipe_method } from "../Recipes/types/recipe";
+
+export type Quantity = {
+  quantity: number;
+  unit: string;
+};
+export const getFactor = ({
+  first,
+  other,
+}: {
+  first: Quantity;
+  other: Quantity;
+}): number => {
+  console.log(first);
+  console.log(other);
+  var result;
+  switch (true) {
+    case first.unit == other.unit:
+      result = other.quantity / first.quantity;
+      break;
+    case first.unit == "kg" && other.unit == "milligram":
+      result = other.quantity / (first.quantity * 1000000);
+      break;
+    case (first.unit == "kg" && other.unit == "gram") ||
+      (first.unit == "gram" && other.unit == "milligram") ||
+      (first.unit == "liter" && other.unit == "milliliter"):
+      result = other.quantity / (first.quantity * 1000);
+      break;
+    case (first.unit == "gram" && other.unit == "kg") ||
+      (first.unit == "milligram" && other.unit == "gram") ||
+      (first.unit == "milliliter" && other.unit == "liter"):
+      result = other.quantity / (first.quantity / 1000);
+      break;
+    default:
+      result = other.quantity / (first.quantity / 1000000);
+  }
+
+  return result;
+};
 
 export const RecipesAndIngredients = ({
   content,
@@ -191,10 +229,6 @@ export const IngredientContent = () => {
 export const MyDialog = () => {
   return <Dialog maxWidth="md" open={true}></Dialog>;
 };
-type Quantity = {
-  quantity: number;
-  unit: string;
-};
 export const DialogHere = ({
   recipe,
   open,
@@ -206,31 +240,55 @@ export const DialogHere = ({
 }) => {
   const [unit, setUnitHere] = useState<string>(recipe.quantity.unit);
   const [quantity, setQuantity] = useState<number>(recipe.quantity.quantity);
+  const [factor, setFactor] = useState<number>(1);
 
   const initialValues = {
-    quantity: quantity,
-    unit: unit,
+    quantity: recipe.quantity.quantity,
+    unit: recipe.quantity.unit,
   };
   const [value, setValue] = useState(0);
 
-  const [refetch, setRefetch] = useState();
-
+  const { data, loading, error, refetch } = useGetIngredientsForRecipe({
+    onCompleted: (values) => {},
+    id: recipe.id,
+    quantity: recipe.quantity.quantity,
+    unit: recipe.quantity.unit,
+  });
+  if (loading) return <CircularProgress />;
   let content;
 
   switch (value) {
     case 0:
-      content = (
-        <IngredientsTab id={recipe.id} unit={unit} quantity={quantity} />
-      );
+      content = <IngredientsTab ingredients={data} factor={factor} />;
       break;
 
     case 1:
       content = <MethodsTab id={recipe.id} />;
       break;
     default:
-      content = <NutritionTab id={recipe.id} unit={unit} quantity={quantity} />;
+      content = (
+        <NutritionTab
+          factor={factor}
+          id={recipe.id}
+          unit={recipe.quantity.unit}
+          quantity={recipe.quantity.quantity}
+        />
+      );
       break;
   }
+
+  const Row = ({ title, word }: { title: string; word: string }) => {
+    return (
+      <TableRow>
+        <TableCell>
+          <H5Left title={title} />
+        </TableCell>
+        <TableCell colSpan={2}>
+          <H5 title={word} />
+        </TableCell>
+      </TableRow>
+    );
+  };
 
   return (
     <>
@@ -238,31 +296,47 @@ export const DialogHere = ({
         <Dialog open={open} onClose={onClose}>
           {recipe && (
             <>
-              <Formik
-                initialValues={initialValues}
-                onSubmit={(values) => {
-                  setQuantity(values.quantity);
-                  setUnitHere(values.unit);
-                }}
-              >
-                {({ setFieldValue, submitForm }) => {
-                  return (
-                    <>
-                      <Grid container xs={12}>
-                        <Grid xs={12}>
-                          <H5 title="Toon hoeveelheid per:" />
-                        </Grid>
-                        <Grid xs={4}></Grid>
-                        <Grid xs={6}>
-                          <TextField
-                            placeholder={String(quantity)}
-                            onChange={(e) =>
-                              setFieldValue("quantity", Number(e.target.value))
-                            }
-                          />
-                          <Grid xs={2}></Grid>
-                          <Grid xs={4}></Grid>
-                          <Grid xs={6}>
+              <Table>
+                <Row title="Recept" word={recipe.name} />
+                <Row title="Type" word={recipe.type} />
+                <Row title="Beoordeling" word={String(recipe.rating)} />
+                <Formik
+                  initialValues={initialValues}
+                  onSubmit={(values) => {
+                    setQuantity(values.quantity);
+                    setUnitHere(values.unit);
+                    setFactor(
+                      getFactor({
+                        first: {
+                          quantity: recipe.quantity.quantity,
+                          unit: recipe.quantity.unit,
+                        },
+                        other: { quantity: values.quantity, unit: values.unit },
+                      })
+                    );
+                  }}
+                >
+                  {({ setFieldValue, submitForm }) => {
+                    return (
+                      <>
+                        <TableRow>
+                          <TableCell colSpan={2}>
+                            <H5 title="Toon hoeveelheid per:" />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>
+                            <TextField
+                              placeholder={String(quantity)}
+                              onChange={(e) =>
+                                setFieldValue(
+                                  "quantity",
+                                  Number(e.target.value)
+                                )
+                              }
+                            />
+                          </TableCell>
+                          <TableCell>
                             <FormikSelect name={"unit"}>
                               {getUnitsForUnit(unit).map((u) => (
                                 <MenuItem key={u} value={u}>
@@ -270,18 +344,18 @@ export const DialogHere = ({
                                 </MenuItem>
                               ))}
                             </FormikSelect>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                      <Grid xs={12}>
-                        <Button fullWidth onClick={() => submitForm()}>
-                          Pas toe
-                        </Button>
-                      </Grid>
-                    </>
-                  );
-                }}
-              </Formik>
+                          </TableCell>
+                        </TableRow>
+                        <TableCell colSpan={2}>
+                          <Button fullWidth onClick={() => submitForm()}>
+                            Pas toe
+                          </Button>
+                        </TableCell>
+                      </>
+                    );
+                  }}
+                </Formik>
+              </Table>
               <DialogTitle>
                 <Tabs
                   centered
@@ -304,31 +378,12 @@ export const DialogHere = ({
 };
 
 export const IngredientsTab = ({
-  id,
-  quantity,
-  unit,
+  ingredients,
+  factor,
 }: {
-  id: string;
-  quantity: number;
-  unit: string;
+  ingredients: ingredientsForRecipe;
+  factor: number;
 }) => {
-  const { data, loading, error, refetch } = useGetIngredientsForRecipe({
-    onCompleted: (values) => {},
-    id: id,
-    quantity: quantity,
-    unit: unit,
-  });
-
-  if (loading)
-    return (
-      <CenterInScreen>
-        <Dialog maxWidth="md" open={true}>
-          <CircularProgress />
-        </Dialog>
-      </CenterInScreen>
-    );
-  if (error) return <CircularProgress />;
-
   return (
     <DialogContent>
       <Card>
@@ -341,18 +396,19 @@ export const IngredientsTab = ({
                     <H5 title="Ingredienten" />
                   </TableRow>
                 </TableHead>
-                {data &&
-                  data.ingredientsForRecipe &&
-                  data.ingredientsForRecipe.map((ingredient) => {
-                    const quantity = DisplayQuantity(ingredient.quantity);
-                    return (
-                      <TableRow>
-                        <TableCell>{ingredient.ingredient.name}</TableCell>
-                        <TableCell>{quantity.quantity}</TableCell>
-                        <TableCell>{quantity.unit}</TableCell>
-                      </TableRow>
-                    );
-                  })}
+                {ingredients.ingredientsForRecipe.map((ingredient) => {
+                  const quantity = DisplayQuantity({
+                    quantity: ingredient.quantity.quantity * factor,
+                    unit: ingredient.quantity.unit,
+                  });
+                  return (
+                    <TableRow>
+                      <TableCell>{ingredient.ingredient.name}</TableCell>
+                      <TableCell>{quantity.quantity}</TableCell>
+                      <TableCell>{quantity.unit}</TableCell>
+                    </TableRow>
+                  );
+                })}
               </Table>
             </TableContainer>
           </Grid>
@@ -390,13 +446,12 @@ export const MethodsTab = ({ id }: { id: string }) => {
                   </TableRow>
                 </TableHead>
                 {data &&
-              data.methodForRecipe.map((stepToMethod) => (
-                      <TableRow>
-                        <TableCell>{stepToMethod.step}</TableCell>
-                        <TableCell>{stepToMethod.method}</TableCell>
-                      </TableRow>
-                    )
-                  )}
+                  data.methodForRecipe.map((stepToMethod) => (
+                    <TableRow>
+                      <TableCell>{stepToMethod.step}</TableCell>
+                      <TableCell>{stepToMethod.method}</TableCell>
+                    </TableRow>
+                  ))}
               </Table>
             </TableContainer>
           </Grid>
@@ -407,10 +462,12 @@ export const MethodsTab = ({ id }: { id: string }) => {
 };
 
 export const NutritionTab = ({
+  factor,
   id,
   quantity,
   unit,
 }: {
+  factor: number;
   id: string;
   quantity: number;
   unit: string;
@@ -439,6 +496,7 @@ export const NutritionTab = ({
           <Grid container xs={12}>
             <Grid xs={6}>
               <ItemNutrition
+                factor={factor}
                 nutritionsToDisplay={nutritionsToDisplay}
                 title="Voedingswaarde"
                 item={data.nutritionForRecipe}
@@ -476,9 +534,7 @@ export const getUnitsForUnit = (u: string): string[] => {
   return result;
 };
 
-const DisplayQuantity = (
-  quantity: ingredientsForRecipe_ingredientsForRecipe_quantity
-): ingredientsForRecipe_ingredientsForRecipe_quantity => {
+const DisplayQuantity = (quantity: Quantity): Quantity => {
   var result;
   switch (true) {
     case quantity.unit == "kg" && quantity.quantity < 0.000001:
