@@ -1,4 +1,5 @@
-import { ApolloQueryResult } from "@apollo/client";
+import Paper, { PaperProps } from "@mui/material/Paper";
+import Draggable from "react-draggable";
 import {
   Box,
   Button,
@@ -8,7 +9,6 @@ import {
   LinearProgress,
   Tab,
   TableContainer,
-  Dialog,
   TableHead,
   TableRow,
   TableCell,
@@ -20,6 +20,7 @@ import {
   TextField,
   MenuItem,
 } from "@material-ui/core";
+import Dialog, { DialogProps } from "@mui/material/Dialog";
 import { Formik } from "formik";
 import React, { ReactElement, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -36,6 +37,7 @@ import {
   DefaultNutritionOptions,
   NutritionOptionDropDown,
 } from "../Components/NutrutitionOptions";
+import { tableStyles } from "../Components/Styles";
 import { useSearchRecipeQuery } from "../Dishes/AddDish/api";
 import { useFilterIngredientsQuery } from "../Ingredients/api";
 import { TopPartIngredientPage } from "../Ingredients/components/IngredientPageTopPart";
@@ -226,6 +228,17 @@ export const IngredientContent = () => {
   );
 };
 
+function PaperComponent(props: PaperProps) {
+  return (
+    <Draggable
+      handle="#draggable-dialog-title"
+      cancel={'[class*="MuiDialogContent-root"]'}
+    >
+      <Paper {...props} />
+    </Draggable>
+  );
+}
+
 export const MyDialog = () => {
   return <Dialog maxWidth="md" open={true}></Dialog>;
 };
@@ -279,7 +292,11 @@ export const DialogHere = ({
 
   const Row = ({ title, word }: { title: string; word: string }) => {
     return (
-      <TableRow>
+      <TableRow
+        sx={{
+          height: 1,
+        }}
+      >
         <TableCell>
           <H5Left title={title} />
         </TableCell>
@@ -293,10 +310,16 @@ export const DialogHere = ({
   return (
     <>
       <CenterInScreen>
-        <Dialog open={open} onClose={onClose}>
+        <Dialog
+          scroll="body"
+          PaperComponent={PaperComponent}
+          aria-labelledby="draggable-dialog-title"
+          open={open}
+          onClose={onClose}
+        >
           {recipe && (
             <>
-              <Table>
+              <Table style={{ cursor: "move" }} id="draggable-dialog-title">
                 <Row title="Recept" word={recipe.name} />
                 <Row title="Type" word={recipe.type} />
                 <Row title="Beoordeling" word={String(recipe.rating)} />

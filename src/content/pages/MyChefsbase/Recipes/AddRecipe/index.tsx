@@ -136,7 +136,7 @@ export const AddRecipePage1 = () => {
   const [value, setValue] = useState(0);
   const { addRecept, loading, error } = useAddRecept({
     onCompleted: () => {
-      // window.location.reload();
+      window.location.reload();
     },
   });
   const [stepHere, setStep] = useState(1);
