@@ -3,11 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import {
-  AddRecipeInput,
-  RecipeIngredients,
-  StepToMethodInput,
-} from "./../../../../../globalTypes";
+import { AddRecipeInput, RecipeIngredients, StepToMethodInput } from "./../../../../../globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: WriteRecipe

@@ -25,7 +25,7 @@ import { IngredientDialog } from "../ingredientDialogs";
 import { UpdateIngredientDialog } from "../ingredientDialogs/UpdateIngredientDialog";
 
 const headCellsIngredients: string[] = [
-  "Naam", "categorie", "rating", "acties"
+  "Naam", "categorie", "status", "rating", "acties"
 ]
 
 export const IngredientTable = ({
@@ -88,6 +88,7 @@ export const IngredientTable = ({
     const [areYouSureDelete, setAreYouSureDelete] = useState<boolean>(false);
     const [id, setId] = React.useState<string>()
     const [ingredient, setIngredient] = React.useState<FilterIngredients_filterIngredients>()
+    const [ingr, setIngr] = React.useState<FilterIngredients_filterIngredients>()
 
     // ingredient Data
     let ingredients = data.filterIngredients
@@ -143,10 +144,12 @@ headCells={headCellsIngredients}
                     style={{ cursor: 'pointer' }}
                     onClick={() => {
                       setId(ingredient.id);
+                      setIngr(ingredient);
                       setOpen(true)
                     }}
                     >{ingredient.name}</TableCell>
                     <TableCell align="left">{ingredient.category}</TableCell>
+                    <TableCell align="left">{ingredient.status}</TableCell>
                     <TableCell align="left">{ingredient.rating}</TableCell>
                     <TableCell 
                 align="center"

@@ -47,6 +47,7 @@ import { ingredientsForRecipe_ingredientsForRecipe } from "../types/ingredientsF
 import { dishForCourse } from "../../Menus/AddMenu";
 import { getAvailableUnitsLarge } from ".";
 import { AddIngrDialog } from "../AddRecipe/components/AddQuickIngredients";
+import { getUnitsForUnit } from "../../Content";
 
 export const emptyRecipe: recipe_recipe = {
   __typename: "Recipe",
@@ -84,7 +85,7 @@ export const UpdateRecipeDialog = ({
 
   const [dialog, openDialog] = useState(false);
 
-  const [unitsHere, setUnits] = React.useState<string[]>();
+  const [unitsHere, setUnits] = React.useState<string[]>(getUnitsForUnit(recipe.quantity.unit));
   const [unit, setUnit] = useState<string>(recipe.quantity.unit);
   const [quantity, setQuantity] = useState(recipe.quantity.quantity);
 

@@ -12,10 +12,13 @@ import {
 import { allProducts } from "./types/AllProducts";
 import { ingredientRowsPerPage } from "../Recipes/AddRecipe/api";
 import { initialIngredientValues } from "./filterIngredients";
+import { statusForIngredient, statusForIngredientVariables } from "./types/statusForIngredient";
+
 
 const getIngredientQuery = gql`
   query ingredient($id: String!) {
     ingredient(id: $id) {
+      status
       category
       id
       name
@@ -120,10 +123,12 @@ export const FilterIngredientsQuery = gql`
   ) {
     numberOfIngredients
     filterIngredients(input: $input, offset: $offset, limit: $limit) {
+      status
       category
       id
       name
       rating
+      material
     }
   }
 `;

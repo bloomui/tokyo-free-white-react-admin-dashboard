@@ -13,8 +13,11 @@ import {
   TableRow,
   Button,
   DialogActions,
+  Select,
 } from "@material-ui/core";
+import { MenuItem } from "@mui/material";
 import React, { useState } from "react";
+import { FormikSelect } from "src/components/form/FormikSelect";
 import { LoadingScreen } from "src/components/layout";
 import { H5 } from "src/content/pages/Components/TextTypes";
 import { Material } from "src/globalTypes";
@@ -23,8 +26,10 @@ import {
   NutritionOptionDropDown,
 } from "../../Components/NutrutitionOptions";
 import { ItemString, ItemInt } from "../../Menus/menuDialog";
+import { useSearchIngredientQuery } from "../../Recipes/AddRecipe/api";
 import { stringForMaterial } from "../AddIngredient";
 import { useGetIngredientQuery } from "../api";
+import { FilterIngredients_filterIngredients } from "../types/FilterIngredients";
 import {
   ingredient,
   ingredient_ingredient,
@@ -42,6 +47,7 @@ export const emptyIngredient: ingredient_ingredient = {
   nutrition: null,
   products: [],
   material: Material.SOLID,
+  status: null
 };
 
 export const IngredientDialog = ({
@@ -104,9 +110,14 @@ export const IngredientDialog = ({
                   />
                   <ItemInt title="rating" item={ingredient.rating} />
                   <ItemProducts title="Producten" item={ingredient.products} />
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <H5
                       title={`Per ${ingredient.nutrition.quantity.quantity} ${ingredient.nutrition.quantity.unit}:`}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                  <H5
+                      title={ingredient.status}
                     />
                   </Grid>
                   <NutritionOptionDropDown
