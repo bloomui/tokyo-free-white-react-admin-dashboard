@@ -234,10 +234,10 @@ export const RecipeTable = ({
             onClose={() => setAreYouSureDelete(false)}
           />
           <UpdateRecipeDialog
-          recipe={recipe}
-          open={openUpdate}
-          onClose={() => setOpenUpdate(false)}
-        />
+            recipe={recipe}
+            open={openUpdate}
+            onClose={() => setOpenUpdate(false)}
+          />
         </>
       )}
     </>

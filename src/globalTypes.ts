@@ -112,6 +112,12 @@ export interface IngredientFilterInput {
   exact: number;
 }
 
+export interface IngredientIds {
+  id: string;
+  quantity: number;
+  unit: string;
+}
+
 export interface IngredientInput {
   id: string;
   name: string;
@@ -119,6 +125,12 @@ export interface IngredientInput {
   category?: string | null;
   nutrition?: QuantityToNutritionInput | null;
   material: Material;
+}
+
+export interface IngredientNames {
+  name: string;
+  quantity: number;
+  unit: string;
 }
 
 export interface MenuFilterInput {

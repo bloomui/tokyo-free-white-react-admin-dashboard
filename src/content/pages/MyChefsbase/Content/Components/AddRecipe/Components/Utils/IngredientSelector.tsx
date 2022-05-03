@@ -5,10 +5,7 @@ import { FormikSelect } from "src/components/form/FormikSelect";
 import { H3 } from "src/content/pages/Components/TextTypes";
 import { useSearchIngredientFilterQuery } from "src/content/pages/MyChefsbase/Ingredients/AddIngredient/api";
 import { searchIngredient_searchIngredient } from "src/content/pages/MyChefsbase/Ingredients/AddIngredient/types/searchIngredient";
-import {
-  Form,
-  RecipeFormIngredientsForm,
-} from "src/content/pages/MyChefsbase/Recipes/AddRecipe";
+import { IngredientNamesForm, IngredientIdsForm } from "src/content/pages/MyChefsbase/Recipes/AddRecipe";
 import {
   getUnitsForMaterial,
   units,
@@ -19,12 +16,12 @@ import {
   mustBeNumber,
 } from "src/utilities/formikValidators";
 
-export const IngredientSelector = ({
+export const IngredientSelector1 = ({
   form,
   index,
   setFieldValue,
 }: {
-  form: RecipeFormIngredientsForm;
+  form: IngredientNamesForm;
   index: number;
   setFieldValue: (
     field: string,
@@ -32,32 +29,74 @@ export const IngredientSelector = ({
     shouldValidate?: boolean | undefined
   ) => void;
 }) => {
-  // const [name, setName] = useState("");
-
-  // const [ingredient, setIngredient] =
-  //   useState<searchIngredient_searchIngredient>();
-  // const { data, loading, error, refetch } = useSearchIngredientFilterQuery({
-  //   name: name,
-  // });
-
-  // const [timer, setTimer] = useState(null);
-
-  // function changeDelay(change) {
-  //   if (timer) {
-  //     clearTimeout(timer);
-  //     setTimer(null);
-  //   }
-  //   setTimer(
-  //     setTimeout(() => {
-  //       setName(change);
-  //       refetch({ ingredientname: name });
-  //     }, 50)
-  //   );
-  // }
   return (
     <>
-      <Grid xs={3}>
-        {/* <Autocomplete
+      <Grid xs={6}>
+        <FormField name={`newIngredients.${index}.name`} label="Naam" />
+      </Grid>
+      <Grid xs={1}></Grid>
+      <Grid xs={2}>
+        <FormField
+          name={`newIngredients.${index}.quantity`}
+          label="Hoeveelheid"
+          validator={composeValidators(required, mustBeNumber)}
+        />
+      </Grid>
+      <Grid xs={2}>
+        <FormikSelect
+          validate={composeValidators(required)}
+          name={`newIngredients.${index}.unit`}
+        >
+          {units.map((unit) => (
+            <MenuItem key={unit} value={unit}>
+              {unit}
+            </MenuItem>
+          ))}
+        </FormikSelect>
+      </Grid>
+    </>
+  );
+};
+
+export const IngredientSelector = ({
+  form,
+  index,
+  setFieldValue,
+}: {
+  form: IngredientIdsForm;
+  index: number;
+  setFieldValue: (
+    field: string,
+    value: any,
+    shouldValidate?: boolean | undefined
+  ) => void;
+}) => {
+  const [name, setName] = useState("");
+
+  const [ingredient, setIngredient] =
+    useState<searchIngredient_searchIngredient>();
+  const { data, loading, error, refetch } = useSearchIngredientFilterQuery({
+    name: name,
+  });
+
+  const [timer, setTimer] = useState(null);
+
+  function changeDelay(change) {
+    if (timer) {
+      clearTimeout(timer);
+      setTimer(null);
+    }
+    setTimer(
+      setTimeout(() => {
+        setName(change);
+        refetch({ ingredientname: name });
+      }, 50)
+    );
+  }
+  return (
+    <>
+      <Grid xs={6}>
+        <Autocomplete
           id="tags-standard"
           options={
             loading
@@ -69,12 +108,11 @@ export const IngredientSelector = ({
           getOptionLabel={(option) => (option ? option.name : "")}
           onChange={(event, value: searchIngredient_searchIngredient) => {
             setIngredient(value);
-            setFieldValue(`ingredients.${index}.id`, value.id);
-            setFieldValue(`ingredients.${index}.name`, value.name);
+            setFieldValue(`oldIngredients.${index}.id`, value.id);
           }}
           renderInput={(params) => (
             <TextField
-              placeholder={form.name}
+              placeholder="ingredient"
               {...params}
               onChange={(e) => {
                 changeDelay(e.target.value);
@@ -82,21 +120,12 @@ export const IngredientSelector = ({
               fullWidth
             />
           )}
-        /> */}
-      </Grid>
-      <Grid xs={1}></Grid>
-      <Grid xs={2}>
-        <FormField name={`ingredients.${index}.name`} label="Naam" />
-        {/* {ingredient ? (
-          <TextField disabled placeholder={ingredient.name} />
-        ) : (
-          <FormField name={`ingredients.${index}.name`} label="Naam" />
-        )} */}
+        />
       </Grid>
       <Grid xs={1}></Grid>
       <Grid xs={2}>
         <FormField
-          name={`ingredients.${index}.quantity`}
+          name={`oldIngredients.${index}.quantity`}
           label="Hoeveelheid"
           validator={composeValidators(required, mustBeNumber)}
         />
@@ -104,7 +133,7 @@ export const IngredientSelector = ({
       <Grid xs={2}>
         <FormikSelect
           validate={composeValidators(required)}
-          name={`ingredients.${index}.unit`}
+          name={`oldIngredients.${index}.unit`}
         >
           {units.map((unit) => (
             <MenuItem key={unit} value={unit}>

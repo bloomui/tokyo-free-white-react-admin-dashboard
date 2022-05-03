@@ -1,5 +1,6 @@
-import { RecipeFormIngredientsForm } from "src/content/pages/MyChefsbase/Recipes/AddRecipe";
-import { RecipeIngredients, RecipeIngredientsForm } from "src/globalTypes";
+import { IngredientIdsForm, IngredientNamesForm, RecipeFormIngredientsForm } from "src/content/pages/MyChefsbase/Recipes/AddRecipe";
+import { RecipeIngredientsForm } from "src/globalTypes";
+
 
 export const emptyIngredientEntry: RecipeIngredientsForm = {
   quantity: 0,
@@ -14,15 +15,14 @@ export const emptyIngredientEntryForm: RecipeFormIngredientsForm = {
   name: "",
 };
 
-export const emptyRecipeIngredients: RecipeIngredientsForm = {
-  quantity: 0,
+export const emptyIngredientNamesEntryForm: IngredientNamesForm = {
+  quantity: "",
   unit: "",
-  id: "",
   name: "",
 };
-export const emptyRecipeIngredientsForm: RecipeFormIngredientsForm = {
+
+export const emptyIngredientIdsEntryForm: IngredientIdsForm = {
   quantity: "",
   unit: "",
   id: "",
-  name: "",
 };

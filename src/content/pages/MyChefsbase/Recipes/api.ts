@@ -15,11 +15,12 @@ import {
   ingredientsForRecipe,
   ingredientsForRecipeVariables,
 } from "./types/ingredientsForRecipe";
-import { WriteRecipe, WriteRecipeVariables } from "./types/WriteRecipe";
 import {
   methodForRecipe,
   methodForRecipeVariables,
 } from "./types/methodForRecipe";
+import { AddReceptVariables, AddRecept } from "./types/AddRecept";
+import { WriteRecipe, WriteRecipeVariables } from "./types/WriteRecipe";
 
 const getRecipeQuery = gql`
   query recipe($id: String!) {
@@ -189,17 +190,17 @@ export const AddRecipeMutation = gql`
   }
 `;
 
-export const WriteRecipeMutation = gql`
-  mutation WriteRecipe(
-    $boolean: Int!
+export const AddReceptMutation = gql`
+  mutation AddRecept(
     $input: AddRecipeInput!
-    $ingredients: [RecipeIngredients!]
+    $newIngredients: [IngredientNames!]
+    $oldIngredients: [IngredientIds!]
     $method: [StepToMethodInput!]!
   ) {
-    writeRecipe(
-      boolean: $boolean
+    addRecept(
       input: $input
-      ingredients: $ingredients
+      newIngredients: $newIngredients
+      oldIngredients: $oldIngredients
       method: $method
     )
   }
@@ -295,25 +296,6 @@ export const useUpdateRecipe = ({
   };
 };
 
-export const useWriteRecipe = ({
-  onCompleted,
-}: {
-  onCompleted: () => void;
-}) => {
-  const [writeRecipe, { loading, error }] = useMutation<
-    WriteRecipe,
-    WriteRecipeVariables
-  >(WriteRecipeMutation, {
-    onCompleted: () => onCompleted(),
-  });
-
-  return {
-    writeRecipe,
-    loading,
-    error,
-  };
-};
-
 export const useAddRecipe = ({ onCompleted }: { onCompleted: () => void }) => {
   const [addRecipe, { loading, error }] = useMutation<
     AddRecipe,
@@ -324,6 +306,21 @@ export const useAddRecipe = ({ onCompleted }: { onCompleted: () => void }) => {
 
   return {
     addRecipe,
+    loading,
+    error,
+  };
+};
+
+export const useAddRecept = ({ onCompleted }: { onCompleted: () => void }) => {
+  const [addRecept, { loading, error }] = useMutation<
+    AddRecept,
+    AddReceptVariables
+  >(AddReceptMutation, {
+    onCompleted: () => onCompleted(),
+  });
+
+  return {
+    addRecept,
     loading,
     error,
   };
