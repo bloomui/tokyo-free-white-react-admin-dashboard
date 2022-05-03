@@ -17,11 +17,11 @@ import {
     import React, { useState } from "react";
   import { VscStarFull, VscStarEmpty, VscTrash, VscAdd, VscSearch, VscEdit } from "react-icons/vsc";
 import { useAddToFavorites } from "../../Menus/api";
-import { KitchenType } from "src/globalTypes";
+import { KitchenType, Material } from "src/globalTypes";
 import { AreYouSureDelete } from "../../Menus/filtermenus/components/AreYouSureDelete";
 import { EnhancedTableHead, EnhancedTableToolbar } from "../../Menus/components/MenuTable";
 import { FilterIngredients, FilterIngredients_filterIngredients } from "../types/FilterIngredients";
-import { IngredientDialog } from "../ingredientDialogs";
+import { DialogForIngredient, IngredientDialog } from "../ingredientDialogs";
 import { UpdateIngredientDialog } from "../ingredientDialogs/UpdateIngredientDialog";
 
 const headCellsIngredients: string[] = [
@@ -88,7 +88,6 @@ export const IngredientTable = ({
     const [areYouSureDelete, setAreYouSureDelete] = useState<boolean>(false);
     const [id, setId] = React.useState<string>()
     const [ingredient, setIngredient] = React.useState<FilterIngredients_filterIngredients>()
-    const [ingr, setIngr] = React.useState<FilterIngredients_filterIngredients>()
 
     // ingredient Data
     let ingredients = data.filterIngredients
@@ -144,12 +143,12 @@ headCells={headCellsIngredients}
                     style={{ cursor: 'pointer' }}
                     onClick={() => {
                       setId(ingredient.id);
-                      setIngr(ingredient);
+                      setIngredient(ingredient);
                       setOpen(true)
                     }}
                     >{ingredient.name}</TableCell>
                     <TableCell align="left">{ingredient.category}</TableCell>
-                    <TableCell align="left">{ingredient.status}</TableCell>
+                    <TableCell align="left">{displayStatus(ingredient.status)}</TableCell>
                     <TableCell align="left">{ingredient.rating}</TableCell>
                     <TableCell 
                 align="center"
@@ -201,11 +200,10 @@ headCells={headCellsIngredients}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
              </TableContainer>
-            {id &&  (
+            {id &&  ingredient && (
               <>
-              <IngredientDialog
-              setId={() => setId(id)}
-              id={id}
+              <DialogForIngredient
+              ingredient={ingredient}
               open={open}
               onClose={() => setOpen(false)}
               />
@@ -226,4 +224,35 @@ headCells={headCellsIngredients}
             )}
                 </>
     )
+  }
+
+ export const displayStatus = (status: String): string => {
+    let result;
+
+    switch (status) {
+      case "":
+        result = "-";
+        break;
+      default:
+        result = status
+        break;
+    }
+    return result
+  }
+
+  export const displayMaterial = (material: Material): string => {
+    let result;
+
+    switch (material) {
+      case Material.LIQUID:
+        result = "In (milli)liters";
+        break;
+      case Material.SOLID:
+        result = "In (milli-/kilo)gram";
+        break;
+      default:
+        result = "In stuk(s)"
+        break;
+    }
+    return result
   }
