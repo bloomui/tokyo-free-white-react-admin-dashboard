@@ -278,6 +278,13 @@ export interface RecipeFilterInput {
   name?: string | null;
 }
 
+export interface RecipeIngredients {
+  name?: string | null;
+  quantity: number;
+  unit: string;
+  status?: string | null;
+}
+
 export interface RecipeIngredientsForm {
   id?: string | null;
   name?: string | null;

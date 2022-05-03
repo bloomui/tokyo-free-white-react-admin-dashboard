@@ -13,10 +13,19 @@ import {
   TableRow,
   Button,
   DialogActions,
+  Select,
+  Tab,
+  Tabs,
+  TextField,
+  CircularProgress,
+  Table,
 } from "@material-ui/core";
+import { MenuItem } from "@mui/material";
+import { Formik } from "formik";
 import React, { useState } from "react";
-import { LoadingScreen } from "src/components/layout";
-import { H5 } from "src/content/pages/Components/TextTypes";
+import { FormikSelect } from "src/components/form/FormikSelect";
+import { CenterInScreen, LoadingScreen } from "src/components/layout";
+import { H3, H3Left, H5, H5Left } from "src/content/pages/Components/TextTypes";
 import { Material } from "src/globalTypes";
 import {
   DefaultNutritionOptions,
@@ -24,7 +33,9 @@ import {
 } from "../../Components/NutrutitionOptions";
 import { ItemString, ItemInt } from "../../Menus/menuDialog";
 import { stringForMaterial } from "../AddIngredient";
-import { useGetIngredientQuery } from "../api";
+import { useGetIngredientQuery, useGetNutritionForIngredients, useGetProductsForIngredients } from "../api";
+import { displayMaterial, displayStatus } from "../components/IngredientTable";
+import { FilterIngredients_filterIngredients } from "../types/FilterIngredients";
 import {
   ingredient,
   ingredient_ingredient,
@@ -42,6 +53,189 @@ export const emptyIngredient: ingredient_ingredient = {
   nutrition: null,
   products: [],
   material: Material.SOLID,
+  status: null
+};
+
+export const DialogForIngredient = ({
+  ingredient,
+  open,
+  onClose,
+}: {
+  ingredient: FilterIngredients_filterIngredients;
+  open: boolean;
+  onClose: () => void;
+}) => {
+
+  const [value, setValue] = useState(0);
+
+  let content;
+
+  switch (value) {
+    case 0:
+      content = (
+        <NutritionTab id={ingredient.id} />
+      );
+      break;
+    default:
+      content = (
+        <ProductTab id={ingredient.id}/>
+      );
+      break;
+  }
+
+  return (
+    <>
+      <CenterInScreen>
+        <Dialog open={open} onClose={onClose}>
+          {ingredient && (
+            <>
+              <Grid container xs={12}>
+                <Grid xs={3}>
+                  <H5Left title="Ingredient" />
+                </Grid>
+                <Grid xs={6}>
+                  <H5 title={ingredient.name} />
+                </Grid>
+                <Grid xs={3}></Grid>
+                <Grid xs={3}>
+                  <H5Left title="Categorie" />
+                </Grid>
+                <Grid xs={6}>
+                  <H5 title={ingredient.category} />
+                </Grid>
+                <Grid xs={3}></Grid>
+                <Grid xs={3}>
+                  <H5Left title="Status" />
+                </Grid>
+                <Grid xs={6}>
+                  <H5 title={String(displayStatus(ingredient.status))} />
+                </Grid>
+                <Grid xs={3}></Grid>
+                <Grid xs={3}>
+                  <H5Left title="Meeteenheid" />
+                </Grid>
+                <Grid xs={6}>
+                  <H5 title={String(displayMaterial(ingredient.material))} />
+                </Grid>
+                <Grid xs={3}></Grid>
+                <Grid xs={3}>
+                  <H5Left title="Beoordeling" />
+                </Grid>
+                <Grid xs={6}>
+                  <H5 title={String(ingredient.rating)} />
+                </Grid>
+                <Grid xs={3}></Grid>
+              </Grid>
+              <DialogTitle>
+                <Tabs
+                  centered
+                  value={value}
+                  onChange={(e, newValue) => setValue(newValue as number)}
+                >
+                  <Tab label={`Voedingswaarden`} />
+                  <Tab label={`Producten`} />
+                </Tabs>
+              </DialogTitle>
+              {content}
+              <Button onClick={() => onClose()}>Sluiten</Button>
+            </>
+          )}
+        </Dialog>
+      </CenterInScreen>
+    </>
+  );
+};
+
+const NutritionTab = ({
+  id,
+}: {
+  id: string;
+}) => {
+
+  const [nutritionsToDisplay, setNutritionsToDisplay] = useState<string[]>(
+    DefaultNutritionOptions
+  );
+
+  const { data, loading, error } = useGetNutritionForIngredients({
+    id: id,
+  });
+
+
+  if (loading) return <CircularProgress />;
+  if (error) return <CircularProgress />;
+
+  return (
+    <DialogContent>
+      <Card>
+        <Grid container xs={12}>
+          <Grid xs={12}>
+            <NutritionOptionDropDown
+              setFieldValue={(selected) => setNutritionsToDisplay(selected)}
+            />
+          </Grid>
+          <Grid container xs={12}>
+            <Grid xs={6}>
+              <ItemNutrition
+                nutritionsToDisplay={nutritionsToDisplay}
+                title="Voedingswaarde"
+                item={data.ingredient.nutrition.nutrition}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Card>
+    </DialogContent>
+  );
+};
+
+const ProductTab = ({
+  id,
+}: {
+  id: string;
+}) => {
+
+  const { data, loading, error } = useGetProductsForIngredients({
+    id: id,
+  });
+
+  if (loading)
+    return (
+      <CenterInScreen>
+        <Dialog maxWidth="md" open={true}>
+          <CircularProgress />
+        </Dialog>
+      </CenterInScreen>
+    );
+  if (error) return <CircularProgress />;
+
+  return (
+    <DialogContent>
+      <Card>
+        <Grid container xs={12}>
+          <Grid xs={12}>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <H5 title="Ingredienten" />
+                  </TableRow>
+                </TableHead>
+                {data &&
+                  data.ingredient.products &&
+                  data.ingredient.products.map((product) => {
+                    return (
+                      <TableRow>
+                        <TableCell>{product.name}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+              </Table>
+            </TableContainer>
+          </Grid>
+        </Grid>
+      </Card>
+    </DialogContent>
+  );
 };
 
 export const IngredientDialog = ({
@@ -104,9 +298,14 @@ export const IngredientDialog = ({
                   />
                   <ItemInt title="rating" item={ingredient.rating} />
                   <ItemProducts title="Producten" item={ingredient.products} />
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <H5
                       title={`Per ${ingredient.nutrition.quantity.quantity} ${ingredient.nutrition.quantity.unit}:`}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                  <H5
+                      title={ingredient.status}
                     />
                   </Grid>
                   <NutritionOptionDropDown

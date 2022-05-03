@@ -7,7 +7,6 @@ import {
   AddRecipeInput,
   StepToMethodInput,
 } from "./../../../../../globalTypes";
-
 // ====================================================
 // GraphQL mutation operation: WriteRecipe
 // ====================================================

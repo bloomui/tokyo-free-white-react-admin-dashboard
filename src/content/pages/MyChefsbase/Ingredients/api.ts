@@ -12,10 +12,13 @@ import {
 import { allProducts } from "./types/AllProducts";
 import { ingredientRowsPerPage } from "../Recipes/AddRecipe/api";
 import { initialIngredientValues } from "./filterIngredients";
+import { statusForIngredient, statusForIngredientVariables } from "./types/statusForIngredient";
+
 
 const getIngredientQuery = gql`
   query ingredient($id: String!) {
     ingredient(id: $id) {
+      status
       category
       id
       name
@@ -91,6 +94,117 @@ const getIngredientQuery = gql`
   }
 `;
 
+export const getProductsForIngredientsQuery = gql` 
+query ingredient($id: String!) {
+  ingredient(id: $id) {
+    products {
+      id
+      name
+    }
+  }
+}`;
+
+export const getNutritionForIngredientsQuery = gql` 
+query ingredient($id: String!) {
+  ingredient(id: $id) {
+    nutrition {
+      quantity {
+        quantity
+        unit
+      }
+      nutrition {
+        kcal
+        protein {
+          plant
+          animal
+          total
+        }
+        carbs {
+          carbs
+          sugar
+        }
+        fat {
+          satured
+          singleUnsat
+          compoundUnsat
+          total
+        }
+        starch
+        polyols
+        fibres
+        nitrogen
+        polysachhariden
+        alcohol
+        water
+        organicAcids
+        vitamins {
+          e
+          c
+          kTotal
+          b12
+          dTotal
+        }
+        foliumAcid
+        pholate
+        pholatEquivalents
+        nicotinAcid
+        lycopeans
+        betaCrypto
+        zeacanthine
+        lutein
+        ash
+        jodium
+        sink
+        selenium
+        cupper
+        iron {
+          total
+        }
+        magnesium
+        fosfor
+        calcium
+        kalium
+        natrium
+        cholesterol
+        famstxr
+      }
+    }
+  }
+}`;
+
+export const useGetNutritionForIngredients = ({
+  id,
+}: {
+  id: string;
+}) => {
+  const { loading, data, error } = useSimpleQuery<
+    ingredient,
+    ingredientVariables
+  >(getNutritionForIngredientsQuery, {
+    variables: {
+      id: id,
+    },
+  });
+  return { loading, data, error };
+};
+
+export const useGetProductsForIngredients = ({
+  id,
+}: {
+  id: string;
+}) => {
+  const { loading, data, error } = useSimpleQuery<
+    ingredient,
+    ingredientVariables
+  >(getProductsForIngredientsQuery, {
+    variables: {
+      id: id,
+    },
+  });
+  return { loading, data, error };
+};
+
+
 export const useGetIngredientQuery = ({
   id,
   onCompleted,
@@ -120,10 +234,12 @@ export const FilterIngredientsQuery = gql`
   ) {
     numberOfIngredients
     filterIngredients(input: $input, offset: $offset, limit: $limit) {
+      status
       category
       id
       name
       rating
+      material
     }
   }
 `;

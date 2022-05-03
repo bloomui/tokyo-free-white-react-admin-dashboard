@@ -102,6 +102,7 @@ export interface ingredient_ingredient_products {
 
 export interface ingredient_ingredient {
   __typename: "Ingredient";
+  status: string | null;
   category: string | null;
   id: string;
   name: string;

@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { IngredientFilterInput } from "./../../../../../globalTypes";
+import { IngredientFilterInput, Material } from "./../../../../../globalTypes";
 
 // ====================================================
 // GraphQL query operation: FilterIngredients
@@ -11,10 +11,12 @@ import { IngredientFilterInput } from "./../../../../../globalTypes";
 
 export interface FilterIngredients_filterIngredients {
   __typename: "Ingredient";
+  status: string | null;
   category: string | null;
   id: string;
   name: string;
   rating: number | null;
+  material: Material;
 }
 
 export interface FilterIngredients {
