@@ -5,7 +5,6 @@
 
 import {
   AddRecipeInput,
-  RecipeIngredients,
   StepToMethodInput,
 } from "./../../../../../globalTypes";
 
@@ -20,6 +19,5 @@ export interface WriteRecipe {
 export interface WriteRecipeVariables {
   boolean: number;
   input: AddRecipeInput;
-  ingredients?: RecipeIngredients[] | null;
   method: StepToMethodInput[];
 }

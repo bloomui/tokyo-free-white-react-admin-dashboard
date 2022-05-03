@@ -42,6 +42,7 @@ export interface AddIngredientInput {
   category?: string | null;
   nutrition?: QuantityToNutritionInput | null;
   material: Material;
+  status?: string | null;
 }
 
 export interface AddMenuInput {
@@ -125,6 +126,7 @@ export interface IngredientInput {
   category?: string | null;
   nutrition?: QuantityToNutritionInput | null;
   material: Material;
+  status?: string | null;
 }
 
 export interface IngredientNames {
@@ -276,17 +278,12 @@ export interface RecipeFilterInput {
   name?: string | null;
 }
 
-export interface RecipeIngredients {
-  name?: string | null;
-  quantity: number;
-  unit: string;
-}
-
 export interface RecipeIngredientsForm {
   id?: string | null;
   name?: string | null;
   quantity: number;
   unit: string;
+  status?: string | null;
 }
 
 export interface RecipeInput {
