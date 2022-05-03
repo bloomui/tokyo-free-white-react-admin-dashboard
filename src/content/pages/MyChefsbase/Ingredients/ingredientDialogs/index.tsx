@@ -176,6 +176,7 @@ const NutritionTab = ({
           <Grid container xs={12}>
             <Grid xs={6}>
               <ItemNutrition
+                factor={1}
                 nutritionsToDisplay={nutritionsToDisplay}
                 title="Voedingswaarde"
                 item={data.ingredient.nutrition.nutrition}
