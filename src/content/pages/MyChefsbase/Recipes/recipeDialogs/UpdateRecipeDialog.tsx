@@ -27,6 +27,8 @@ import {
   QuantityToId,
   StepToMethodInput,
   DishInput,
+  IngredientIds,
+  IngredientNames,
 } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
 import { UpdateDishVariables } from "../../Dishes/types/UpdateDish";
@@ -146,17 +148,20 @@ export const UpdateRecipeDialog = ({
     unit: recipe.quantity.unit,
     quantity: recipe.quantity.quantity,
   };
-  const formIngredients: QuantityToId[] | null = data2.ingredientsForRecipe.map(
-    (quantityToIngr) => ({
-      quantity: quantityToIngr.quantity.quantity,
-      unit: quantityToIngr.quantity.unit,
-      id: quantityToIngr.ingredient.id,
+  const formIngredients: IngredientIds[] | null = data2.ingredientsForRecipe.map(
+    (form) => ({
+      quantity: form.quantity.quantity,
+      unit: form.quantity.unit,
+      id: form.ingredient.id,
     })
   );
 
+  const old: IngredientNames[] = []
+    
   const formState: UpdateRecipeVariables = {
     input: formInput,
-    ingredients: formIngredients,
+    newIngredients: old,
+    oldIngredients: formIngredients,
     method: methodHere,
   };
 
@@ -168,7 +173,8 @@ export const UpdateRecipeDialog = ({
           updateRecipe({
             variables: {
               method: values.method ? values.method : [emptyStep],
-              ingredients: mapIngredientToQToInput(selectedIngredients),
+              oldIngredients: mapIngredientToQToInput(selectedIngredients),
+              newIngredients: values.newIngredients,
               input: {
                 id: recipe.id,
                 name: values.input.name,
@@ -420,7 +426,7 @@ export const UpdateRecipeDialog = ({
   );
 };
 
-const mapToIngredientToQ = (
+export const mapToIngredientToQ = (
   a: ingredientsForRecipe_ingredientsForRecipe
 ): ingredientToQ => {
   return {

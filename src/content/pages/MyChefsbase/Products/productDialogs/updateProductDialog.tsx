@@ -45,6 +45,7 @@ import { LoadingScreen } from "src/components/layout";
 import { product_product_suppliers } from "../types/product";
 import {
   unitsLiquid,
+  unitsPersons,
   unitsSolid,
   unitsUnit,
 } from "../../Recipes/AddRecipe/components/IngredientTable";
@@ -67,6 +68,9 @@ export const unitsToUnits = (a: string): [string] => {
     case "liter":
       result = unitsLiquid;
       break;
+    case "person(en)":
+        result = unitsPersons;
+        break;
     default:
       result = unitsUnit;
   }

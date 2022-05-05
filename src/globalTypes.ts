@@ -19,6 +19,7 @@ export enum KitchenType {
 
 export enum Material {
   LIQUID = "LIQUID",
+  PERSONS = "PERSONS",
   SOLID = "SOLID",
   UNIT = "UNIT",
 }
@@ -276,13 +277,6 @@ export interface RecipeFilterInput {
   menus?: string[] | null;
   types?: string[] | null;
   name?: string | null;
-}
-
-export interface RecipeIngredients {
-  name?: string | null;
-  quantity: number;
-  unit: string;
-  status?: string | null;
 }
 
 export interface RecipeIngredientsForm {

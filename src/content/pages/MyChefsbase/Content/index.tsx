@@ -444,6 +444,7 @@ export const IngredientsTab = ({
 export const MethodsTab = ({ id }: { id: string }) => {
   const { data, loading, error } = useGetMethodForRecipeQuery({
     id: id,
+    onCompleted: (methodForRecipe) => {}
   });
 
   if (loading)

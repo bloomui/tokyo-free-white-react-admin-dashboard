@@ -172,6 +172,9 @@ export const getAvailableUnits = (a: string): string[] => {
     case "kg":
       unitsHere = ["gram"];
       break;
+      case "person(en)":
+      unitsHere = ["person(en)"];
+      break;
     default:
       unitsHere = ["stuk(s)"];
   }
@@ -194,6 +197,9 @@ export const getAvailableUnitsLarge = (a: string): string[] => {
     case "kg":
       unitsHere = ["gram", "kg"];
       break;
+    case "person(en)":
+      unitsHere = ["person(en)"];
+      break;
     default:
       unitsHere = ["stuk(s)"];
   }
@@ -215,6 +221,9 @@ export const minimizeUnit = (a: string): string => {
       break;
     case "kg":
       unitHere = "gram";
+      break;
+    case "person(en)":
+      unitHere = "person(en)";
       break;
     default:
       unitHere = "stuk(s)";

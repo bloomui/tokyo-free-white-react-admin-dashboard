@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import { useRef } from "react";
 import { useMutation } from "@apollo/client";
-import { DishFilterInput, RecipeFilterInput } from "src/globalTypes";
+import { DishFilterInput, RecipeFilterInput, StepToMethodInput } from "src/globalTypes";
 import { useSimpleQuery } from "src/utilities/apollo";
 import { AddRecipe, AddRecipeVariables } from "./types/AddRecipe";
 import { FilterRecipes } from "./types/FilterRecipes";
@@ -61,7 +61,8 @@ export const useGetRecipeQuery = ({ id }: { id: string }) => {
   return { loading, data, error };
 };
 
-export const useGetMethodForRecipeQuery = ({ id }: { id: string }) => {
+export const useGetMethodForRecipeQuery = ({ id, onCompleted }: { id: string; onCompleted?: (stepToMethodInput: methodForRecipe) => void;
+ }) => {
   const { loading, data, error } = useSimpleQuery<
     methodForRecipe,
     methodForRecipeVariables
@@ -69,7 +70,10 @@ export const useGetMethodForRecipeQuery = ({ id }: { id: string }) => {
     variables: {
       id: id,
     },
-  });
+  onCompleted: (result) => {
+    onCompleted(result);
+  },
+});
   return { loading, data, error };
 };
 
@@ -172,19 +176,20 @@ export const NutritionForRecipeQuery = gql`
 
 export const UpdateRecipeMutation = gql`
   mutation UpdateRecipe(
-    $input: RecipeInput!
-    $ingredients: [QuantityToId!]
+    $input: RecipeInput!,
+    $newIngredients: [IngredientNames!],
+    $oldIngredients: [IngredientIds!],
     $method: [StepToMethodInput!]!
   ) {
-    updateRecipe(input: $input, ingredients: $ingredients, method: $method)
+    updateRecipe(input: $input, newIngredients: $newIngredients, oldIngredients: $oldIngredients, method: $method)
   }
 `;
 
 export const AddRecipeMutation = gql`
   mutation AddRecipe(
-    $input: AddRecipeInput!
-    $ingredients: [RecipeIngredientsForm!]
-    $method: [StepToMethodInput!]!
+    $input: AddRecipeInput!,
+    $ingredients: [RecipeIngredientsForm!],
+    $method: [StepToMethodInput!]!,
   ) {
     addRecipe(input: $input, ingredients: $ingredients, method: $method)
   }
@@ -192,15 +197,15 @@ export const AddRecipeMutation = gql`
 
 export const AddReceptMutation = gql`
   mutation AddRecept(
-    $input: AddRecipeInput!
-    $newIngredients: [IngredientNames!]
-    $oldIngredients: [IngredientIds!]
-    $method: [StepToMethodInput!]!
+    $input: AddRecipeInput!,
+    $newIngredients: [IngredientNames!],
+    $oldIngredients: [IngredientIds!],
+    $method: [StepToMethodInput!]!,
   ) {
     addRecept(
-      input: $input
-      newIngredients: $newIngredients
-      oldIngredients: $oldIngredients
+      input: $input,
+      newIngredients: $newIngredients,
+      oldIngredients: $oldIngredients,
       method: $method
     )
   }

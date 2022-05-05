@@ -68,6 +68,9 @@ export const stringForMaterial = (a: Material): string => {
     case Material.LIQUID:
       result = "In milliliters";
       break;
+      case Material.PERSONS:
+      result = "Per persoon";
+      break;
     default:
       result = "In stuk(s)";
   }
@@ -84,8 +87,11 @@ export const unitForMaterial = (a: Material): string => {
     case Material.LIQUID:
       result = "milliliters";
       break;
+      case Material.PERSONS:
+      result = "personen";
+      break;
     default:
-      result = "Stuk(s)";
+      result = "stuk(s)";
   }
 
   return result;

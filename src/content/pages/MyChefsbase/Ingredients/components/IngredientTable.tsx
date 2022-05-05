@@ -250,6 +250,9 @@ headCells={headCellsIngredients}
       case Material.SOLID:
         result = "In (milli-/kilo)gram";
         break;
+      case Material.PERSONS:
+        result = "Per persoon";
+        break;
       default:
         result = "In stuk(s)"
         break;

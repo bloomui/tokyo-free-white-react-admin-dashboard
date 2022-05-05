@@ -95,7 +95,7 @@ const getIngredientQuery = gql`
 `;
 
 export const getProductsForIngredientsQuery = gql` 
-query ingredient($id: String!) {
+query prodForIngredient($id: String!) {
   ingredient(id: $id) {
     products {
       id
@@ -105,7 +105,7 @@ query ingredient($id: String!) {
 }`;
 
 export const getNutritionForIngredientsQuery = gql` 
-query ingredient($id: String!) {
+query nutrForIngredient($id: String!) {
   ingredient(id: $id) {
     nutrition {
       quantity {

@@ -207,7 +207,6 @@ export const RecipeTable = ({
             })}
           </TableBody>
         </Table>
-        {/* <TableRow> */}
         <TablePagination
           rowsPerPageOptions={[10]}
           component={Paper}
@@ -217,7 +216,6 @@ export const RecipeTable = ({
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-        {/* </TableRow> */}
       </TableContainer>
       {recipe && (
         <>

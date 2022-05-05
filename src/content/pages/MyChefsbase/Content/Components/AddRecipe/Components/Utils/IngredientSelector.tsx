@@ -16,13 +16,15 @@ import {
   mustBeNumber,
 } from "src/utilities/formikValidators";
 
-export const IngredientSelector1 = ({
+export const IngredientSelectorNew = ({
   form,
   index,
+  field,
   setFieldValue,
 }: {
   form: IngredientNamesForm;
   index: number;
+  field: string;
   setFieldValue: (
     field: string,
     value: any,
@@ -32,12 +34,12 @@ export const IngredientSelector1 = ({
   return (
     <>
       <Grid xs={6}>
-        <FormField name={`newIngredients.${index}.name`} label="Naam" />
+        <FormField name={`${field}.${index}.name`} label="Naam" />
       </Grid>
       <Grid xs={1}></Grid>
       <Grid xs={2}>
         <FormField
-          name={`newIngredients.${index}.quantity`}
+          name={`${field}.${index}.quantity`}
           label="Hoeveelheid"
           validator={composeValidators(required, mustBeNumber)}
         />
@@ -45,7 +47,7 @@ export const IngredientSelector1 = ({
       <Grid xs={2}>
         <FormikSelect
           validate={composeValidators(required)}
-          name={`newIngredients.${index}.unit`}
+          name={`${field}.${index}.unit`}
         >
           {units.map((unit) => (
             <MenuItem key={unit} value={unit}>
@@ -62,9 +64,11 @@ export const IngredientSelector = ({
   form,
   index,
   setFieldValue,
+  field,
 }: {
   form: IngredientIdsForm;
   index: number;
+  field: string;
   setFieldValue: (
     field: string,
     value: any,
@@ -108,7 +112,7 @@ export const IngredientSelector = ({
           getOptionLabel={(option) => (option ? option.name : "")}
           onChange={(event, value: searchIngredient_searchIngredient) => {
             setIngredient(value);
-            setFieldValue(`oldIngredients.${index}.id`, value.id);
+            setFieldValue(`${field}.${index}.id`, value.id);
           }}
           renderInput={(params) => (
             <TextField
@@ -125,7 +129,7 @@ export const IngredientSelector = ({
       <Grid xs={1}></Grid>
       <Grid xs={2}>
         <FormField
-          name={`oldIngredients.${index}.quantity`}
+          name={`${field}.${index}.quantity`}
           label="Hoeveelheid"
           validator={composeValidators(required, mustBeNumber)}
         />
@@ -133,24 +137,13 @@ export const IngredientSelector = ({
       <Grid xs={2}>
         <FormikSelect
           validate={composeValidators(required)}
-          name={`oldIngredients.${index}.unit`}
+          name={`${field}.${index}.unit`}
         >
           {units.map((unit) => (
             <MenuItem key={unit} value={unit}>
               {unit}
             </MenuItem>
           ))}
-          {/* {ingredient
-            ? getUnitsForMaterial(ingredient.material).map((unit) => (
-                <MenuItem key={unit} value={unit}>
-                  {unit}
-                </MenuItem>
-              ))
-            : units.map((unit) => (
-                <MenuItem key={unit} value={unit}>
-                  {unit}
-                </MenuItem>
-              ))} */}
         </FormikSelect>
       </Grid>
     </>
