@@ -22,7 +22,7 @@ import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageHeader } from "src/components/pageHeader/PageHeader";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
-import { FormField } from "src/components/form/FormField";
+import { FormField, FormFieldEdit } from "src/components/form/FormField";
 import {
   IngredientNames,
   AddRecipeInput,
@@ -30,6 +30,7 @@ import {
   QuantityToId,
   RecipeIngredientsForm,
   StepToMethodInput,
+  RecipeInput,
 } from "src/globalTypes";
 import {
   composeValidators,
@@ -38,8 +39,8 @@ import {
   Validator,
 } from "src/utilities/formikValidators";
 import { user } from "../..";
-import { Rating1 } from "../../Menus/filtermenus/components/rating";
-import { useAddRecept, useAddRecipe } from "../api";
+import { Rating1, RatingEdit } from "../../Menus/filtermenus/components/rating";
+import { useAddRecept, useAddRecipe, useUpdateRecipe } from "../api";
 import { Divider } from "@mui/material";
 import { AddRecipeVariables } from "../types/AddRecipe";
 import { TableData, units } from "./components/IngredientTable";
@@ -56,6 +57,16 @@ import {
   emptyIngredientIdsEntryForm,
   emptyIngredientNamesEntryForm,
 } from "../../Content/Components/AddRecipe/Components/Utils/Conts";
+import { FilterRecipes_filterRecipes } from "../types/FilterRecipes";
+import { UpdateRecipeVariables } from "../types/UpdateRecipe";
+
+export type UpdateForm = {
+  boolean: number;
+  input: UpdateRecipeForm;
+  oldIngredients: IngredientIdsForm[];
+  newIngredients: IngredientNamesForm[];
+  method: StepToMethodInput[];
+};
 
 export type Form = {
   boolean: number;
@@ -107,6 +118,14 @@ export const recipeFormIngrToInput = (
     unit: f.unit,
   }));
 };
+export type UpdateRecipeForm = {
+  id: string;
+  name: string;
+  rating: string;
+  type: string;
+  quantity: string;
+  unit: string;
+};
 export type AddRecipeForm = {
   name: string;
   rating: string;
@@ -135,6 +154,19 @@ export const recipeFormToRecipeInput = (
   };
 };
 
+export const updateRecipeFormToRecipeInput = (
+  form: UpdateRecipeForm
+): RecipeInput => {
+  return {
+    id: form.id,
+    name: form.name,
+    rating: Number(form.rating),
+    type: form.type,
+    quantity: Number(form.quantity),
+    unit: form.unit,
+  };
+};
+
 export const AddRecipePage1 = () => {
   const [value, setValue] = useState(0);
   const { addRecept, loading, error } = useAddRecept({
@@ -143,7 +175,7 @@ export const AddRecipePage1 = () => {
     },
   });
   const [stepHere, setStep] = useState(1);
-  const [openBoolean, setOpenBoolean] = useState(false)
+  const [openBoolean, setOpenBoolean] = useState(false);
 
   const emptyStep: StepToMethodInput = {
     step: stepHere,
@@ -338,6 +370,239 @@ export const AddRecipePage1 = () => {
                                   variant="outlined"
                                 >
                                   Recept toevoegen
+                                </Button>
+                              </Grid>
+                            </Grid>
+                          </DialogContent>
+                        </Dialog>
+                      </Grid>
+                    </Grid>
+                  </>
+                );
+              }}
+            </Formik>
+          </Grid>
+        </Grid>
+      </Container>
+    </>
+  );
+};
+
+export const UpdateRecipePage = ({
+  recipe,
+}: {
+  recipe: FilterRecipes_filterRecipes;
+}) => {
+  const [value, setValue] = useState(0);
+  const { updateRecipe, loading, error } = useUpdateRecipe({
+    onCompleted: () => window.location.reload(),
+  });
+  const [stepHere, setStep] = useState(1);
+  const [openBoolean, setOpenBoolean] = useState(false);
+
+  const emptyStep: StepToMethodInput = {
+    step: stepHere,
+    method: "",
+  };
+
+  const ingredientNamesForm: IngredientNamesForm[] | null = [
+    emptyIngredientNamesEntryForm,
+    emptyIngredientNamesEntryForm,
+    emptyIngredientNamesEntryForm,
+  ];
+
+  const ingredientIdsForm: IngredientIdsForm[] | null = [
+    emptyIngredientIdsEntryForm,
+    emptyIngredientIdsEntryForm,
+    emptyIngredientIdsEntryForm,
+  ];
+  const formMethods: StepToMethodInput[] | null = [
+    emptyStep,
+    emptyStep,
+    emptyStep,
+  ];
+
+  const formInput: UpdateRecipeForm = {
+    id: recipe.id,
+    name: recipe.name,
+    rating: String(recipe.rating),
+    type: recipe.type,
+    quantity: String(recipe.quantity.quantity),
+    unit: recipe.quantity.unit,
+  };
+
+  const form: UpdateForm = {
+    boolean: 0,
+    input: formInput,
+    oldIngredients: ingredientIdsForm,
+    newIngredients: ingredientNamesForm,
+    method: formMethods,
+  };
+
+  return (
+    <>
+      <Helmet>
+        <title>Update recept</title>
+      </Helmet>
+      <PageTitleWrapper>
+        <PageHeader
+          title={`Update ${form.input.name}`}
+          name="Soup Bros"
+          avatar={user.avatar}
+        />
+      </PageTitleWrapper>
+      <Container maxWidth="lg">
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={3}
+        >
+          <Grid item xs={12}>
+            <Formik
+              initialValues={form}
+              onSubmit={(values) => {
+                updateRecipe({
+                  variables: {
+                    method: values.method.map((stepToMethod, index) => ({
+                      step: index + 1,
+                      method: stepToMethod.method,
+                    })),
+                    oldIngredients: oldFromForm(values.oldIngredients),
+                    newIngredients: newFromForm(values.newIngredients),
+                    input: updateRecipeFormToRecipeInput(values.input),
+                  },
+                });
+              }}
+            >
+              {({ values, handleChange, submitForm, setFieldValue }) => {
+                return (
+                  <>
+                    <Grid container xs={12}>
+                      <Grid xs={3}>
+                        <H5 title="Recept:" />
+                      </Grid>
+                      <Grid xs={3}>
+                        <FormFieldEdit
+                          placeholder={values.input.name}
+                          label="Recept naam"
+                          name="input.name"
+                          validator={composeValidators(required)}
+                        />
+                      </Grid>
+                      <Grid xs={6}></Grid>
+                      <Grid xs={3}>
+                        <H5 title="Hoeveelheid:" />
+                      </Grid>
+                      <Grid xs={3}>
+                      <FormFieldEdit
+                          placeholder={values.input.quantity}
+                          name={"input.quantity"}
+                          label="Hoeveelheid"
+                          validator={composeValidators(required, mustBeNumber)}
+                        />
+                      </Grid>
+                      <Grid xs={3}>
+                        <FormikSelect
+                          validate={composeValidators(required)}
+                          name={"input.unit"}
+                        >
+                          {units.map((unit) => (
+                            <MenuItem key={unit} value={unit}>
+                              {unit}
+                            </MenuItem>
+                          ))}
+                        </FormikSelect>
+                      </Grid>
+                      <Grid xs={3}></Grid>
+                      <Grid xs={3}>
+                        <H5 title="Recepttype:" />
+                      </Grid>
+                      <Grid xs={3}>
+                      <FormFieldEdit
+                          placeholder={values.input.type}
+                          name={"input.type"}
+                          label="Recept type"
+                          validator={composeValidators(required, mustBeNumber)}
+                        />
+                      </Grid>
+                      <Grid xs={6}></Grid>
+                      <Grid xs={3}>
+                        <H5 title="Beoordeling:" />
+                      </Grid>
+                      <Grid xs={3}>
+                        <RatingEdit
+                          updateField="input.rating"
+                          setFieldValue={setFieldValue} 
+                          defaultNumber={Number(values.input.rating)}                        />
+                      </Grid>
+                      <Grid xs={6}></Grid>
+                    </Grid>
+                    <Divider />
+                    <Grid container xs={12}>
+                      <Grid xs={12}>
+                        <Tabs
+                          centered
+                          value={value}
+                          onChange={(e, newValue) =>
+                            setValue(newValue as number)
+                          }
+                        >
+                          <Tab label={`Ingredienten`} />
+                          <Tab label={`Methode`} />
+                        </Tabs>
+                      </Grid>
+                      <Grid xs={1}></Grid>
+                      {value == 0 ? (
+                        <AddIngsForRecipe
+                          setFieldValue={setFieldValue}
+                          values={values}
+                        />
+                      ) : (
+                        <AddMethodsForRecipe values={values} />
+                      )}
+                    </Grid>
+
+                    <Divider />
+                    <Grid container xs={12}>
+                      <Grid xs={10}></Grid>
+                      <Grid xs={2}>
+                        <Button
+                          onClick={() => setOpenBoolean(true)}
+                          color="primary"
+                          variant="outlined"
+                        >
+                          Recept toevoegen
+                        </Button>
+                        <Dialog
+                          open={openBoolean}
+                          onClose={() => setOpenBoolean(false)}
+                        >
+                          <DialogContent>
+                            <Grid container xs={12}>
+                              <Grid item xs={8}>
+                                <H5 title="Ingredienten koppelen aan opgeslagen ingredienten?" />
+                              </Grid>
+                              <Grid item xs={2}></Grid>
+                              <Grid item xs={2}>
+                                <Checkbox
+                                  color="primary"
+                                  checked={values.boolean == 0 ? false : true}
+                                  onChange={(event, value) => {
+                                    value == true
+                                      ? setFieldValue("boolean", 1)
+                                      : setFieldValue("boolean", 0);
+                                  }}
+                                />
+                              </Grid>
+                              <Grid item xs={12}>
+                                <Button
+                                  onClick={() => submitForm()}
+                                  color="primary"
+                                  variant="outlined"
+                                >
+                                  Recept aanpassen
                                 </Button>
                               </Grid>
                             </Grid>

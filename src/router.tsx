@@ -10,7 +10,6 @@ import SignInForm from "./content/pages/SignIn";
 import SignUpForm from "./content/pages/SignUp";
 import MyChefsBase from "./content/pages/MyChefsbase";
 import {
-  AddRecipePage,
   AddRecipePage1,
 } from "./content/pages/MyChefsbase/Recipes/AddRecipe";
 import { AddProductPage } from "./content/pages/MyChefsbase/Products/AddProduct";
