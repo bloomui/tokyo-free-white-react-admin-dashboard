@@ -13,12 +13,14 @@ import {
   IngredientSelector,
   IngredientSelectorNew,
 } from "./Utils/IngredientSelector";
-import { Form } from "src/content/pages/MyChefsbase/Recipes/AddRecipe";
+import { Form, IngredientsForm } from "src/content/pages/MyChefsbase/Recipes/AddRecipe";
 
 export const AddIngsForRecipe = ({
+  ingredients,
   setFieldValue,
   values,
 }: {
+  ingredients?: IngredientsForm[];
   setFieldValue: (
     field: string,
     value: any,
@@ -54,6 +56,9 @@ export const AddIngsForRecipe = ({
                     <Grid xs={2}>{index + 1}</Grid>
                     <Grid container xs={8}>
                       <IngredientSelector
+                        placeholder={ingredients[index].name}
+                        q={String(form.quantity)}
+                        u={form.unit}
                         form={form}
                         index={index}
                         field='oldIngredients'
@@ -61,7 +66,7 @@ export const AddIngsForRecipe = ({
                       />
                     </Grid>
                     <Grid xs={2}>
-                      {index > 0 ? (
+                      {index >= 0 ? (
                         <Grid container xs={12}>
                           <Grid>
                             <Button

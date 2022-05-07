@@ -5,6 +5,7 @@ import {
   Container,
   Dialog,
   DialogContent,
+  DialogTitle,
   Grid,
   MenuItem,
   Tab,
@@ -40,8 +41,8 @@ import {
 } from "src/utilities/formikValidators";
 import { user } from "../..";
 import { Rating1, RatingEdit } from "../../Menus/filtermenus/components/rating";
-import { useAddRecept, useAddRecipe, useUpdateRecipe } from "../api";
-import { Divider } from "@mui/material";
+import { useAddRecept, useAddRecipe, useGetIngredientsForRecipe, useGetMethodForRecipeQuery, useUpdateRecipe } from "../api";
+import { CircularProgress, Divider } from "@mui/material";
 import { AddRecipeVariables } from "../types/AddRecipe";
 import { TableData, units } from "./components/IngredientTable";
 import { VscTrash } from "react-icons/vsc";
@@ -63,7 +64,7 @@ import { UpdateRecipeVariables } from "../types/UpdateRecipe";
 export type UpdateForm = {
   boolean: number;
   input: UpdateRecipeForm;
-  oldIngredients: IngredientIdsForm[];
+  oldIngredients: IngredientsForm[];
   newIngredients: IngredientNamesForm[];
   method: StepToMethodInput[];
 };
@@ -71,7 +72,7 @@ export type UpdateForm = {
 export type Form = {
   boolean: number;
   input: AddRecipeForm;
-  oldIngredients: IngredientIdsForm[];
+  oldIngredients: IngredientsForm[];
   newIngredients: IngredientNamesForm[];
   method: StepToMethodInput[];
 };
@@ -90,6 +91,12 @@ export type IngredientNamesForm = {
 };
 export type IngredientIdsForm = {
   id: string;
+  quantity: string;
+  unit: string;
+};
+export type IngredientsForm = {
+  id: string;
+  name?: string;
   quantity: string;
   unit: string;
 };
@@ -119,6 +126,7 @@ export const recipeFormIngrToInput = (
   }));
 };
 export type UpdateRecipeForm = {
+  boolean: number;
   id: string;
   name: string;
   rating: string;
@@ -388,22 +396,42 @@ export const AddRecipePage1 = () => {
   );
 };
 
+export const mapIngredientsToForm = (ingredients: ingredientsForRecipe_ingredientsForRecipe[]): IngredientsForm[] => {
+  return ingredients.map((i)=> (
+    {
+      id: i.ingredient.id,
+      name: i.ingredient.name,
+      quantity: String(i.quantity.quantity),
+      unit: i.quantity.unit
+    }
+  ))
+}
+
 export const UpdateRecipePage = ({
   recipe,
+  open,
+  onClose,
 }: {
+  open: boolean;
+  onClose: () => void;
   recipe: FilterRecipes_filterRecipes;
 }) => {
   const [value, setValue] = useState(0);
   const { updateRecipe, loading, error } = useUpdateRecipe({
     onCompleted: () => window.location.reload(),
   });
+  const { data, loading: loading1, error: error1} = useGetIngredientsForRecipe({
+    onCompleted: () => {},
+    id: recipe.id,
+    quantity: recipe.quantity.quantity,
+    unit: recipe.quantity.unit,
+  });
+  const { data: data1, loading: loading2, error: error2} = useGetMethodForRecipeQuery({
+    onCompleted: () => {},
+    id: recipe.id,
+  });
   const [stepHere, setStep] = useState(1);
   const [openBoolean, setOpenBoolean] = useState(false);
-
-  const emptyStep: StepToMethodInput = {
-    step: stepHere,
-    method: "",
-  };
 
   const ingredientNamesForm: IngredientNamesForm[] | null = [
     emptyIngredientNamesEntryForm,
@@ -411,18 +439,8 @@ export const UpdateRecipePage = ({
     emptyIngredientNamesEntryForm,
   ];
 
-  const ingredientIdsForm: IngredientIdsForm[] | null = [
-    emptyIngredientIdsEntryForm,
-    emptyIngredientIdsEntryForm,
-    emptyIngredientIdsEntryForm,
-  ];
-  const formMethods: StepToMethodInput[] | null = [
-    emptyStep,
-    emptyStep,
-    emptyStep,
-  ];
-
   const formInput: UpdateRecipeForm = {
+    boolean: 0,
     id: recipe.id,
     name: recipe.name,
     rating: String(recipe.rating),
@@ -431,16 +449,20 @@ export const UpdateRecipePage = ({
     unit: recipe.quantity.unit,
   };
 
+  if (loading1) return <CircularProgress/>
+  if (loading2) return <CircularProgress/>
+
   const form: UpdateForm = {
     boolean: 0,
     input: formInput,
-    oldIngredients: ingredientIdsForm,
+    oldIngredients: mapIngredientsToForm(data.ingredientsForRecipe),
     newIngredients: ingredientNamesForm,
-    method: formMethods,
+    method: data1.methodForRecipe,
   };
 
   return (
     <>
+    <Dialog fullScreen open={open} onClose={onClose}>
       <Helmet>
         <title>Update recept</title>
       </Helmet>
@@ -459,7 +481,10 @@ export const UpdateRecipePage = ({
           alignItems="stretch"
           spacing={3}
         >
-          <Grid item xs={12}>
+          <DialogTitle style={{ fontWeight: 600 }} id="form-dialog-title">
+                Recept Aanpassen
+              </DialogTitle>
+              <DialogContent>
             <Formik
               initialValues={form}
               onSubmit={(values) => {
@@ -524,7 +549,7 @@ export const UpdateRecipePage = ({
                           placeholder={values.input.type}
                           name={"input.type"}
                           label="Recept type"
-                          validator={composeValidators(required, mustBeNumber)}
+                          validator={composeValidators(required)}
                         />
                       </Grid>
                       <Grid xs={6}></Grid>
@@ -556,6 +581,7 @@ export const UpdateRecipePage = ({
                       <Grid xs={1}></Grid>
                       {value == 0 ? (
                         <AddIngsForRecipe
+                        ingredients={values.oldIngredients}
                           setFieldValue={setFieldValue}
                           values={values}
                         />
@@ -573,7 +599,7 @@ export const UpdateRecipePage = ({
                           color="primary"
                           variant="outlined"
                         >
-                          Recept toevoegen
+                          Recept aanpassen
                         </Button>
                         <Dialog
                           open={openBoolean}
@@ -614,9 +640,10 @@ export const UpdateRecipePage = ({
                 );
               }}
             </Formik>
-          </Grid>
+          </DialogContent>
         </Grid>
       </Container>
+      </Dialog>
     </>
   );
 };

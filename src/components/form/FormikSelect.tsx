@@ -5,11 +5,13 @@ import { Validator } from "../../utilities/formikValidators";
 import { FormikErrorText } from "../error/formik";
 
 export const FormikSelect = ({
+  placeholder,
   title,
   name,
   validate,
   children,
 }: {
+  placeholder?: string;
   title?: string;
   name: string;
   validate?: Validator;
@@ -24,6 +26,7 @@ export const FormikSelect = ({
     <>
       <InputLabel>{title}</InputLabel>
       <Select
+      defaultValue={placeholder}
         fullWidth
         variant="outlined"
         size="small"

@@ -13,6 +13,7 @@ export const AddMethodsForRecipe = ({ values }: { values: Form }) => {
     step: stepHere,
     method: "",
   };
+  console.log(values.method)
   return (
     <Grid container xs={12}>
       <FieldArray
@@ -29,6 +30,7 @@ export const AddMethodsForRecipe = ({ values }: { values: Form }) => {
                 <Grid xs={1}>{index + 1}</Grid>
                 <Grid xs={8}>
                   <FormFieldMultiLine
+                    placeholder={stepToMethod.method}
                     name={`method.${index}.method`}
                     label="Methode"
                     validator={composeValidators(required)}

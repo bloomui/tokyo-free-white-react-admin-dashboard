@@ -9,7 +9,7 @@ import PageTitleWrapper from "src/components/PageTitleWrapper";
 import { H5 } from "src/content/pages/Components/TextTypes";
 import { IngredientIds, IngredientNames, QuantityToId, RecipeInput, StepToMethodInput } from "src/globalTypes";
 import { composeValidators, required, mustBeNumber } from "src/utilities/formikValidators";
-import { IngredientNamesForm, IngredientIdsForm, Form, oldFromForm, newFromForm, recipeFormToRecipeInput, ingredientToQ, mapIngredientToQToInput } from "..";
+import { IngredientNamesForm, IngredientIdsForm, Form, oldFromForm, newFromForm, recipeFormToRecipeInput, ingredientToQ, mapIngredientToQToInput, UpdateRecipeForm } from "..";
 import { user } from "../../..";
 import { getUnitsForUnit } from "../../../Content";
 import { AddIngsForRecipe, UpdateIngsForRecipe } from "../../../Content/Components/AddRecipe/Components/ingredients";
@@ -94,13 +94,14 @@ export const UpdateRecipePage1 = ({
 
     const [openBoolean, setOpenBoolean] = useState(false)
   
-    const formInput: RecipeInput = {
+    const formInput: UpdateRecipeForm = {
+        boolean: 0,
         id: recipe.id,
         name: recipe.name,
-        rating: recipe.rating,
+        rating: String(recipe.rating),
         type: recipe.type,
         unit: recipe.quantity.unit,
-        quantity: recipe.quantity.quantity,
+        quantity: String(recipe.quantity.quantity),
       };
       const formIngredients: IngredientIds[] | null = data.ingredientsForRecipe.map(
         (form) => ({
@@ -111,7 +112,23 @@ export const UpdateRecipePage1 = ({
       );
       const old: IngredientNames[] = []
     
-      const formState: UpdateRecipeVariables = {
+      const mapForm = (form: UpdateRecipeForm): RecipeInput => {
+        return {
+          id: form.id,
+          name: form.name,
+          rating: Number(form.rating),
+          type: form.type,
+          quantity: Number(form.quantity),
+          unit: form.unit,
+        }
+      }
+      type UpdateRecipeVariablesForm = {
+        input: UpdateRecipeForm;
+        newIngredients?: IngredientNames[] | null;
+        oldIngredients?: IngredientIds[] | null;
+        method: StepToMethodInput[];
+      }
+      const formState: UpdateRecipeVariablesForm = {
         input: formInput,
         newIngredients: old,
         oldIngredients: formIngredients,
@@ -160,14 +177,7 @@ export const UpdateRecipePage1 = ({
               method: values.method ? values.method : [emptyStep],
               oldIngredients: mapIngredientToQToInput(selectedIngredients),
               newIngredients: values.newIngredients,
-              input: {
-                id: recipe.id,
-                name: values.input.name,
-                rating: values.input.rating,
-                type: values.input.type,
-                unit: values.input.unit,
-                quantity: values.input.quantity,
-              },
+              input: mapForm(values.input)
             },
           });
         }}
@@ -251,14 +261,14 @@ export const UpdateRecipePage1 = ({
                           </Tabs>
                         </Grid>
                         <Grid xs={1}></Grid>
-                        {value == 0 ? (
+                        {/* {value == 0 ? (
                           <AddIngsForRecipe
                             setFieldValue={setFieldValue}
                             values={values}
                           />
                         ) : (
                           <AddMethodsForRecipe values={values} />
-                        )}
+                        )} */}
                       </Grid>
   
                       <Divider />
@@ -285,7 +295,7 @@ export const UpdateRecipePage1 = ({
                                 <Grid item xs={2}>
                                   <Checkbox
                                     color="primary"
-                                    checked={values.boolean == 0 ? false : true}
+                                    checked={values.input.boolean == 0 ? false : true}
                                     onChange={(event, value) => {
                                       value == true
                                         ? setFieldValue("boolean", 1)

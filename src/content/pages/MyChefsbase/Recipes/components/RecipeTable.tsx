@@ -39,6 +39,7 @@ import {
 import { UpdateRecipeDialog } from "../recipeDialogs/UpdateRecipeDialog";
 import { recipeRowsPerPage } from "../api";
 import { DialogHere } from "../../Content";
+import { UpdateRecipePage } from "../AddRecipe";
 
 const headCellsRecipes: string[] = ["Naam", "type", "rating", "acties"];
 
@@ -230,7 +231,7 @@ export const RecipeTable = ({
             kitchenType={KitchenType.Recipe}
             onClose={() => setAreYouSureDelete(false)}
           />
-          <UpdateRecipeDialog
+          <UpdateRecipePage
             recipe={recipe}
             open={openUpdate}
             onClose={() => setOpenUpdate(false)}

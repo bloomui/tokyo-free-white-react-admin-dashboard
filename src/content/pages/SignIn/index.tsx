@@ -140,6 +140,7 @@ export type FieldProps = {
   label: string;
   validator?: Validator;
   otherFieldProps?: Partial<TextFieldProps>;
+  placeholder?: string;
 };
 
 export const FormField = (props: FieldProps) => {
@@ -162,7 +163,7 @@ export const FormField = (props: FieldProps) => {
 };
 
 export const FormFieldMultiLine = (props: FieldProps) => {
-  const { name, label, validator, otherFieldProps } = props;
+  const { name, label, validator, otherFieldProps, placeholder } = props;
 
   const [field, meta] = useField({
     name,
@@ -171,6 +172,7 @@ export const FormFieldMultiLine = (props: FieldProps) => {
 
   return (
     <TextField
+      placeholder={placeholder}
       {...(otherFieldProps as any)}
       {...field}
       fullWidth

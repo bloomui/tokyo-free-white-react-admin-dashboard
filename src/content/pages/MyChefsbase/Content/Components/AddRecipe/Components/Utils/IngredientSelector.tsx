@@ -1,6 +1,6 @@
 import { Grid, Autocomplete, TextField, MenuItem } from "@material-ui/core";
 import { useState } from "react";
-import { FormField } from "src/components/form/FormField";
+import { FormField, FormFieldEdit } from "src/components/form/FormField";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import { H3 } from "src/content/pages/Components/TextTypes";
 import { useSearchIngredientFilterQuery } from "src/content/pages/MyChefsbase/Ingredients/AddIngredient/api";
@@ -41,12 +41,10 @@ export const IngredientSelectorNew = ({
         <FormField
           name={`${field}.${index}.quantity`}
           label="Hoeveelheid"
-          validator={composeValidators(required, mustBeNumber)}
         />
       </Grid>
       <Grid xs={2}>
         <FormikSelect
-          validate={composeValidators(required)}
           name={`${field}.${index}.unit`}
         >
           {units.map((unit) => (
@@ -61,11 +59,17 @@ export const IngredientSelectorNew = ({
 };
 
 export const IngredientSelector = ({
+  q,
+  u,
+  placeholder,
   form,
   index,
   setFieldValue,
   field,
 }: {
+  q?: string;
+  u?: string;
+  placeholder?: string;
   form: IngredientIdsForm;
   index: number;
   field: string;
@@ -101,6 +105,7 @@ export const IngredientSelector = ({
     <>
       <Grid xs={6}>
         <Autocomplete
+        defaultValue={placeholder || ''}
           id="tags-standard"
           options={
             loading
@@ -109,14 +114,14 @@ export const IngredientSelector = ({
                 data.searchIngredient &&
                 data.searchIngredient.map((option) => option)
           }
-          getOptionLabel={(option) => (option ? option.name : "")}
+          getOptionLabel={(option) => (option ? option.name ? placeholder : "" : "")}
           onChange={(event, value: searchIngredient_searchIngredient) => {
             setIngredient(value);
             setFieldValue(`${field}.${index}.id`, value.id);
           }}
           renderInput={(params) => (
             <TextField
-              placeholder="ingredient"
+              placeholder={placeholder}
               {...params}
               onChange={(e) => {
                 changeDelay(e.target.value);
@@ -128,7 +133,8 @@ export const IngredientSelector = ({
       </Grid>
       <Grid xs={1}></Grid>
       <Grid xs={2}>
-        <FormField
+        <FormFieldEdit
+          placeholder={q}
           name={`${field}.${index}.quantity`}
           label="Hoeveelheid"
           validator={composeValidators(required, mustBeNumber)}
@@ -136,6 +142,7 @@ export const IngredientSelector = ({
       </Grid>
       <Grid xs={2}>
         <FormikSelect
+          placeholder={u}
           validate={composeValidators(required)}
           name={`${field}.${index}.unit`}
         >
