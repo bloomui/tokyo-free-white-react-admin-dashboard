@@ -94,7 +94,7 @@ const Content  = ({ingredients}: {ingredients: IngredientsForm[]}) => {
                     </TableRow>
                 ))}
             </TableBody>
-            <Acties open={open} setOpen={onClose}/>
+            <Acties open={open} onClose={setOpen}/>
         </Table>
         </TableContainer>
     )
