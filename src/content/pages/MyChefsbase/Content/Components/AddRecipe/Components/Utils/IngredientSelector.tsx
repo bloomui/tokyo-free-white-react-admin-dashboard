@@ -59,16 +59,12 @@ export const IngredientSelectorNew = ({
 };
 
 export const IngredientSelector = ({
-  q,
-  u,
   placeholder,
-  form,
   index,
   setFieldValue,
   field,
+  form
 }: {
-  q?: string;
-  u?: string;
   placeholder?: string;
   form: IngredientIdsForm;
   index: number;
@@ -134,7 +130,7 @@ export const IngredientSelector = ({
       <Grid xs={1}></Grid>
       <Grid xs={2}>
         <FormFieldEdit
-          placeholder={q}
+          placeholder={form.quantity}
           name={`${field}.${index}.quantity`}
           label="Hoeveelheid"
           validator={composeValidators(required, mustBeNumber)}
@@ -142,7 +138,7 @@ export const IngredientSelector = ({
       </Grid>
       <Grid xs={2}>
         <FormikSelect
-          placeholder={u}
+          placeholder={form.unit}
           validate={composeValidators(required)}
           name={`${field}.${index}.unit`}
         >

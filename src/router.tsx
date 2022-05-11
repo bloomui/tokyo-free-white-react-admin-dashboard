@@ -24,6 +24,7 @@ import {
   RecipesAndIngredients,
 } from "./content/pages/MyChefsbase/Content";
 import { IngredientPage } from "./content/pages/MyChefsbase/Ingredients";
+import { InventoryPage } from "./content/pages/Inventory";
 
 const Loader = (Component) => (props) =>
   (
@@ -223,7 +224,7 @@ const routes = (isLoggedIn: boolean) => [
       },
       {
         path: "inventaris",
-        element: <StatusComingSoon />,
+        element: <InventoryPage />,
       },
       {
         path: "orders",

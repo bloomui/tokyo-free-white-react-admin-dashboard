@@ -34,7 +34,7 @@ export const AddIngsForRecipe = ({
       <Grid container xs={12}>
         <Grid container xs={6}>
           <Grid xs={12}>
-            <H2 title="Ingredienten toevoegen:" />
+            <H3 title="MyChefsBase Ingredienten:" />
           </Grid>
           <Grid xs={12}>
             <Divider />
@@ -56,9 +56,7 @@ export const AddIngsForRecipe = ({
                     <Grid xs={2}>{index + 1}</Grid>
                     <Grid container xs={8}>
                       <IngredientSelector
-                        placeholder={ingredients[index].name}
-                        q={String(form.quantity)}
-                        u={form.unit}
+                        placeholder={ingredients ? ingredients.length > 0 ? ingredients[index].name : "" : ""}
                         form={form}
                         index={index}
                         field='oldIngredients'
@@ -139,7 +137,7 @@ export const AddIngsForRecipe = ({
         </Grid>
         <Grid container xs={6}>
           <Grid xs={12}>
-            <H3 title="Voeg ingredienten toe die nog niet in de chefsbase staan:" />
+            <H3 title="Nieuwe ingredienten:" />
           </Grid>
           <Grid xs={12}>
             <Divider />

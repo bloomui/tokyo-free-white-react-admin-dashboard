@@ -1,6 +1,8 @@
 import { Box, Hidden, Tooltip } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { experimentalStyled } from '@material-ui/core/styles';
+import React from 'react';
+import { MyLogo } from '../pageHeader/PageHeader';
 
 
 const LogoWrapper = experimentalStyled(Link)(
@@ -102,12 +104,14 @@ function Logo() {
 
 
   return (
+
     <LogoWrapper to="/overview">
-      <LogoSignWrapper>
+      <MyLogo/>
+      {/* <LogoSignWrapper>
         <LogoSign>
           <LogoSignInner />
         </LogoSign>
-      </LogoSignWrapper>
+      </LogoSignWrapper> */}
       <Hidden smDown>
         <LogoTextWrapper>
           <Tooltip title="Version 1.0" arrow placement="right">
