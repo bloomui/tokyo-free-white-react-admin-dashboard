@@ -107,11 +107,11 @@ function Logo() {
 
     <LogoWrapper to="/overview">
       <MyLogo/>
-      {/* <LogoSignWrapper>
+      <LogoSignWrapper>
         <LogoSign>
           <LogoSignInner />
         </LogoSign>
-      </LogoSignWrapper> */}
+      </LogoSignWrapper>
       <Hidden smDown>
         <LogoTextWrapper>
           <Tooltip title="Version 1.0" arrow placement="right">

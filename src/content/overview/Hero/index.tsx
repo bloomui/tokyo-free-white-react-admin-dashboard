@@ -9,6 +9,7 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 
 import { experimentalStyled } from '@material-ui/core/styles';
+import { MyLogo } from 'src/components/pageHeader/PageHeader';
 
 export const TypographyH1 = experimentalStyled(Typography)(
   ({ theme }) => `
@@ -42,7 +43,8 @@ function Hero() {
     <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
       <Grid spacing={{ xs: 6, md: 10 }} justifyContent="center" alignItems="center" container>
         <Grid item md={10} lg={8} mx="auto">
-          <LabelWrapper color="success">Version 1.0.0</LabelWrapper>
+        
+          <LabelWrapper ><MyLogo /></LabelWrapper>
           <TypographyH1 sx={{ mb: 2 }} variant="h1">
           My Chefsbase
           </TypographyH1>

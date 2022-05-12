@@ -21,6 +21,8 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import MailTwoToneIcon from '@material-ui/icons/MailTwoTone';
+import React from 'react';
+import { MyLogo } from 'src/components/pageHeader/PageHeader';
 
 const MainContent = experimentalStyled(Box)(
   () => `
@@ -107,7 +109,7 @@ function StatusComingSoon() {
       </Helmet>
       <MainContent>
         <Container maxWidth="md">
-          <Logo />
+          <MyLogo />
           <Box textAlign="center" mb={3}>
             <Container maxWidth="xs">
               <Typography variant="h1" sx={{ mt: 4, mb: 2 }}>

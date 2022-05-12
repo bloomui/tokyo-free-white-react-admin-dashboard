@@ -7,6 +7,7 @@ import { Box, Drawer, Hidden } from '@material-ui/core';
 
 import { experimentalStyled } from '@material-ui/core/styles';
 import SidebarMenu from './SidebarMenu';
+import { MyLogo } from 'src/components/pageHeader/PageHeader';
 
 const SidebarWrapper = experimentalStyled(Box)(
   ({ theme }) => `
@@ -45,7 +46,7 @@ function Sidebar() {
         <SidebarWrapper>
           <Scrollbars autoHide>
             <TopSection>
-              <Logo />
+              <MyLogo />
             </TopSection>
             <SidebarMenu />
           </Scrollbars>

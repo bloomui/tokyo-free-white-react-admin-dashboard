@@ -12,6 +12,7 @@ import HeaderUserbox from './Userbox';
 import Logo from 'src/components/Logo';
 import { useViewerQuery } from 'src/content/pages/MyChefsbase/api';
 import { LoadingScreen } from 'src/components/layout';
+import { MyLogo } from 'src/components/pageHeader/PageHeader';
 
 const HeaderWrapper = experimentalStyled(Box)(
   ({ theme }) => `
@@ -48,7 +49,7 @@ function Header() {
     <HeaderWrapper display="flex" alignItems="center">
       <Box display="flex" alignItems="center">
         <Hidden lgUp>
-          <Logo />
+          <MyLogo />
         </Hidden>
         <Hidden lgUp>
           <HeaderMenu user={user}/>
