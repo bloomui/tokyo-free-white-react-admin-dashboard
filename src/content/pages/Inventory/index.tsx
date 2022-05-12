@@ -1,4 +1,4 @@
-import { Button, TableBody, Container, Grid, Paper, Table, TableContainer, TableHead, TableRow, TableCell, Dialog, DialogContent, DialogTitle } from "@material-ui/core"
+import { Button, TextField, TableBody, Container, Grid, Paper, Table, TableContainer, TableHead, TableRow, TableCell, Dialog, DialogContent, DialogTitle } from "@material-ui/core"
 import React from "react"
 import { useState } from "react"
 import { Helmet } from "react-helmet-async"
@@ -74,7 +74,7 @@ const ingreds: IngredientsForm[] = [
 const Content  = ({ingredients}: {ingredients: IngredientsForm[]}) => {
 
     const [open, setOpen] = useState(false)
-    
+    const [ingr, setIngr] = useState<IngredientsForm>()
     return (
         <TableContainer component={Paper}>
         <Table>
@@ -82,38 +82,87 @@ const Content  = ({ingredients}: {ingredients: IngredientsForm[]}) => {
                 <TableRow>
                     <TableCell><H5 title="Ingredient"/></TableCell>
                     <TableCell><H5 title="Hoeveelheid"/></TableCell>
-                    <TableCell><H5 title="Pas Aan"/></TableCell>
+                    <TableCell><H5 title="Bestel"/></TableCell>
                     </TableRow>
             </TableHead>
             <TableBody>
                 {ingredients && ingredients.map((ingredient) => (
                     <TableRow>
                         <TableCell align="center">{ingredient.name}</TableCell>
-                        <TableCell align="center">{ingredient.quantity} {ingredient.unit}</TableCell>
-                        <TableCell align="center"><Button onClick={() => setOpen(true)} variant="outlined">Acties</Button></TableCell>
+                        <TableCell align="center">
+                            <TextField 
+                            size="small"
+                            style={{maxWidth: '100px'}}
+                            placeholder={ingredient.quantity} />
+                            {ingredient.unit}
+                            </TableCell>
+                        <TableCell align="center"><Button onClick={() => {
+                            setOpen(true);
+                            setIngr(ingredient)
+                            } 
+                        }
+                            variant="outlined">Bijbestellen</Button></TableCell>
                     </TableRow>
                 ))}
             </TableBody>
-            <Acties open={open} onClose={setOpen}/>
+            <Order ingredient={ingr} open={open} onClose={() => setOpen(false)}/>
         </Table>
         </TableContainer>
     )
 }
 
-const Acties = ({open, onClose}: {open: boolean, onClose: () => void}) => {
-    
+const Order = ({ingredient, open, onClose}: {ingredient: IngredientsForm, open: boolean, onClose: () => void}) => {
+    const a = '';
+    const [quantity, setQuantity] = useState('0')
+
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>
-                <H5 title="Acties"/>
+                <H5 title={`Bestel ${ingredient ? ingredient.name: a} bij`}/>
             </DialogTitle>
             <DialogContent>
-                <Grid container xs={12}>
-                    <Grid xs={3}>
-                        Bestel
-                    </Grid>
-                </Grid>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell><H5 title="Bestel bij:"/></TableCell>
+                            <TableCell><H5 title="Prijs per hoeveelheid:"/></TableCell>
+                            <TableCell><H5 title="Aantal:"/></TableCell>
+                            </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {options.map((option) => (
+                            <TableRow>
+                        <TableCell align="center">{option.name}</TableCell> 
+                        <TableCell align="center"> <Grid>{`€${((Number(option.quantity) / Number(option.quantity) ) * option.price).toFixed(2)}`} per </Grid>
+                        <Grid>{option.quantity} {option.unit}</Grid></TableCell> 
+                        <TableCell align="center">
+                        <TextField 
+                            size="small"
+                            style={{maxWidth: '100px'}}
+                            onChange={(e) => setQuantity(e.target.value)}
+                            placeholder={String(quantity)} />
+                            </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+                <Button fullWidth variant="outlined">Bestellen</Button>
             </DialogContent>
         </Dialog>
     )
 }
+
+const options = [
+    {
+        name: 'Sligro',
+        price: 1.0,
+        quantity: 100.0,
+        unit: 'gram'
+    },
+    {
+        name: 'Makro',
+        price: 1.1,
+        quantity: 105.0,
+        unit: 'gram'
+    }
+]
