@@ -136,6 +136,19 @@ export interface IngredientNames {
   unit: string;
 }
 
+export interface InventoryInput {
+  ingrId: string;
+  products?: InventoryProductInput[] | null;
+}
+
+export interface InventoryProductInput {
+  id: string;
+  q: number;
+  unit: string;
+  exp?: string | null;
+  price?: number | null;
+}
+
 export interface MenuFilterInput {
   suppliers?: string[] | null;
   products?: string[] | null;

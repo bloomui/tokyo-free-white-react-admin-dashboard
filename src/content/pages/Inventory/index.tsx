@@ -1,18 +1,32 @@
-import { Button, TextField, TableBody, Container, Grid, Paper, Table, TableContainer, TableHead, TableRow, TableCell, Dialog, DialogContent, DialogTitle } from "@material-ui/core"
+import { Button, TextField, TableBody, Container, Grid, Paper, Table, TableContainer, TableHead, TableRow, TableCell, Dialog, DialogContent, DialogTitle, CircularProgress } from "@material-ui/core"
+import { Formik } from "formik"
 import React from "react"
 import { useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useNavigate } from "react-router"
 import Footer from "src/components/Footer"
+import { FormField } from "src/components/form/FormField"
 import { PageHeader } from "src/components/pageHeader/PageHeader"
 import PageTitleWrapper from "src/components/PageTitleWrapper"
 import { clearAuth } from "src/utilities/auth"
+import { composeValidators, required } from "src/utilities/formikValidators"
 import { H5 } from "../Components/TextTypes"
-import { IngredientNamesForm, IngredientsForm } from "../MyChefsbase/Recipes/AddRecipe"
+import { IngredientSelector } from "../MyChefsbase/Content/Components/AddRecipe/Components/Utils/IngredientSelector"
+import { IngredientIdsForm, IngredientNamesForm, IngredientsForm } from "../MyChefsbase/Recipes/AddRecipe"
+import { useAddToInventory, useInventoryQuery } from "./api"
+import { addToInventoryVariables } from "./types/addToInventory"
+import { listInventory_listInventory } from "./types/listInventory"
 
 export const InventoryPage = () => {
-
     const navigate = useNavigate()
+    const { data, loading, error } = useInventoryQuery()
+
+    if (loading) return <CircularProgress/>
+
+    if (error) return <CircularProgress/>
+    
+    
+    
     return (
         <>
       <Helmet>
@@ -33,7 +47,7 @@ export const InventoryPage = () => {
           spacing={3}
         >
           <Grid item xs={12}>
-         <Content ingredients={ingreds}/>
+         <Content ingredients={data.listInventory}/>
           </Grid>
           <Grid item lg={8} xs={12}>
             <Button onClick={() => {
@@ -50,31 +64,11 @@ export const InventoryPage = () => {
     )
 }
 
-const ingreds: IngredientsForm[] = [
-    {
-    name: "Komijn",
-    id: "KomijnId",
-    quantity: "500",
-    unit: "gram"
-    },
-    {
-    name: "Wortelen",
-    id: "WortelenId",
-    quantity: "10",
-    unit: "kg"
-    },
-    {
-    name: "Paprika",
-    id: "PaprikaId",
-    quantity: "20",
-    unit: "kg"
-            }  
-];
-
-const Content  = ({ingredients}: {ingredients: IngredientsForm[]}) => {
+const Content  = ({ingredients}: {ingredients: listInventory_listInventory[]}) => {
 
     const [open, setOpen] = useState(false)
-    const [ingr, setIngr] = useState<IngredientsForm>()
+    const [openInventory, setOpenInventory] = useState(false)
+    const [inv, setInv] = useState<listInventory_listInventory>()
     return (
         <TableContainer component={Paper}>
         <Table>
@@ -86,39 +80,143 @@ const Content  = ({ingredients}: {ingredients: IngredientsForm[]}) => {
                     </TableRow>
             </TableHead>
             <TableBody>
-                {ingredients && ingredients.map((ingredient) => (
+                {ingredients && ingredients.map((inventory) => (
                     <TableRow>
-                        <TableCell align="center">{ingredient.name}</TableCell>
+                        <TableCell align="center">{inventory.ingrName}</TableCell>
                         <TableCell align="center">
                             <TextField 
                             size="small"
                             style={{maxWidth: '100px'}}
-                            placeholder={ingredient.quantity} />
-                            {ingredient.unit}
+                            placeholder={String(inventory.quantity.quantity)} />
+                            {inventory.quantity.unit}
                             </TableCell>
                         <TableCell align="center"><Button onClick={() => {
                             setOpen(true);
-                            setIngr(ingredient)
+                            setInv(inventory)
                             } 
                         }
                             variant="outlined">Bijbestellen</Button></TableCell>
                     </TableRow>
                 ))}
             </TableBody>
-            <Order ingredient={ingr} open={open} onClose={() => setOpen(false)}/>
+            <Order inventory={inv} open={open} onClose={() => setOpen(false)}/>
+            <AddToInventory open={openInventory} onClose={() => setOpenInventory(false)}/>
         </Table>
+        <Button fullWidth onClick={() => setOpenInventory(true)} variant="outlined">Ingredienten toevoegen</Button>
         </TableContainer>
     )
 }
 
-const Order = ({ingredient, open, onClose}: {ingredient: IngredientsForm, open: boolean, onClose: () => void}) => {
+const AddToInventory = ({open, onClose}: {open: boolean; onClose:  () => void;}) => {
+
+    const form: addToInventoryVariables = {
+        inventoryInput: [{
+            ingrId: '',
+            products: [{
+                id: '',
+                q: 0,
+                unit: '',
+            }]
+        }]
+    }
+    const ingredientForm: IngredientIdsForm = {
+        id: '',
+        quantity: '',
+        unit: ''
+    }
+
+    const { addToInventory, loading, error } = useAddToInventory({
+        onCompleted: () => {
+          window.location.reload();
+        },
+      });
+
+    return (
+        <Dialog open={open} onClose={onClose}>
+            <DialogTitle>
+            <Formik
+              initialValues={form}
+              onSubmit={(values) => {
+                addToInventory({
+                  variables: {
+                    inventoryInput : values.inventoryInput
+                }
+            });
+              }}>
+              {({ values, handleChange, submitForm, setFieldValue }) => {
+                return (
+                  <>
+                    <Table>
+                    <TableHead>
+                        <TableRow><H5 title={`Voeg ingredienten toe`}/></TableRow>
+                        </TableHead>
+                        <TableRow>
+                            <TableCell><H5 title="Ingredient:"/></TableCell>
+                            <TableCell><H5 title="Product:"/></TableCell>
+                            <TableCell colSpan={2}><H5 title="Hoeveelheid:"/></TableCell>
+                            <TableCell><H5 title="Prijs:"/></TableCell>
+                            <TableCell><H5 title="Geldig tot:"/></TableCell>
+                            </TableRow>
+                    <TableBody>
+                        {values.inventoryInput.map((input, index) => (
+                            <IngredientSelector
+                            placeholder={`values.inventoryInput.${index}.ingredientName`}
+                            form={ingredientForm}
+                            index={index}
+                            field={`values.inventoryInput.${index}.ingredientName`}
+                            setFieldValue={setFieldValue}
+                          />
+                            // <TableRow>
+                            //     {/* <TableCell colSpan={3}> */}
+                            //     </TableRow>
+                                
+                        //         {/* </TableCell> */}
+                        // {/* <TableCell align="center">
+                        //     <FormField
+                        //     label="Hoeveelheid"
+                        //     name={`input.inventoryInput.${index}.q`}
+                        //     validator={composeValidators(required)}
+                        //   /></TableCell> 
+                        //   <TableCell>
+                        //   <FormField
+                        //     label="Meeteenheid"
+                        //     name={`input.inventoryInput.${index}.u`}
+                        //     validator={composeValidators(required)}
+                        //   />
+                        //   </TableCell> */}
+                        //      {/* <TableCell><FormField
+                        //     label="Prijs"
+                        //     name={`input.inventoryInput.${index}.price`}
+                        //     validator={composeValidators(required)}
+                        //   /></TableCell>
+                        //     <TableCell>
+                        //         <FormField
+                        //     label="Tot datum"
+                        //     name={`input.inventoryInput.${index}.exp`}
+                        //     validator={composeValidators(required)}
+                        //   /></TableCell> */}
+                        ))}
+                    </TableBody>
+                </Table>
+                  </>
+                )
+              }
+            }
+            </Formik>
+            </DialogTitle>
+            </Dialog>
+            )
+        }
+               
+
+const Order = ({inventory, open, onClose}: {inventory: listInventory_listInventory, open: boolean, onClose: () => void}) => {
     const a = '';
     const [quantity, setQuantity] = useState('0')
 
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>
-                <H5 title={`Bestel ${ingredient ? ingredient.name: a} bij`}/>
+                <H5 title={`Bestel ${inventory ? inventory.ingrName: a} bij`}/>
             </DialogTitle>
             <DialogContent>
                 <Table>
@@ -130,11 +228,11 @@ const Order = ({ingredient, open, onClose}: {ingredient: IngredientsForm, open: 
                             </TableRow>
                     </TableHead>
                     <TableBody>
-                        {options.map((option) => (
+                        {inventory && inventory.products && inventory.products.map((option) => (
                             <TableRow>
                         <TableCell align="center">{option.name}</TableCell> 
                         <TableCell align="center"> <Grid>{`€${((Number(option.quantity) / Number(option.quantity) ) * option.price).toFixed(2)}`} per </Grid>
-                        <Grid>{option.quantity} {option.unit}</Grid></TableCell> 
+                        <Grid>{option.quantity.quantity} {option.quantity.unit}</Grid></TableCell> 
                         <TableCell align="center">
                         <TextField 
                             size="small"
@@ -151,18 +249,3 @@ const Order = ({ingredient, open, onClose}: {ingredient: IngredientsForm, open: 
         </Dialog>
     )
 }
-
-const options = [
-    {
-        name: 'Sligro',
-        price: 1.0,
-        quantity: 100.0,
-        unit: 'gram'
-    },
-    {
-        name: 'Makro',
-        price: 1.1,
-        quantity: 105.0,
-        unit: 'gram'
-    }
-]
