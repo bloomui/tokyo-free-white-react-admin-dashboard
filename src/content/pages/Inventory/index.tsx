@@ -1,4 +1,4 @@
-import { Button, TextField, TableBody, Container, Grid, Paper, Table, TableContainer, TableHead, TableRow, TableCell, Dialog, DialogContent, DialogTitle, CircularProgress } from "@material-ui/core"
+import { Button, TextField, TableBody, Container, Grid, Paper, Table, TableContainer, TableHead, TableRow, TableCell, Dialog, DialogContent, DialogTitle, CircularProgress, IconButton } from "@material-ui/core"
 import { Formik } from "formik"
 import React from "react"
 import { useState } from "react"
@@ -16,6 +16,9 @@ import { IngredientIdsForm, IngredientNamesForm, IngredientsForm } from "../MyCh
 import { useAddToInventory, useInventoryQuery } from "./api"
 import { addToInventoryVariables } from "./types/addToInventory"
 import { listInventory_listInventory } from "./types/listInventory"
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { InventoryInput } from "src/globalTypes"
 
 export const InventoryPage = () => {
     const navigate = useNavigate()
@@ -107,7 +110,32 @@ const Content  = ({ingredients}: {ingredients: listInventory_listInventory[]}) =
     )
 }
 
+const Row = ({ingredientForm, setFieldValue, input, index}: {ingredientForm: IngredientIdsForm; setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void ; input: InventoryInput; index: number}) => {
+    const [openCollapse, setOpenCollapse] = React.useState(false);
+    return (
+        <>
+<Grid xs={10}>
+                            <IngredientSelector
+                            placeholder={`values.inventoryInput.${index}.ingredientName`}
+                            form={ingredientForm}
+                            index={index}
+                            field={`inventoryInput`}
+                            setFieldValue={setFieldValue}
+                          />
+                          </Grid>
+                          <Grid xs={2}><IconButton
+                          aria-label="expand row"
+                          size="small"
+                          onClick={() => setOpenCollapse(!openCollapse)}
+                        >
+                          {openCollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                        </IconButton></Grid>
+                        {openCollapse && <Grid xs={12}></Grid> }
+                        </>
+                        )
+}
 const AddToInventory = ({open, onClose}: {open: boolean; onClose:  () => void;}) => {
+
 
     const form: addToInventoryVariables = {
         inventoryInput: [{
@@ -146,58 +174,21 @@ const AddToInventory = ({open, onClose}: {open: boolean; onClose:  () => void;})
               {({ values, handleChange, submitForm, setFieldValue }) => {
                 return (
                   <>
-                    <Table>
-                    <TableHead>
-                        <TableRow><H5 title={`Voeg ingredienten toe`}/></TableRow>
-                        </TableHead>
-                        <TableRow>
-                            <TableCell><H5 title="Ingredient:"/></TableCell>
-                            <TableCell><H5 title="Product:"/></TableCell>
-                            <TableCell colSpan={2}><H5 title="Hoeveelheid:"/></TableCell>
-                            <TableCell><H5 title="Prijs:"/></TableCell>
-                            <TableCell><H5 title="Geldig tot:"/></TableCell>
-                            </TableRow>
-                    <TableBody>
-                        {values.inventoryInput.map((input, index) => (
-                            <IngredientSelector
-                            placeholder={`values.inventoryInput.${index}.ingredientName`}
-                            form={ingredientForm}
-                            index={index}
-                            field={`values.inventoryInput.${index}.ingredientName`}
-                            setFieldValue={setFieldValue}
-                          />
-                            // <TableRow>
-                            //     {/* <TableCell colSpan={3}> */}
-                            //     </TableRow>
-                                
-                        //         {/* </TableCell> */}
-                        // {/* <TableCell align="center">
-                        //     <FormField
-                        //     label="Hoeveelheid"
-                        //     name={`input.inventoryInput.${index}.q`}
-                        //     validator={composeValidators(required)}
-                        //   /></TableCell> 
-                        //   <TableCell>
-                        //   <FormField
-                        //     label="Meeteenheid"
-                        //     name={`input.inventoryInput.${index}.u`}
-                        //     validator={composeValidators(required)}
-                        //   />
-                        //   </TableCell> */}
-                        //      {/* <TableCell><FormField
-                        //     label="Prijs"
-                        //     name={`input.inventoryInput.${index}.price`}
-                        //     validator={composeValidators(required)}
-                        //   /></TableCell>
-                        //     <TableCell>
-                        //         <FormField
-                        //     label="Tot datum"
-                        //     name={`input.inventoryInput.${index}.exp`}
-                        //     validator={composeValidators(required)}
-                        //   /></TableCell> */}
-                        ))}
-                    </TableBody>
-                </Table>
+                    <Grid container xs={12}>
+                    <Grid xs={12}><H5 title={`Voeg ingredienten toe`}/></Grid>
+                            <Grid xs={2}><H5 title="Ingredient:"/></Grid>
+                            <Grid xs={2}><H5 title="Product:"/></Grid>
+                            <Grid xs={2}><H5 title="Hoeveelheid:"/></Grid>
+                            <Grid xs={2}><H5 title="Prijs:"/></Grid>
+                            <Grid xs={2}><H5 title="Geldig tot:"/></Grid>
+                            <Grid xs={2}></Grid>
+                        {values.inventoryInput.map((input, index) => {
+                            <Grid xs={12}>
+                            <Row setFieldValue={setFieldValue} ingredientForm={ingredientForm} input={input} index={index}/>
+                            </Grid>
+                        }
+                        )}
+                </Grid>
                   </>
                 )
               }
