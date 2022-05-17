@@ -152,3 +152,72 @@ export const IngredientSelector = ({
     </>
   );
 };
+
+export const IngredientSelectorInventory = ({
+  index,
+  setFieldValue,
+  fieldValue,
+  form
+}: {
+  form: IngredientIdsForm;
+  index: number;
+  fieldValue: string;
+  setFieldValue: (
+    field: string,
+    value: any,
+    shouldValidate?: boolean | undefined
+  ) => void;
+}) => {
+  const [name, setName] = useState("");
+
+  const [ingredient, setIngredient] =
+    useState<searchIngredient_searchIngredient>();
+  const { data, loading, error, refetch } = useSearchIngredientFilterQuery({
+    name: name,
+  });
+
+  const [timer, setTimer] = useState(null);
+
+  function changeDelay(change) {
+    if (timer) {
+      clearTimeout(timer);
+      setTimer(null);
+    }
+    setTimer(
+      setTimeout(() => {
+        setName(change);
+        refetch({ ingredientname: name });
+      }, 50)
+    );
+  }
+  return (
+    <>
+      <Grid xs={6}>
+        <Autocomplete
+          id="tags-standard"
+          options={
+            loading
+              ? []
+              : data &&
+                data.searchIngredient &&
+                data.searchIngredient.map((option) => option)
+          }
+          getOptionLabel={(option) => (option ? option.name : "")}
+          onChange={(event, value: searchIngredient_searchIngredient) => {
+            setIngredient(value);
+            setFieldValue(`${fieldValue}.ingrId`, value.id);
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              onChange={(e) => {
+                changeDelay(e.target.value);
+              }}
+              fullWidth
+            />
+          )}
+        />
+      </Grid>
+    </>
+  );
+};
