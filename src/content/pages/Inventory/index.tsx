@@ -256,7 +256,6 @@ const Row = ({ingredientForm, setFieldValue, input, index, values}: {values: add
                         >
                           {openCollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                         </IconButton></Grid>
-
                         <Grid container xs={12}>
       <FieldArray
         name="ingredients.products"
@@ -325,7 +324,7 @@ const Row = ({ingredientForm, setFieldValue, input, index, values}: {values: add
         )}
       />
     </Grid>
-                        {openCollapse && <Grid xs={12}>
+                        {openCollapse ? <Grid xs={12}>
                           <Grid xs={12}>
                             {data && data.ingredient && data.ingredient.products.map((prod, index1) => (
                               <>
@@ -363,7 +362,13 @@ const Row = ({ingredientForm, setFieldValue, input, index, values}: {values: add
 </Grid>
       </>
                             ))}
-                        </Grid> </Grid>}
+                        </Grid> </Grid> :
+                        <Grid xs={12}>
+                          <Grid xs={4}>Product</Grid>
+                          <Grid xs={4}>Hoeveelheid</Grid>
+                          <Grid xs={4}>Prijs</Grid>
+                          <Grid xs={4}>Houdbaarheid</Grid>
+                          </Grid>}
                         </>
                         )
 }
