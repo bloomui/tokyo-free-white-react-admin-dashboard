@@ -6,28 +6,23 @@ import { listInventory } from "./types/listInventory";
 export const inventoryQuery = gql`
     query listInventory {
         listInventory {
-            ingrId
-            ingrName
+            ingredient {
+                name 
+                id 
+            }
             quantity {
                 quantity
                 unit
             }
-            products {
-                price
-                id
-                name
-                quantity {
-                    quantity
-                    unit
-                }
-                exp
-            }
+            brand
+            expiration
+            price
         }
     }
 `;
 
 export const addToInventoryMutation = gql`
-    mutation addToInventory($inventoryInput: [InventoryInput!]) {
+    mutation addToInventory($inventoryInput: [InventoryForm!]) {
         addToInventory(inventoryInput: $inventoryInput) 
     }
 `;
