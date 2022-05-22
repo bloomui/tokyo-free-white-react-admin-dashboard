@@ -76,7 +76,7 @@ const Content  = ({ingredients}: {ingredients: listInventory_listInventory[]}) =
 
     const [open, setOpen] = useState(false)
     const [openInventory, setOpenInventory] = useState(false)
-    const [inv, setInv] = useState<listInventory_listInventory>()
+    const [inv, setInv] = useState<listInventory_listInventory[]>()
     return (
         <TableContainer component={Paper}>
         <Table>
@@ -100,7 +100,7 @@ const Content  = ({ingredients}: {ingredients: listInventory_listInventory[]}) =
                             </TableCell>
                         <TableCell align="center"><Button onClick={() => {
                             setOpen(true);
-                            setInv(inventory)
+                            setInv(ingredients)
                             } 
                         }
                             variant="outlined">Bijbestellen</Button></TableCell>
@@ -152,16 +152,16 @@ const Row1 = ({setFieldValue, index, values}: {values: InventoryInputForm[]; set
                           </Grid>
                           <Grid xs={3}>
                           <FormFieldEdit
-          placeholder={valuesForm[index].quantity.quantity}
-          name={`values.inventoryInput.${index}.quantity.quantity`}
+          placeholder={values[index].quantity}
+          name={`values.${index}.quantity`}
           label="Hoeveelheid"
           validator={composeValidators(required, mustBeNumber)}
         />
       </Grid>
       <Grid xs={3}>
                           <FormFieldEdit
-          placeholder={valuesForm[index].quantity.unit}
-          name={`values.inventoryInput.${index}.quantity.unit`}
+          placeholder={values[index].unit}
+          name={`values.${index}.unit`}
           label="Meeteenheid"
           validator={composeValidators(required)}
         />
@@ -172,24 +172,32 @@ const Row1 = ({setFieldValue, index, values}: {values: InventoryInputForm[]; set
           <Grid xs={3}>
           <FormFieldEdit
           placeholder=""
-          name={`values.inventoryInput.${index}.product.name`}
-          label="Product"
+          name={`values.${index}.brand`}
+          label="Merk"
           validator={composeValidators(required)}
         />
           </Grid>
           <Grid xs={3}>
           <FormFieldEdit
           placeholder=""
-          name={`values.inventoryInput.${index}.product.price`}
-          label="Prijs"
+          name={`values.${index}.price`}
+          label="prijs"
           validator={composeValidators(required)}
         />
           </Grid>
           <Grid xs={3}>
           <FormFieldEdit
           placeholder=""
-          name={`values.inventoryInput.${index}.product.exp`}
-          label="Houdbaar"
+          name={`values.${index}.expiration`}
+          label="Houdbaar tot"
+          validator={composeValidators(required)}
+        />
+          </Grid>
+          <Grid xs={3}>
+          <FormFieldEdit
+          placeholder=""
+          name={`values.${index}.origin`}
+          label="Herkomst"
           validator={composeValidators(required)}
         />
           </Grid>
@@ -200,174 +208,11 @@ const Row1 = ({setFieldValue, index, values}: {values: InventoryInputForm[]; set
   )
 }
 
-const Row = ({ingredientForm, setFieldValue, input, index, values}: {values: addToInventoryVariables; ingredientForm: IngredientIdsForm; setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void ; input: InventoryInput; index: number}) => {
-  
-  const [openCollapse, setOpenCollapse] = React.useState(false);
-  const [stepHere, setStep] = useState(0)
 
-  const emptyStep : InventoryForm = {
-    id: "",
-    q: 0,
-    unit: "",
-    exp: "",
-    price: 0
-  }
-
-  const { data, loading, error } = useGetProductsForIngredients({id: values.inventoryInput[index].ingredientid})
-  
-  if (loading) return <CircularProgress />
-  if (error) return <CircularProgress />
-
-  return (
-        <>
-                            <IngredientSelectorInventory
-                            form={ingredientForm}
-                            index={index}
-                            fieldValue={`values.inventoryInput.${index}`}
-                            setFieldValue={setFieldValue}
-                          />
-                          <Grid xs={2}><IconButton
-                          aria-label="expand row"
-                          size="small"
-                          onClick={() => setOpenCollapse(!openCollapse)}
-                        >
-                          {openCollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                        </IconButton></Grid>
-                        <Grid container xs={12}>
-      <FieldArray
-        name="ingredients.products"
-        render={(arrayHelpers) => (
-          <>
-            <Grid xs={1}></Grid>
-            <Grid xs={1}>Stap</Grid>
-            <Grid xs={8}>Actie</Grid>
-            <Grid xs={2}></Grid>
-            {values.inventoryInput[index].products?.map((product, index1) => (
-              <>
-                <Grid xs={1}></Grid>
-                <Grid xs={1}>{index + 1}</Grid>
-                <Grid xs={8}>
-                  <FormField
-                    name={`inventoryInput.${index}.products.${index1}.q`}
-                    label="Product"
-                    validator={composeValidators(required)}
-                  />
-                </Grid>
-                <Grid xs={1}>
-                  {index > 0 ? (
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      style={{
-                        maxWidth: "30px",
-                        maxHeight: "30px",
-                        minWidth: "30px",
-                        minHeight: "30px",
-                      }}
-                      type="button"
-                      onClick={() => {
-                        setStep(stepHere - 1);
-                        arrayHelpers.remove(index);
-                      }}
-                    >
-                      -
-                    </Button>
-                  ) : (
-                    <Grid xs={1}></Grid>
-                  )}
-                </Grid>
-                <Grid xs={1}>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    style={{
-                      maxWidth: "30px",
-                      maxHeight: "30px",
-                      minWidth: "30px",
-                      minHeight: "30px",
-                    }}
-                    type="button"
-                    onClick={() => {
-                      setStep(stepHere + 1);
-                      arrayHelpers.push(emptyStep);
-                    }}
-                  >
-                    +
-                  </Button>
-                </Grid>
-              </>
-            ))}
-          </>
-        )}
-      />
-    </Grid>
-                        {openCollapse ? <Grid xs={12}>
-                          <Grid xs={12}>
-                            {data && data.ingredient && data.ingredient.products.map((prod, index1) => (
-                              <>
-                              <Grid xs={4}>{prod.name}</Grid>
-                              <Grid xs={2}>
-        <FormField
-          name={`values.inventoryInput.${index}.products.${index1}.quantity`}
-          label="Hoeveelheid"
-          validator={composeValidators(required, mustBeNumber)}
-        />
-      </Grid>
-      <Grid xs={2}>
-        <FormikSelect
-          validate={composeValidators(required)}
-          name={`values.inventoryInput.${index}.products.${index1}.unit`}
-        >
-          {units.map((unit) => (
-            <MenuItem key={unit} value={unit}>
-              {unit}
-            </MenuItem>
-          ))}
-        </FormikSelect>
-      </Grid>
-      <Grid xs={2}>
-      <FormField
-          name={`values.inventoryInput.${index}.products.${index1}.price`}
-          label="Prijs"
-        />
-        </Grid>
-        <Grid xs={2}>
-        <FormField
-          name={`values.inventoryInput.${index}.products.${index1}.exp`}
-          label="Houdbaar tot"
-        />
-</Grid>
-      </>
-                            ))}
-                        </Grid> </Grid> :
-                        <Grid xs={12}>
-                          <Grid xs={4}>Product</Grid>
-                          <Grid xs={4}>Hoeveelheid</Grid>
-                          <Grid xs={4}>Prijs</Grid>
-                          <Grid xs={4}>Houdbaarheid</Grid>
-                          </Grid>}
-                        </>
-                        )
-}
 const AddToInventory = ({open, onClose}: {open: boolean; onClose:  () => void;}) => {
 
   const [stepHere, setStep] = useState(1)
-    const form: addToInventoryVariables = {
-        inventoryInput: [{
-            ingrId: '',
-            products: [{
-                id: '',
-                q: 0,
-                unit: '',
-            }]
-        }]
-    }
-    const ingredientForm: IngredientIdsForm = {
-        id: '',
-        quantity: '',
-        unit: ''
-    }
-
+    
     const { addToInventory, loading, error } = useAddToInventory({
         onCompleted: () => {
           window.location.reload();
@@ -378,7 +223,7 @@ const AddToInventory = ({open, onClose}: {open: boolean; onClose:  () => void;})
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>
             <Formik
-              initialValues={[emptyForm}
+              initialValues={[emptyForm]}
               onSubmit={(values) => {
                 addToInventory({
                   variables: {
@@ -441,7 +286,7 @@ const AddToInventory = ({open, onClose}: {open: boolean; onClose:  () => void;})
                     type="button"
                     onClick={() => {
                       setStep(stepHere + 1);
-                      arrayHelpers.push(emptyRow);
+                      arrayHelpers.push(emptyForm);
                     }}
                   >
                     +
@@ -464,29 +309,28 @@ const AddToInventory = ({open, onClose}: {open: boolean; onClose:  () => void;})
             </Dialog>
             )
         }
-        export const toInput = (input: InventoryForm[]): InventoryInput[] => {
+        export const toInput = (input: InventoryInputForm[]): InventoryForm[] => {
 
-          const result: InventoryInput[] = input.map((i) => ({
-            ingrId: i.ingredient.id,
-            products: [{
-              id: i.product.name,
-              q: 0,
-              unit: "",
-              exp: i.product.expiration,
-              price: Number(i.product.price)
-          }]
-        }))
+          const result: InventoryForm[] = input.map((i) => ({
+            ingredientid: i.ingredientid,
+  quantity: Number(i.quantity),
+  brand: i.brand,
+  price: Number(i.price),
+  expiration: i.expiration,
+  rating: Number(i.rating),
+  origin: i.origin,
+          }))
         return result
       }
 
-const Order = ({inventory, open, onClose}: {inventory: listInventory_listInventory, open: boolean, onClose: () => void}) => {
+const Order = ({inventory, open, onClose}: {inventory: listInventory_listInventory[], open: boolean, onClose: () => void}) => {
     const a = '';
     const [quantity, setQuantity] = useState('0')
 
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>
-                <H5 title={`Bestel ${inventory ? inventory.ingrName: a} bij`}/>
+                <H5 title={`Bestel bij`}/>
             </DialogTitle>
             <DialogContent>
                 <Table>
@@ -498,9 +342,9 @@ const Order = ({inventory, open, onClose}: {inventory: listInventory_listInvento
                             </TableRow>
                     </TableHead>
                     <TableBody>
-                        {inventory && inventory.products && inventory.products.map((option) => (
+                        {inventory && inventory.map((option) => (
                             <TableRow>
-                        <TableCell align="center">{option.name}</TableCell> 
+                        <TableCell align="center">{option.ingredient.name}</TableCell> 
                         <TableCell align="center"> <Grid>{`€${((Number(option.quantity) / Number(option.quantity) ) * option.price).toFixed(2)}`} per </Grid>
                         <Grid>{option.quantity.quantity} {option.quantity.unit}</Grid></TableCell> 
                         <TableCell align="center">

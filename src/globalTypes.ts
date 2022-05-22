@@ -139,7 +139,7 @@ export interface IngredientNames {
 export interface InventoryForm {
   ingredientid: string;
   quantity?: number | null;
-  unit?: number | null;
+  unit?: string | null;
   brand?: string | null;
   price?: number | null;
   expiration?: string | null;
