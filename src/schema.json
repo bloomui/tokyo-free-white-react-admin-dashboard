@@ -8510,9 +8510,13 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "OBJECT",
-              "name": "IngredientFromInventory",
-              "ofType": null
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "IngredientFromInventory",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null

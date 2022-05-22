@@ -29,5 +29,5 @@ export interface listInventory_listInventory {
 }
 
 export interface listInventory {
-  listInventory: listInventory_listInventory | null;
+  listInventory: (listInventory_listInventory | null)[] | null;
 }
