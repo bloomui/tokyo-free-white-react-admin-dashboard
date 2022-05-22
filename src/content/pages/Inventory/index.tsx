@@ -18,12 +18,12 @@ import { addToInventoryVariables } from "./types/addToInventory"
 import { listInventory_listInventory } from "./types/listInventory"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { InventoryInput, InventoryProductInput } from "src/globalTypes"
 import { useGetProductsForIngredients } from "../MyChefsbase/Ingredients/api"
 import { validate } from "graphql"
 import { FormikSelect } from "src/components/form/FormikSelect"
 import { getUnitsForMaterial, units } from "../MyChefsbase/Recipes/AddRecipe/components/IngredientTable"
 import { Quantity } from "../MyChefsbase/Content"
+import { InventoryForm } from "src/globalTypes"
 
 export const InventoryPage = () => {
     const navigate = useNavigate()
@@ -90,7 +90,7 @@ const Content  = ({ingredients}: {ingredients: listInventory_listInventory[]}) =
             <TableBody>
                 {ingredients && ingredients.map((inventory) => (
                     <TableRow>
-                        <TableCell align="center">{inventory.ingrName}</TableCell>
+                        <TableCell align="center">{inventory.ingredient.name}</TableCell>
                         <TableCell align="center">
                             <TextField 
                             size="small"
@@ -115,52 +115,29 @@ const Content  = ({ingredients}: {ingredients: listInventory_listInventory[]}) =
     )
 }
 
-export interface Ingredient {
-  id: string;
-  name: string
+const emptyForm: InventoryInputForm = {
+  ingredientid: '',
+  quantity: '',
+  unit: '',
+  brand: '',
+  price: '',
+  expiration: '',
+  rating: '',
+  origin: '',
 }
 
-export interface Product {
-  name: string;
-  expiration: string;
-  price: number;
-}
-
-
-export interface InventoryForm {
-  ingredient: Ingredient;
-  quantity: QuantityForm
-  product: Product;
-}
-
-export type QuantityForm = {
+type InventoryInputForm = {
+  ingredientid: string,
   quantity: string,
-  unit: string
-}
-export const zeroQuantity: QuantityForm = {
-  quantity: "",
-  unit: ""
-}
-
-export const emptyRow: InventoryForm = {
-  ingredient: {
-    id: "",
-    name: ""
-  },
-  quantity: zeroQuantity,
-  product: {
-    expiration: "",
-    price: 0,
-    name: ""
-}
+  unit: string,
+  brand: string,
+  price: string,
+  expiration: string,
+  rating: string,
+  origin: string,
 }
 
-export const valuesForm: InventoryForm[] = [
-  emptyRow
-]
-
-
-const Row1 = ({setFieldValue, index, values}: {values: InventoryForm[]; setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void ; index: number}) => {
+const Row1 = ({setFieldValue, index, values}: {values: InventoryInputForm[]; setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void ; index: number}) => {
 
   const [open, openProducts] = useState(false)
   return (
@@ -228,7 +205,7 @@ const Row = ({ingredientForm, setFieldValue, input, index, values}: {values: add
   const [openCollapse, setOpenCollapse] = React.useState(false);
   const [stepHere, setStep] = useState(0)
 
-  const emptyStep : InventoryProductInput = {
+  const emptyStep : InventoryForm = {
     id: "",
     q: 0,
     unit: "",
@@ -236,7 +213,7 @@ const Row = ({ingredientForm, setFieldValue, input, index, values}: {values: add
     price: 0
   }
 
-  const { data, loading, error } = useGetProductsForIngredients({id: values.inventoryInput[index].ingrId})
+  const { data, loading, error } = useGetProductsForIngredients({id: values.inventoryInput[index].ingredientid})
   
   if (loading) return <CircularProgress />
   if (error) return <CircularProgress />
@@ -401,7 +378,7 @@ const AddToInventory = ({open, onClose}: {open: boolean; onClose:  () => void;})
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>
             <Formik
-              initialValues={valuesForm}
+              initialValues={[emptyForm}
               onSubmit={(values) => {
                 addToInventory({
                   variables: {
