@@ -7,35 +7,27 @@
 // GraphQL query operation: listInventory
 // ====================================================
 
+export interface listInventory_listInventory_ingredient {
+  __typename: "Ingredient";
+  name: string;
+  id: string;
+}
+
 export interface listInventory_listInventory_quantity {
   __typename: "Quantity";
   quantity: number;
   unit: string;
 }
 
-export interface listInventory_listInventory_products_quantity {
-  __typename: "Quantity";
-  quantity: number;
-  unit: string;
-}
-
-export interface listInventory_listInventory_products {
-  __typename: "InventoryProduct";
-  price: number | null;
-  id: string;
-  name: string;
-  quantity: listInventory_listInventory_products_quantity;
-  exp: string | null;
-}
-
 export interface listInventory_listInventory {
-  __typename: "InventoryOutput";
-  ingrId: string;
-  ingrName: string;
-  quantity: listInventory_listInventory_quantity;
-  products: listInventory_listInventory_products[] | null;
+  __typename: "IngredientFromInventory";
+  ingredient: listInventory_listInventory_ingredient | null;
+  quantity: listInventory_listInventory_quantity | null;
+  brand: string | null;
+  expiration: string | null;
+  price: number | null;
 }
 
 export interface listInventory {
-  listInventory: (listInventory_listInventory | null)[] | null;
+  listInventory: listInventory_listInventory | null;
 }

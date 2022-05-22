@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { InventoryInput } from "./../../../../globalTypes";
+import { InventoryForm } from "./../../../../globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: addToInventory
@@ -14,5 +14,5 @@ export interface addToInventory {
 }
 
 export interface addToInventoryVariables {
-  inventoryInput?: InventoryInput[] | null;
+  inventoryInput?: InventoryForm[] | null;
 }

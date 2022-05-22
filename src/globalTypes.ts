@@ -136,17 +136,15 @@ export interface IngredientNames {
   unit: string;
 }
 
-export interface InventoryInput {
-  ingrId: string;
-  products?: InventoryProductInput[] | null;
-}
-
-export interface InventoryProductInput {
-  id: string;
-  q: number;
-  unit: string;
-  exp?: string | null;
+export interface InventoryForm {
+  ingredientid: string;
+  quantity?: number | null;
+  unit?: number | null;
+  brand?: string | null;
   price?: number | null;
+  expiration?: string | null;
+  rating?: number | null;
+  origin?: string | null;
 }
 
 export interface MenuFilterInput {
