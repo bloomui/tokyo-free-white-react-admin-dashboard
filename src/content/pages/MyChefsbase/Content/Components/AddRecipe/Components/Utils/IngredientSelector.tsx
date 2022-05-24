@@ -225,10 +225,8 @@ export const IngredientSelectorInventory = ({
 export const IngredientSelectorInventory1 = ({
   index,
   setFieldValue,
-  fieldValue,
 }: {
   index: number;
-  fieldValue: string;
   setFieldValue: (
     field: string,
     value: any,
@@ -259,7 +257,7 @@ export const IngredientSelectorInventory1 = ({
   }
   return (
     <>
-      <Grid xs={6}>
+      <Grid xs={12}>
         <Autocomplete
           id="tags-standard"
           options={
@@ -272,8 +270,8 @@ export const IngredientSelectorInventory1 = ({
           getOptionLabel={(option) => (option ? option.name : "")}
           onChange={(event, value: searchIngredient_searchIngredient) => {
             setIngredient(value);
-            setFieldValue(`${fieldValue}.id`, value.id);
-            setFieldValue(`${fieldValue}.name`, value.name);
+            setFieldValue(`inputForm.${index}.ingredientid`, value.id);
+            setFieldValue(`inputForm.${index}.ingredientname`, value.name);
           }}
           renderInput={(params) => (
             <TextField
