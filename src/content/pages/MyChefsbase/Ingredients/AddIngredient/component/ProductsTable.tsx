@@ -3,6 +3,8 @@ import { Typography } from "@mui/material";
 import { Formik, useField } from "formik";
 import React, { useState } from "react";
 import { LoadingScreen } from "src/components/layout";
+import { useInventoryQuery } from "src/content/pages/Inventory/api";
+import { listInventory_listInventory } from "src/content/pages/Inventory/types/listInventory";
 import { productToQ } from "..";
 import { productsRowsPerPage, useSearchProductQuery } from "../api";
 import { products_products } from "../types/products";
@@ -135,4 +137,5 @@ const Row = ({data, setProduct}: {data: products_products, setProduct: (a) => vo
         </Formik>
     )
   }
+
   

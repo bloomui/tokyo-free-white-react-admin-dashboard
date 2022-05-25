@@ -8,35 +8,28 @@ import {
   Divider,
   Grid,
   MenuItem,
+  Paper,
   Table,
+  TableBody,
   TableCell,
   TableContainer,
+  TableHead,
   TableRow,
   TextField,
   Typography,
 } from "@material-ui/core";
-import { Autocomplete, Rating } from "@material-ui/lab";
-import { FieldArray, Formik } from "formik";
+import { Formik } from "formik";
 import React, { useState } from "react";
 import { FormField, FormFieldEdit } from "src/components/form/FormField";
-import { Rating1, RatingEdit } from "../../Menus/filtermenus/components/rating";
-import { FormikSelect } from "src/components/form/FormikSelect";
+import { RatingEdit } from "../../Menus/filtermenus/components/rating";
 import { H3, H5, H5Left } from "src/content/pages/Components/TextTypes";
 import {
-  RecipeInput,
-  QuantityToId,
-  StepToMethodInput,
-  DishInput,
-  AddIngredientInput,
   IngredientInput,
   QuantityToNutritionInput,
   NutritionInput,
   Material,
 } from "src/globalTypes";
 import { composeValidators, required } from "src/utilities/formikValidators";
-import { initialValues } from "../../Dishes/filterdishes";
-import { UpdateDishVariables } from "../../Dishes/types/UpdateDish";
-import { Products } from "../../Menus/filtermenus/components/products";
 import { Quantity } from "../../Menus/filtermenus/components/quantity";
 import {
   materialOptions,
@@ -47,7 +40,6 @@ import {
 } from "../AddIngredient";
 import { TableProductData } from "../AddIngredient/component/ProductsTable";
 import { useGetIngredientQuery, useUpdateIngredient } from "../api";
-import { FilterIngredients_filterIngredients } from "../types/FilterIngredients";
 import { UpdateIngredientVariables } from "../types/UpdateIngredient";
 import { emptyIngredient } from ".";
 import { LoadingScreen } from "src/components/layout";
