@@ -12,7 +12,7 @@ import MyChefsBase from "./content/pages/MyChefsbase";
 import {
   AddRecipePage1,
 } from "./content/pages/MyChefsbase/Recipes/AddRecipe";
-import { AddProductPage } from "./content/pages/MyChefsbase/Products/AddProduct";
+import { AddProductsPage } from "./content/pages/MyChefsbase/Products/AddProduct";
 import { AddIngredientPage } from "./content/pages/MyChefsbase/Ingredients/AddIngredient";
 import { AddDishPage } from "./content/pages/MyChefsbase/Dishes/AddDish";
 import { AddMenuPage } from "./content/pages/MyChefsbase/Menus/AddMenu";
@@ -236,7 +236,7 @@ const routes = (isLoggedIn: boolean) => [
       },
       {
         path: "addproduct",
-        element: <AddProductPage />,
+        element: <AddProductsPage />,
       },
       {
         path: "addingredient",

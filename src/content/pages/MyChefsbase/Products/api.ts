@@ -141,6 +141,12 @@ export const useAddProducts = ({
   >(AddProductsMutation, {
     onCompleted: () => onCompleted(),
   });
+
+  return {
+    addProducts, 
+    loading, 
+    error
+  }
 }
 
 export const useAddProduct = ({

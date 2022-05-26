@@ -31,17 +31,18 @@ import {
 } from "src/utilities/formikValidators";
 import { user } from "../..";
 import { Rating1 } from "../../Menus/filtermenus/components/rating";
-import { useAddProduct } from "../api";
+import { useAddProduct, useAddProducts } from "../api";
 import { ButtonBase, Divider } from "@mui/material";
 import { AddProductVariables } from "../types/AddProduct";
 import { TableSupplierData } from "./components/SuppliersTable";
-import { H3, H5 } from "src/content/pages/Components/TextTypes";
+import { H3, H5, H5Left } from "src/content/pages/Components/TextTypes";
 import { Price, PriceFillIn } from "../../Menus/filtermenus/components/prices";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import { AddSupplierDialog } from "../../Suppliers/supplierDialogs/AddSupplierDialog";
 import { AddSuppliersDialog } from "./components/AddQuickSuppliers";
 import { unitsToUnits } from "../productDialogs/updateProductDialog";
 import { units } from "../../Recipes/AddRecipe/components/IngredientTable";
+import { AddProductsVariables } from "../types/AddProducts";
 
 export const AddProductPage = () => {
   const [dialog, openDialog] = useState(false);
@@ -237,6 +238,197 @@ export const AddProductPage = () => {
                   </>
                 );
               }}
+            </Formik>
+          </Grid>
+        </Grid>
+      </Container>
+    </>
+  );
+};
+
+export const AddProductsPage = () => {
+
+  const { addProducts, loading, error } = useAddProducts({
+    onCompleted: () => {
+      window.location.reload();
+    },
+  });
+    
+  const emptyAddProductInput: AddProductInput = {
+    price: 0,
+    unit: "",
+    quantity: 0,
+    brand: "",
+    origin: "",
+    name: "",
+    rating: 0,
+  }
+  const formInput: AddProductInput[] = [emptyAddProductInput]
+  
+  const formState = {
+    input: formInput,
+  };
+
+  return (
+    <>
+      <Helmet>
+        <title>Nieuwe Producten</title>
+      </Helmet>
+      <PageTitleWrapper>
+        <PageHeader
+          title="Nieuwe producten"
+          name={user.name}
+          avatar={user.avatar}
+        />
+      </PageTitleWrapper>
+      <Container maxWidth="lg">
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={3}
+        >
+          <Grid item xs={12}>
+            <Formik
+              initialValues={formState}
+              onSubmit={(values) => {
+                addProducts({
+                  variables: {
+                    input: values.input
+                  },
+                });
+              }}
+            >
+              {({ values, handleChange, submitForm, setFieldValue }) => {
+                console.log(values)
+          return (
+            <>
+              <Grid container xs={12} spacing={2}>
+              <Grid xs={12}>
+                <FieldArray
+                name="input"
+                render={arrayHelpers => (
+                <div>
+                  <TableContainer >
+                    <Table>
+                      <TableRow>
+                        <TableCell>
+                          <H5Left title="Productnaam"/>
+                        </TableCell>
+                        <TableCell>
+                        <H5Left title="Merknaam"/>
+                        </TableCell>
+                        <TableCell><H5Left title="Prijs"/></TableCell>
+                        <TableCell><H5Left title="Hoeveelheid"/></TableCell>
+                        <TableCell><H5Left title="Meeteenheid"/></TableCell>
+                        <TableCell><H5Left title="Beoordeling"/></TableCell>
+                      </TableRow>
+                 {values.input.map((input, index)=> (
+                   <TableRow>
+                     <>
+                        <TableCell>
+                        <TextField
+                        id={`input.${index}.name`}
+                        name={`input.${index}.name`}
+                       label="Naam"
+                       value={input.name}
+                       onChange={handleChange}
+                        />
+                        </TableCell>
+                        <TableCell>
+                        <TextField
+                        id={`input.${index}.brand`}
+                        name={`input.${index}.brand`}
+                       label="Merk"
+                       value={input.brand}
+                       onChange={handleChange}
+                        />
+                        </TableCell>
+                        <TableCell>
+                        <TextField
+                        id={`input.${index}.price`}
+                        name={`input.${index}.price`}
+                       label="Prijs"
+                       value={input.price}
+                       onChange={handleChange}
+                        />
+                        </TableCell>
+                        <TableCell>
+                        <TextField
+                        id={`input.${index}.quantity`}
+                        name={`input.${index}.quantity`}
+                       label="Hoeveelheid"
+                       value={input.quantity}
+                       onChange={handleChange}
+                        />
+                        </TableCell>
+                        <TableCell>
+                            <FormikSelect name={"unit"}>
+                              {units.map((u) => (
+                                <MenuItem key={u} value={u}>
+                                  {u}
+                                </MenuItem>
+                              ))}
+                            </FormikSelect>
+                          </TableCell>
+                          <TableCell>
+                            <Rating1
+                            updateField={`input.${index}.rating`}
+                            setFieldValue={setFieldValue}
+                            />
+                        </TableCell>
+                        <TableCell>
+                        <Button
+                            variant="contained" 
+                            color="secondary"
+                        style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
+                         onClick={() => {
+                             arrayHelpers.remove(index)}}>
+                        -
+                       </Button>
+                        </TableCell>
+                        <TableCell>
+                        <Button
+                       variant="contained" 
+                       color="secondary"
+                        style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}} type="button" 
+                         onClick={() => {
+                         arrayHelpers.push(emptyAddProductInput)}}>
+                        +
+                       </Button>
+                        </TableCell>
+                            
+                     </>
+                     </TableRow>
+                   ))}
+                   </Table>
+                   </TableContainer>
+                   </div>
+                )}
+                />
+                <Grid xs={3}>
+                <Button
+                  disabled={loading}
+                  onClick={() => submitForm()}
+                  color="primary"
+                  variant="contained"
+                >
+                  Gegevens toevoegen
+                </Button>
+                </Grid> 
+                </Grid>
+                <Grid xs={4}>  
+                {error && (
+                  <Typography color="error">
+                    Er is een fout opgetreden, probeer het opnieuw.
+                  </Typography>
+                )}
+                </Grid>
+                </Grid>
+                </>
+              );
+            }}
             </Formik>
           </Grid>
         </Grid>
