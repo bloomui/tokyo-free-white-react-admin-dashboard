@@ -4,6 +4,7 @@ import { IngredientFilterInput, ProductFilterInput } from "src/globalTypes";
 import { useSimpleQuery } from "src/utilities/apollo";
 import { AddIngredientMutation } from "../Ingredients/api";
 import { AddProduct, AddProductVariables } from "./types/AddProduct";
+import { AddProducts, AddProductsVariables } from "./types/AddProducts";
 import { AllSuppliers } from "./types/AllSuppliers";
 import { FilterProducts } from "./types/FilterProducts";
 import { product, productVariables } from "./types/product";
@@ -83,6 +84,11 @@ mutation AddProduct ($input: AddProductInput!, $suppliers: [String!]) {
   addProduct(input: $input, suppliers: $suppliers)
 }`;
 
+export const AddProductsMutation = gql`
+mutation AddProducts ($input: [AddProductInput!]) {
+  addProducts(input: $input)
+}`;
+
   const productRowsPerPage = 10
 export const useFilterProductsQuery = ({
   input,
@@ -123,6 +129,19 @@ export const useUpdateProduct = ({
     error,
   };
 };
+
+export const useAddProducts = ({
+  onCompleted,
+}: {
+  onCompleted: () => void;
+}) => {
+  const [addProducts, { loading, error }] = useMutation<
+    AddProducts,
+    AddProductsVariables
+  >(AddProductsMutation, {
+    onCompleted: () => onCompleted(),
+  });
+}
 
 export const useAddProduct = ({
   onCompleted,
