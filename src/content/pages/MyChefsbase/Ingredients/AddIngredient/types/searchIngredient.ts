@@ -13,6 +13,7 @@ export interface searchIngredient_searchIngredient {
   __typename: "Ingredient";
   id: string;
   name: string;
+  status: string | null;
   material: Material;
 }
 

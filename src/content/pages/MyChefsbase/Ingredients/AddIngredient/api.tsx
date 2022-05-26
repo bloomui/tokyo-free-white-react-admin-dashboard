@@ -61,6 +61,7 @@ export const searchIngredientsQuery = gql`
     searchIngredient(ingredientname: $ingredientname) {
       id
       name
+      status
       material
     }
   }

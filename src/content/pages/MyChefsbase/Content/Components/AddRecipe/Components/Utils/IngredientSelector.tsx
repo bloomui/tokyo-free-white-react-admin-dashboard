@@ -64,7 +64,8 @@ export const EmptySearchIngredient = {
   __typename: "Ingredient",
   id: '',
   name: 'een moment geduld',
-  material: Material.SOLID
+  material: Material.SOLID,
+  status: '',
 }
 export const IngredientSelector = ({
   placeholder,
@@ -115,7 +116,7 @@ export const IngredientSelector = ({
               ? [EmptySearchIngredient]
               : data ? data.searchIngredient? data.searchIngredient.map((option) => option) : [EmptySearchIngredient] : [EmptySearchIngredient]
           }
-          getOptionLabel={(option) => (option.name ? option.name : placeholder)}
+          getOptionLabel={(option) => (option.name ? `${option.name} (${option?.status})` : placeholder)}
           onChange={(event, value: searchIngredient_searchIngredient) => {
             setIngredient({
               id: value? value.id : '',
@@ -215,7 +216,7 @@ export const IngredientSelectorInventory1 = ({
               ? [EmptySearchIngredient]
               : data ? data.searchIngredient? data.searchIngredient.map((option) => option) : [EmptySearchIngredient] : [EmptySearchIngredient]
           }
-          getOptionLabel={(option) => (option.name ? option.name : placeholder)}
+          getOptionLabel={(option) => (option.name ? `${option.name} (${option?.status})` : placeholder)}
           onChange={(event, value: searchIngredient_searchIngredient) => {
             setIngredient({
               id: value? value.id : '',
