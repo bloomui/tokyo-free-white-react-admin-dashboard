@@ -20,24 +20,21 @@ import { FieldArray, Formik } from "formik";
 import React, { useState } from "react";
 import { FormField } from "src/components/form/FormField";
 import { FormikSelect } from "src/components/form/FormikSelect";
-import { H3, H5Left } from "src/content/pages/Components/TextTypes";
+import { H3, H5, H5Left } from "src/content/pages/Components/TextTypes";
 import { AddProductInput, Material } from "src/globalTypes";
-import { composeValidators, required } from "src/utilities/formikValidators";
+import { composeValidators, mustBeNumber, required } from "src/utilities/formikValidators";
 import { Rating1 } from "../../../Menus/filtermenus/components/rating";
-import { getUnitsForMaterial } from "../../../Recipes/AddRecipe/components/IngredientTable";
+import { getUnitsForMaterial, units } from "../../../Recipes/AddRecipe/components/IngredientTable";
 import { useAddQuickProducts } from "../api";
 import { AddQuickProductsVariables } from "../types/AddQuickProducts";
 
 export const AddQuickProductsDialog = ({
-  material,
   open,
   onClose,
 }: {
-  material: Material;
   open: boolean;
   onClose: () => void;
 }) => {
-  const [info, setInfo] = useState(false);
 
   const emptyProductInput: AddProductInput = {
     name: "",
@@ -55,10 +52,8 @@ export const AddQuickProductsDialog = ({
   };
 
   const { addQuickProducts, loading, error } = useAddQuickProducts({
-    onCompleted: () => {},
-    //   window.location.reload()
+    onCompleted: () => {window.location.reload()}
   });
-  const unitsForMaterial = getUnitsForMaterial(material);
 
   return (
     <Dialog
@@ -66,18 +61,9 @@ export const AddQuickProductsDialog = ({
       open={open}
       onClose={onClose}
     >
-      <DialogTitle>Snel Producten toevoegen</DialogTitle>
+      <DialogTitle><H5 title="Snel Producten toevoegen"/></DialogTitle>
       <DialogContent>
-        <Container maxWidth="lg">
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="stretch"
-            spacing={3}
-          >
-            <Grid item xs={12}>
-              <Formik
+      <Formik
                 initialValues={formState}
                 onSubmit={(values) => {
                   addQuickProducts({
@@ -103,12 +89,13 @@ export const AddQuickProductsDialog = ({
                                         <H5Left title="Product" />
                                       </TableCell>
                                       <TableCell>
-                                        <H5Left title="Merk" />
+                                        <H5Left title="Prijs" />
                                       </TableCell>
                                       <TableCell></TableCell>
                                       <TableCell></TableCell>
                                     </TableRow>
                                     {values.input?.map((input, index) => (
+                                      <>
                                       <TableRow>
                                         <>
                                           <TableCell>
@@ -121,35 +108,38 @@ export const AddQuickProductsDialog = ({
                                             />
                                           </TableCell>
                                           <TableCell>
-                                            <TextField
-                                              id={`input.${index}.brand`}
-                                              name={`input.${index}.brand`}
-                                              label="Merk"
-                                              value={input.brand}
-                                              onChange={handleChange}
-                                            />
+                                          <FormField
+                  name={`input.${index}.price`}
+                  label="Prijs (€)"
+                  validator={composeValidators(required, mustBeNumber)}
+                />
                                           </TableCell>
-                                          <TableCell>
-                                            <Button
-                                              onClick={() => setInfo(true)}
-                                              variant="outlined"
-                                            >
-                                              Info toevoegen
-                                            </Button>
-                                          </TableCell>
-                                          <Grid xs={12}>
-                                            <InsertInfoHere
-                                              setFieldValue={setFieldValue}
-                                              unitsForMaterial={
-                                                unitsForMaterial
-                                              }
-                                              open={info}
-                                              onClose={() => setInfo(false)}
-                                              index={index}
-                                              onChange={handleChange}
-                                            />
-                                          </Grid>
-                                          <TableCell>
+                                          <TableCell colSpan={2}>
+                <FormField
+                  name={`input.${index}.quantity`}
+                  label="Hoeveelheid"
+                  validator={composeValidators(required)}
+                />
+              </TableCell>
+              <TableCell colSpan={2}>
+                <FormikSelect name={`input.${index}.unit`}>
+                  {units.map((unit) => (
+                    <MenuItem key={unit} value={unit}>
+                      {unit}
+                    </MenuItem>
+                  ))}
+                </FormikSelect>
+              </TableCell>
+              </>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                <Rating1
+                updateField={`input.${index}.rating`}
+                setFieldValue={setFieldValue}
+              />
+              </TableCell>
+              <TableCell>
                                             <Button
                                               variant="contained"
                                               color="secondary"
@@ -187,15 +177,17 @@ export const AddQuickProductsDialog = ({
                                               +
                                             </Button>
                                           </TableCell>
-                                        </>
-                                      </TableRow>
+                                          </TableRow>
+                                          </>
                                     ))}
                                   </Table>
                                 </TableContainer>
                               </div>
                             )}
                           />
-                          <Grid xs={3}>
+                          </Grid>
+                          <Grid container xs={12}>
+                          <Grid xs={5}>
                             <Button
                               disabled={loading}
                               onClick={() => {
@@ -208,7 +200,8 @@ export const AddQuickProductsDialog = ({
                               Toevoegen
                             </Button>
                           </Grid>
-                          <Grid xs={3}>
+                          <Grid xs={2}></Grid>
+                          <Grid xs={5}>
                             <Button
                               onClick={() => onClose()}
                               color="primary"
@@ -230,109 +223,19 @@ export const AddQuickProductsDialog = ({
                   );
                 }}
               </Formik>
+        <Container maxWidth="lg">
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="stretch"
+            spacing={3}
+          >
+            <Grid item xs={12}>
+              
             </Grid>
           </Grid>
         </Container>
-      </DialogContent>
-    </Dialog>
-  );
-};
-
-const InsertInfoHere = ({
-  setFieldValue,
-  unitsForMaterial,
-  open,
-  onClose,
-  index,
-  onChange,
-}: {
-  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
-  unitsForMaterial: string[];
-  open: boolean;
-  onClose: () => void;
-  index: number;
-  onChange: {
-    (e: React.ChangeEvent<any>): void;
-    <T = string | React.ChangeEvent<any>>(
-      field: T
-    ): T extends React.ChangeEvent<any>
-      ? void
-      : (e: string | React.ChangeEvent<any>) => void;
-  };
-}) => {
-  return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogActions>
-        <Button onClick={() => onClose()}>-</Button>
-      </DialogActions>
-      <DialogContent>
-        <TableContainer>
-          <Table>
-            <TableRow>
-              <TableCell colSpan={6}>
-                <H3 title="Product informatie" />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell colSpan={2}></TableCell>
-              <TableCell colSpan={2}>
-                <H5Left title="Herkomst" />
-              </TableCell>
-              <TableCell colSpan={2}>
-                <H5Left title="Prijs" />
-              </TableCell>
-              <TableCell colSpan={2}>
-                <H5Left title="Hoeveelheid" />
-              </TableCell>
-              <TableCell colSpan={2}>
-                <H5Left title="Eenheid" />
-              </TableCell>
-              <TableCell colSpan={2}>
-                <H5Left title="Beoordeling" />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell colSpan={2}>
-                <FormField
-                  name={`input.${index}.origin`}
-                  label="Herkomst"
-                  validator={composeValidators(required)}
-                />
-              </TableCell>
-              <TableCell colSpan={2}>
-                <FormField
-                  name={`input.${index}.price`}
-                  label="Prijs"
-                  validator={composeValidators(required)}
-                />
-              </TableCell>
-              <TableCell colSpan={2} align="center">
-                Per
-              </TableCell>
-              <TableCell colSpan={2}>
-                <FormField
-                  name={`input.${index}.quantity`}
-                  label="Hoeveelheid"
-                  validator={composeValidators(required)}
-                />
-              </TableCell>
-              <TableCell colSpan={2}>
-                <FormikSelect name={`input.${index}.unit`}>
-                  {unitsForMaterial.map((unit) => (
-                    <MenuItem key={unit} value={unit}>
-                      {unit}
-                    </MenuItem>
-                  ))}
-                </FormikSelect>
-              </TableCell>
-              <Rating1
-                updateField={`input.${index}.rating`}
-                setFieldValue={setFieldValue}
-              />
-              <Button onClick={() => onClose()}>+</Button>
-            </TableRow>
-          </Table>
-        </TableContainer>
       </DialogContent>
     </Dialog>
   );

@@ -8,6 +8,7 @@ import { FormField } from "src/components/form/FormField";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import { MenuItem } from "@mui/material";
 import { composeValidators, required } from "src/utilities/formikValidators";
+import { units } from "../../../Recipes/AddRecipe/components/IngredientTable";
 
 const marks = [
   {
@@ -125,6 +126,40 @@ export const Price = ({
           </Grid>
         </Grid>
       </Grid>
+    </>
+  );
+};
+
+export const PriceFillIn = () => {
+  
+  return (
+    <>
+      <Grid container xs={12}>
+        <Grid xs={3}>
+          <FormField
+            label="Prijs"
+            name="input.price"
+          />
+        </Grid>
+        <Grid xs={1}> <H5 title="Per"/> </Grid>
+        <Grid xs={3}>
+            <FormField
+              name="input.quantity"
+              label="Hoeveelheid"
+              validator={composeValidators(required)}
+            />
+          </Grid>
+          <Grid xs={1}></Grid>
+          <Grid xs={3}>
+            <FormikSelect name="input.unit">
+              {units.map((unit) => (
+                <MenuItem key={unit} value={unit}>
+                  {unit}
+                </MenuItem>
+              ))}
+            </FormikSelect>
+          </Grid>
+        </Grid>
     </>
   );
 };

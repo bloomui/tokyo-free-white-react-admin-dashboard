@@ -51,13 +51,19 @@ export const AddIngsForRecipe = ({
                   <H4 title="Hoeveelheid en eenheid" />
                 </Grid>
                 <Grid xs={2}> (- / +)</Grid>
-                {values.oldIngredients?.map((form, index) => (
+                {values.oldIngredients.map((form, index) => (
                   <>
                     <Grid xs={2}>{index + 1}</Grid>
                     <Grid container xs={8}>
                       <IngredientSelector
-                        placeholder={ingredients ? ingredients.length > 0 ? ingredients[index].name : "" : ""}
-                        form={form}
+                        placeholder={form.name ? form.name : "Zoek" }
+                        form={{
+                          id: form.id,
+                          name: form.name,
+                          quantity: form.quantity,
+                          unit: form.unit,
+                        }
+                        }
                         index={index}
                         field='oldIngredients'
                         setFieldValue={setFieldValue}

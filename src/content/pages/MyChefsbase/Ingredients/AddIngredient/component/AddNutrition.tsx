@@ -12,11 +12,15 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
-import { H3, H5Left } from "src/content/pages/Components/TextTypes";
+import { H3, H5, H5Left } from "src/content/pages/Components/TextTypes";
+import { FormField } from "src/content/pages/SignIn";
 import { Material } from "src/globalTypes";
 import { Quantity } from "../../../Menus/filtermenus/components/quantity";
 import { getUnitsForMaterial } from "../../../Recipes/AddRecipe/components/IngredientTable";
 
+const removeIn = (a: string) => {
+  return a.replace('In ','')
+}
 export const InsertNutrition = ({
   setFieldValue,
   material,
@@ -30,11 +34,11 @@ export const InsertNutrition = ({
 }) => {
 
   return (
-    <TableContainer>
-      <Table>
+    <TableContainer >
+      <Table size="small">
         <TableRow>
           <TableCell colSpan={6}>
-            <H3 title="Voedingswaarde" />
+            <H5 title="Voedingswaarden" />
           </TableCell>
         </TableRow>
         <TableRow>
@@ -51,13 +55,13 @@ export const InsertNutrition = ({
             Per
           </TableCell>
           <TableCell colSpan={2}>
-            <Quantity
+            <FormField
               name="input.nutrition.quantity"
-              setFieldValue={setFieldValue}
+              label="Hoeveelheid"
             />
           </TableCell>
           <TableCell colSpan={2}>
-            {material}
+            {removeIn(material)}
           </TableCell>
         </TableRow>
         <TableRow></TableRow>

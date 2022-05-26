@@ -36,11 +36,12 @@ import { ButtonBase, Divider } from "@mui/material";
 import { AddProductVariables } from "../types/AddProduct";
 import { TableSupplierData } from "./components/SuppliersTable";
 import { H3, H5 } from "src/content/pages/Components/TextTypes";
-import { Price } from "../../Menus/filtermenus/components/prices";
+import { Price, PriceFillIn } from "../../Menus/filtermenus/components/prices";
 import { FormikSelect } from "src/components/form/FormikSelect";
 import { AddSupplierDialog } from "../../Suppliers/supplierDialogs/AddSupplierDialog";
 import { AddSuppliersDialog } from "./components/AddQuickSuppliers";
 import { unitsToUnits } from "../productDialogs/updateProductDialog";
+import { units } from "../../Recipes/AddRecipe/components/IngredientTable";
 
 export const AddProductPage = () => {
   const [dialog, openDialog] = useState(false);
@@ -144,10 +145,7 @@ export const AddProductPage = () => {
                       </Grid>
                       <Grid xs={6}>
                         <H5 title="Prijs (€)" />
-                        <Price
-                          units={unitsToUnits(values.input.unit)}
-                          setFieldValue={setFieldValue}
-                        />
+                        <PriceFillIn/>
                       </Grid>
                       <Grid xs={1}></Grid>
                       <Grid xs={3}>
@@ -163,7 +161,7 @@ export const AddProductPage = () => {
                       </Grid>
                     </Grid>
                     <Divider />
-                    <Grid container xs={12}>
+                    {/* <Grid container xs={12}>
                       <Grid xs={12}>
                         <Button
                           onClick={() => openDialog(true)}
@@ -230,7 +228,7 @@ export const AddProductPage = () => {
                           </Table>
                         </TableContainer>
                       </Grid>
-                    </Grid>
+                    </Grid> */}
                     {error && (
                       <Typography color="error">
                         Er is een fout opgetreden, probeer het opnieuw.

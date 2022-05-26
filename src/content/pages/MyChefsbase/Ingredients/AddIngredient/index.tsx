@@ -41,7 +41,7 @@ import { useNavigate } from "react-router";
 import { AddQuickProductsDialog } from "./component/AddQuickProductsDialog";
 import { InsertNutrition } from "./component/AddNutrition";
 
-export const materialOptions = ["In gram", "In milliliters", "In stuk(s)"];
+export const materialOptions = ["In person(en)", "In gram", "In milliliters", "In stuk(s)"];
 export const parseMaterialInput = (a: string): Material => {
   var result;
   switch (a) {
@@ -51,6 +51,9 @@ export const parseMaterialInput = (a: string): Material => {
     case "In milliliters":
       result = Material.LIQUID;
       break;
+      case "In person(en)":
+      result = Material.PERSONS;
+      break;
     default:
       result = Material.UNIT;
   }
@@ -58,6 +61,36 @@ export const parseMaterialInput = (a: string): Material => {
   return result;
 };
 
+export const quantityForMaterial = (a: Material) => {
+  var result;
+  switch (a) {
+    case Material.SOLID:
+      result = {
+        quantity: 100.0,
+        unit: "gram"
+      };
+      break;
+    case Material.LIQUID:
+      result = {
+        quantity: 100.0,
+        unit: "milliliter"
+      };
+      break;
+      case Material.PERSONS:
+      result = {
+        quantity: 1,
+        unit: "person(en)"
+      };
+      break;
+    default:
+      result = {
+        quantity: 100.0,
+        unit: "stuk(s)"
+      };
+  }
+
+  return result;
+};
 
 export const stringForMaterial = (a: Material): string => {
   var result;
@@ -69,7 +102,7 @@ export const stringForMaterial = (a: Material): string => {
       result = "In milliliters";
       break;
       case Material.PERSONS:
-      result = "Per persoon";
+      result = "In person(en)";
       break;
     default:
       result = "In stuk(s)";
@@ -88,7 +121,7 @@ export const unitForMaterial = (a: Material): string => {
       result = "milliliters";
       break;
       case Material.PERSONS:
-      result = "personen";
+      result = "person(en)";
       break;
     default:
       result = "stuk(s)";
@@ -217,7 +250,7 @@ export const AddIngredientPage = () => {
                           ))}
                           </Select>
                       </Grid>
-                      <Grid xs={4}></Grid>
+                      <Grid xs={1}></Grid>
                       <Grid xs={3}>
                         <Rating1
                           updateField="input.rating"
@@ -225,20 +258,7 @@ export const AddIngredientPage = () => {
                         />
                       </Grid>
                       <Grid xs={1}></Grid>
-                      <Grid xs={3}>
-                        <H5 title="Toevoegen" />
-                        <Button
-                          disabled={loading}
-                          onClick={() => {
-                            setFieldValue("input.nutrition.unit", unitForMaterial(material));
-                            submitForm()}
-                          }
-                          color="primary"
-                          variant="contained"
-                        >
-                          Gegevens toevoegen
-                        </Button>
-                      </Grid>
+
                     </Grid>
                     <Divider />
                     <Grid xs={12}>
@@ -264,7 +284,6 @@ export const AddIngredientPage = () => {
                           </Button>
                         </Grid>
                         <AddQuickProductsDialog
-                          material={values.input.material}
                           open={dialog}
                           onClose={() => openDialog(false)}
                         />
@@ -311,6 +330,21 @@ export const AddIngredientPage = () => {
                             ))}
                           </Table>
                         </TableContainer>
+                      </Grid>
+                      <Grid xs={12}> - </Grid>
+                        <Grid xs={12}>
+                        <Button
+                          fullWidth
+                          disabled={loading}
+                          onClick={() => {
+                            setFieldValue("input.nutrition.unit", unitForMaterial(material));
+                            submitForm()}
+                          }
+                          color="primary"
+                          variant="contained"
+                        >
+                          Gegevens toevoegen
+                        </Button>
                       </Grid>
                     </Grid>
                     {error && (

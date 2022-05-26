@@ -31,8 +31,9 @@ import {
   DefaultNutritionOptions,
   NutritionOptionDropDown,
 } from "../../Components/NutrutitionOptions";
+import { getFactor, getUnitsForUnit, RowForDialog } from "../../Content";
 import { ItemString, ItemInt } from "../../Menus/menuDialog";
-import { stringForMaterial } from "../AddIngredient";
+import { quantityForMaterial, stringForMaterial, unitForMaterial } from "../AddIngredient";
 import { useGetIngredientQuery, useGetNutritionForIngredients, useGetProductsForIngredients } from "../api";
 import { displayMaterial, displayStatus } from "../components/IngredientTable";
 import { FilterIngredients_filterIngredients } from "../types/FilterIngredients";
@@ -67,13 +68,16 @@ export const DialogForIngredient = ({
 }) => {
 
   const [value, setValue] = useState(0);
-
+  const initialValues = quantityForMaterial(ingredient.material);
+  const [unit, setUnitHere] = useState<string>(initialValues.unit);
+  const [quantity, setQuantity] = useState<number>(initialValues.quantity);
+  const [factor, setFactor] = useState<number>(1);
   let content;
 
   switch (value) {
     case 0:
       content = (
-        <NutritionTab id={ingredient.id} />
+        <NutritionTab id={ingredient.id} factor={factor}/>
       );
       break;
     default:
@@ -89,43 +93,65 @@ export const DialogForIngredient = ({
         <Dialog open={open} onClose={onClose}>
           {ingredient && (
             <>
-              <Grid container xs={12}>
-                <Grid xs={3}>
-                  <H5Left title="Ingredient" />
-                </Grid>
-                <Grid xs={6}>
-                  <H5 title={ingredient.name} />
-                </Grid>
-                <Grid xs={3}></Grid>
-                <Grid xs={3}>
-                  <H5Left title="Categorie" />
-                </Grid>
-                <Grid xs={6}>
-                  <H5 title={ingredient.category} />
-                </Grid>
-                <Grid xs={3}></Grid>
-                <Grid xs={3}>
-                  <H5Left title="Status" />
-                </Grid>
-                <Grid xs={6}>
-                  <H5 title={String(displayStatus(ingredient.status))} />
-                </Grid>
-                <Grid xs={3}></Grid>
-                <Grid xs={3}>
-                  <H5Left title="Meeteenheid" />
-                </Grid>
-                <Grid xs={6}>
-                  <H5 title={String(displayMaterial(ingredient.material))} />
-                </Grid>
-                <Grid xs={3}></Grid>
-                <Grid xs={3}>
-                  <H5Left title="Beoordeling" />
-                </Grid>
-                <Grid xs={6}>
-                  <H5 title={String(ingredient.rating)} />
-                </Grid>
-                <Grid xs={3}></Grid>
-              </Grid>
+              <Table>
+                  <RowForDialog title="Ingredient" word={ingredient.name}/>
+                  <RowForDialog title="Categorie" word={ingredient.category}/>
+                  <RowForDialog title="Status" word={String(displayStatus(ingredient.status))}/>
+                  <RowForDialog title="Meeteenheid" word={String(displayMaterial(ingredient.material))}/>
+                  <RowForDialog title="Beoordeling" word={String(ingredient.rating)}/>
+                  <Formik
+                  initialValues={initialValues}
+                  onSubmit={(values) => {
+                    setQuantity(values.quantity);
+                    setUnitHere(values.unit);
+                    setFactor(
+                      getFactor({
+                        first: initialValues,
+                        other: { quantity: values.quantity, unit: values.unit },
+                      })
+                    );
+                  }}
+                >
+                  {({ setFieldValue, submitForm }) => {
+                    return (
+                      <>
+                        <TableRow>
+                          <TableCell colSpan={2}>
+                            <H5 title="Toon hoeveelheid per:" />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>
+                            <TextField
+                              placeholder={String(quantity)}
+                              onChange={(e) =>
+                                setFieldValue(
+                                  "quantity",
+                                  Number(e.target.value)
+                                )
+                              }
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <FormikSelect name={"unit"}>
+                              {getUnitsForUnit(unit).map((u) => (
+                                <MenuItem key={u} value={u}>
+                                  {u}
+                                </MenuItem>
+                              ))}
+                            </FormikSelect>
+                          </TableCell>
+                        </TableRow>
+                        <TableCell colSpan={2}>
+                          <Button fullWidth onClick={() => submitForm()}>
+                            Pas toe
+                          </Button>
+                        </TableCell>
+                      </>
+                    );
+                  }}
+                </Formik>
+              </Table>
               <DialogTitle>
                 <Tabs
                   centered
@@ -147,8 +173,10 @@ export const DialogForIngredient = ({
 };
 
 const NutritionTab = ({
+  factor,
   id,
 }: {
+  factor: number;
   id: string;
 }) => {
 
@@ -176,7 +204,7 @@ const NutritionTab = ({
           <Grid container xs={12}>
             <Grid xs={6}>
               <ItemNutrition
-                factor={1}
+                factor={factor}
                 nutritionsToDisplay={nutritionsToDisplay}
                 title="Voedingswaarde"
                 item={data.ingredient.nutrition.nutrition}

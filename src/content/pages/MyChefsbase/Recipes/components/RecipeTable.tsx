@@ -38,7 +38,7 @@ import {
 } from "../types/FilterRecipes";
 import { UpdateRecipeDialog } from "../recipeDialogs/UpdateRecipeDialog";
 import { recipeRowsPerPage } from "../api";
-import { DialogHere } from "../../Content";
+import { DialogForRecipe } from "../../Content";
 import { UpdateRecipePage } from "../AddRecipe";
 
 const headCellsRecipes: string[] = ["Naam", "type", "rating", "acties"];
@@ -220,7 +220,7 @@ export const RecipeTable = ({
       </TableContainer>
       {recipe && (
         <>
-          <DialogHere
+          <DialogForRecipe
             recipe={recipe}
             open={open}
             onClose={() => setOpen(false)}

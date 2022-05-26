@@ -208,7 +208,7 @@ export const AddRecipePage1 = () => {
   ];
 
   const form: Form = {
-    boolean: 0,
+    boolean: 1,
     input: formInput,
     oldIngredients: ingredientIdsForm,
     newIngredients: ingredientNamesForm,
@@ -397,7 +397,21 @@ export const AddRecipePage1 = () => {
 };
 
 export const mapIngredientsToForm = (ingredients: ingredientsForRecipe_ingredientsForRecipe[]): IngredientsForm[] => {
-  return ingredients.map((i)=> (
+  var result = ingredients.map((i) => i)
+  
+  if (result.length === 0) result.push({
+    __typename: "QuantityToIngredient",
+    quantity: {
+      __typename: "Quantity",
+      quantity: 0,
+      unit: '',
+    },
+    ingredient: {
+      __typename: "Ingredient",
+      id: '',
+      name: '',
+  }})
+  return result.map((i)=> (
     {
       id: i.ingredient.id,
       name: i.ingredient.name,
@@ -440,7 +454,7 @@ export const UpdateRecipePage = ({
   ];
 
   const formInput: UpdateRecipeForm = {
-    boolean: 0,
+    boolean: 1,
     id: recipe.id,
     name: recipe.name,
     rating: String(recipe.rating),
@@ -459,7 +473,6 @@ export const UpdateRecipePage = ({
     newIngredients: ingredientNamesForm,
     method: data1.methodForRecipe,
   };
-
   return (
     <>
     <Dialog fullScreen open={open} onClose={onClose}>
@@ -482,7 +495,19 @@ export const UpdateRecipePage = ({
           spacing={3}
         >
           <DialogTitle style={{ fontWeight: 600 }} id="form-dialog-title">
-                Recept Aanpassen
+          <Grid container xs={12}>
+            <Grid xs={6}><H5 title="Recept Aanpassen"/></Grid>
+            <Grid xs={3}></Grid>
+            <Grid xs={3}>
+                                <Button
+                                  onClick={() => onClose()}
+                                  color="primary"
+                                  variant="outlined"
+                                >
+                                  Terug
+                                </Button>
+                                </Grid>
+                              </Grid>
               </DialogTitle>
               <DialogContent>
             <Formik
@@ -630,7 +655,7 @@ export const UpdateRecipePage = ({
                                 >
                                   Recept aanpassen
                                 </Button>
-                              </Grid>
+                                </Grid>
                             </Grid>
                           </DialogContent>
                         </Dialog>

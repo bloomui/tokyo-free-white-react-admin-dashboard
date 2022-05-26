@@ -5,16 +5,18 @@ import { FormikSelect } from "src/components/form/FormikSelect";
 import { H3 } from "src/content/pages/Components/TextTypes";
 import { useSearchIngredientFilterQuery } from "src/content/pages/MyChefsbase/Ingredients/AddIngredient/api";
 import { searchIngredient_searchIngredient } from "src/content/pages/MyChefsbase/Ingredients/AddIngredient/types/searchIngredient";
-import { IngredientNamesForm, IngredientIdsForm } from "src/content/pages/MyChefsbase/Recipes/AddRecipe";
+import { IngredientNamesForm, IngredientIdsForm, IngredientsForm } from "src/content/pages/MyChefsbase/Recipes/AddRecipe";
 import {
   getUnitsForMaterial,
   units,
 } from "src/content/pages/MyChefsbase/Recipes/AddRecipe/components/IngredientTable";
+import { Material } from "src/globalTypes";
 import {
   composeValidators,
   required,
   mustBeNumber,
 } from "src/utilities/formikValidators";
+import { getUnitsForUnit } from "../../../..";
 
 export const IngredientSelectorNew = ({
   form,
@@ -58,6 +60,12 @@ export const IngredientSelectorNew = ({
   );
 };
 
+export const EmptySearchIngredient = {
+  __typename: "Ingredient",
+  id: '',
+  name: 'een moment geduld',
+  material: Material.SOLID
+}
 export const IngredientSelector = ({
   placeholder,
   index,
@@ -66,7 +74,7 @@ export const IngredientSelector = ({
   form
 }: {
   placeholder?: string;
-  form: IngredientIdsForm;
+  form: IngredientsForm;
   index: number;
   field: string;
   setFieldValue: (
@@ -78,11 +86,11 @@ export const IngredientSelector = ({
   const [name, setName] = useState("");
 
   const [ingredient, setIngredient] =
-    useState<searchIngredient_searchIngredient>();
+    useState<IngredientsForm>(form);
   const { data, loading, error, refetch } = useSearchIngredientFilterQuery({
     name: name,
   });
-
+  console.log(form)
   const [timer, setTimer] = useState(null);
 
   function changeDelay(change) {
@@ -101,23 +109,27 @@ export const IngredientSelector = ({
     <>
       <Grid xs={6}>
         <Autocomplete
-        defaultValue={placeholder || ''}
+        defaultValue={placeholder}
           id="tags-standard"
           options={
             loading
-              ? []
-              : data &&
-                data.searchIngredient &&
-                data.searchIngredient.map((option) => option)
+              ? [EmptySearchIngredient]
+              : data ? data.searchIngredient? data.searchIngredient.map((option) => option) : [EmptySearchIngredient] : [EmptySearchIngredient]
           }
-          getOptionLabel={(option) => (option ? option.name ? placeholder : "" : "")}
+          getOptionLabel={(option) => (option.name ? option.name : placeholder)}
           onChange={(event, value: searchIngredient_searchIngredient) => {
-            setIngredient(value);
-            setFieldValue(`${field}.${index}.id`, value.id);
+            setIngredient({
+              id: value? value.id : '',
+              name: value? value.name : '',
+              quantity: form.quantity,
+              unit: form.unit,
+            });
+            setFieldValue(`${field}.${index}.id`, value ? value.id : "");
+            setFieldValue(`${field}.${index}.name`, value ? value.name : "")
           }}
           renderInput={(params) => (
             <TextField
-              placeholder={placeholder}
+              placeholder={form? form.name : placeholder}
               {...params}
               onChange={(e) => {
                 changeDelay(e.target.value);
@@ -142,11 +154,15 @@ export const IngredientSelector = ({
           validate={composeValidators(required)}
           name={`${field}.${index}.unit`}
         >
-          {units.map((unit) => (
+          {(ingredient.unit == "") ? units.map((unit) => (
             <MenuItem key={unit} value={unit}>
               {unit}
             </MenuItem>
-          ))}
+          )) : getUnitsForUnit(ingredient.unit).map((unit) => (
+            <MenuItem key={unit} value={unit}>
+            {unit}
+          </MenuItem>
+        ))}
         </FormikSelect>
       </Grid>
     </>
@@ -287,3 +303,4 @@ export const IngredientSelectorInventory1 = ({
     </>
   );
 };
+

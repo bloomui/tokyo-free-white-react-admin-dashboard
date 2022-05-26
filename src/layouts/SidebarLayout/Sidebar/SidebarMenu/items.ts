@@ -55,11 +55,11 @@ const menuItems: MenuItems[] = [
         link: '/mychefsbase/chefsbase',
         icon: FaDatabase,
           },
-          {
-            name: 'Leverancier toevoegen',
-            link: '/mychefsbase/addsupplier',
-            icon: VscAdd
-          },
+          // {
+          //   name: 'Leverancier toevoegen',
+          //   link: '/mychefsbase/addsupplier',
+          //   icon: VscAdd
+          // },
           {
             name: 'Product toevoegen',
             link: '/mychefsbase/addproduct',
@@ -75,16 +75,16 @@ const menuItems: MenuItems[] = [
             link: '/mychefsbase/addrecipe',
             icon: VscAdd
           },
-          {
-            name: 'Gerecht toevoegen',
-            link: '/mychefsbase/adddish',
-            icon: VscAdd
-          },
-          {
-            name: 'Menu toevoegen',
-            link: '/mychefsbase/addmenu',
-            icon: VscAdd
-          },
+          // {
+          //   name: 'Gerecht toevoegen',
+          //   link: '/mychefsbase/adddish',
+          //   icon: VscAdd
+          // },
+          // {
+          //   name: 'Menu toevoegen',
+          //   link: '/mychefsbase/addmenu',
+          //   icon: VscAdd
+          // },
         ]
       },
       {

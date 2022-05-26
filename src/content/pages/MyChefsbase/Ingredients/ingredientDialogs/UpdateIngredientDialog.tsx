@@ -297,7 +297,6 @@ export const UpdateIngredientDialog = ({
                           </Button>
                         </Grid>
                         <AddQuickProductsDialog
-                          material={values.input.material}
                           open={dialog}
                           onClose={() => openDialog(false)}
                         />

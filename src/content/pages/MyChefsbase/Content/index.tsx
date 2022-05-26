@@ -239,10 +239,24 @@ function PaperComponent(props: PaperProps) {
   );
 }
 
-export const MyDialog = () => {
-  return <Dialog maxWidth="md" open={true}></Dialog>;
+export const RowForDialog = ({ title, word }: { title: string; word: string }) => {
+  return (
+    <TableRow
+      sx={{
+        height: 1,
+      }}
+    >
+      <TableCell>
+        <H5Left title={title} />
+      </TableCell>
+      <TableCell colSpan={2}>
+        <H5 title={word} />
+      </TableCell>
+    </TableRow>
+  );
 };
-export const DialogHere = ({
+
+export const DialogForRecipe = ({
   recipe,
   open,
   onClose,
@@ -261,6 +275,7 @@ export const DialogHere = ({
   };
   const [value, setValue] = useState(0);
 
+  
   const { data, loading, error, refetch } = useGetIngredientsForRecipe({
     onCompleted: (values) => {},
     id: recipe.id,
@@ -290,23 +305,6 @@ export const DialogHere = ({
       break;
   }
 
-  const Row = ({ title, word }: { title: string; word: string }) => {
-    return (
-      <TableRow
-        sx={{
-          height: 1,
-        }}
-      >
-        <TableCell>
-          <H5Left title={title} />
-        </TableCell>
-        <TableCell colSpan={2}>
-          <H5 title={word} />
-        </TableCell>
-      </TableRow>
-    );
-  };
-
   return (
     <>
       <CenterInScreen>
@@ -320,9 +318,9 @@ export const DialogHere = ({
           {recipe && (
             <>
               <Table style={{ cursor: "move" }} id="draggable-dialog-title">
-                <Row title="Recept" word={recipe.name} />
-                <Row title="Type" word={recipe.type} />
-                <Row title="Beoordeling" word={String(recipe.rating)} />
+                <RowForDialog title="Recept" word={recipe.name} />
+                <RowForDialog title="Type" word={recipe.type} />
+                <RowForDialog title="Beoordeling" word={String(recipe.rating)} />
                 <Formik
                   initialValues={initialValues}
                   onSubmit={(values) => {
