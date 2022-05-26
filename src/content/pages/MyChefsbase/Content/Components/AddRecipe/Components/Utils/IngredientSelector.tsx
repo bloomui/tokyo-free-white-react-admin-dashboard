@@ -216,7 +216,7 @@ export const IngredientSelectorInventory1 = ({
               ? [EmptySearchIngredient]
               : data ? data.searchIngredient? data.searchIngredient.map((option) => option) : [EmptySearchIngredient] : [EmptySearchIngredient]
           }
-          getOptionLabel={(option) => (option.name ? `${option.name} (${option?.status})` : placeholder)}
+          getOptionLabel={(option) => (option.status ? `${option.name} (${option.status})` : option.name ? option.name : placeholder)}
           onChange={(event, value: searchIngredient_searchIngredient) => {
             setIngredient({
               id: value? value.id : '',
