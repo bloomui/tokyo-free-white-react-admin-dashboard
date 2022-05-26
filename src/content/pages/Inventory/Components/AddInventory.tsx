@@ -5,6 +5,7 @@ import { FormFieldEdit } from "src/components/form/FormField";
 import { composeValidators, required, mustBeNumber, mustBeDate } from "src/utilities/formikValidators";
 import { H5 } from "../../Components/TextTypes";
 import { IngredientSelectorInventory1 } from "../../MyChefsbase/Content/Components/AddRecipe/Components/Utils/IngredientSelector";
+import { IngredientsForm } from "../../MyChefsbase/Recipes/AddRecipe";
 import { useAddToInventory } from "../api";
 import { emptyInventoryForm, inputInventory, InventoryInputForm, toInput } from "./Constants";
 
@@ -137,10 +138,25 @@ export const AddToInventory = ({open, onClose}: {open: boolean; onClose:  () => 
   
           const Row = ({setFieldValue, index, values}: {values: InventoryInputForm[]; setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void ; index: number}) => {
 
+            const form: IngredientsForm = {
+                id: values[index].ingredientid,
+                name: values[index].ingredientname,
+                quantity: values[index].quantity,
+                unit: values[index].unit,
+            };
+            
             return (
               <>
                 <Grid xs={4}>
                                       <IngredientSelectorInventory1
+                                      placeholder={form.name ? form.name : "Zoek" }
+                                      form={{
+                                        id: form.id,
+                                        name: form.name,
+                                        quantity: form.quantity,
+                                        unit: form.unit,
+                                      }
+                                      }
                                       index={index}
                                       setFieldValue={setFieldValue}
                                     />
