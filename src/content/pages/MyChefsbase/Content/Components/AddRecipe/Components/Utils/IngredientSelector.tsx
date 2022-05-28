@@ -7,7 +7,6 @@ import { useSearchIngredientFilterQuery } from "src/content/pages/MyChefsbase/In
 import { searchIngredient_searchIngredient } from "src/content/pages/MyChefsbase/Ingredients/AddIngredient/types/searchIngredient";
 import { IngredientNamesForm, IngredientIdsForm, IngredientsForm } from "src/content/pages/MyChefsbase/Recipes/AddRecipe";
 import {
-  getUnitsForMaterial,
   units,
 } from "src/content/pages/MyChefsbase/Recipes/AddRecipe/components/IngredientTable";
 import { Material } from "src/globalTypes";
@@ -116,7 +115,7 @@ export const IngredientSelector = ({
               ? [EmptySearchIngredient]
               : data ? data.searchIngredient? data.searchIngredient.map((option) => option) : [EmptySearchIngredient] : [EmptySearchIngredient]
           }
-          getOptionLabel={(option) => (option.name ? `${option.name} (${option?.status})` : placeholder)}
+          getOptionLabel={(option) => (option.status ? `${option.name} (${option.status})` : option.name ? option.name : placeholder)}
           onChange={(event, value: searchIngredient_searchIngredient) => {
             setIngredient({
               id: value? value.id : '',
@@ -154,11 +153,11 @@ export const IngredientSelector = ({
           validate={composeValidators(required)}
           name={`${field}.${index}.unit`}
         >
-          {(ingredient.unit == "") ? units.map((unit) => (
+          {(form.unit == "") ? units.map((unit) => (
             <MenuItem key={unit} value={unit}>
               {unit}
             </MenuItem>
-          )) : getUnitsForUnit(ingredient.unit).map((unit) => (
+          )) : getUnitsForUnit(form.unit).map((unit) => (
             <MenuItem key={unit} value={unit}>
             {unit}
           </MenuItem>

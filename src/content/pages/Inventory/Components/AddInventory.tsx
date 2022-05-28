@@ -1,9 +1,11 @@
-import { Dialog, DialogTitle, DialogContent, Grid, Button, Divider } from "@material-ui/core";
+import { Dialog, DialogTitle, DialogContent, Grid, Button, Divider, MenuItem } from "@material-ui/core";
 import { Formik, FieldArray } from "formik";
 import { useState } from "react";
 import { FormFieldEdit } from "src/components/form/FormField";
+import { FormikSelect } from "src/components/form/FormikSelect";
 import { composeValidators, required, mustBeNumber, mustBeDate } from "src/utilities/formikValidators";
 import { H5 } from "../../Components/TextTypes";
+import { getUnitsForUnit } from "../../MyChefsbase/Content";
 import { IngredientSelectorInventory1 } from "../../MyChefsbase/Content/Components/AddRecipe/Components/Utils/IngredientSelector";
 import { IngredientsForm } from "../../MyChefsbase/Recipes/AddRecipe";
 import { useAddToInventory } from "../api";
@@ -137,7 +139,7 @@ export const AddToInventory = ({open, onClose}: {open: boolean; onClose:  () => 
           }
   
           const Row = ({setFieldValue, index, values}: {values: InventoryInputForm[]; setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void ; index: number}) => {
-
+            
             const form: IngredientsForm = {
                 id: values[index].ingredientid,
                 name: values[index].ingredientname,
@@ -170,6 +172,14 @@ export const AddToInventory = ({open, onClose}: {open: boolean; onClose:  () => 
                   />
                 </Grid>
                 <Grid xs={3}>
+                <FormikSelect name={"unit"}>
+                              {getUnitsForUnit(values[index].unit).map((u) => (
+                                <MenuItem key={u} value={u}>
+                                  {u}
+                                </MenuItem>
+                              ))}
+                            </FormikSelect>
+                                    
                                     <FormFieldEdit
                     placeholder={values[index].unit}
                     name={`inputForm.${index}.unit`}
