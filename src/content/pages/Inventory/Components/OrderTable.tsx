@@ -19,6 +19,9 @@ export const OrderTable = ({handleDelete, ingredients}: {handleDelete: (index) =
     const initialValues = {
         a: ingredients
     }
+    console.log(initialValues)
+    const b = totalPrice(initialValues.a)
+    console.log(b)
    return (
         <Formik
         initialValues={initialValues}

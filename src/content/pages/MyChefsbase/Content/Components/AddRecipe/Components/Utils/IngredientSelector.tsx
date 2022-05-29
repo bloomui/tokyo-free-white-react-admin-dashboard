@@ -7,6 +7,7 @@ import { useSearchIngredientFilterQuery } from "src/content/pages/MyChefsbase/In
 import { searchIngredient_searchIngredient } from "src/content/pages/MyChefsbase/Ingredients/AddIngredient/types/searchIngredient";
 import { IngredientNamesForm, IngredientIdsForm, IngredientsForm } from "src/content/pages/MyChefsbase/Recipes/AddRecipe";
 import {
+  getUnitsForMaterial,
   units,
 } from "src/content/pages/MyChefsbase/Recipes/AddRecipe/components/IngredientTable";
 import { Material } from "src/globalTypes";
@@ -86,11 +87,12 @@ export const IngredientSelector = ({
   const [name, setName] = useState("");
 
   const [ingredient, setIngredient] =
-    useState<IngredientsForm>(form);
+    useState<searchIngredient_searchIngredient>();
   const { data, loading, error, refetch } = useSearchIngredientFilterQuery({
     name: name,
   });
   const [timer, setTimer] = useState(null);
+  console.log(ingredient)
 
   function changeDelay(change) {
     if (timer) {
@@ -104,6 +106,7 @@ export const IngredientSelector = ({
       }, 50)
     );
   }
+  console.log(form)
   return (
     <>
       <Grid xs={6}>
@@ -118,10 +121,11 @@ export const IngredientSelector = ({
           getOptionLabel={(option) => (option.status ? `${option.name} (${option.status})` : option.name ? option.name : placeholder)}
           onChange={(event, value: searchIngredient_searchIngredient) => {
             setIngredient({
+              __typename: "Ingredient",
+              status: value? value.status : '',
+              material: value?.material,
               id: value? value.id : '',
               name: value? value.name : '',
-              quantity: form.quantity,
-              unit: form.unit,
             });
             setFieldValue(`${field}.${index}.id`, value ? value.id : "");
             setFieldValue(`${field}.${index}.name`, value ? value.name : "")
@@ -153,15 +157,12 @@ export const IngredientSelector = ({
           validate={composeValidators(required)}
           name={`${field}.${index}.unit`}
         >
-          {(form.unit == "") ? units.map((unit) => (
+          {ingredient && getUnitsForMaterial(ingredient.material).map((unit) => (
             <MenuItem key={unit} value={unit}>
               {unit}
             </MenuItem>
-          )) : getUnitsForUnit(form.unit).map((unit) => (
-            <MenuItem key={unit} value={unit}>
-            {unit}
-          </MenuItem>
-        ))}
+          )) 
+        }
         </FormikSelect>
       </Grid>
     </>
@@ -186,7 +187,7 @@ export const IngredientSelectorInventory1 = ({
   const [name, setName] = useState("");
 
   const [ingredient, setIngredient] =
-    useState<IngredientsForm>();
+    useState<searchIngredient_searchIngredient>();
   const { data, loading, error, refetch } = useSearchIngredientFilterQuery({
     name: name,
   });
@@ -207,7 +208,8 @@ export const IngredientSelectorInventory1 = ({
   }
   return (
     <>
-      <Grid xs={12}>
+    <Grid container xs={12}>
+      <Grid xs={4}>
         <Autocomplete
           id="tags-standard"
           options={
@@ -218,10 +220,11 @@ export const IngredientSelectorInventory1 = ({
           getOptionLabel={(option) => (option.status ? `${option.name} (${option.status})` : option.name ? option.name : placeholder)}
           onChange={(event, value: searchIngredient_searchIngredient) => {
             setIngredient({
+              __typename: "Ingredient",
+              status: value? value.status : '',
+              material: value?.material,
               id: value? value.id : '',
               name: value? value.name : '',
-              quantity: form.quantity,
-              unit: form.unit,
             });
             setFieldValue(`inputForm.${index}.ingredientid`, value ? value.id : "");
             setFieldValue(`inputForm.${index}.ingredientname`, value ? value.name : "");
@@ -236,6 +239,31 @@ export const IngredientSelectorInventory1 = ({
             />
           )}
         />
+      </Grid>
+      <Grid xs={1}></Grid>
+      <Grid xs={3}>
+        <FormFieldEdit
+          placeholder={form.quantity}
+          name={`inputForm.${index}.quantity`}
+          label="Hoeveelheid"
+          validator={composeValidators(required, mustBeNumber)}
+        />
+      </Grid>
+      <Grid xs={1}></Grid>
+      <Grid xs={3}>
+        <FormikSelect
+          placeholder={form.unit}
+          validate={composeValidators(required)}
+          name={`inputForm.${index}.unit`}
+        >
+          {ingredient && getUnitsForMaterial(ingredient.material).map((unit) => (
+            <MenuItem key={unit} value={unit}>
+              {unit}
+            </MenuItem>
+          )) 
+        }
+        </FormikSelect>
+      </Grid>
       </Grid>
     </>
   );

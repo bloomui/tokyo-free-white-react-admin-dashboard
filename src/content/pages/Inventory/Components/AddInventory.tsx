@@ -56,9 +56,8 @@ export const AddToInventory = ({open, onClose}: {open: boolean; onClose:  () => 
   
       <Grid container xs={12}>
         <Row values={values.inputForm} setFieldValue={setFieldValue} index={index}/> 
-                            <Grid xs={2}>
-                            <Grid xs={6}>
-                    {index >= 0 ? (
+                    {index > 0 ? (
+                                              <Grid xs={2}>
                       <Button
                         variant="contained"
                         color="secondary"
@@ -76,16 +75,17 @@ export const AddToInventory = ({open, onClose}: {open: boolean; onClose:  () => 
                       >
                         -
                       </Button>
+                      </Grid>
                     ) : (
                       <Grid xs={6}></Grid>
                     )}
-                  </Grid>
-                  <Grid xs={6}>
+                    <Grid xs={2}></Grid>
+                  <Grid xs={8}>
                     <Button
                       variant="contained"
                       color="secondary"
                       style={{
-                        maxWidth: "30px",
+                        maxWidth: "500px",
                         maxHeight: "30px",
                         minWidth: "30px",
                         minHeight: "30px",
@@ -96,10 +96,9 @@ export const AddToInventory = ({open, onClose}: {open: boolean; onClose:  () => 
                         arrayHelpers.push(emptyInventoryForm);
                       }}
                     >
-                      +
+                      Nog een Ingredient toevoegen aan inventaris
                     </Button>
                   </Grid> 
-                            </Grid>
                             <Divider />
                   </Grid> 
                   </>
@@ -149,7 +148,7 @@ export const AddToInventory = ({open, onClose}: {open: boolean; onClose:  () => 
             
             return (
               <>
-                <Grid xs={4}>
+                <Grid xs={12}>
                                       <IngredientSelectorInventory1
                                       placeholder={form.name ? form.name : "Zoek" }
                                       form={{
@@ -163,32 +162,8 @@ export const AddToInventory = ({open, onClose}: {open: boolean; onClose:  () => 
                                       setFieldValue={setFieldValue}
                                     />
                                     </Grid>
-                                    <Grid xs={3}>
-                                    <FormFieldEdit
-                    placeholder={values[index].quantity}
-                    name={`inputForm.${index}.quantity`}
-                    label="Hoeveelheid"
-                    validator={composeValidators(required, mustBeNumber)}
-                  />
-                </Grid>
-                <Grid xs={3}>
-                <FormikSelect name={"unit"}>
-                              {getUnitsForUnit(values[index].unit).map((u) => (
-                                <MenuItem key={u} value={u}>
-                                  {u}
-                                </MenuItem>
-                              ))}
-                            </FormikSelect>
-                                    
-                                    <FormFieldEdit
-                    placeholder={values[index].unit}
-                    name={`inputForm.${index}.unit`}
-                    label="Meeteenheid"
-                    validator={composeValidators(required)}
-                  />
-                </Grid>
-                <Grid xs={2}></Grid>
-                    <Grid xs={2}>
+                                   
+                    <Grid xs={4}>
                     <FormFieldEdit
                     placeholder=""
                     name={`inputForm.${index}.expiration`}
@@ -196,7 +171,8 @@ export const AddToInventory = ({open, onClose}: {open: boolean; onClose:  () => 
                     validator={composeValidators(required, mustBeDate)}
                   />
                     </Grid>
-                    <Grid xs={2}>
+                    <Grid xs={1}></Grid>
+                    <Grid xs={3}>
                     <FormFieldEdit
                     placeholder=""
                     name={`inputForm.${index}.price`}
@@ -204,6 +180,7 @@ export const AddToInventory = ({open, onClose}: {open: boolean; onClose:  () => 
                     validator={composeValidators(required)}
                   />
                     </Grid>
+                    <Grid xs={1}></Grid>
                     <Grid xs={3}>
                     <FormFieldEdit
                     placeholder=""
@@ -212,14 +189,14 @@ export const AddToInventory = ({open, onClose}: {open: boolean; onClose:  () => 
                     validator={composeValidators(required)}
                   />
                     </Grid>
-                    <Grid xs={3}>
+                    {/* <Grid xs={3}>
                     <FormFieldEdit
                     placeholder=""
                     name={`inputForm.${index}.origin`}
                     label="Herkomst"
                     validator={composeValidators(required)}
                   />
-                    </Grid>
+                    </Grid> */}
                                     </>
             )
           }
