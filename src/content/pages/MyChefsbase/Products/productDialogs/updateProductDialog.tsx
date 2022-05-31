@@ -59,7 +59,7 @@ export const unitsToUnits = (a: string): [string] => {
     case "gram":
       result = unitsSolid;
       break;
-    case "kilogram":
+    case "kg":
       result = unitsSolid;
       break;
     case "milliliter":
@@ -69,8 +69,8 @@ export const unitsToUnits = (a: string): [string] => {
       result = unitsLiquid;
       break;
     case "person(en)":
-        result = unitsPersons;
-        break;
+      result = unitsPersons;
+      break;
     default:
       result = unitsUnit;
   }

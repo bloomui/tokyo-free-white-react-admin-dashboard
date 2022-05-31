@@ -5,7 +5,11 @@ import { FormikSelect } from "src/components/form/FormikSelect";
 import { H3 } from "src/content/pages/Components/TextTypes";
 import { useSearchIngredientFilterQuery } from "src/content/pages/MyChefsbase/Ingredients/AddIngredient/api";
 import { searchIngredient_searchIngredient } from "src/content/pages/MyChefsbase/Ingredients/AddIngredient/types/searchIngredient";
-import { IngredientNamesForm, IngredientIdsForm, IngredientsForm } from "src/content/pages/MyChefsbase/Recipes/AddRecipe";
+import {
+  IngredientNamesForm,
+  IngredientIdsForm,
+  IngredientsForm,
+} from "src/content/pages/MyChefsbase/Recipes/AddRecipe";
 import {
   getUnitsForMaterial,
   units,
@@ -40,15 +44,10 @@ export const IngredientSelectorNew = ({
       </Grid>
       <Grid xs={1}></Grid>
       <Grid xs={2}>
-        <FormField
-          name={`${field}.${index}.quantity`}
-          label="Hoeveelheid"
-        />
+        <FormField name={`${field}.${index}.quantity`} label="Hoeveelheid" />
       </Grid>
       <Grid xs={2}>
-        <FormikSelect
-          name={`${field}.${index}.unit`}
-        >
+        <FormikSelect name={`${field}.${index}.unit`}>
           {units.map((unit) => (
             <MenuItem key={unit} value={unit}>
               {unit}
@@ -62,17 +61,17 @@ export const IngredientSelectorNew = ({
 
 export const EmptySearchIngredient = {
   __typename: "Ingredient",
-  id: '',
-  name: 'een moment geduld',
+  id: "",
+  name: "een moment geduld",
   material: Material.SOLID,
-  status: '',
-}
+  status: "",
+};
 export const IngredientSelector = ({
   placeholder,
   index,
   setFieldValue,
   field,
-  form
+  form,
 }: {
   placeholder?: string;
   form: IngredientsForm;
@@ -92,7 +91,7 @@ export const IngredientSelector = ({
     name: name,
   });
   const [timer, setTimer] = useState(null);
-  console.log(ingredient)
+  console.log(ingredient);
 
   function changeDelay(change) {
     if (timer) {
@@ -106,33 +105,43 @@ export const IngredientSelector = ({
       }, 50)
     );
   }
-  console.log(form)
+  console.log(form);
   return (
     <>
       <Grid xs={6}>
         <Autocomplete
-        defaultValue={placeholder}
+          defaultValue={placeholder}
           id="tags-standard"
           options={
             loading
               ? [EmptySearchIngredient]
-              : data ? data.searchIngredient? data.searchIngredient.map((option) => option) : [EmptySearchIngredient] : [EmptySearchIngredient]
+              : data
+              ? data.searchIngredient
+                ? data.searchIngredient.map((option) => option)
+                : [EmptySearchIngredient]
+              : [EmptySearchIngredient]
           }
-          getOptionLabel={(option) => (option.status ? `${option.name} (${option.status})` : option.name ? option.name : placeholder)}
+          getOptionLabel={(option) =>
+            option.status
+              ? `${option.name} (${option.status})`
+              : option.name
+              ? option.name
+              : placeholder
+          }
           onChange={(event, value: searchIngredient_searchIngredient) => {
             setIngredient({
               __typename: "Ingredient",
-              status: value? value.status : '',
+              status: value ? value.status : "",
               material: value?.material,
-              id: value? value.id : '',
-              name: value? value.name : '',
+              id: value ? value.id : "",
+              name: value ? value.name : "",
             });
             setFieldValue(`${field}.${index}.id`, value ? value.id : "");
-            setFieldValue(`${field}.${index}.name`, value ? value.name : "")
+            setFieldValue(`${field}.${index}.name`, value ? value.name : "");
           }}
           renderInput={(params) => (
             <TextField
-              placeholder={form? form.name : placeholder}
+              placeholder={form ? form.name : placeholder}
               {...params}
               onChange={(e) => {
                 changeDelay(e.target.value);
@@ -157,12 +166,12 @@ export const IngredientSelector = ({
           validate={composeValidators(required)}
           name={`${field}.${index}.unit`}
         >
-          {ingredient && getUnitsForMaterial(ingredient.material).map((unit) => (
-            <MenuItem key={unit} value={unit}>
-              {unit}
-            </MenuItem>
-          )) 
-        }
+          {ingredient &&
+            getUnitsForMaterial(ingredient.material).map((unit) => (
+              <MenuItem key={unit} value={unit}>
+                {unit}
+              </MenuItem>
+            ))}
         </FormikSelect>
       </Grid>
     </>
@@ -208,64 +217,79 @@ export const IngredientSelectorInventory1 = ({
   }
   return (
     <>
-    <Grid container xs={12}>
-      <Grid xs={4}>
-        <Autocomplete
-          id="tags-standard"
-          options={
-            loading
-              ? [EmptySearchIngredient]
-              : data ? data.searchIngredient? data.searchIngredient.map((option) => option) : [EmptySearchIngredient] : [EmptySearchIngredient]
-          }
-          getOptionLabel={(option) => (option.status ? `${option.name} (${option.status})` : option.name ? option.name : placeholder)}
-          onChange={(event, value: searchIngredient_searchIngredient) => {
-            setIngredient({
-              __typename: "Ingredient",
-              status: value? value.status : '',
-              material: value?.material,
-              id: value? value.id : '',
-              name: value? value.name : '',
-            });
-            setFieldValue(`inputForm.${index}.ingredientid`, value ? value.id : "");
-            setFieldValue(`inputForm.${index}.ingredientname`, value ? value.name : "");
-          }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              onChange={(e) => {
-                changeDelay(e.target.value);
-              }}
-              fullWidth
-            />
-          )}
-        />
-      </Grid>
-      <Grid xs={1}></Grid>
-      <Grid xs={3}>
-        <FormFieldEdit
-          placeholder={form.quantity}
-          name={`inputForm.${index}.quantity`}
-          label="Hoeveelheid"
-          validator={composeValidators(required, mustBeNumber)}
-        />
-      </Grid>
-      <Grid xs={1}></Grid>
-      <Grid xs={3}>
-        <FormikSelect
-          placeholder={form.unit}
-          validate={composeValidators(required)}
-          name={`inputForm.${index}.unit`}
-        >
-          {ingredient && getUnitsForMaterial(ingredient.material).map((unit) => (
-            <MenuItem key={unit} value={unit}>
-              {unit}
-            </MenuItem>
-          )) 
-        }
-        </FormikSelect>
-      </Grid>
+      <Grid container xs={12}>
+        <Grid xs={4}>
+          <Autocomplete
+            id="tags-standard"
+            options={
+              loading
+                ? [EmptySearchIngredient]
+                : data
+                ? data.searchIngredient
+                  ? data.searchIngredient.map((option) => option)
+                  : [EmptySearchIngredient]
+                : [EmptySearchIngredient]
+            }
+            getOptionLabel={(option) =>
+              option.status
+                ? `${option.name} (${option.status})`
+                : option.name
+                ? option.name
+                : placeholder
+            }
+            onChange={(event, value: searchIngredient_searchIngredient) => {
+              setIngredient({
+                __typename: "Ingredient",
+                status: value ? value.status : "",
+                material: value?.material,
+                id: value ? value.id : "",
+                name: value ? value.name : "",
+              });
+              setFieldValue(
+                `inputForm.${index}.ingredientid`,
+                value ? value.id : ""
+              );
+              setFieldValue(
+                `inputForm.${index}.ingredientname`,
+                value ? value.name : ""
+              );
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                onChange={(e) => {
+                  changeDelay(e.target.value);
+                }}
+                fullWidth
+              />
+            )}
+          />
+        </Grid>
+        <Grid xs={1}> Per stuk:</Grid>
+        <Grid xs={3}>
+          <FormFieldEdit
+            placeholder={form.quantity}
+            name={`inputForm.${index}.quantity`}
+            label="Hoeveelheid"
+            validator={composeValidators(required, mustBeNumber)}
+          />
+        </Grid>
+        <Grid xs={1}></Grid>
+        <Grid xs={3}>
+          <FormikSelect
+            placeholder={form.unit}
+            validate={composeValidators(required)}
+            name={`inputForm.${index}.unit`}
+          >
+            {ingredient &&
+              getUnitsForMaterial(ingredient.material).map((unit) => (
+                <MenuItem key={unit} value={unit}>
+                  {unit}
+                </MenuItem>
+              ))}
+          </FormikSelect>
+        </Grid>
       </Grid>
     </>
   );
 };
-

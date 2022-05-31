@@ -43,9 +43,9 @@ export const units = [
   "milliliter",
   "liter",
   "stuk(s)",
-  "person(en)"
+  "person(en)",
 ];
-export const unitsSolid = ["milligram", "gram", "kilogram"];
+export const unitsSolid = ["milligram", "gram", "kg"];
 export const unitsLiquid = ["milliliter", "liter"];
 export const unitsUnit = ["stuk(s)"];
 export const unitsPersons = ["person(en)"];
@@ -60,8 +60,8 @@ export const getUnitsForMaterial = (material: Material): string[] => {
       result = unitsLiquid;
       break;
     case Material.PERSONS:
-        result = unitsPersons;
-        break;
+      result = unitsPersons;
+      break;
     default:
       result = unitsUnit;
   }
