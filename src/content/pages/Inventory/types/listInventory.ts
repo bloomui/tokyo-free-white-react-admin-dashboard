@@ -26,6 +26,7 @@ export interface listInventory_listInventory {
   brand: string | null;
   expiration: string | null;
   price: number | null;
+  number: number | null;
 }
 
 export interface listInventory {

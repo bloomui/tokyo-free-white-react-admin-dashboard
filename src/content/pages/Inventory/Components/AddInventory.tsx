@@ -184,6 +184,7 @@ const Row = ({
     name: values[index].ingredientname,
     quantity: values[index].quantity,
     unit: values[index].unit,
+    number: values[index].number
   };
 
   return (
@@ -196,6 +197,7 @@ const Row = ({
             name: form.name,
             quantity: form.quantity,
             unit: form.unit,
+            number: form.number
           }}
           index={index}
           setFieldValue={setFieldValue}

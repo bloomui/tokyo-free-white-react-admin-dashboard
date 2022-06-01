@@ -98,8 +98,9 @@ const Row = ({
       expiration: data.expiration,
       rating: "",
       origin: "",
+      number: String(data.number),
     },
-    number: 1,
+    number: data.number,
   };
 
   return (

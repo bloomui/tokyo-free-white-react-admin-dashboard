@@ -40,6 +40,7 @@ export const toInput = (input: InventoryInputForm[]): InventoryForm[] => {
     expiration: i.expiration,
     rating: Number(i.rating),
     origin: i.origin,
+    number: Number(i.number),
   }));
   return result;
 };

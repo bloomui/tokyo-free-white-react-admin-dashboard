@@ -17,6 +17,7 @@ export const inventoryQuery = gql`
             brand
             expiration
             price
+            number
         }
     }
 `;

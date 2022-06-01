@@ -146,6 +146,7 @@ export interface InventoryForm {
   expiration?: string | null;
   rating?: number | null;
   origin?: string | null;
+  number?: number | null;
 }
 
 export interface MenuFilterInput {

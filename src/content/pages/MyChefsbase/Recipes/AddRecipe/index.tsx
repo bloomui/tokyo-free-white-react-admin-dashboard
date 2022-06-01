@@ -99,6 +99,7 @@ export type IngredientsForm = {
   name?: string;
   quantity: string;
   unit: string;
+  number?: string;
 };
 export const oldFromForm = (form: IngredientIdsForm[]): IngredientIds[] => {
   return form.map((f) => ({
