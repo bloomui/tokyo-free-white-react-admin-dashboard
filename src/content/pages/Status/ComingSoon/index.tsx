@@ -59,7 +59,7 @@ const ButtonNotify = styled(Button)(
 
 function StatusComingSoon() {
   const calculateTimeLeft = () => {
-    const difference = +new Date(`2022`) - +new Date();
+    const difference = +new Date(`2023`) - +new Date();
     let timeLeft = {};
 
     if (difference > 0) {

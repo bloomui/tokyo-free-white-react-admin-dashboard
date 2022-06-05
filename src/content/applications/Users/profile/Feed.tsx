@@ -15,7 +15,7 @@ function Feed() {
   const feed = [
     {
       name: 'Munroe Dacks',
-      jobtitle: 'Senior Cost Accountant',
+      jobtitle: 'Senior Accountant',
       company: 'Trudoo',
       avatar: '/static/images/avatars/1.jpg'
     },
@@ -33,7 +33,7 @@ function Feed() {
     },
     {
       name: 'Ede Stoving',
-      jobtitle: 'VP Product Management',
+      jobtitle: 'VP Operations',
       company: 'Cogibox',
       avatar: '/static/images/avatars/4.jpg'
     },
