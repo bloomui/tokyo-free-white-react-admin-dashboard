@@ -1,5 +1,9 @@
 import { FC, useState, createContext } from 'react';
-type SidebarContext = { sidebarToggle: any; toggleSidebar: () => void };
+type SidebarContext = {
+  sidebarToggle: any;
+  toggleSidebar: () => void;
+  closeSidebar: () => void;
+};
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SidebarContext = createContext<SidebarContext>(
@@ -11,9 +15,14 @@ export const SidebarProvider: FC = ({ children }) => {
   const toggleSidebar = () => {
     setSidebarToggle(!sidebarToggle);
   };
+  const closeSidebar = () => {
+    setSidebarToggle(false);
+  };
 
   return (
-    <SidebarContext.Provider value={{ sidebarToggle, toggleSidebar }}>
+    <SidebarContext.Provider
+      value={{ sidebarToggle, toggleSidebar, closeSidebar }}
+    >
       {children}
     </SidebarContext.Provider>
   );

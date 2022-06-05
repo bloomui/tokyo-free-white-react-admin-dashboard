@@ -14,8 +14,6 @@ import Text from 'src/components/Text';
 import Label from 'src/components/Label';
 
 function EditProfileTab() {
-
-
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>

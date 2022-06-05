@@ -4,7 +4,7 @@ import { themeCreator } from './base';
 import { StylesProvider } from '@mui/styles';
 
 export const ThemeContext = React.createContext(
-  (themeName: string): void => { }
+  (themeName: string): void => {}
 );
 
 const ThemeProviderWrapper: React.FC = (props) => {
@@ -19,7 +19,7 @@ const ThemeProviderWrapper: React.FC = (props) => {
   return (
     <StylesProvider injectFirst>
       <ThemeContext.Provider value={setThemeName}>
-        <ThemeProvider theme={theme}>{props.children}</ThemeProvider >
+        <ThemeProvider theme={theme}>{props.children}</ThemeProvider>
       </ThemeContext.Provider>
     </StylesProvider>
   );

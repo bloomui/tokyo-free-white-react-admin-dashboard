@@ -13,7 +13,6 @@ import {
   CardContent,
   Tooltip,
   IconButton,
-  
   Avatar
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -84,7 +83,6 @@ const CardCc = styled(Card)(
 );
 
 function MyCards() {
-
   const data = {
     savedCards: 7
   };
@@ -95,16 +93,11 @@ function MyCards() {
     setSelectedValue(event.target.value);
   };
 
-  const handleDelete = () => {
-    
-  };
+  const handleDelete = () => {};
 
   return (
     <Card>
-      <CardHeader
-        subheader={data.savedCards + ' saved cards'}
-        title="Cards"
-      />
+      <CardHeader subheader={data.savedCards + ' saved cards'} title="Cards" />
       <Divider />
       <Box p={3}>
         <Grid container spacing={3}>

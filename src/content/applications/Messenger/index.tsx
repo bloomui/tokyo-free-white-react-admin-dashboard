@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useState } from 'react';
 
 import { Helmet } from 'react-helmet-async';
 
@@ -6,15 +6,22 @@ import TopBarContent from './TopBarContent';
 import BottomBarContent from './BottomBarContent';
 import SidebarContent from './SidebarContent';
 import ChatContent from './ChatContent';
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 
-import { Scrollbars } from 'react-custom-scrollbars-2';
+import Scrollbar from 'src/components/Scrollbar';
 
-import { Box } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import {
+  Box,
+  styled,
+  Divider,
+  Drawer,
+  IconButton,
+  useTheme
+} from '@mui/material';
 
 const RootWrapper = styled(Box)(
-  () => `
-       height: 100%;
+  ({ theme }) => `
+       height: calc(100vh - ${theme.header.height});
        display: flex;
 `
 );
@@ -41,54 +48,93 @@ const ChatTopBar = styled(Box)(
   ({ theme }) => `
         background: ${theme.colors.alpha.white[100]};
         border-bottom: ${theme.colors.alpha.black[10]} solid 1px;
-        padding: ${theme.spacing(3)};
+        padding: ${theme.spacing(2)};
+        align-items: center;
 `
 );
 
-const ChatMain = styled(Box)(
-  () => `
-        flex: 1;
-`
-);
-
-const ChatBottomBar = styled(Box)(
+const IconButtonToggle = styled(IconButton)(
   ({ theme }) => `
-        padding: ${theme.spacing(3)};
+  width: ${theme.spacing(4)};
+  height: ${theme.spacing(4)};
+  background: ${theme.colors.alpha.white[100]};
+`
+);
+
+const DrawerWrapperMobile = styled(Drawer)(
+  () => `
+    width: 340px;
+    flex-shrink: 0;
+
+  & > .MuiPaper-root {
+        width: 340px;
+        z-index: 3;
+  }
 `
 );
 
 function ApplicationsMessenger() {
-  const ref = useRef<any>(null);
+  const theme = useTheme();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.scrollToBottom();
-    }
-  });
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
 
   return (
     <>
       <Helmet>
         <title>Messenger - Applications</title>
       </Helmet>
-      <RootWrapper>
-        <Sidebar>
-          <Scrollbars autoHide>
+      <RootWrapper className="Mui-FixedWrapper">
+        <DrawerWrapperMobile
+          sx={{
+            display: { lg: 'none', xs: 'inline-block' }
+          }}
+          variant="temporary"
+          anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+        >
+          <Scrollbar>
             <SidebarContent />
-          </Scrollbars>
+          </Scrollbar>
+        </DrawerWrapperMobile>
+        <Sidebar
+          sx={{
+            display: { xs: 'none', lg: 'inline-block' }
+          }}
+        >
+          <Scrollbar>
+            <SidebarContent />
+          </Scrollbar>
         </Sidebar>
         <ChatWindow>
-          <ChatTopBar>
+          <ChatTopBar
+            sx={{
+              display: { xs: 'flex', lg: 'inline-block' }
+            }}
+          >
+            <IconButtonToggle
+              sx={{
+                display: { lg: 'none', xs: 'flex' },
+                mr: 2
+              }}
+              color="primary"
+              onClick={handleDrawerToggle}
+              size="small"
+            >
+              <MenuTwoToneIcon />
+            </IconButtonToggle>
             <TopBarContent />
           </ChatTopBar>
-          <ChatMain>
-            <Scrollbars ref={ref} autoHide>
+          <Box flex={1}>
+            <Scrollbar>
               <ChatContent />
-            </Scrollbars>
-          </ChatMain>
-          <ChatBottomBar>
-            <BottomBarContent />
-          </ChatBottomBar>
+            </Scrollbar>
+          </Box>
+          <Divider />
+          <BottomBarContent />
         </ChatWindow>
       </RootWrapper>
     </>

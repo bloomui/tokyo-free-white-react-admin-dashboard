@@ -4,7 +4,6 @@ import RecentOrdersTable from './RecentOrdersTable';
 import { subDays } from 'date-fns';
 
 function RecentOrders() {
-
   const cryptoOrders: CryptoOrder[] = [
     {
       id: '1',

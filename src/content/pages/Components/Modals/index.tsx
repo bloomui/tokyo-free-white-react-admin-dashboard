@@ -4,7 +4,14 @@ import { useState } from 'react';
 
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Container, Grid, Card, CardHeader, CardContent, Divider } from '@mui/material';
+import {
+  Container,
+  Grid,
+  Card,
+  CardHeader,
+  CardContent,
+  Divider
+} from '@mui/material';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import List from '@mui/material/List';
@@ -37,7 +44,11 @@ function SimpleDialog(props) {
       <DialogTitle>Set backup account</DialogTitle>
       <List sx={{ pt: 0 }}>
         {emails.map((email) => (
-          <ListItem button onClick={() => handleListItemClick(email)} key={email}>
+          <ListItem
+            button
+            onClick={() => handleListItemClick(email)}
+            key={email}
+          >
             <ListItemAvatar>
               <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
                 <PersonIcon />
@@ -47,7 +58,11 @@ function SimpleDialog(props) {
           </ListItem>
         ))}
 
-        <ListItem autoFocus button onClick={() => handleListItemClick('addAccount')}>
+        <ListItem
+          autoFocus
+          button
+          onClick={() => handleListItemClick('addAccount')}
+        >
           <ListItemAvatar>
             <Avatar>
               <AddIcon />
@@ -63,11 +78,10 @@ function SimpleDialog(props) {
 SimpleDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  selectedValue: PropTypes.string.isRequired,
+  selectedValue: PropTypes.string.isRequired
 };
 
 function Modals() {
-
   const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(emails[1]);
 
@@ -80,7 +94,6 @@ function Modals() {
     setSelectedValue(value);
   };
 
-
   return (
     <>
       <Helmet>
@@ -90,7 +103,8 @@ function Modals() {
         <PageTitle
           heading="Modals"
           subHeading="Dialogs inform users about a task and can contain critical information, require decisions, or involve multiple tasks."
-          docs="https://material-ui.com/components/dialogs/" />
+          docs="https://material-ui.com/components/dialogs/"
+        />
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid

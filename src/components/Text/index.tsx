@@ -1,22 +1,30 @@
 import { FC, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
+import clsx from 'clsx';
 
 interface TextProps {
   className?: string;
   color?:
-  | 'primary'
-  | 'secondary'
-  | 'error'
-  | 'warning'
-  | 'success'
-  | 'info'
-  | 'black';
+    | 'primary'
+    | 'secondary'
+    | 'error'
+    | 'warning'
+    | 'success'
+    | 'info'
+    | 'black';
+  flex?: boolean;
   children?: ReactNode;
 }
 
 const TextWrapper = styled('span')(
   ({ theme }) => `
+      display: inline-block;
+      align-items: center;
+
+      &.flexItem {
+        display: inline-flex;
+      }
       
       &.MuiText {
 
@@ -52,13 +60,17 @@ const TextWrapper = styled('span')(
 );
 
 const Text: FC<TextProps> = ({
-  className = '',
+  className,
   color = 'secondary',
+  flex,
   children,
   ...rest
 }) => {
   return (
-    <TextWrapper className={'MuiText-' + color} {...rest}>
+    <TextWrapper
+      className={clsx('MuiText-' + color, { flexItem: flex })}
+      {...rest}
+    >
       {children}
     </TextWrapper>
   );

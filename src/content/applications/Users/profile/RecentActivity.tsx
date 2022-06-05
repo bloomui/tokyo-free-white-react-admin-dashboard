@@ -23,7 +23,6 @@ const AvatarPrimary = styled(Avatar)(
 );
 
 function RecentActivity() {
-
   const theme = useTheme();
 
   return (

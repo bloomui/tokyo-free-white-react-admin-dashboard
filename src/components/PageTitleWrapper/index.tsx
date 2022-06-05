@@ -1,12 +1,10 @@
 import { FC, ReactNode } from 'react';
-import { Container } from '@mui/material';
 import PropTypes from 'prop-types';
-import { styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { Box, Container, styled } from '@mui/material';
 
 const PageTitle = styled(Box)(
   ({ theme }) => `
-        padding: ${theme.spacing(4, 0)};
+        padding: ${theme.spacing(4)};
 `
 );
 
@@ -16,13 +14,9 @@ interface PageTitleWrapperProps {
 
 const PageTitleWrapper: FC<PageTitleWrapperProps> = ({ children }) => {
   return (
-    <>
-      <PageTitle>
-        <Container maxWidth="lg">
-          {children}
-        </Container>
-      </PageTitle>
-    </>
+    <PageTitle className="MuiPageTitle-wrapper">
+      <Container maxWidth="lg">{children}</Container>
+    </PageTitle>
   );
 };
 

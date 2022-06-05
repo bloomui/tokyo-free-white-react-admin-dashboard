@@ -1,6 +1,5 @@
-import { Box, Hidden, Tooltip } from '@mui/material';
+import { Box, styled, Tooltip } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
 
 const LogoWrapper = styled(Link)(
   ({ theme }) => `
@@ -98,8 +97,6 @@ const LogoText = styled(Box)(
 );
 
 function Logo() {
-
-
   return (
     <LogoWrapper to="/overview">
       <LogoSignWrapper>
@@ -107,14 +104,19 @@ function Logo() {
           <LogoSignInner />
         </LogoSign>
       </LogoSignWrapper>
-      <Hidden smDown>
+      <Box
+        component="span"
+        sx={{
+          display: { xs: 'none', sm: 'inline-block' }
+        }}
+      >
         <LogoTextWrapper>
-          <Tooltip title="Version 1.1.0" arrow placement="right">
-            <VersionBadge>1.1</VersionBadge>
+          <Tooltip title="Version 2.0" arrow placement="right">
+            <VersionBadge>3.1</VersionBadge>
           </Tooltip>
           <LogoText>Tokyo Free White</LogoText>
         </LogoTextWrapper>
-      </Hidden>
+      </Box>
     </LogoWrapper>
   );
 }

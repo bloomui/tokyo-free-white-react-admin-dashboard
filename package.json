@@ -1,7 +1,7 @@
 {
   "name": "tokyo-free-white-react-admin-dashboard",
-  "version": "1.1.0",
-  "title": "Tokyo Free White React Admin Dashboard",
+  "version": "2.0.0",
+  "title": "Tokyo Free White React Typescript Admin Dashboard",
   "description": "This free and open source admin dashboard template is built for React and it’s bootstrapped from Facebook’s create-react-app. All NPM dependencies are up to date and it contains multiple fully customized components based on the popular frontend components framework, Material-UI.",
   "author": {
     "name": "BloomUI.com",
@@ -11,14 +11,15 @@
   "dependencies": {
     "@emotion/react": "11.9.0",
     "@emotion/styled": "11.8.1",
-    "@mui/material": "5.6.3",
-    "@mui/icons-material": "5.6.2",
-    "@mui/lab": "5.0.0-alpha.50",
-    "@mui/styles": "5.6.2",
-    "chart.js": "2.9.4",
+    "@mui/material": "5.8.2",
+    "@mui/icons-material": "5.8.2",
+    "@mui/lab": "5.0.0-alpha.84",
+    "@mui/styles": "5.8.0",
     "clsx": "1.1.1",
     "date-fns": "2.28.0",
     "history": "5.3.0",
+    "apexcharts": "3.35.3",
+    "react-apexcharts": "1.4.0",
     "nprogress": "0.2.0",
     "numeral": "2.0.6",
     "prop-types": "15.8.1",
@@ -31,21 +32,18 @@
     "react-scripts": "5.0.1",
     "stylis": "4.1.1",
     "stylis-plugin-rtl": "2.1.1",
-    "react-chartjs-2": "2.11.1",
-    "web-vitals": "2.1.4"
+    "web-vitals": "2.1.4",
+    "typescript": "4.7.3",
+    "@types/react": "17.0.40",
+    "@types/react-dom": "17.0.13"
   },
   "scripts": {
-    "preinstall": "npm install --package-lock-only --ignore-scripts && npx npm-force-resolutions",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
-    "rules": {}
+    "eject": "react-scripts eject",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix",
+    "format": "prettier --write \"./**/*.{ts,tsx,js,jsx,json}\" --config ./.prettierrc"
   },
   "browserslist": {
     "production": [
@@ -60,29 +58,16 @@
     ]
   },
   "devDependencies": {
-    "@babel/eslint-parser": "7.17.0",
-    "@types/nprogress": "0.2.0",
-    "@types/numeral": "2.0.2",
-    "@types/react-dom": "17.0.16",
-    "@types/react-router-dom": "5.3.3",
-    "@types/react": "17.0.44",
-    "@typescript-eslint/eslint-plugin": "5.21.0",
-    "@typescript-eslint/parser": "5.21.0",
-    "eslint-config-airbnb-typescript": "16.1.0",
-    "eslint-config-airbnb": "19.0.4",
+    "@typescript-eslint/eslint-plugin": "5.27.0",
+    "@typescript-eslint/parser": "5.27.0",
+    "eslint": "8.17.0",
+    "eslint-config-airbnb-typescript": "17.0.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-jsx-a11y": "6.5.1",
     "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-react": "7.30.0",
     "eslint-plugin-react-hooks": "4.5.0",
-    "eslint-plugin-react": "7.29.4",
-    "eslint": "7.32.0",
-    "node-sass": "6.0.1",
-    "prettier": "2.6.2",
-    "typescript": "4.6.3"
-  },
-  "resolutions": {
-    "@types/react": "17.0.44",
-    "@types/react-dom": "17.0.16"
+    "prettier": "2.6.2"
   }
 }

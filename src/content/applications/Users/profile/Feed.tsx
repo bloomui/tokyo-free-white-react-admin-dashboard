@@ -12,8 +12,6 @@ import {
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 
 function Feed() {
-
-
   const feed = [
     {
       name: 'Munroe Dacks',

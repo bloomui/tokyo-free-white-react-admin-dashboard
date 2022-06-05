@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Grid, Container } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 import Footer from 'src/components/Footer';
 
 import AccountBalance from './AccountBalance';
@@ -24,7 +24,7 @@ function DashboardCrypto() {
           direction="row"
           justifyContent="center"
           alignItems="stretch"
-          spacing={3}
+          spacing={4}
         >
           <Grid item xs={12}>
             <AccountBalance />

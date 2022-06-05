@@ -1,14 +1,14 @@
 import { useRoutes } from 'react-router-dom';
-import routes from './router';
+import router from 'src/router';
+
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
-import ThemeProvider from './theme/ThemeProvider';
 import { CssBaseline } from '@mui/material';
+import ThemeProvider from './theme/ThemeProvider';
 
-const App = () => {
-
-  const content = useRoutes(routes);
+function App() {
+  const content = useRoutes(router);
 
   return (
     <ThemeProvider>

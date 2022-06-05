@@ -63,7 +63,6 @@ const ListWrapper = styled(Box)(
 );
 
 function HeaderMenu() {
-
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
 

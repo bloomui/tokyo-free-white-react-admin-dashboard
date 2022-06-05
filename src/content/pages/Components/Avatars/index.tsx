@@ -1,7 +1,14 @@
 import { Helmet } from 'react-helmet-async';
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Container, Grid, Card, CardHeader, CardContent, Divider } from '@mui/material';
+import {
+  Container,
+  Grid,
+  Card,
+  CardHeader,
+  CardContent,
+  Divider
+} from '@mui/material';
 import Footer from 'src/components/Footer';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
@@ -33,9 +40,9 @@ function stringToColor(string: string) {
 function stringAvatar(name: string) {
   return {
     sx: {
-      bgcolor: stringToColor(name),
+      bgcolor: stringToColor(name)
     },
-    children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+    children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`
   };
 }
 
@@ -49,7 +56,8 @@ function Avatars() {
         <PageTitle
           heading="Avatars"
           subHeading="Avatars are found throughout material design with uses in everything from tables to dialog menus."
-          docs="https://material-ui.com/components/avatars/" />
+          docs="https://material-ui.com/components/avatars/"
+        />
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
@@ -66,8 +74,14 @@ function Avatars() {
               <CardContent>
                 <Stack direction="row" spacing={2}>
                   <Avatar alt="Remy Sharp" src="/static/images/avatars/1.jpg" />
-                  <Avatar alt="Travis Howard" src="/static/images/avatars/2.jpg" />
-                  <Avatar alt="Cindy Baker" src="/static/images/avatars/3.jpg" />
+                  <Avatar
+                    alt="Travis Howard"
+                    src="/static/images/avatars/2.jpg"
+                  />
+                  <Avatar
+                    alt="Cindy Baker"
+                    src="/static/images/avatars/3.jpg"
+                  />
                 </Stack>
               </CardContent>
             </Card>

@@ -27,7 +27,6 @@ const MainContent = styled(Box)(
 );
 
 function StatusMaintenance() {
-
   return (
     <>
       <Helmet>

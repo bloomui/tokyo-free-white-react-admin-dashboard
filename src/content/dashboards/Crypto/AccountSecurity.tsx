@@ -8,10 +8,9 @@ import {
   Divider,
   Switch,
   ListItemAvatar,
-  Avatar
+  Avatar,
+  styled
 } from '@mui/material';
-
-import { styled } from '@mui/material/styles';
 import LockTwoToneIcon from '@mui/icons-material/LockTwoTone';
 import PhoneLockedTwoToneIcon from '@mui/icons-material/PhoneLockedTwoTone';
 import EmailTwoToneIcon from '@mui/icons-material/EmailTwoTone';
@@ -39,7 +38,6 @@ const AvatarWrapperWarning = styled(Avatar)(
 );
 
 function AccountSecurity() {
-
   const [checked, setChecked] = useState(['phone_verification']);
 
   const handleToggle = (value: string) => () => {
@@ -60,10 +58,14 @@ function AccountSecurity() {
       <CardHeader title="Account Security" />
       <Divider />
       <List disablePadding>
-        <ListItem sx={{ py: 2 }}>
+        <ListItem
+          sx={{
+            py: 2
+          }}
+        >
           <ListItemAvatar>
             <AvatarWrapperError>
-              <LockTwoToneIcon fontSize="medium" />
+              <LockTwoToneIcon />
             </AvatarWrapperError>
           </ListItemAvatar>
           <ListItemText
@@ -86,10 +88,14 @@ function AccountSecurity() {
           />
         </ListItem>
         <Divider />
-        <ListItem sx={{ py: 2 }}>
+        <ListItem
+          sx={{
+            py: 2
+          }}
+        >
           <ListItemAvatar>
             <AvatarWrapperSuccess>
-              <PhoneLockedTwoToneIcon fontSize="medium" />
+              <PhoneLockedTwoToneIcon />
             </AvatarWrapperSuccess>
           </ListItemAvatar>
           <ListItemText
@@ -112,10 +118,14 @@ function AccountSecurity() {
           />
         </ListItem>
         <Divider />
-        <ListItem sx={{ py: 2 }}>
+        <ListItem
+          sx={{
+            py: 2
+          }}
+        >
           <ListItemAvatar>
             <AvatarWrapperWarning>
-              <EmailTwoToneIcon fontSize="medium" />
+              <EmailTwoToneIcon />
             </AvatarWrapperWarning>
           </ListItemAvatar>
           <ListItemText

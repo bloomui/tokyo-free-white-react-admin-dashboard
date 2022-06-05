@@ -1,66 +1,87 @@
-import { ListSubheader, List } from '@mui/material';
-import { useLocation, matchPath } from 'react-router-dom';
-import SidebarMenuItem from './item';
-import menuItems, { MenuItem } from './items';
-import { styled } from '@mui/material/styles';
+import { useContext } from 'react';
 
+import {
+  ListSubheader,
+  alpha,
+  Box,
+  List,
+  styled,
+  Button,
+  ListItem
+} from '@mui/material';
+import { NavLink as RouterLink } from 'react-router-dom';
+import { SidebarContext } from 'src/contexts/SidebarContext';
 
-const MenuWrapper = styled(List)(
+import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
+import BrightnessLowTwoToneIcon from '@mui/icons-material/BrightnessLowTwoTone';
+import MmsTwoToneIcon from '@mui/icons-material/MmsTwoTone';
+import TableChartTwoToneIcon from '@mui/icons-material/TableChartTwoTone';
+import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
+import BallotTwoToneIcon from '@mui/icons-material/BallotTwoTone';
+import BeachAccessTwoToneIcon from '@mui/icons-material/BeachAccessTwoTone';
+import EmojiEventsTwoToneIcon from '@mui/icons-material/EmojiEventsTwoTone';
+import FilterVintageTwoToneIcon from '@mui/icons-material/FilterVintageTwoTone';
+import HowToVoteTwoToneIcon from '@mui/icons-material/HowToVoteTwoTone';
+import LocalPharmacyTwoToneIcon from '@mui/icons-material/LocalPharmacyTwoTone';
+import RedeemTwoToneIcon from '@mui/icons-material/RedeemTwoTone';
+import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
+import TrafficTwoToneIcon from '@mui/icons-material/TrafficTwoTone';
+import CheckBoxTwoToneIcon from '@mui/icons-material/CheckBoxTwoTone';
+import ChromeReaderModeTwoToneIcon from '@mui/icons-material/ChromeReaderModeTwoTone';
+import WorkspacePremiumTwoToneIcon from '@mui/icons-material/WorkspacePremiumTwoTone';
+import CameraFrontTwoToneIcon from '@mui/icons-material/CameraFrontTwoTone';
+import DashboardCustomizeTwoToneIcon from '@mui/icons-material/DashboardCustomizeTwoTone';
+import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTone';
+
+const MenuWrapper = styled(Box)(
   ({ theme }) => `
-    margin-bottom: ${theme.spacing(1)};
-    padding: 0;
+  .MuiList-root {
+    padding: ${theme.spacing(1)};
 
     & > .MuiList-root {
-      padding: 0 ${theme.spacing(2)} ${theme.spacing(2)};
+      padding: 0 ${theme.spacing(0)} ${theme.spacing(1)};
     }
+  }
 
     .MuiListSubheader-root {
       text-transform: uppercase;
       font-weight: bold;
       font-size: ${theme.typography.pxToRem(12)};
-      color: ${theme.sidebar.menuItemHeadingColor};
-      padding: ${theme.spacing(0.8, 2)};
+      color: ${theme.colors.alpha.trueWhite[50]};
+      padding: ${theme.spacing(0, 2.5)};
       line-height: 1.4;
     }
 `
 );
 
-const SubMenuWrapper = styled(List)(
+const SubMenuWrapper = styled(Box)(
   ({ theme }) => `
-    &.MuiList-root {
-      padding: 0;
-
-      .MuiList-root .MuiList-root .MuiListItem-root .MuiButton-root {
-        font-weight: normal !important;
-      }
+    .MuiList-root {
 
       .MuiListItem-root {
-        padding: 2px ${theme.spacing(2)};
+        padding: 1px 0;
+
+        .MuiBadge-root {
+          position: absolute;
+          right: ${theme.spacing(3.2)};
+
+          .MuiBadge-standard {
+            background: ${theme.colors.primary.main};
+            font-size: ${theme.typography.pxToRem(10)};
+            font-weight: bold;
+            text-transform: uppercase;
+            color: ${theme.palette.primary.contrastText};
+          }
+        }
     
         .MuiButton-root {
           display: flex;
-          color: ${theme.sidebar.menuItemColor};
-          background-color: ${theme.sidebar.menuItemBg};
+          color: ${theme.colors.alpha.trueWhite[70]};
+          background-color: transparent;
           width: 100%;
           justify-content: flex-start;
-          font-size: ${theme.typography.pxToRem(13)};
-          padding-top: ${theme.spacing(0.8)};
-          padding-bottom: ${theme.spacing(0.8)};
-          position: relative;
+          padding: ${theme.spacing(1.2, 3)};
 
-          .MuiBadge-root {
-            position: absolute;
-            right: ${theme.spacing(4)};
-
-            .MuiBadge-standard {
-              background: ${theme.colors.primary.main};
-              font-size: ${theme.typography.pxToRem(9)};
-              font-weight: bold;
-              text-transform: uppercase;
-              color: ${theme.palette.primary.contrastText};
-            }
-          }
-    
           .MuiButton-startIcon,
           .MuiButton-endIcon {
             transition: ${theme.transitions.create(['color'])};
@@ -72,31 +93,37 @@ const SubMenuWrapper = styled(List)(
           }
 
           .MuiButton-startIcon {
-            font-size: ${theme.typography.pxToRem(26)};
-            margin-right: ${theme.spacing(1.5)};
-            color: ${theme.sidebar.menuItemIconColor};
+            color: ${theme.colors.alpha.trueWhite[30]};
+            font-size: ${theme.typography.pxToRem(20)};
+            margin-right: ${theme.spacing(1)};
           }
           
           .MuiButton-endIcon {
+            color: ${theme.colors.alpha.trueWhite[50]};
             margin-left: auto;
-            font-size: ${theme.typography.pxToRem(22)};
+            opacity: .8;
+            font-size: ${theme.typography.pxToRem(20)};
           }
 
-          &.Mui-active,
+          &.active,
           &:hover {
-            background-color: ${theme.sidebar.menuItemBgActive};
-            color: ${theme.sidebar.menuItemColorActive};
+            background-color: ${alpha(theme.colors.alpha.trueWhite[100], 0.06)};
+            color: ${theme.colors.alpha.trueWhite[100]};
 
             .MuiButton-startIcon,
             .MuiButton-endIcon {
-                color: ${theme.sidebar.menuItemIconColorActive};
+              color: ${theme.colors.alpha.trueWhite[100]};
             }
           }
         }
 
         &.Mui-children {
           flex-direction: column;
-          line-height: 1;
+
+          .MuiBadge-root {
+            position: absolute;
+            right: ${theme.spacing(7)};
+          }
         }
 
         .MuiCollapse-root {
@@ -107,15 +134,38 @@ const SubMenuWrapper = styled(List)(
           }
 
           .MuiListItem-root {
-            padding: 1px ${theme.spacing(0)};
+            padding: 1px 0;
 
             .MuiButton-root {
-              font-size: ${theme.typography.pxToRem(13)};
-              padding: ${theme.spacing(0.5, 2, 0.5, 6.5)};
+              padding: ${theme.spacing(0.8, 3)};
 
-              &.Mui-active,
+              .MuiBadge-root {
+                right: ${theme.spacing(3.2)};
+              }
+
+              &:before {
+                content: ' ';
+                background: ${theme.colors.alpha.trueWhite[100]};
+                opacity: 0;
+                transition: ${theme.transitions.create([
+                  'transform',
+                  'opacity'
+                ])};
+                width: 6px;
+                height: 6px;
+                transform: scale(0);
+                transform-origin: center;
+                border-radius: 20px;
+                margin-right: ${theme.spacing(1.8)};
+              }
+
+              &.active,
               &:hover {
-                background-color: ${theme.sidebar.menuItemBg};
+
+                &:before {
+                  transform: scale(1);
+                  opacity: 1;
+                }
               }
             }
           }
@@ -125,91 +175,304 @@ const SubMenuWrapper = styled(List)(
 `
 );
 
-const renderSidebarMenuItems = ({
-  items,
-  path
-}: {
-  items: MenuItem[];
-  path: string;
-}): JSX.Element => (
-  <SubMenuWrapper>
-    {items.reduce((ev, item) => reduceChildRoutes({ ev, item, path }), [])}
-  </SubMenuWrapper>
-);
-
-const reduceChildRoutes = ({
-  ev,
-  path,
-  item
-}: {
-  ev: JSX.Element[];
-  path: string;
-  item: MenuItem;
-}): Array<JSX.Element> => {
-  const key = item.name;
-
-  const exactMatch = item.link ? !!matchPath({
-    path: item.link,
-    end: true
-  }, path) : false;
-
-  if (item.items) {
-    const partialMatch = item.link ? !!matchPath({
-      path: item.link,
-      end: false
-    }, path) : false;
-
-    ev.push(
-      <SidebarMenuItem
-        key={key}
-        active={partialMatch}
-        open={partialMatch}
-        name={item.name}
-        icon={item.icon}
-        link={item.link}
-        badge={item.badge}
-      >
-        {renderSidebarMenuItems({
-          path,
-          items: item.items
-        })}
-      </SidebarMenuItem>
-    );
-  } else {
-    ev.push(
-      <SidebarMenuItem
-        key={key}
-        active={exactMatch}
-        name={item.name}
-        link={item.link}
-        badge={item.badge}
-        icon={item.icon}
-      />
-    );
-  }
-
-  return ev;
-}
-
 function SidebarMenu() {
-  const location = useLocation();
-
+  const { closeSidebar } = useContext(SidebarContext);
 
   return (
     <>
-      {menuItems.map((section) => (
-        <MenuWrapper
-          key={section.heading}
+      <MenuWrapper>
+        <List component="div">
+          <SubMenuWrapper>
+            <List component="div">
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/overview"
+                  startIcon={<DesignServicesTwoToneIcon />}
+                >
+                  Overview
+                </Button>
+              </ListItem>
+            </List>
+          </SubMenuWrapper>
+        </List>
+        <List
+          component="div"
           subheader={
-            <ListSubheader component="div" disableSticky>{section.heading}</ListSubheader>
+            <ListSubheader component="div" disableSticky>
+              Dashboards
+            </ListSubheader>
           }
         >
-          {renderSidebarMenuItems({
-            items: section.items,
-            path: location.pathname
-          })}
-        </MenuWrapper>
-      ))}
+          <SubMenuWrapper>
+            <List component="div">
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/dashboards/crypto"
+                  startIcon={<BrightnessLowTwoToneIcon />}
+                >
+                  Cryptocurrency
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/dashboards/messenger"
+                  startIcon={<MmsTwoToneIcon />}
+                >
+                  Messenger
+                </Button>
+              </ListItem>
+            </List>
+          </SubMenuWrapper>
+        </List>
+        <List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
+              Management
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/transactions"
+                  startIcon={<TableChartTwoToneIcon />}
+                >
+                  Transactions List
+                </Button>
+              </ListItem>
+            </List>
+          </SubMenuWrapper>
+        </List>
+        <List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
+              Accounts
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/profile"
+                  startIcon={<AccountCircleTwoToneIcon />}
+                >
+                  User Profile
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/profile/details"
+                  startIcon={<DashboardCustomizeTwoToneIcon />}
+                >
+                  User Details
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/profile/settings"
+                  startIcon={<DisplaySettingsTwoToneIcon />}
+                >
+                  Account Settings
+                </Button>
+              </ListItem>
+            </List>
+          </SubMenuWrapper>
+        </List>
+        <List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
+              Components
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/components/buttons"
+                  startIcon={<BallotTwoToneIcon />}
+                >
+                  Buttons
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/components/modals"
+                  startIcon={<BeachAccessTwoToneIcon />}
+                >
+                  Modals
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/components/accordions"
+                  startIcon={<EmojiEventsTwoToneIcon />}
+                >
+                  Accordions
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/components/tabs"
+                  startIcon={<FilterVintageTwoToneIcon />}
+                >
+                  Tabs
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/components/badges"
+                  startIcon={<HowToVoteTwoToneIcon />}
+                >
+                  Badges
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/components/tooltips"
+                  startIcon={<LocalPharmacyTwoToneIcon />}
+                >
+                  Tooltips
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/components/avatars"
+                  startIcon={<RedeemTwoToneIcon />}
+                >
+                  Avatars
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/components/cards"
+                  startIcon={<SettingsTwoToneIcon />}
+                >
+                  Cards
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/components/forms"
+                  startIcon={<TrafficTwoToneIcon />}
+                >
+                  Forms
+                </Button>
+              </ListItem>
+            </List>
+          </SubMenuWrapper>
+        </List>
+        <List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
+              Extra Pages
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/status/404"
+                  startIcon={<CheckBoxTwoToneIcon />}
+                >
+                  Error 404
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/status/500"
+                  startIcon={<CameraFrontTwoToneIcon />}
+                >
+                  Error 500
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/status/coming-soon"
+                  startIcon={<ChromeReaderModeTwoToneIcon />}
+                >
+                  Coming Soon
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/status/maintenance"
+                  startIcon={<WorkspacePremiumTwoToneIcon />}
+                >
+                  Maintenance
+                </Button>
+              </ListItem>
+            </List>
+          </SubMenuWrapper>
+        </List>
+      </MenuWrapper>
     </>
   );
 }

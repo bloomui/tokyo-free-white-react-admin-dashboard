@@ -3,7 +3,14 @@ import PageTitle from 'src/components/PageTitle';
 import { useState } from 'react';
 
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Container, Grid, Card, CardHeader, CardContent, Divider } from '@mui/material';
+import {
+  Container,
+  Grid,
+  Card,
+  CardHeader,
+  CardContent,
+  Divider
+} from '@mui/material';
 import Footer from 'src/components/Footer';
 
 import Box from '@mui/material/Box';
@@ -30,24 +37,23 @@ const label = { inputProps: { 'aria-label': 'Switch demo' } };
 const currencies = [
   {
     value: 'USD',
-    label: '$',
+    label: '$'
   },
   {
     value: 'EUR',
-    label: '€',
+    label: '€'
   },
   {
     value: 'BTC',
-    label: '฿',
+    label: '฿'
   },
   {
     value: 'JPY',
-    label: '¥',
-  },
+    label: '¥'
+  }
 ];
 
 function Forms() {
-
   const [currency, setCurrency] = useState('EUR');
 
   const handleChange = (event) => {
@@ -60,7 +66,6 @@ function Forms() {
     setValue(newValue);
   };
 
-
   return (
     <>
       <Helmet>
@@ -70,7 +75,8 @@ function Forms() {
         <PageTitle
           heading="Forms"
           subHeading="Components that are used to build interactive placeholders used for data collection from users."
-          docs="https://material-ui.com/components/text-fields/" />
+          docs="https://material-ui.com/components/text-fields/"
+        />
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
@@ -88,7 +94,7 @@ function Forms() {
                 <Box
                   component="form"
                   sx={{
-                    '& .MuiTextField-root': { m: 1, width: '25ch' },
+                    '& .MuiTextField-root': { m: 1, width: '25ch' }
                   }}
                   noValidate
                   autoComplete="off"
@@ -117,7 +123,7 @@ function Forms() {
                       label="Read Only"
                       defaultValue="Hello World"
                       InputProps={{
-                        readOnly: true,
+                        readOnly: true
                       }}
                     />
                     <TextField
@@ -125,10 +131,14 @@ function Forms() {
                       label="Number"
                       type="number"
                       InputLabelProps={{
-                        shrink: true,
+                        shrink: true
                       }}
                     />
-                    <TextField id="outlined-search" label="Search field" type="search" />
+                    <TextField
+                      id="outlined-search"
+                      label="Search field"
+                      type="search"
+                    />
                     <TextField
                       id="outlined-helperText"
                       label="Helper text"
@@ -163,7 +173,7 @@ function Forms() {
                       label="Read Only"
                       defaultValue="Hello World"
                       InputProps={{
-                        readOnly: true,
+                        readOnly: true
                       }}
                       variant="filled"
                     />
@@ -172,7 +182,7 @@ function Forms() {
                       label="Number"
                       type="number"
                       InputLabelProps={{
-                        shrink: true,
+                        shrink: true
                       }}
                       variant="filled"
                     />
@@ -217,7 +227,7 @@ function Forms() {
                       label="Read Only"
                       defaultValue="Hello World"
                       InputProps={{
-                        readOnly: true,
+                        readOnly: true
                       }}
                       variant="standard"
                     />
@@ -226,7 +236,7 @@ function Forms() {
                       label="Number"
                       type="number"
                       InputLabelProps={{
-                        shrink: true,
+                        shrink: true
                       }}
                       variant="standard"
                     />
@@ -256,7 +266,7 @@ function Forms() {
                 <Box
                   component="form"
                   sx={{
-                    '& .MuiTextField-root': { m: 1, width: '25ch' },
+                    '& .MuiTextField-root': { m: 1, width: '25ch' }
                   }}
                   noValidate
                   autoComplete="off"
@@ -283,7 +293,7 @@ function Forms() {
                       value={currency}
                       onChange={handleChange}
                       SelectProps={{
-                        native: true,
+                        native: true
                       }}
                       helperText="Please select your currency"
                     >
@@ -317,7 +327,7 @@ function Forms() {
                       value={currency}
                       onChange={handleChange}
                       SelectProps={{
-                        native: true,
+                        native: true
                       }}
                       helperText="Please select your currency"
                       variant="filled"
@@ -352,7 +362,7 @@ function Forms() {
                       value={currency}
                       onChange={handleChange}
                       SelectProps={{
-                        native: true,
+                        native: true
                       }}
                       helperText="Please select your currency"
                       variant="standard"
@@ -395,17 +405,33 @@ function Forms() {
                   sx={{
                     color: pink[800],
                     '&.Mui-checked': {
-                      color: pink[600],
-                    },
+                      color: pink[600]
+                    }
                   }}
                 />
                 <Divider sx={{ my: 5 }} />
                 <FormControl component="fieldset">
                   <FormLabel component="legend">Gender</FormLabel>
-                  <RadioGroup row aria-label="gender" name="row-radio-buttons-group">
-                    <FormControlLabel value="female" control={<Radio />} label="Female" />
-                    <FormControlLabel value="male" control={<Radio />} label="Male" />
-                    <FormControlLabel value="other" control={<Radio />} label="Other" />
+                  <RadioGroup
+                    row
+                    aria-label="gender"
+                    name="row-radio-buttons-group"
+                  >
+                    <FormControlLabel
+                      value="female"
+                      control={<Radio />}
+                      label="Female"
+                    />
+                    <FormControlLabel
+                      value="male"
+                      control={<Radio />}
+                      label="Male"
+                    />
+                    <FormControlLabel
+                      value="other"
+                      control={<Radio />}
+                      label="Other"
+                    />
                     <FormControlLabel
                       value="disabled"
                       disabled
@@ -423,12 +449,25 @@ function Forms() {
               <Divider />
               <CardContent>
                 <Box sx={{ width: 200 }}>
-                  <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
+                  <Stack
+                    spacing={2}
+                    direction="row"
+                    sx={{ mb: 1 }}
+                    alignItems="center"
+                  >
                     <VolumeDown />
-                    <Slider aria-label="Volume" value={value} onChange={handleChange2} />
+                    <Slider
+                      aria-label="Volume"
+                      value={value}
+                      onChange={handleChange2}
+                    />
                     <VolumeUp />
                   </Stack>
-                  <Slider disabled defaultValue={30} aria-label="Disabled slider" />
+                  <Slider
+                    disabled
+                    defaultValue={30}
+                    aria-label="Disabled slider"
+                  />
                 </Box>
               </CardContent>
             </Card>

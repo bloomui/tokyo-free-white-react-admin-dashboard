@@ -1,74 +1,138 @@
 import { useContext } from 'react';
-import { Scrollbars } from 'react-custom-scrollbars-2';
+import Scrollbar from 'src/components/Scrollbar';
 import { SidebarContext } from 'src/contexts/SidebarContext';
-import Logo from 'src/components/Logo';
 
-import { Box, Drawer, Hidden } from '@mui/material';
+import {
+  Box,
+  Drawer,
+  alpha,
+  styled,
+  Divider,
+  useTheme,
+  Button,
+  lighten,
+  darken,
+  Tooltip
+} from '@mui/material';
 
-import { styled } from '@mui/material/styles';
 import SidebarMenu from './SidebarMenu';
+import Logo from 'src/components/LogoSign';
 
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `
         width: ${theme.sidebar.width};
-        color: ${theme.sidebar.textColor};
-        background: ${theme.sidebar.background};
-        box-shadow: ${theme.sidebar.boxShadow};
+        min-width: ${theme.sidebar.width};
+        color: ${theme.colors.alpha.trueWhite[70]};
+        position: relative;
+        z-index: 7;
         height: 100%;
-        
-        @media (min-width: ${theme.breakpoints.values.lg}px) {
-            position: fixed;
-            z-index: 10;
-            border-top-right-radius: ${theme.general.borderRadius};
-            border-bottom-right-radius: ${theme.general.borderRadius};
-        }
-`
-);
-
-const TopSection = styled(Box)(
-  ({ theme }) => `
-        display: flex;
-        height: 88px;
-        align-items: center;
-        margin: 0 ${theme.spacing(2)} ${theme.spacing(2)};
-        border-bottom: ${theme.sidebar.dividerBg} solid 1px;
+        padding-bottom: 68px;
 `
 );
 
 function Sidebar() {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
   const closeSidebar = () => toggleSidebar();
+  const theme = useTheme();
 
   return (
     <>
-      <Hidden lgDown>
-        <SidebarWrapper>
-          <Scrollbars autoHide>
-            <TopSection>
+      <SidebarWrapper
+        sx={{
+          display: {
+            xs: 'none',
+            lg: 'inline-block'
+          },
+          position: 'fixed',
+          left: 0,
+          top: 0,
+          background:
+            theme.palette.mode === 'dark'
+              ? alpha(lighten(theme.header.background, 0.1), 0.5)
+              : darken(theme.colors.alpha.black[100], 0.5),
+          boxShadow:
+            theme.palette.mode === 'dark' ? theme.sidebar.boxShadow : 'none'
+        }}
+      >
+        <Scrollbar>
+          <Box mt={3}>
+            <Box
+              mx={2}
+              sx={{
+                width: 52
+              }}
+            >
               <Logo />
-            </TopSection>
-            <SidebarMenu />
-          </Scrollbars>
-        </SidebarWrapper>
-      </Hidden>
-      <Hidden lgUp>
-        <Drawer
-          anchor="left"
-          open={sidebarToggle}
-          onClose={closeSidebar}
-          variant="temporary"
-          elevation={9}
+            </Box>
+          </Box>
+          <Divider
+            sx={{
+              mt: theme.spacing(3),
+              mx: theme.spacing(2),
+              background: theme.colors.alpha.trueWhite[10]
+            }}
+          />
+          <SidebarMenu />
+        </Scrollbar>
+        <Divider
+          sx={{
+            background: theme.colors.alpha.trueWhite[10]
+          }}
+        />
+        <Box p={2}>
+          <Button
+            href="https://bloomui.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="contained"
+            color="warning"
+            size="small"
+            fullWidth
+          >
+            Upgrade to PRO
+          </Button>
+        </Box>
+      </SidebarWrapper>
+      <Drawer
+        sx={{
+          boxShadow: `${theme.sidebar.boxShadow}`
+        }}
+        anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+        open={sidebarToggle}
+        onClose={closeSidebar}
+        variant="temporary"
+        elevation={9}
+      >
+        <SidebarWrapper
+          sx={{
+            background:
+              theme.palette.mode === 'dark'
+                ? theme.colors.alpha.white[100]
+                : darken(theme.colors.alpha.black[100], 0.5)
+          }}
         >
-          <SidebarWrapper>
-            <Scrollbars autoHide>
-              <TopSection>
+          <Scrollbar>
+            <Box mt={3}>
+              <Box
+                mx={2}
+                sx={{
+                  width: 52
+                }}
+              >
                 <Logo />
-              </TopSection>
-              <SidebarMenu />
-            </Scrollbars>
-          </SidebarWrapper>
-        </Drawer>
-      </Hidden>
+              </Box>
+            </Box>
+            <Divider
+              sx={{
+                mt: theme.spacing(3),
+                mx: theme.spacing(2),
+                background: theme.colors.alpha.trueWhite[10]
+              }}
+            />
+            <SidebarMenu />
+          </Scrollbar>
+        </SidebarWrapper>
+      </Drawer>
     </>
   );
 }

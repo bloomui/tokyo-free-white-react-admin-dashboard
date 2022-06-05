@@ -4,7 +4,14 @@ import { styled } from '@mui/material/styles';
 
 interface LabelProps {
   className?: string;
-  color?: 'primary' | 'secondary' | 'error' | 'warning' | 'success' | 'info';
+  color?:
+    | 'primary'
+    | 'black'
+    | 'secondary'
+    | 'error'
+    | 'warning'
+    | 'success'
+    | 'info';
   children?: ReactNode;
 }
 
@@ -23,6 +30,11 @@ const LabelWrapper = styled('span')(
         &-primary {
           background-color: ${theme.colors.primary.lighter};
           color: ${theme.palette.primary.main}
+        }
+
+        &-black {
+          background-color: ${theme.colors.alpha.black[100]};
+          color: ${theme.colors.alpha.white[100]};
         }
         
         &-secondary {
@@ -54,7 +66,7 @@ const LabelWrapper = styled('span')(
 );
 
 const Label: FC<LabelProps> = ({
-  className = '',
+  className,
   color = 'secondary',
   children,
   ...rest
@@ -71,6 +83,7 @@ Label.propTypes = {
   className: PropTypes.string,
   color: PropTypes.oneOf([
     'primary',
+    'black',
     'secondary',
     'error',
     'warning',

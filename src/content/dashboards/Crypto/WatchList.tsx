@@ -4,17 +4,13 @@ import {
   Box,
   ToggleButton,
   ToggleButtonGroup,
-  Grid,
   Card,
-  Typography
+  Typography,
+  styled
 } from '@mui/material';
-
-import { styled } from '@mui/material/styles';
 import ViewWeekTwoToneIcon from '@mui/icons-material/ViewWeekTwoTone';
 import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone';
-import WatchListColumn1 from './WatchListColumn1';
-import WatchListColumn2 from './WatchListColumn2';
-import WatchListColumn3 from './WatchListColumn3';
+import WatchListColumn from './WatchListColumn';
 import WatchListRow from './WatchListRow';
 
 const EmptyResultsWrapper = styled('img')(
@@ -26,11 +22,10 @@ const EmptyResultsWrapper = styled('img')(
 );
 
 function WatchList() {
-
   const [tabs, setTab] = useState<string | null>('watch_list_columns');
 
   const handleViewOrientation = (
-    event: MouseEvent<HTMLElement>,
+    _event: MouseEvent<HTMLElement>,
     newValue: string | null
   ) => {
     setTab(newValue);
@@ -42,7 +37,9 @@ function WatchList() {
         display="flex"
         alignItems="center"
         justifyContent="space-between"
-        sx={{ pb: 3 }}
+        sx={{
+          pb: 3
+        }}
       >
         <Typography variant="h3">Watch List</Typography>
         <ToggleButtonGroup
@@ -58,55 +55,43 @@ function WatchList() {
           </ToggleButton>
         </ToggleButtonGroup>
       </Box>
-      <Grid
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
-        spacing={3}
-      >
-        {tabs === 'watch_list_columns' && (
-          <>
-            <Grid item lg={4} xs={12}>
-              <WatchListColumn1 />
-            </Grid>
-            <Grid item lg={4} xs={12}>
-              <WatchListColumn2 />
-            </Grid>
-            <Grid item lg={4} xs={12}>
-              <WatchListColumn3 />
-            </Grid>
-          </>
-        )}
 
-        {tabs === 'watch_list_rows' && (
-          <Grid item xs={12}>
-            <WatchListRow />
-          </Grid>
-        )}
+      {tabs === 'watch_list_columns' && <WatchListColumn />}
 
-        {!tabs && (
-          <Grid item xs={12}>
-            <Card sx={{ textAlign: 'center', p: 3 }}>
-              <EmptyResultsWrapper src="/static/images/placeholders/illustrations/1.svg" />
+      {tabs === 'watch_list_rows' && <WatchListRow />}
 
-              <Typography
-                align="center"
-                variant="h2"
-                fontWeight="normal"
-                color="text.secondary"
-                sx={{ mt: 3 }}
-                gutterBottom
-              >
-                Click something, anything!
-              </Typography>
-              <Button variant="contained" size="large" sx={{ mt: 4 }}>
-                Maybe, a button?
-              </Button>
-            </Card>
-          </Grid>
-        )}
-      </Grid>
+      {!tabs && (
+        <Card
+          sx={{
+            textAlign: 'center',
+            p: 3
+          }}
+        >
+          <EmptyResultsWrapper src="/static/images/placeholders/illustrations/1.svg" />
+
+          <Typography
+            align="center"
+            variant="h2"
+            fontWeight="normal"
+            color="text.secondary"
+            sx={{
+              mt: 3
+            }}
+            gutterBottom
+          >
+            Click something, anything!
+          </Typography>
+          <Button
+            variant="contained"
+            size="large"
+            sx={{
+              mt: 4
+            }}
+          >
+            Maybe, a button?
+          </Button>
+        </Card>
+      )}
     </>
   );
 }

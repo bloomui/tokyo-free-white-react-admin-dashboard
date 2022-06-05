@@ -14,19 +14,26 @@ declare module '@mui/material/styles' {
         blue1: string;
         blue2: string;
         blue3: string;
+        blue4: string;
+        blue5: string;
         orange1: string;
         orange2: string;
+        orange3: string;
         purple1: string;
+        purple3: string;
         pink1: string;
         pink2: string;
         green1: string;
+        green2: string;
         black1: string;
+        black2: string;
       };
       shadows: {
         success: string;
         error: string;
         primary: string;
         warning: string;
+        info: string;
       };
       alpha: {
         white: {
@@ -126,19 +133,26 @@ declare module '@mui/material/styles' {
         blue1: string;
         blue2: string;
         blue3: string;
+        blue4: string;
+        blue5: string;
         orange1: string;
         orange2: string;
+        orange3: string;
         purple1: string;
+        purple3: string;
         pink1: string;
         pink2: string;
         green1: string;
+        green2: string;
         black1: string;
+        black2: string;
       };
       shadows: {
         success: string;
         error: string;
         primary: string;
         warning: string;
+        info: string;
       };
       alpha: {
         white: {

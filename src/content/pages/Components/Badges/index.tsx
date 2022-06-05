@@ -1,7 +1,14 @@
 import { Helmet } from 'react-helmet-async';
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Container, Grid, Card, CardHeader, CardContent, Divider } from '@mui/material';
+import {
+  Container,
+  Grid,
+  Card,
+  CardHeader,
+  CardContent,
+  Divider
+} from '@mui/material';
 import { useState } from 'react';
 import Footer from 'src/components/Footer';
 
@@ -25,7 +32,6 @@ const circle = (
 );
 
 function Badges() {
-
   const [count, setCount] = useState(1);
   const [invisible, setInvisible] = useState(false);
 
@@ -42,7 +48,8 @@ function Badges() {
         <PageTitle
           heading="Badges"
           subHeading="Badge generates a small badge to the top-right of its child(ren)."
-          docs="https://material-ui.com/components/badges/" />
+          docs="https://material-ui.com/components/badges/"
+        />
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
@@ -67,7 +74,12 @@ function Badges() {
                   <Badge color="secondary" overlap="circular" badgeContent=" ">
                     {circle}
                   </Badge>
-                  <Badge color="secondary" overlap="circular" badgeContent=" " variant="dot">
+                  <Badge
+                    color="secondary"
+                    overlap="circular"
+                    badgeContent=" "
+                    variant="dot"
+                  >
                     {circle}
                   </Badge>
                 </Stack>
@@ -85,11 +97,11 @@ function Badges() {
                     display: 'flex',
                     flexDirection: 'column',
                     '& > *': {
-                      marginBottom: 2,
+                      marginBottom: 2
                     },
                     '& .MuiBadge-root': {
-                      marginRight: 4,
-                    },
+                      marginRight: 4
+                    }
                   }}
                 >
                   <div>
@@ -116,12 +128,21 @@ function Badges() {
                     </ButtonGroup>
                   </div>
                   <div>
-                    <Badge color="secondary" variant="dot" invisible={invisible}>
+                    <Badge
+                      color="secondary"
+                      variant="dot"
+                      invisible={invisible}
+                    >
                       <MailIcon />
                     </Badge>
                     <FormControlLabel
                       sx={{ color: 'text.primary' }}
-                      control={<Switch checked={!invisible} onChange={handleBadgeVisibility} />}
+                      control={
+                        <Switch
+                          checked={!invisible}
+                          onChange={handleBadgeVisibility}
+                        />
+                      }
                       label="Show Badge"
                     />
                   </div>

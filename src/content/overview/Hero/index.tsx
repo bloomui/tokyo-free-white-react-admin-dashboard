@@ -1,10 +1,4 @@
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  Typography
-} from '@mui/material';
+import { Box, Button, Container, Grid, Typography } from '@mui/material';
 
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -31,7 +25,7 @@ const LabelWrapper = styled(Box)(
     text-transform: uppercase;
     display: inline-block;
     font-size: ${theme.typography.pxToRem(11)};
-    padding: ${theme.spacing(.5)} ${theme.spacing(1.5)};
+    padding: ${theme.spacing(0.5)} ${theme.spacing(1.5)};
     margin-bottom: ${theme.spacing(2)};
 `
 );
@@ -77,14 +71,18 @@ const TsAvatar = styled(Box)(
 );
 
 function Hero() {
-
   return (
     <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
-      <Grid spacing={{ xs: 6, md: 10 }} justifyContent="center" alignItems="center" container>
+      <Grid
+        spacing={{ xs: 6, md: 10 }}
+        justifyContent="center"
+        alignItems="center"
+        container
+      >
         <Grid item md={10} lg={8} mx="auto">
-          <LabelWrapper color="success">Version 1.1.0</LabelWrapper>
+          <LabelWrapper color="success">Version 2.0.0</LabelWrapper>
           <TypographyH1 sx={{ mb: 2 }} variant="h1">
-            Tokyo Free White React Admin Dashboard
+            Tokyo Free White React Typescript Admin Dashboard
           </TypographyH1>
           <TypographyH2
             sx={{ lineHeight: 1.5, pb: 4 }}
@@ -92,7 +90,9 @@ function Hero() {
             color="text.secondary"
             fontWeight="normal"
           >
-            High performance React template built with lots of powerful Material-UI components across multiple product niches for fast & perfect apps development processes
+            High performance React template built with lots of powerful
+            Material-UI components across multiple product niches for fast &
+            perfect apps development processes
           </TypographyH2>
           <Button
             component={RouterLink}
@@ -116,18 +116,36 @@ function Hero() {
           <Grid container spacing={3} mt={5}>
             <Grid item md={6}>
               <MuiAvatar>
-                <img src="/static/images/logo/material-ui.svg" alt="Material-UI" />
+                <img
+                  src="/static/images/logo/material-ui.svg"
+                  alt="Material-UI"
+                />
               </MuiAvatar>
               <Typography variant="h4">
-                <Box sx={{ pb: 2 }}><b>Powered by Material-UI</b></Box><Typography component="span" variant="subtitle2"> - A simple and customizable component library to build faster, beautiful, andaccessible React apps.</Typography>
+                <Box sx={{ pb: 2 }}>
+                  <b>Powered by Material-UI</b>
+                </Box>
+                <Typography component="span" variant="subtitle2">
+                  A simple and customizable component library to build faster,
+                  beautiful, andaccessible React apps.
+                </Typography>
               </Typography>
             </Grid>
             <Grid item md={6}>
               <TsAvatar>
-                <img src="/static/images/logo/typescript.svg" alt="Typescript" />
+                <img
+                  src="/static/images/logo/typescript.svg"
+                  alt="Typescript"
+                />
               </TsAvatar>
               <Typography variant="h4">
-                <Box sx={{ pb: 2 }}><b>Built with Typescript</b></Box><Typography component="span" variant="subtitle2"> - Tokyo Free White features a modern technology stack and is built with React + Typescript.</Typography>
+                <Box sx={{ pb: 2 }}>
+                  <b>Built with Typescript</b>
+                </Box>
+                <Typography component="span" variant="subtitle2">
+                  Tokyo Free White features a modern technology stack and is
+                  built with React + Typescript.
+                </Typography>
               </Typography>
             </Grid>
           </Grid>

@@ -12,7 +12,7 @@
 </h1>
 <div align="center">
 
-![version](https://img.shields.io/badge/version-1.1.0-blue.svg)
+![version](https://img.shields.io/badge/version-2.0.0-blue.svg)
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 
 <a href="https://bloomui.com/product/tokyo-free-white-react-typescript-material-ui-admin-dashboard/"><img src="https://bloomui.s3.us-east-2.amazonaws.com/tokyo-free-white-react-typescript-material-ui-admin-dashboard.jpg" /></a>

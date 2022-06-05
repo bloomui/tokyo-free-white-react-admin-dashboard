@@ -57,7 +57,6 @@ const AvatarWrapper = styled(Avatar)(
 );
 
 function SecurityTab() {
-
   const theme = useTheme();
 
   const [page, setPage] = useState(2);

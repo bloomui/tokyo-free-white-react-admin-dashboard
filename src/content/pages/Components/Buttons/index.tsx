@@ -1,7 +1,16 @@
 import { Helmet } from 'react-helmet-async';
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Button, Container, IconButton, Grid, Card, CardHeader, CardContent, Divider } from '@mui/material';
+import {
+  Button,
+  Container,
+  IconButton,
+  Grid,
+  Card,
+  CardHeader,
+  CardContent,
+  Divider
+} from '@mui/material';
 import Footer from 'src/components/Footer';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -16,7 +25,8 @@ function Buttons() {
         <PageTitle
           heading="Buttons"
           subHeading="Buttons allow users to take actions, and make choices, with a single tap."
-          docs="https://material-ui.com/components/buttons/" />
+          docs="https://material-ui.com/components/buttons/"
+        />
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
@@ -31,17 +41,28 @@ function Buttons() {
               <CardHeader title="Contained Buttons" />
               <Divider />
               <CardContent>
-                <Button sx={{ margin: 1 }} variant="contained">Default</Button>
+                <Button sx={{ margin: 1 }} variant="contained">
+                  Default
+                </Button>
                 <Button sx={{ margin: 1 }} variant="contained" color="primary">
                   Primary
                 </Button>
-                <Button sx={{ margin: 1 }} variant="contained" color="secondary">
+                <Button
+                  sx={{ margin: 1 }}
+                  variant="contained"
+                  color="secondary"
+                >
                   Secondary
                 </Button>
                 <Button sx={{ margin: 1 }} variant="contained" disabled>
                   Disabled
                 </Button>
-                <Button sx={{ margin: 1 }} variant="contained" color="primary" href="#contained-buttons">
+                <Button
+                  sx={{ margin: 1 }}
+                  variant="contained"
+                  color="primary"
+                  href="#contained-buttons"
+                >
                   Link
                 </Button>
               </CardContent>
@@ -53,9 +74,15 @@ function Buttons() {
               <Divider />
               <CardContent>
                 <Button sx={{ margin: 1 }}>Default</Button>
-                <Button sx={{ margin: 1 }} color="primary">Primary</Button>
-                <Button sx={{ margin: 1 }} color="secondary">Secondary</Button>
-                <Button sx={{ margin: 1 }} disabled>Disabled</Button>
+                <Button sx={{ margin: 1 }} color="primary">
+                  Primary
+                </Button>
+                <Button sx={{ margin: 1 }} color="secondary">
+                  Secondary
+                </Button>
+                <Button sx={{ margin: 1 }} disabled>
+                  Disabled
+                </Button>
                 <Button sx={{ margin: 1 }} href="#text-buttons" color="primary">
                   Link
                 </Button>
@@ -67,7 +94,9 @@ function Buttons() {
               <CardHeader title="Outlined Buttons" />
               <Divider />
               <CardContent>
-                <Button variant="outlined" sx={{ margin: 1 }}>Default</Button>
+                <Button variant="outlined" sx={{ margin: 1 }}>
+                  Default
+                </Button>
                 <Button variant="outlined" sx={{ margin: 1 }} color="primary">
                   Primary
                 </Button>
@@ -77,7 +106,12 @@ function Buttons() {
                 <Button variant="outlined" sx={{ margin: 1 }} disabled>
                   Disabled
                 </Button>
-                <Button variant="outlined" sx={{ margin: 1 }} color="primary" href="#outlined-buttons">
+                <Button
+                  variant="outlined"
+                  sx={{ margin: 1 }}
+                  color="primary"
+                  href="#outlined-buttons"
+                >
                   Link
                 </Button>
               </CardContent>
@@ -101,29 +135,63 @@ function Buttons() {
                     </Button>
                   </div>
                   <div>
-                    <Button variant="outlined" sx={{ margin: 1 }} size="small" color="primary">
+                    <Button
+                      variant="outlined"
+                      sx={{ margin: 1 }}
+                      size="small"
+                      color="primary"
+                    >
                       Small
                     </Button>
-                    <Button variant="outlined" sx={{ margin: 1 }} size="medium" color="primary">
+                    <Button
+                      variant="outlined"
+                      sx={{ margin: 1 }}
+                      size="medium"
+                      color="primary"
+                    >
                       Medium
                     </Button>
-                    <Button variant="outlined" sx={{ margin: 1 }} size="large" color="primary">
+                    <Button
+                      variant="outlined"
+                      sx={{ margin: 1 }}
+                      size="large"
+                      color="primary"
+                    >
                       Large
                     </Button>
                   </div>
                   <div>
-                    <Button sx={{ margin: 1 }} variant="contained" size="small" color="primary">
+                    <Button
+                      sx={{ margin: 1 }}
+                      variant="contained"
+                      size="small"
+                      color="primary"
+                    >
                       Small
                     </Button>
-                    <Button sx={{ margin: 1 }} variant="contained" size="medium" color="primary">
+                    <Button
+                      sx={{ margin: 1 }}
+                      variant="contained"
+                      size="medium"
+                      color="primary"
+                    >
                       Medium
                     </Button>
-                    <Button sx={{ margin: 1 }} variant="contained" size="large" color="primary">
+                    <Button
+                      sx={{ margin: 1 }}
+                      variant="contained"
+                      size="large"
+                      color="primary"
+                    >
                       Large
                     </Button>
                   </div>
                   <div>
-                    <IconButton aria-label="delete" sx={{ margin: 1 }} size="small">
+                    <IconButton
+                      aria-label="delete"
+                      sx={{ margin: 1 }}
+                      size="small"
+                    >
                       <ArrowDownwardIcon fontSize="inherit" />
                     </IconButton>
                     <IconButton aria-label="delete" sx={{ margin: 1 }}>

@@ -11,10 +11,7 @@ import {
   Switch
 } from '@mui/material';
 
-
 function NotificationsTab() {
-
-
   const [state, setState] = useState({
     checkedA: true,
     checkedB: false,

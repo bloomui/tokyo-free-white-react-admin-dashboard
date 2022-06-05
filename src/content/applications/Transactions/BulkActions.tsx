@@ -76,7 +76,6 @@ function BulkActions() {
           vertical: 'center',
           horizontal: 'center'
         }}
-
       >
         <List sx={{ p: 1 }} component="nav">
           <ListItem button>

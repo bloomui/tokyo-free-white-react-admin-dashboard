@@ -78,9 +78,7 @@ const CardCoverAction = styled(Box)(
 `
 );
 
-
 const ProfileCover = ({ user }) => {
-
   return (
     <>
       <Box display="flex" mb={3}>
@@ -159,10 +157,7 @@ const ProfileCover = ({ user }) => {
             variant="text"
             endIcon={<ArrowForwardTwoToneIcon />}
           >
-            See all {' '}
-            {user.followers}
-            {' '}
-            connections
+            See all {user.followers} connections
           </Button>
         </Box>
       </Box>

@@ -44,7 +44,6 @@ const TypographySecondary = styled(Typography)(
 );
 
 function Status500() {
-
   const [pending, setPending] = useState(false);
   function handleClick() {
     setPending(true);
@@ -86,7 +85,8 @@ function Status500() {
                   fontWeight="normal"
                   sx={{ mb: 4 }}
                 >
-                  The server encountered an internal error and was not able to complete your request
+                  The server encountered an internal error and was not able to
+                  complete your request
                 </Typography>
                 <LoadingButton
                   onClick={handleClick}
@@ -115,20 +115,18 @@ function Status500() {
               <Container maxWidth="sm">
                 <Box textAlign="center">
                   <TypographyPrimary variant="h1" sx={{ my: 2 }}>
-                    Tokyo Free White React Admin Dashboard
+                    Tokyo Free White React Typescript Admin Dashboard
                   </TypographyPrimary>
                   <TypographySecondary
                     variant="h4"
                     fontWeight="normal"
                     sx={{ mb: 4 }}
                   >
-                    High performance React template built with lots of powerful Material-UI components across multiple product niches for fast &amp; perfect apps development processes.
+                    High performance React template built with lots of powerful
+                    Material-UI components across multiple product niches for
+                    fast &amp; perfect apps development processes.
                   </TypographySecondary>
-                  <Button
-                    href="/overview"
-                    size="large"
-                    variant="contained"
-                  >
+                  <Button href="/overview" size="large" variant="contained">
                     Overview
                   </Button>
                 </Box>
