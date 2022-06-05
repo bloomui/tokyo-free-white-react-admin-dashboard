@@ -127,7 +127,7 @@ function Hero() {
                 </Box>
                 <Typography component="span" variant="subtitle2">
                   A simple and customizable component library to build faster,
-                  beautiful, andaccessible React apps.
+                  beautiful, and accessible React apps.
                 </Typography>
               </Typography>
             </Grid>
