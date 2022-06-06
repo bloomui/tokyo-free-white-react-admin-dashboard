@@ -5,9 +5,9 @@ import {
   CardHeader,
   Divider,
   Avatar,
-  useTheme
+  useTheme,
+  styled,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 
 import ShoppingBagTwoToneIcon from '@mui/icons-material/ShoppingBagTwoTone';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';

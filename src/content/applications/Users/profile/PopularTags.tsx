@@ -9,9 +9,9 @@ import {
   ListSubheader,
   ListItemText,
   Avatar,
-  useTheme
+  useTheme,
+  styled,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 
 const ListWrapper = styled(List)(
   () => `

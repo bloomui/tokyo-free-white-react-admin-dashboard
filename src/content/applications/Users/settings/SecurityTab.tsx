@@ -22,9 +22,9 @@ import {
   TablePagination,
   TableRow,
   TableContainer,
-  useTheme
+  useTheme,
+  styled,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 
 import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';

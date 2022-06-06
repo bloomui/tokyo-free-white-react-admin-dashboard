@@ -123,7 +123,7 @@ function Hero() {
               </MuiAvatar>
               <Typography variant="h4">
                 <Box sx={{ pb: 2 }}>
-                  <b>Powered by Material-UI</b>
+                  <b>Powered by MUI (Material-UI)</b>
                 </Box>
                 <Typography component="span" variant="subtitle2">
                   A simple and customizable component library to build faster,
