@@ -7,7 +7,7 @@ import Footer from 'src/components/Footer';
 /* import AccountBalance from './AccountBalance';
 import Wallets from './Wallets';
 import AccountSecurity from './AccountSecurity'; */
-import WatchList from './WatchList';
+import SensoresList from './SensoresList';
 
 function DashboardCrypto() {
   return (
@@ -29,7 +29,7 @@ function DashboardCrypto() {
         >
           <Grid item xs={12}>
             {/* cards "mis sensores" */}
-            <WatchList />
+            <SensoresList />
           </Grid>
           {/* <Grid item xs={12}>
             <AccountBalance />

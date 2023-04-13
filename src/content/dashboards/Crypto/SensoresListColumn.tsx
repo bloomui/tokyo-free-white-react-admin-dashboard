@@ -43,7 +43,7 @@ const AvatarWrapper = styled(Avatar)(
 `
 );
 
-function WatchListColumn() {
+function SensoresListColumn() {
   const theme = useTheme();
 
   const chartOptions: ApexOptions = {
@@ -118,18 +118,21 @@ function WatchListColumn() {
       }
     }
   };
+
   const chart1Data = [
     {
       name: 'Temperatura',
       data: [35, 37, 38, 36, 38, 36, 38]
     }
   ];
+
   const chart2Data = [
     {
       name: 'Presión',
       data: [1300, 1600, 1400, 2000, 800, 1100, 2000]
     }
   ];
+  
   const chart3Data = [
     {
       name: 'Humedad',
@@ -368,4 +371,4 @@ function WatchListColumn() {
   );
 }
 
-export default WatchListColumn;
+export default SensoresListColumn;

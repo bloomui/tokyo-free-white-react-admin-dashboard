@@ -8,7 +8,7 @@ import {
   Typography,
   styled
 } from '@mui/material';
-import WatchListColumn from './WatchListColumn';
+import SensoresListColumn from './SensoresListColumn';
 
 const EmptyResultsWrapper = styled('img')(
   ({ theme }) => `
@@ -18,8 +18,8 @@ const EmptyResultsWrapper = styled('img')(
 `
 );
 
-function WatchList() {
-  const [tabs, setTab] = useState<string | null>('watch_list_columns');
+function SensoresList() {
+  const [tabs, setTab] = useState<string | null>('sensores_list_columns');
 
   const handleViewOrientation = (
     _event: MouseEvent<HTMLElement>,
@@ -43,12 +43,10 @@ function WatchList() {
           value={tabs}
           exclusive
           onChange={handleViewOrientation}
-        >
-          
-        </ToggleButtonGroup>
+        />
       </Box>
 
-      {tabs === 'watch_list_columns' && <WatchListColumn />}
+      {tabs === 'sensores_list_columns' && <SensoresListColumn />}
 
       {!tabs && (
         <Card
@@ -86,4 +84,4 @@ function WatchList() {
   );
 }
 
-export default WatchList;
+export default SensoresList;
