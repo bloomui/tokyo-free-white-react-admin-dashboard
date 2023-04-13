@@ -18,7 +18,7 @@ function Overview() {
   return (
     <OverviewWrapper>
       <Helmet>
-        <title>Tokyo Free White React Typescript Admin Dashboard</title>
+        <title>SmartReflect Dashboard</title>
       </Helmet>
       <Container maxWidth="lg">
         <Box display="flex" justifyContent="center" py={5} alignItems="center">

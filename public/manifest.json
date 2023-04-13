@@ -3,8 +3,8 @@
   "background_color": "#f2f5f9",
   "display": "standalone",
   "start_url": ".",
-  "short_name": "Tokyo Free White",
-  "name": "Tokyo Free White React Typescript Admin Dashboard",
+  "short_name": "SmartReflect",
+  "name": "SmartReflect Dashboard",
   "icons": [
     {
       "src": "/icon-192x192.png",

@@ -8,11 +8,11 @@ import BaseLayout from 'src/layouts/BaseLayout';
 import SuspenseLoader from 'src/components/SuspenseLoader';
 
 const Loader = (Component) => (props) =>
-  (
-    <Suspense fallback={<SuspenseLoader />}>
-      <Component {...props} />
-    </Suspense>
-  );
+(
+  <Suspense fallback={<SuspenseLoader />}>
+    <Component {...props} />
+  </Suspense>
+);
 
 // Pages
 
@@ -79,16 +79,17 @@ const StatusMaintenance = Loader(
 const routes: RouteObject[] = [
   {
     path: '',
-    element: <BaseLayout />,
+    element: <SidebarLayout />,
     children: [
       {
         path: '/',
-        element: <Overview />
+        element: <Crypto />
       },
       {
-        path: 'overview',
-        element: <Navigate to="/" replace />
+        path: 'messenger',
+        element: <Messenger />
       },
+      ,
       {
         path: 'status',
         children: [
@@ -117,24 +118,6 @@ const routes: RouteObject[] = [
       {
         path: '*',
         element: <Status404 />
-      }
-    ]
-  },
-  {
-    path: 'dashboards',
-    element: <SidebarLayout />,
-    children: [
-      {
-        path: '',
-        element: <Navigate to="crypto" replace />
-      },
-      {
-        path: 'crypto',
-        element: <Crypto />
-      },
-      {
-        path: 'messenger',
-        element: <Messenger />
       }
     ]
   },

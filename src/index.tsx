@@ -9,11 +9,11 @@ import * as serviceWorker from 'src/serviceWorker';
 
 ReactDOM.render(
   <HelmetProvider>
-    <SidebarProvider>
+    {/* <SidebarProvider> */}
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </SidebarProvider>
+    {/* </SidebarProvider> */}
   </HelmetProvider>,
   document.getElementById('root')
 );

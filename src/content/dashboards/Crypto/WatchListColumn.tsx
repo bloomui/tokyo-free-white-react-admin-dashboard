@@ -12,6 +12,9 @@ import Label from 'src/components/Label';
 import Text from 'src/components/Text';
 import Chart from 'react-apexcharts';
 import type { ApexOptions } from 'apexcharts';
+import ThermostatIcon from '@mui/icons-material/Thermostat';
+import InvertColorsIcon from '@mui/icons-material/InvertColors';
+import SpeedIcon from '@mui/icons-material/Speed';
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
@@ -24,10 +27,9 @@ const AvatarWrapper = styled(Avatar)(
     border-radius: 60px;
     height: ${theme.spacing(5.5)};
     width: ${theme.spacing(5.5)};
-    background: ${
-      theme.palette.mode === 'dark'
-        ? theme.colors.alpha.trueWhite[30]
-        : alpha(theme.colors.alpha.black[100], 0.07)
+    background: ${theme.palette.mode === 'dark'
+      ? theme.colors.alpha.trueWhite[30]
+      : alpha(theme.colors.alpha.black[100], 0.07)
     };
   
     img {
@@ -84,13 +86,13 @@ function WatchListColumn() {
       show: false
     },
     labels: [
-      'Monday',
-      'Tueday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-      'Sunday'
+      'Lunes',
+      'Martes',
+      'Miércoles',
+      'Jueves',
+      'Viernes',
+      'Sábado',
+      'Domingo'
     ],
     xaxis: {
       labels: {
@@ -111,13 +113,6 @@ function WatchListColumn() {
       x: {
         show: true
       },
-      y: {
-        title: {
-          formatter: function () {
-            return 'Price: $';
-          }
-        }
-      },
       marker: {
         show: false
       }
@@ -125,20 +120,20 @@ function WatchListColumn() {
   };
   const chart1Data = [
     {
-      name: 'Bitcoin Price',
-      data: [55.701, 57.598, 48.607, 46.439, 58.755, 46.978, 58.16]
+      name: 'Temperatura',
+      data: [35, 37, 38, 36, 38, 36, 38]
     }
   ];
   const chart2Data = [
     {
-      name: 'Ethereum Price',
-      data: [13, 16, 14, 20, 8, 11, 20]
+      name: 'Presión',
+      data: [1300, 1600, 1400, 2000, 800, 1100, 2000]
     }
   ];
   const chart3Data = [
     {
-      name: 'Cardano Price',
-      data: [51.85, 41.77, 22.09, 42.0, 71.9, 51.84, 31.84]
+      name: 'Humedad',
+      data: [51, 41, 22, 42, 31, 51, 31]
     }
   ];
 
@@ -151,6 +146,7 @@ function WatchListColumn() {
       spacing={3}
     >
       <Grid item md={4} xs={12}>
+        {/* temperatura */}
         <Card
           sx={{
             overflow: 'visible'
@@ -163,17 +159,14 @@ function WatchListColumn() {
           >
             <Box display="flex" alignItems="center">
               <AvatarWrapper>
-                <img
-                  alt="BTC"
-                  src="/static/images/placeholders/logo/bitcoin.png"
-                />
+                <ThermostatIcon color="primary" />
               </AvatarWrapper>
               <Box>
                 <Typography variant="h4" noWrap>
-                  Bitcoin
+                  Temperatura
                 </Typography>
                 <Typography variant="subtitle1" noWrap>
-                  BTC
+                  ºC
                 </Typography>
               </Box>
             </Box>
@@ -192,7 +185,7 @@ function WatchListColumn() {
                   mb: 1
                 }}
               >
-                $56,475.99
+                26,4º
               </Typography>
               <Text color="success">
                 <b>+12.5%</b>
@@ -205,7 +198,7 @@ function WatchListColumn() {
                 justifyContent: 'flex-start'
               }}
             >
-              <Label color="success">+$500</Label>
+              <Label color="success">23,5º</Label>
               <Typography
                 variant="body2"
                 color="text.secondary"
@@ -213,7 +206,7 @@ function WatchListColumn() {
                   pl: 1
                 }}
               >
-                last 24h
+                ayer a esta hora
               </Typography>
             </Box>
           </Box>
@@ -226,6 +219,7 @@ function WatchListColumn() {
         </Card>
       </Grid>
       <Grid item md={4} xs={12}>
+        {/* humedad */}
         <Card
           sx={{
             overflow: 'visible'
@@ -238,17 +232,14 @@ function WatchListColumn() {
           >
             <Box display="flex" alignItems="center">
               <AvatarWrapper>
-                <img
-                  alt="ETH"
-                  src="/static/images/placeholders/logo/ethereum.png"
-                />
+                <InvertColorsIcon color="primary" />
               </AvatarWrapper>
               <Box>
                 <Typography variant="h4" noWrap>
-                  Ethereum
+                  Humedad
                 </Typography>
                 <Typography variant="subtitle1" noWrap>
-                  ETH
+                  %
                 </Typography>
               </Box>
             </Box>
@@ -267,10 +258,10 @@ function WatchListColumn() {
                   mb: 1
                 }}
               >
-                $1,968.00
+                34,4%
               </Typography>
               <Text color="error">
-                <b>-3.24%</b>
+                <b>-12.5%</b>
               </Text>
             </Box>
             <Box
@@ -280,7 +271,7 @@ function WatchListColumn() {
                 justifyContent: 'flex-start'
               }}
             >
-              <Label color="error">-$90</Label>
+              <Label color="error">44,5%</Label>
               <Typography
                 variant="body2"
                 color="text.secondary"
@@ -288,88 +279,86 @@ function WatchListColumn() {
                   pl: 1
                 }}
               >
-                last 24h
-              </Typography>
-            </Box>
-          </Box>
-          <Chart
-            options={chartOptions}
-            series={chart2Data}
-            type="area"
-            height={200}
-          />
-        </Card>
-      </Grid>
-      <Grid item md={4} xs={12}>
-        <Card
-          sx={{
-            overflow: 'visible'
-          }}
-        >
-          <Box
-            sx={{
-              p: 3
-            }}
-          >
-            <Box display="flex" alignItems="center">
-              <AvatarWrapper>
-                <img
-                  alt="ADA"
-                  src="/static/images/placeholders/logo/cardano.png"
-                />
-              </AvatarWrapper>
-              <Box>
-                <Typography variant="h4" noWrap>
-                  Cardano
-                </Typography>
-                <Typography variant="subtitle1" noWrap>
-                  ADA
-                </Typography>
-              </Box>
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-start',
-                pt: 3
-              }}
-            >
-              <Typography
-                variant="h2"
-                sx={{
-                  pr: 1,
-                  mb: 1
-                }}
-              >
-                $23.00
-              </Typography>
-              <Text color="error">
-                <b>-0.33%</b>
-              </Text>
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-start'
-              }}
-            >
-              <Label color="error">-$5</Label>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{
-                  pl: 1
-                }}
-              >
-                last 24h
+                ayer a esta hora
               </Typography>
             </Box>
           </Box>
           <Chart
             options={chartOptions}
             series={chart3Data}
+            type="area"
+            height={200}
+          />
+        </Card>
+      </Grid>
+      <Grid item md={4} xs={12}>
+        {/* presion */}
+        <Card
+          sx={{
+            overflow: 'visible'
+          }}
+        >
+          <Box
+            sx={{
+              p: 3
+            }}
+          >
+            <Box display="flex" alignItems="center">
+              <AvatarWrapper>
+                <SpeedIcon color="primary" />
+              </AvatarWrapper>
+              <Box>
+                <Typography variant="h4" noWrap>
+                  Presión
+                </Typography>
+                <Typography variant="subtitle1" noWrap>
+                  mbar
+                </Typography>
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                pt: 3
+              }}
+            >
+              <Typography
+                variant="h2"
+                sx={{
+                  pr: 1,
+                  mb: 1
+                }}
+              >
+                999 mbar
+              </Typography>
+              <Text color="warning">
+                <b>0%</b>
+              </Text>
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-start'
+              }}
+            >
+              <Label color="warning">999 mbar</Label>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{
+                  pl: 1
+                }}
+              >
+                ayer a esta hora
+              </Typography>
+            </Box>
+          </Box>
+          <Chart
+            options={chartOptions}
+            series={chart2Data}
             type="area"
             height={200}
           />
