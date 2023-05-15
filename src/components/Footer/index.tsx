@@ -18,7 +18,7 @@ function Footer() {
       >
         <Box>
           <Typography variant="subtitle1">
-            &copy; 2023 - SmartReflect. Proyecto final del PEE: Transformación digital, internet de las cosas.
+            SmartReflect. Proyecto final del PEE: Transformación digital, internet de las cosas. - 2023
           </Typography>
         </Box>
       </Box>

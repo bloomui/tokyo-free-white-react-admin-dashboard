@@ -2,11 +2,11 @@ import { alpha, createTheme, lighten, darken } from '@mui/material';
 import '@mui/lab/themeAugmentation';
 
 const themeColors = {
-  primary: '#5569ff',
-  secondary: '#6E759F',
-  success: '#57CA22',
-  warning: '#FFA319',
-  error: '#FF1943',
+  primary: '#f5aa9d',
+  secondary: '#A24433',
+  success: '#489662',
+  warning: '#CD9963',
+  error: '#D22C21',
   info: '#33C2FF',
   black: '#223354',
   white: '#ffffff',

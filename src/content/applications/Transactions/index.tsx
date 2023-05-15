@@ -6,14 +6,20 @@ import Footer from 'src/components/Footer';
 
 import RecentOrders from './RecentOrders';
 
-function ApplicationsTransactions() {
+interface IRegister {
+  sensorName?: String;
+}
+
+function ApplicationsTransactions(props: IRegister) {
+  const { sensorName } = props;
+
   return (
     <>
       <Helmet>
-        <title>Transactions - Applications</title>
+        <title>{`Registros de ${sensorName}`}</title>
       </Helmet>
       <PageTitleWrapper>
-        <PageHeader />
+        <PageHeader sensorName={sensorName}/>
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid

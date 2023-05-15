@@ -1,5 +1,4 @@
 import { Helmet } from 'react-helmet-async';
-import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Container, Grid } from '@mui/material';
 import Footer from 'src/components/Footer';
@@ -9,16 +8,12 @@ import Wallets from './Wallets';
 import AccountSecurity from './AccountSecurity'; */
 import SensoresList from './SensoresList';
 
-function DashboardCrypto() {
+function Dashboard() {
   return (
     <>
       <Helmet>
         <title>SmartReflect Dashboard</title>
       </Helmet>
-      <PageTitleWrapper>
-        {/* componente bienvenida */}
-        <PageHeader />
-      </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
           container
@@ -47,4 +42,4 @@ function DashboardCrypto() {
   );
 }
 
-export default DashboardCrypto;
+export default Dashboard;

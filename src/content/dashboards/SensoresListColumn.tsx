@@ -15,6 +15,9 @@ import type { ApexOptions } from 'apexcharts';
 import ThermostatIcon from '@mui/icons-material/Thermostat';
 import InvertColorsIcon from '@mui/icons-material/InvertColors';
 import SpeedIcon from '@mui/icons-material/Speed';
+import awsIotDevice from '../../aws-mqtt/aws-iot';
+import React, { useState } from 'react';
+import Transactions from '../applications/Transactions';
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
@@ -132,13 +135,29 @@ function SensoresListColumn() {
       data: [1300, 1600, 1400, 2000, 800, 1100, 2000]
     }
   ];
-  
+
   const chart3Data = [
     {
       name: 'Humedad',
       data: [51, 41, 22, 42, 31, 51, 31]
     }
   ];
+
+  const [openTable, setOpenTable] = useState(false)
+  const [sensorName, setSensorName] = useState<String>("")
+
+  /* awsIotDevice.subscribe('#', (error, message) => {
+    if (error) {
+      console.error(error);
+    } else {
+      console.log(message.toString());
+    }
+  }); */
+
+  const handleOnClick = (name: String) => {
+    setOpenTable(!openTable);
+    setSensorName(name);
+  }
 
   return (
     <Grid
@@ -152,8 +171,10 @@ function SensoresListColumn() {
         {/* temperatura */}
         <Card
           sx={{
-            overflow: 'visible'
+            overflow: 'visible',
+            cursor: "pointer"
           }}
+          onClick={() => handleOnClick("temperatura")}
         >
           <Box
             sx={{
@@ -225,8 +246,10 @@ function SensoresListColumn() {
         {/* humedad */}
         <Card
           sx={{
-            overflow: 'visible'
+            overflow: 'visible',
+            cursor: "pointer"
           }}
+          onClick={() => handleOnClick("humedad")}
         >
           <Box
             sx={{
@@ -298,8 +321,10 @@ function SensoresListColumn() {
         {/* presion */}
         <Card
           sx={{
-            overflow: 'visible'
+            overflow: 'visible',
+            cursor: "pointer"
           }}
+          onClick={() => handleOnClick("presión")}
         >
           <Box
             sx={{
@@ -367,8 +392,11 @@ function SensoresListColumn() {
           />
         </Card>
       </Grid>
+      {openTable && <Transactions sensorName={sensorName}/> }
     </Grid>
-  );
+    );
+
 }
+
 
 export default SensoresListColumn;

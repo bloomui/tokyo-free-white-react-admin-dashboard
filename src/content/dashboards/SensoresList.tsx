@@ -35,10 +35,10 @@ function SensoresList() {
         alignItems="center"
         justifyContent="space-between"
         sx={{
-          pb: 3
+          pb: 3, pt: 3
         }}
       >
-        <Typography variant="h3">Tus sensores</Typography>
+        <Typography variant="h3">Mis sensores</Typography>
         <ToggleButtonGroup
           value={tabs}
           exclusive

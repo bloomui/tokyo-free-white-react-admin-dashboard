@@ -20,7 +20,7 @@ const Overview = Loader(lazy(() => import('src/content/overview')));
 
 // Dashboards
 
-const Crypto = Loader(lazy(() => import('src/content/dashboards/Crypto')));
+const Dashboard = Loader(lazy(() => import('src/content/dashboards')));
 
 // Applications
 
@@ -83,7 +83,11 @@ const routes: RouteObject[] = [
     children: [
       {
         path: '/',
-        element: <Crypto />
+        element: <Dashboard />
+      },
+      {
+        path: 'transactions',
+        element: <Transactions />
       },
       {
         path: 'messenger',
@@ -122,17 +126,9 @@ const routes: RouteObject[] = [
     ]
   },
   {
-    path: 'management',
+    path: '',
     element: <SidebarLayout />,
     children: [
-      {
-        path: '',
-        element: <Navigate to="transactions" replace />
-      },
-      {
-        path: 'transactions',
-        element: <Transactions />
-      },
       {
         path: 'profile',
         children: [

@@ -16,7 +16,6 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
     <>
       <Box
         sx={{
-          flex: 1,
           height: '100%',
 
           '.MuiPageTitle-wrapper': {
@@ -42,17 +41,14 @@ const SidebarLayout: FC<SidebarLayoutProps> = () => {
         }}
       >
         <Header />
-        <Sidebar />
+        {/* <Sidebar /> */}
         <Box
           sx={{
-            position: 'relative',
-            zIndex: 5,
+            position: 'initial',
+            zIndex: 1,
             display: 'block',
             flex: 1,
             pt: `${theme.header.height}`,
-            [theme.breakpoints.up('lg')]: {
-              ml: `${theme.sidebar.width}`
-            }
           }}
         >
           <Box display="block">
