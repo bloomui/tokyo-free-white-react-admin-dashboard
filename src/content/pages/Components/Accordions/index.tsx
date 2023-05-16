@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 
-import PageTitle from 'src/components/PageTitle';
-import PageTitleWrapper from 'src/components/PageTitleWrapper';
+import PageTitle from 'src/ui/components/PageTitle';
+import PageTitleWrapper from 'src/ui/components/PageTitleWrapper';
 import {
   Container,
   Grid,
@@ -15,7 +15,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Footer from 'src/components/Footer';
+import Footer from 'src/ui/components/Footer';
 
 function Accordions() {
   return (

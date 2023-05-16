@@ -5,7 +5,7 @@ import { RouteObject } from 'react-router';
 import SidebarLayout from 'src/layouts/SidebarLayout';
 import BaseLayout from 'src/layouts/BaseLayout';
 
-import SuspenseLoader from 'src/components/SuspenseLoader';
+import SuspenseLoader from 'src/ui/components/SuspenseLoader';
 
 const Loader = (Component) => (props) =>
 (
@@ -20,22 +20,17 @@ const Overview = Loader(lazy(() => import('src/content/overview')));
 
 // Dashboards
 
-const Dashboard = Loader(lazy(() => import('src/content/dashboards')));
+const Dashboard = Loader(lazy(() => import('src/ui/pages/dashboards/Dashboard')));
 
 // Applications
 
 const Messenger = Loader(
-  lazy(() => import('src/content/applications/Messenger'))
+  lazy(() => import('src/ui/pages/applications/messenger'))
 );
 const Transactions = Loader(
-  lazy(() => import('src/content/applications/Transactions'))
+  lazy(() => import('src/ui/pages/applications/transactions/DatabaseTable'))
 );
-const UserProfile = Loader(
-  lazy(() => import('src/content/applications/Users/profile'))
-);
-const UserSettings = Loader(
-  lazy(() => import('src/content/applications/Users/settings'))
-);
+
 
 // Components
 
@@ -86,7 +81,7 @@ const routes: RouteObject[] = [
         element: <Dashboard />
       },
       {
-        path: 'transactions',
+        path: '/transactions/:sensorName',
         element: <Transactions />
       },
       {
@@ -122,29 +117,6 @@ const routes: RouteObject[] = [
       {
         path: '*',
         element: <Status404 />
-      }
-    ]
-  },
-  {
-    path: '',
-    element: <SidebarLayout />,
-    children: [
-      {
-        path: 'profile',
-        children: [
-          {
-            path: '',
-            element: <Navigate to="details" replace />
-          },
-          {
-            path: 'details',
-            element: <UserProfile />
-          },
-          {
-            path: 'settings',
-            element: <UserSettings />
-          }
-        ]
       }
     ]
   },

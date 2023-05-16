@@ -2,8 +2,8 @@ import { Helmet } from 'react-helmet-async';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
-import PageTitle from 'src/components/PageTitle';
-import PageTitleWrapper from 'src/components/PageTitleWrapper';
+import PageTitle from 'src/ui/components/PageTitle';
+import PageTitleWrapper from 'src/ui/components/PageTitleWrapper';
 import {
   Container,
   Grid,
@@ -24,7 +24,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
 import { blue } from '@mui/material/colors';
-import Footer from 'src/components/Footer';
+import Footer from 'src/ui/components/Footer';
 
 const emails = ['username@gmail.com', 'user02@gmail.com'];
 

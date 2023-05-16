@@ -32,13 +32,16 @@ function SensoresList() {
     <>
       <Box
         display="flex"
-        alignItems="center"
+        alignItems="left"
         justifyContent="space-between"
+        flexDirection="column"
         sx={{
           pb: 3, pt: 3
         }}
       >
         <Typography variant="h3">Mis sensores</Typography>
+        <br/>
+        <Typography variant="h6">Haga click en una de las gráficas para ver todos los datos del sensor seleccionado</Typography>
         <ToggleButtonGroup
           value={tabs}
           exclusive

@@ -8,7 +8,7 @@ import SidebarContent from './SidebarContent';
 import ChatContent from './ChatContent';
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 
-import Scrollbar from 'src/components/Scrollbar';
+import Scrollbar from 'src/ui/components/Scrollbar';
 
 import {
   Box,

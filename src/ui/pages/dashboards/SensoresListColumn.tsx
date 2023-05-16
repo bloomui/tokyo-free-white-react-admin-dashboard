@@ -8,16 +8,16 @@ import {
   useTheme,
   styled
 } from '@mui/material';
-import Label from 'src/components/Label';
-import Text from 'src/components/Text';
+import Label from 'src/ui/components/Label';
+import Text from 'src/ui/components/Text';
 import Chart from 'react-apexcharts';
 import type { ApexOptions } from 'apexcharts';
 import ThermostatIcon from '@mui/icons-material/Thermostat';
 import InvertColorsIcon from '@mui/icons-material/InvertColors';
 import SpeedIcon from '@mui/icons-material/Speed';
-import awsIotDevice from '../../aws-mqtt/aws-iot';
 import React, { useState } from 'react';
-import Transactions from '../applications/Transactions';
+import Transactions from '../applications/transactions/DatabaseTable';
+import { useNavigate } from 'react-router-dom';
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
@@ -146,6 +146,8 @@ function SensoresListColumn() {
   const [openTable, setOpenTable] = useState(false)
   const [sensorName, setSensorName] = useState<String>("")
 
+  const navigate = useNavigate();
+  
   /* awsIotDevice.subscribe('#', (error, message) => {
     if (error) {
       console.error(error);
@@ -157,10 +159,11 @@ function SensoresListColumn() {
   const handleOnClick = (name: String) => {
     setOpenTable(!openTable);
     setSensorName(name);
+    navigate(`transactions/${name}`)
   }
 
   return (
-    <Grid
+    !openTable ? <Grid
       container
       direction="row"
       justifyContent="center"
@@ -392,8 +395,7 @@ function SensoresListColumn() {
           />
         </Card>
       </Grid>
-      {openTable && <Transactions sensorName={sensorName}/> }
-    </Grid>
+    </Grid> : <></>
     );
 
 }

@@ -67,25 +67,6 @@ function Header() {
       >
         <Typography variant="h3" color="primary">SmartReflect</Typography>
       </Stack>
-      <Box display="flex" alignItems="center">
-        <Box
-          component="span"
-          sx={{
-            ml: 2,
-            display: { lg: 'none', xs: 'inline-block' }
-          }}
-        >
-          <Tooltip arrow title="Toggle Menu">
-            <IconButton color="primary" onClick={toggleSidebar}>
-              {!sidebarToggle ? (
-                <MenuTwoToneIcon fontSize="small" />
-              ) : (
-                <CloseTwoToneIcon fontSize="small" />
-              )}
-            </IconButton>
-          </Tooltip>
-        </Box>
-      </Box>
     </HeaderWrapper>
   );
 }
