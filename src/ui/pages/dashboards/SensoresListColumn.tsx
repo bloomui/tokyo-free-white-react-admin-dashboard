@@ -16,7 +16,7 @@ import ThermostatIcon from '@mui/icons-material/Thermostat';
 import InvertColorsIcon from '@mui/icons-material/InvertColors';
 import SpeedIcon from '@mui/icons-material/Speed';
 import React, { useState } from 'react';
-import Transactions from '../applications/transactions/DatabaseTable';
+import Transactions from '../database-table/DatabaseTable';
 import { useNavigate } from 'react-router-dom';
 
 const AvatarWrapper = styled(Avatar)(
@@ -159,7 +159,7 @@ function SensoresListColumn() {
   const handleOnClick = (name: String) => {
     setOpenTable(!openTable);
     setSensorName(name);
-    navigate(`transactions/${name}`)
+    navigate(`db-t/${name}`)
   }
 
   return (

@@ -24,11 +24,8 @@ const Dashboard = Loader(lazy(() => import('src/ui/pages/dashboards/Dashboard'))
 
 // Applications
 
-const Messenger = Loader(
-  lazy(() => import('src/ui/pages/applications/messenger'))
-);
-const Transactions = Loader(
-  lazy(() => import('src/ui/pages/applications/transactions/DatabaseTable'))
+const DatabaseTable = Loader(
+  lazy(() => import('src/ui/pages/database-table/DatabaseTable'))
 );
 
 
@@ -81,12 +78,8 @@ const routes: RouteObject[] = [
         element: <Dashboard />
       },
       {
-        path: '/transactions/:sensorName',
-        element: <Transactions />
-      },
-      {
-        path: 'messenger',
-        element: <Messenger />
+        path: '/db-t/:sensorName',
+        element: <DatabaseTable />
       },
       ,
       {

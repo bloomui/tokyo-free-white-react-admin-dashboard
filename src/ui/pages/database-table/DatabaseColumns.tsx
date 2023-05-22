@@ -27,9 +27,7 @@ import {
 
 import Label from 'src/ui/components/Label';
 import { CryptoOrder, CryptoOrderStatus } from 'src/clients/models/crypto_order';
-import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import BulkActions from './BulkActions';
+
 
 interface RecentOrdersTableProps {
   className?: string;
@@ -176,12 +174,6 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
 
   return (
     <Card>
-      {selectedBulkActions && (
-        <Box flex={1} p={2}>
-          <BulkActions />
-        </Box>
-      )}
-      {!selectedBulkActions && (
         <CardHeader
           action={
             <Box width={150}>
@@ -204,7 +196,6 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
           }
           title="Recent Orders"
         />
-      )}
       <Divider />
       <TableContainer>
         <Table>
@@ -308,12 +299,5 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   );
 };
 
-RecentOrdersTable.propTypes = {
-  cryptoOrders: PropTypes.array.isRequired
-};
-
-RecentOrdersTable.defaultProps = {
-  cryptoOrders: []
-};
 
 export default RecentOrdersTable;
