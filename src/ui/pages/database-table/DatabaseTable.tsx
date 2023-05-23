@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet-async';
 import PageTitleWrapper from 'src/ui/components/PageTitleWrapper';
 import { Grid, Container, Button } from '@mui/material';
 import Footer from 'src/ui/components/Footer';
@@ -6,7 +5,7 @@ import PageHeader from './PageHeader';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DataGrid, GridColDef, GridToolbar, GridValueGetterParams } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
-/* import mysql from 'mysql'; */
+import mysql from 'mysql';
 
 function DatabaseTable() {
   const { sensorName } = useParams();
@@ -21,7 +20,7 @@ function DatabaseTable() {
     { field: `${sensorName}`, headerName: 'First name', width: 130 },
   ];
 
-/* const [data, setData] = useState([]);
+const [data, setData] = useState([]);
 
   useEffect(() => {
     // Configura los detalles de conexión a la base de datos
@@ -56,7 +55,7 @@ function DatabaseTable() {
     return () => {
       connection.end();
     };
-  }, []); */
+  }, []);
 
   const rows = [
     { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
@@ -72,9 +71,6 @@ function DatabaseTable() {
 
   return (
     <>
-      <Helmet>
-        <title>{`Registros de ${sensorName}`}</title>
-      </Helmet>
       <Container maxWidth="lg">
         <Grid sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <Grid item xs={6}>
@@ -97,7 +93,7 @@ function DatabaseTable() {
         >
           <Grid item xs={12}>
             <DataGrid
-              rows={rows}
+              rows={data}
               columns={columns}
               initialState={{
                 pagination: {
