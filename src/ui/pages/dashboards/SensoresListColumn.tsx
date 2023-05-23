@@ -15,9 +15,10 @@ import type { ApexOptions } from 'apexcharts';
 import ThermostatIcon from '@mui/icons-material/Thermostat';
 import InvertColorsIcon from '@mui/icons-material/InvertColors';
 import SpeedIcon from '@mui/icons-material/Speed';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Transactions from '../database-table/DatabaseTable';
 import { useNavigate } from 'react-router-dom';
+import mqtt from 'mqtt';
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
@@ -30,9 +31,10 @@ const AvatarWrapper = styled(Avatar)(
     border-radius: 60px;
     height: ${theme.spacing(5.5)};
     width: ${theme.spacing(5.5)};
-    background: ${theme.palette.mode === 'dark'
-      ? theme.colors.alpha.trueWhite[30]
-      : alpha(theme.colors.alpha.black[100], 0.07)
+    background: ${
+      theme.palette.mode === 'dark'
+        ? theme.colors.alpha.trueWhite[30]
+        : alpha(theme.colors.alpha.black[100], 0.07)
     };
   
     img {
@@ -143,27 +145,64 @@ function SensoresListColumn() {
     }
   ];
 
-  const [openTable, setOpenTable] = useState(false)
-  const [sensorName, setSensorName] = useState<String>("")
+  const [openTable, setOpenTable] = useState(false);
+  const [sensorName, setSensorName] = useState<String>('');
 
   const navigate = useNavigate();
-  
-  /* awsIotDevice.subscribe('#', (error, message) => {
-    if (error) {
-      console.error(error);
-    } else {
-      console.log(message.toString());
-    }
-  }); */
 
   const handleOnClick = (name: String) => {
     setOpenTable(!openTable);
     setSensorName(name);
-    navigate(`db-t/${name}`)
-  }
+    navigate(`db-t/${name}`);
+  };
 
-  return (
-    !openTable ? <Grid
+  const [sensorValue, setSensorValue] = useState('');
+
+  useEffect(() => {
+    const connectToMqttBroker = async () => {
+      try {
+        const caCertResponse = await fetch('src\cert\Amazon-root-CA-1.pem');
+        const caCert = await caCertResponse.text();
+
+        const clientCertResponse = await fetch('src\cert\certificate.pem.crt');
+        const clientCert = await clientCertResponse.text();
+
+        const privateKeyResponse = await fetch('src\cert\private.pem.key');
+        const privateKey = await privateKeyResponse.text();
+
+        const client = mqtt.connect('wss://agg46jy6wee7t-ats.iot.eu-west-1.amazonaws.com:8883/mqtt', {
+          clientId: 'your-client-id',
+          ca: caCert,
+          cert: clientCert,
+          key: privateKey,
+          rejectUnauthorized: false
+        });
+
+        client.on('connect', () => {
+          client.subscribe('sensor/value');
+        });
+
+        client.on('message', (topic, message) => {
+          setSensorValue(message.toString());
+        });
+
+        client.on('error', (error) => {
+          console.error('MQTT error:', error);
+        });
+
+        // Cleanup function
+        return () => {
+          client.end();
+        };
+      } catch (error) {
+        console.error('Error connecting to MQTT broker:', error);
+      }
+    };
+
+    connectToMqttBroker();
+  }, []);
+  return !openTable ? (
+    <Grid
       container
       direction="row"
       justifyContent="center"
@@ -175,9 +214,9 @@ function SensoresListColumn() {
         <Card
           sx={{
             overflow: 'visible',
-            cursor: "pointer"
+            cursor: 'pointer'
           }}
-          onClick={() => handleOnClick("temperature")}
+          onClick={() => handleOnClick('temperature')}
         >
           <Box
             sx={{
@@ -212,7 +251,7 @@ function SensoresListColumn() {
                   mb: 1
                 }}
               >
-                26,4º
+               {sensorValue}
               </Typography>
               <Text color="success">
                 <b>+12.5%</b>
@@ -250,9 +289,9 @@ function SensoresListColumn() {
         <Card
           sx={{
             overflow: 'visible',
-            cursor: "pointer"
+            cursor: 'pointer'
           }}
-          onClick={() => handleOnClick("humidity")}
+          onClick={() => handleOnClick('humidity')}
         >
           <Box
             sx={{
@@ -325,9 +364,9 @@ function SensoresListColumn() {
         <Card
           sx={{
             overflow: 'visible',
-            cursor: "pointer"
+            cursor: 'pointer'
           }}
-          onClick={() => handleOnClick("pressure")}
+          onClick={() => handleOnClick('pressure')}
         >
           <Box
             sx={{
@@ -395,10 +434,10 @@ function SensoresListColumn() {
           />
         </Card>
       </Grid>
-    </Grid> : <></>
-    );
-
+    </Grid>
+  ) : (
+    <></>
+  );
 }
-
 
 export default SensoresListColumn;

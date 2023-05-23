@@ -48,41 +48,7 @@ function SensoresList() {
           onChange={handleViewOrientation}
         />
       </Box>
-
-      {tabs === 'sensores_list_columns' && <SensoresListColumn />}
-
-      {!tabs && (
-        <Card
-          sx={{
-            textAlign: 'center',
-            p: 3
-          }}
-        >
-          <EmptyResultsWrapper src="/static/images/placeholders/illustrations/1.svg" />
-
-          <Typography
-            align="center"
-            variant="h2"
-            fontWeight="normal"
-            color="text.secondary"
-            sx={{
-              mt: 3
-            }}
-            gutterBottom
-          >
-            Click something, anything!
-          </Typography>
-          <Button
-            variant="contained"
-            size="large"
-            sx={{
-              mt: 4
-            }}
-          >
-            Maybe, a button?
-          </Button>
-        </Card>
-      )}
+      <SensoresListColumn />
     </>
   );
 }

@@ -3,9 +3,6 @@ import PageTitleWrapper from 'src/ui/components/PageTitleWrapper';
 import { Container, Grid } from '@mui/material';
 import Footer from 'src/ui/components/Footer';
 
-/* import AccountBalance from './AccountBalance';
-import Wallets from './Wallets';
-import AccountSecurity from './AccountSecurity'; */
 import SensoresList from './SensoresList';
 
 function Dashboard() {
