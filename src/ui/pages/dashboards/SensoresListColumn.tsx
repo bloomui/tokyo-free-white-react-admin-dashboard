@@ -177,7 +177,7 @@ function SensoresListColumn() {
             overflow: 'visible',
             cursor: "pointer"
           }}
-          onClick={() => handleOnClick("temperatura")}
+          onClick={() => handleOnClick("temperature")}
         >
           <Box
             sx={{
@@ -252,7 +252,7 @@ function SensoresListColumn() {
             overflow: 'visible',
             cursor: "pointer"
           }}
-          onClick={() => handleOnClick("humedad")}
+          onClick={() => handleOnClick("humidity")}
         >
           <Box
             sx={{
@@ -327,7 +327,7 @@ function SensoresListColumn() {
             overflow: 'visible',
             cursor: "pointer"
           }}
-          onClick={() => handleOnClick("presión")}
+          onClick={() => handleOnClick("pressure")}
         >
           <Box
             sx={{

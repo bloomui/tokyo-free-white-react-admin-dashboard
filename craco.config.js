@@ -12,6 +12,7 @@ module.exports = {
           asset: require.resolve('assert'),
           crypto: require.resolve('crypto-browserify'),
           timers: require.resolve("timers-browserify"),
+          assert: require.resolve("assert"),
           fs: false
         }
       },
