@@ -1,73 +1,73 @@
-import PageTitleWrapper from 'src/ui/components/PageTitleWrapper';
 import { Grid, Container, Button } from '@mui/material';
-import Footer from 'src/ui/components/Footer';
-import PageHeader from './PageHeader';
 import { useNavigate, useParams } from 'react-router-dom';
-import { DataGrid, GridColDef, GridToolbar, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridToolbar } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
-import mysql from 'mysql';
+import PageHeader from './PageHeader';
 
 function DatabaseTable() {
   const { sensorName } = useParams();
   const navigate = useNavigate();
+
+  const apiURL = (sensorName === "temperature") ? "http://localhost:3000/sensor/temperature"
+    : (sensorName === "humidity" ? "http://localhost:3000/sensor/humidity"
+      : "http://localhost:3000/sensor/pressure");
+
+  const name = (sensorName === "temperature") ? "Temperature" : (sensorName === "humidity" ? "Humidity" : "Pressure");
 
   const handleBackButton = () => {
     navigate(`/`)
   }
 
   const columns: GridColDef[] = [
-    { field: 'timestamp', headerName: 'ID', width: 130 },
-    { field: `${sensorName}`, headerName: 'First name', width: 130 },
+    { field: 'id', headerName: 'ID', width: 130 },
+    { field: 'date', headerName: 'Date', width: 150 },
+    { field: 'time', headerName: 'Time', width: 150 },
+    { field: `${sensorName}`, headerName: `${name}`, width: 150 },
   ];
 
-const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
+
+  const loadSensors = async () => {
+    const res = await fetch(apiURL);
+    const resData = await res.json();
+
+    const formattedData = resData.map((row, index) => {
+      const timestamp = new Date(parseInt(row.timestamp));
+      const date = `${timestamp.getDate().toString().padStart(2, '0')}/${(timestamp.getMonth() + 1).toString().padStart(2, '0')}/${timestamp.getFullYear()}`;
+      const time = `${timestamp.getHours().toString().padStart(2, '0')}:${timestamp.getMinutes().toString().padStart(2, '0')}:${timestamp.getSeconds().toString().padStart(2, '0')}`;
+
+      // Create an object with dynamic keys based on the sensorName
+      const rowData: {
+        id: number;
+        date: string;
+        time: string;
+        temperature?: number;
+        humidity?: number;
+        pressure?: number;
+      } = {
+        id: index + 1,
+        date,
+        time,
+      };
+
+      // Set the value of the appropriate sensor field
+      if (sensorName === 'temperature') {
+        rowData.temperature = row.temperature;
+      } else if (sensorName === 'humidity') {
+        rowData.humidity = row.humidity;
+      } else if (sensorName === 'pressure') {
+        rowData.pressure = row.pressure;
+      }
+
+      return rowData;
+    });
+
+    setData(formattedData);
+  }
 
   useEffect(() => {
-    // Configura los detalles de conexión a la base de datos
-    const connection = mysql.createConnection({
-      host: 'database-sensors.crxlhu9jcrhm.eu-west-1.rds.amazonaws.com',
-      user: 'admin',
-      password: 'admin123',
-      database: 'database_sensors'
-    });
-
-    // Realiza la consulta a la base de datos y guarda los resultados en el estado 'data'
-    const fetchData = async () => {
-      connection.query(`SELECT timestamp, ? FROM sensors`, sensorName, (error, results) => {
-        if (error) {
-          console.error(error);
-        } else {
-          console.log(results)
-        }
-      });
-    };
-
-    // Establece la conexión a la base de datos y realiza la consulta
-    connection.connect((error) => {
-      if (error) {
-        console.error('Error al conectar a la base de datos:', error);
-      } else {
-        fetchData();
-      }
-    });
-
-    // Cierra la conexión cuando el componente se desmonta
-    return () => {
-      connection.end();
-    };
+    loadSensors();
   }, []);
-
-  const rows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-    { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-    { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-    { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-    { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-    { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-    { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-  ];
 
   return (
     <>
