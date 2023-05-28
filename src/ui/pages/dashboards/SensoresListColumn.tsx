@@ -143,16 +143,15 @@ function SensoresListColumn() {
   ];
 
   const [openTable, setOpenTable] = useState(false);
-  const [sensorName, setSensorName] = useState<String>('');
 
   const [currentTemperature, setCurrentTemperature] = useState(0);
   const [currentPressure, setCurrentPressure] = useState(0);
   const [currentHumidity, setCurrentHumidity] = useState(0);
 
-  const apiURL = "http://localhost:3000/";
+  const apiURL = "http://localhost:3000/sensor/latest";
 
   const loadSensors = async () => {
-    const res = await fetch(`${apiURL}?_sort=id&_order=desc&_limit=1`);
+    const res = await fetch(apiURL);
     const resData = await res.json();
 
     console.log(resData[0]);
@@ -164,22 +163,20 @@ function SensoresListColumn() {
 
     const row = resData[0];
 
-    const timestamp = new Date(parseInt(row.timestamp));
-    const date = `${timestamp.getDate().toString().padStart(2, '0')}/${(timestamp.getMonth() + 1).toString().padStart(2, '0')}/${timestamp.getFullYear()}`;
-    const time = `${timestamp.getHours().toString().padStart(2, '0')}:${timestamp.getMinutes().toString().padStart(2, '0')}:${timestamp.getSeconds().toString().padStart(2, '0')}`;
+    // const timestamp = new Date(parseInt(row.timestamp));
+    /* const date = `${timestamp.getDate().toString().padStart(2, '0')}/${(timestamp.getMonth() + 1).toString().padStart(2, '0')}/${timestamp.getFullYear()}`;
+    const time = `${timestamp.getHours().toString().padStart(2, '0')}:${timestamp.getMinutes().toString().padStart(2, '0')}:${timestamp.getSeconds().toString().padStart(2, '0')}`; */
 
     // Create an object with dynamic keys based on the sensorName
     const rowData: {
       id: number;
-      date: string;
-      time: string;
+      timestamp: number;
       temperature: number;
       humidity: number;
       pressure: number;
     } = {
       id: 1,
-      date,
-      time,
+      timestamp: row.timestamp,
       temperature: parseFloat(row.temperature),
       humidity: parseFloat(row.humidity),
       pressure: parseFloat(row.pressure)
@@ -199,7 +196,6 @@ function SensoresListColumn() {
 
   const handleOnClick = (name: String) => {
     setOpenTable(!openTable);
-    setSensorName(name);
     navigate(`db-t/${name}`);
   };
 
