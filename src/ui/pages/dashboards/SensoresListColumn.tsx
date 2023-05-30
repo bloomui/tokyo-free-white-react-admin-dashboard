@@ -48,70 +48,6 @@ const AvatarWrapper = styled(Avatar)(
 function SensoresListColumn() {
   const theme = useTheme();
 
-  const chartOptions: ApexOptions = {
-    chart: {
-      background: 'transparent',
-      toolbar: {
-        show: false
-      },
-      sparkline: {
-        enabled: true
-      },
-      zoom: {
-        enabled: false
-      }
-    },
-    fill: {
-      gradient: {
-        shade: 'light',
-        type: 'vertical',
-        shadeIntensity: 0.1,
-        inverseColors: false,
-        opacityFrom: 0.8,
-        opacityTo: 0,
-        stops: [0, 100]
-      }
-    },
-    colors: [theme.colors.primary.main],
-    dataLabels: {
-      enabled: false
-    },
-    theme: {
-      mode: theme.palette.mode
-    },
-    stroke: {
-      show: true,
-      colors: [theme.colors.primary.main],
-      width: 3
-    },
-    legend: {
-      show: false
-    },
-    xaxis: {
-      labels: {
-        show: false
-      },
-      axisBorder: {
-        show: false
-      },
-      axisTicks: {
-        show: false
-      }
-    },
-    yaxis: {
-      show: false,
-      tickAmount: 5
-    },
-    tooltip: {
-      x: {
-        show: true
-      },
-      marker: {
-        show: false
-      }
-    }
-  };
-
   const [openTable, setOpenTable] = useState(false);
 
   const [currentTemperature, setCurrentTemperature] = useState(0);
@@ -122,10 +58,9 @@ function SensoresListColumn() {
   const [yesterdayPressure, setYesterdayPressure] = useState(0);
   const [yesterdayHumidity, setYesterdayHumidity] = useState(0);
 
-  const [weekData, setWeekData] = useState([]);
-  const [weekTemperature, setWeekTemperature] = useState([]);
-  const [weekHumidity, setWeekHumidity] = useState([]);
-  const [weekPressure, setWeekPressure] = useState([]);
+  const [weekTemperature, setWeekTemperature] = useState<Array<[string, number]>>([]);
+  const [weekHumidity, setWeekHumidity] = useState<Array<[string, number]>>([]);
+  const [weekPressure, setWeekPressure] = useState<Array<[string, number]>>([]);
 
   const apiURLCurrent = "http://localhost:3000/sensor/latest";
   const apiURLYesterday = "http://localhost:3000/sensor/yesterday";
@@ -203,68 +138,57 @@ function SensoresListColumn() {
     const res = await fetch(apiURLWeek);
     const resData = await res.json();
 
-    console.log("resdata", resData);
-  
-    const formattedData = resData.map((row) => {
-      // Check if the timestamp property exists
-      if (!row.timestamp) {
-        console.error("Invalid timestamp: undefined");
-        return null; // Skip this row
-      }
-    
-      const timestamp = new Date(parseInt(row.timestamp));
-    
-      // Check if the timestamp is valid
-      if (isNaN(timestamp.getTime())) {
-        console.error(`Invalid timestamp: ${row.timestamp}`);
-        return null; // Skip this row
-      }
-    
-      const date = `${timestamp.getDate().toString().padStart(2, '0')}/${(
-        timestamp.getMonth() + 1
-      )
-        .toString()
-        .padStart(2, '0')}/${timestamp.getFullYear()}`;
-      const time = `${timestamp
-        .getHours()
-        .toString()
-        .padStart(2, '0')}:${timestamp
-        .getMinutes()
-        .toString()
-        .padStart(2, '0')}:${timestamp
-        .getSeconds()
-        .toString()
-        .padStart(2, '0')}`;
-    
-      return {
-        timestamp: `${date} ${time}`,
-        temperature: row.temperature,
-        humidity: row.humidity,
-        pressure: row.pressure,
-      };
-    });
-    
-    // Filter out any rows with invalid timestamps
-    const validRows = formattedData.filter((row) => row !== null);
-    
+    console.log(resData)
+
     // Extract temperature, humidity, and pressure data into separate arrays
-    const weekTemperatureRows = validRows.map((data) => [data.timestamp, parseFloat(data.temperature)]);
-    const weekHumidityRows = validRows.map((data) => [data.timestamp, data.humidity]);
-    const weekPressureRows = validRows.map((data) => [data.timestamp, data.pressure]);
-    
-    console.log(weekTemperatureRows);
-    
+    const weekTemperatureRows = resData.map((data) => [data.date, parseFloat(data.average_temperature)]);
+    const weekHumidityRows = resData.map((data) => [data.date, data.average_humidity]);
+    const weekPressureRows = resData.map((data) => [data.date, data.average_pressure]);
+
     // Set the respective state variables
-    setWeekTemperature(weekTemperatureRows);
-    setWeekHumidity(weekHumidityRows);
-    setWeekPressure(weekPressureRows);
-    
+    setWeekTemperature(resData.map((data) => ({
+      x: data.date,
+      y: data.average_temperature
+    })));
+    setWeekHumidity(resData.map((data) => ({
+      x: data.date,
+      y: data.average_humidity
+    })));
+    setWeekPressure(resData.map((data) => ({
+      x: data.date,
+      y: data.average_pressure
+    })));
+
+    console.log("wt", weekTemperature);
+
+  };
+
+  const loadData = async () => {
+    await loadCurrentSensors();
+    await loadYesterdaySensors();
+    await loadWeekSensors();
   };
 
   useEffect(() => {
-    loadCurrentSensors();
-    loadYesterdaySensors();
-    loadWeekSensors();
+    const loadData = async () => {
+      await loadCurrentSensors();
+      await loadYesterdaySensors();
+      await loadWeekSensors();
+    };
+
+    // Load data initially
+    loadData();
+
+    // Reload data every 15 seconds
+    const interval = setInterval(() => {
+      loadData();
+    }, 15000);
+
+    // Clean up the interval on component unmount
+    return () => {
+      clearInterval(interval);
+    };
+
   }, []);
 
   const navigate = useNavigate();
@@ -298,6 +222,61 @@ function SensoresListColumn() {
 
     return 'warning';
   };
+
+  const chartOptions: ApexOptions = {
+    chart: {
+      height: 200,
+      type: 'area',
+      background: 'transparent',
+      toolbar: {
+        show: false
+      },
+      sparkline: {
+        enabled: true
+      },
+      zoom: {
+        enabled: false
+      }
+    },
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      curve: 'smooth',
+      show: true,
+      colors: [theme.colors.primary.main],
+      width: 3
+    },
+    xaxis: {
+      type: 'datetime',
+      categories: weekPressure.map((data) => data[0]) // Update with the x values from weekPressure data
+    },
+    tooltip: {
+      x: {
+        format: 'dd/MM/yy HH:mm'
+      },
+    },
+    fill: {
+      gradient: {
+        shade: 'light',
+        type: 'vertical',
+        shadeIntensity: 0.1,
+        inverseColors: false,
+        opacityFrom: 0.8,
+        opacityTo: 0,
+        stops: [0, 100]
+      }
+    },
+    colors: [theme.colors.primary.main],
+    theme: {
+      mode: theme.palette.mode
+    },
+    legend: {
+      show: false
+    }
+  };
+  
+
 
   return !openTable ? (
     <Grid
@@ -376,7 +355,7 @@ function SensoresListColumn() {
           </Box>
           <Chart
             options={chartOptions}
-            series={[{ name: 'Temperature', data: weekTemperature }]}
+            data={weekTemperature}
             type="area"
             height={200}
           />
@@ -451,7 +430,7 @@ function SensoresListColumn() {
           </Box>
           <Chart
             options={chartOptions}
-            series={weekHumidity}
+            data={weekHumidity}
             type="area"
             height={200}
           />
@@ -526,7 +505,7 @@ function SensoresListColumn() {
           </Box>
           <Chart
             options={chartOptions}
-            series={weekPressure}
+            data={weekPressure}
             type="area"
             height={200}
           />
