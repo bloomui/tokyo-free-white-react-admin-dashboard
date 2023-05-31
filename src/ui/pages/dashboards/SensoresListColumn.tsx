@@ -58,9 +58,10 @@ function SensoresListColumn() {
   const [yesterdayPressure, setYesterdayPressure] = useState(0);
   const [yesterdayHumidity, setYesterdayHumidity] = useState(0);
 
-  const [weekTemperature, setWeekTemperature] = useState<Array<[string, number]>>([]);
-  const [weekHumidity, setWeekHumidity] = useState<Array<[string, number]>>([]);
-  const [weekPressure, setWeekPressure] = useState<Array<[string, number]>>([]);
+  const [weekTemperature, setWeekTemperature] = useState([]);
+  const [weekHumidity, setWeekHumidity] = useState([]);
+  const [weekPressure, setWeekPressure] = useState([]);
+  const [weekDays, setWeekDays] = useState([]);
 
   const apiURLCurrent = "http://localhost:3000/sensor/latest";
   const apiURLYesterday = "http://localhost:3000/sensor/yesterday";
@@ -138,35 +139,32 @@ function SensoresListColumn() {
     const res = await fetch(apiURLWeek);
     const resData = await res.json();
 
-    console.log(resData)
+    const formattedData = resData.map((row, index) => ({
+      id: index + 1,
+      date: row.date,
+      temperature: row.average_temperature,
+      humidity: row.average_humidity,
+      pressure: row.average_pressure
+    }));
 
-    // Extract temperature, humidity, and pressure data into separate arrays
-    const weekTemperatureRows = resData.map((data) => [data.date, parseFloat(data.average_temperature)]);
-    const weekHumidityRows = resData.map((data) => [data.date, data.average_humidity]);
-    const weekPressureRows = resData.map((data) => [data.date, data.average_pressure]);
 
-    // Set the respective state variables
-    setWeekTemperature(resData.map((data) => ({
-      x: data.date,
-      y: data.average_temperature
-    })));
-    setWeekHumidity(resData.map((data) => ({
-      x: data.date,
-      y: data.average_humidity
-    })));
-    setWeekPressure(resData.map((data) => ({
-      x: data.date,
-      y: data.average_pressure
-    })));
+    setWeekTemperature(prevWeekTemperature =>
+      formattedData.map(data => data.temperature)
+    );
 
-    console.log("wt", weekTemperature);
+    setWeekHumidity(prevWeekHumidity =>
+      formattedData.map(data => data.humidity)
+    );
 
-  };
+    setWeekPressure(prevWeekPressure =>
+      formattedData.map(data => data.pressure)
+    );
 
-  const loadData = async () => {
-    await loadCurrentSensors();
-    await loadYesterdaySensors();
-    await loadWeekSensors();
+    setWeekDays(prevWeekDays =>
+      formattedData.map(data => data.date)
+    );
+
+    console.log(weekDays);
   };
 
   useEffect(() => {
@@ -188,8 +186,8 @@ function SensoresListColumn() {
     return () => {
       clearInterval(interval);
     };
-
   }, []);
+
 
   const navigate = useNavigate();
 
@@ -225,8 +223,6 @@ function SensoresListColumn() {
 
   const chartOptions: ApexOptions = {
     chart: {
-      height: 200,
-      type: 'area',
       background: 'transparent',
       toolbar: {
         show: false
@@ -236,7 +232,8 @@ function SensoresListColumn() {
       },
       zoom: {
         enabled: false
-      }
+      },
+      offsetY: 10 
     },
     dataLabels: {
       enabled: false
@@ -248,13 +245,34 @@ function SensoresListColumn() {
       width: 3
     },
     xaxis: {
-      type: 'datetime',
-      categories: weekPressure.map((data) => data[0]) // Update with the x values from weekPressure data
+      categories: weekDays,
+      labels: {
+        show: true,
+      },
+      axisBorder: {
+        show: false
+      },
+      axisTicks: {
+        show: false
+      },
+    },
+    yaxis: {
+      show: true,
+      tickAmount: 5,
+      labels: {
+        style: {
+          fontSize: '12px' // Adjust the font size to make the labels more readable
+        }
+      },
+      min: 0
     },
     tooltip: {
       x: {
-        format: 'dd/MM/yy HH:mm'
+        show: true
       },
+      marker: {
+        show: false
+      }
     },
     fill: {
       gradient: {
@@ -273,9 +291,15 @@ function SensoresListColumn() {
     },
     legend: {
       show: false
-    }
+    },
   };
-  
+
+  const chartStyle = {
+    marginTop: '10px',
+    marginBottom: '20px',
+    marginLeft: '10px',
+    marginRight: '10px'
+  };
 
 
   return !openTable ? (
@@ -355,9 +379,10 @@ function SensoresListColumn() {
           </Box>
           <Chart
             options={chartOptions}
-            data={weekTemperature}
+            series={[{ data: weekTemperature }]}
             type="area"
             height={200}
+            style={chartStyle}
           />
         </Card>
       </Grid>
@@ -430,7 +455,7 @@ function SensoresListColumn() {
           </Box>
           <Chart
             options={chartOptions}
-            data={weekHumidity}
+            series={[{ data: weekHumidity }]}
             type="area"
             height={200}
           />
@@ -505,7 +530,7 @@ function SensoresListColumn() {
           </Box>
           <Chart
             options={chartOptions}
-            data={weekPressure}
+            series={[{ data: weekPressure }]}
             type="area"
             height={200}
           />
