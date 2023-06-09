@@ -71,18 +71,8 @@ function SensoresListColumn() {
     const res = await fetch(apiURLCurrent);
     const resData = await res.json();
 
-    if (resData.length === 0) {
-      // Handle case when no data is available
-      return;
-    }
-
     const row = resData[0];
 
-    // const timestamp = new Date(parseInt(row.timestamp));
-    /* const date = `${timestamp.getDate().toString().padStart(2, '0')}/${(timestamp.getMonth() + 1).toString().padStart(2, '0')}/${timestamp.getFullYear()}`;
-    const time = `${timestamp.getHours().toString().padStart(2, '0')}:${timestamp.getMinutes().toString().padStart(2, '0')}:${timestamp.getSeconds().toString().padStart(2, '0')}`; */
-
-    // Create an object with dynamic keys based on the sensorName
     const rowData: {
       id: number;
       timestamp: number;
@@ -97,7 +87,6 @@ function SensoresListColumn() {
       pressure: parseFloat(row.pressure)
     };
 
-    // Update the respective current variables
     setCurrentTemperature(rowData.temperature);
     setCurrentHumidity(rowData.humidity);
     setCurrentPressure(rowData.pressure);
@@ -107,14 +96,8 @@ function SensoresListColumn() {
     const res = await fetch(apiURLYesterday);
     const resData = await res.json();
 
-    if (resData.length === 0) {
-      // Handle case when no data is available
-      return;
-    }
-
     const row = resData[0];
 
-    // Create an object with dynamic keys based on the sensorName
     const rowData: {
       id: number;
       timestamp: number;
@@ -129,7 +112,6 @@ function SensoresListColumn() {
       pressure: parseFloat(row.pressure)
     };
 
-    // Update the respective yesterday variables
     setYesterdayTemperature(rowData.temperature);
     setYesterdayHumidity(rowData.humidity);
     setYesterdayPressure(rowData.pressure);
@@ -160,11 +142,7 @@ function SensoresListColumn() {
       formattedData.map(data => data.pressure)
     );
 
-    setWeekDays(prevWeekDays =>
-      formattedData.map(data => data.date)
-    );
-
-    console.log(weekDays);
+    setWeekDays(formattedData.map(data => data.date));
   };
 
   useEffect(() => {
@@ -174,15 +152,12 @@ function SensoresListColumn() {
       await loadWeekSensors();
     };
 
-    // Load data initially
     loadData();
 
-    // Reload data every 15 seconds
     const interval = setInterval(() => {
       loadData();
-    }, 15000);
+    }, 900000);
 
-    // Clean up the interval on component unmount
     return () => {
       clearInterval(interval);
     };
@@ -228,12 +203,11 @@ function SensoresListColumn() {
         show: false
       },
       sparkline: {
-        enabled: true
+        enabled: false
       },
       zoom: {
         enabled: false
-      },
-      offsetY: 10 
+      }
     },
     dataLabels: {
       enabled: false
@@ -244,31 +218,27 @@ function SensoresListColumn() {
       colors: [theme.colors.primary.main],
       width: 3
     },
-    xaxis: {
-      categories: weekDays,
-      labels: {
-        show: true,
-      },
-      axisBorder: {
-        show: false
-      },
-      axisTicks: {
-        show: false
-      },
-    },
     yaxis: {
       show: true,
       tickAmount: 5,
       labels: {
         style: {
-          fontSize: '12px' // Adjust the font size to make the labels more readable
-        }
+          fontSize: '10px'
+        },formatter: function (value: string | number) {
+          const numericValue = typeof value === 'string' ? parseFloat(value) : value;
+          return numericValue.toFixed(2);
+        },
       },
-      min: 0
     },
     tooltip: {
       x: {
-        show: true
+        show: false
+      },
+      y: {
+        formatter: undefined,
+          title: {
+              formatter: (seriesName) => "",
+          },
       },
       marker: {
         show: false
@@ -292,15 +262,58 @@ function SensoresListColumn() {
     legend: {
       show: false
     },
+    grid: {
+      show: false
+    }
   };
 
-  const chartStyle = {
-    marginTop: '10px',
-    marginBottom: '20px',
-    marginLeft: '10px',
-    marginRight: '10px'
+  const chartOptions1 = {
+    xaxis: {
+      categories: weekDays.map((day) => day.replace(/-\d{4}$/, '')),
+      labels: {
+        show: true,
+      },
+      axisBorder: {
+        show: false
+      },
+      axisTicks: {
+        show: false
+      },
+    },
+    ...chartOptions
   };
-
+  
+  const chartOptions2 = {
+    xaxis: {
+      categories: weekDays.map((day) => day.replace(/-\d{4}$/, '')),
+      labels: {
+        show: true,
+      },
+      axisBorder: {
+        show: false
+      },
+      axisTicks: {
+        show: false
+      },
+    },
+    ...chartOptions
+  };
+  
+  const chartOptions3 = {
+    xaxis: {
+      categories: weekDays.map((day) => day.replace(/-\d{4}$/, '')),
+      labels: {
+        show: true,
+      },
+      axisBorder: {
+        show: false
+      },
+      axisTicks: {
+        show: false
+      },
+    },
+    ...chartOptions
+  };
 
   return !openTable ? (
     <Grid
@@ -378,11 +391,10 @@ function SensoresListColumn() {
             </Box>
           </Box>
           <Chart
-            options={chartOptions}
+            options={chartOptions1}
             series={[{ data: weekTemperature }]}
             type="area"
             height={200}
-            style={chartStyle}
           />
         </Card>
       </Grid>
@@ -409,7 +421,7 @@ function SensoresListColumn() {
                   Humedad
                 </Typography>
                 <Typography variant="subtitle1" noWrap>
-                  %
+                  %º
                 </Typography>
               </Box>
             </Box>
@@ -454,7 +466,7 @@ function SensoresListColumn() {
             </Box>
           </Box>
           <Chart
-            options={chartOptions}
+            options={chartOptions2}
             series={[{ data: weekHumidity }]}
             type="area"
             height={200}
@@ -529,7 +541,7 @@ function SensoresListColumn() {
             </Box>
           </Box>
           <Chart
-            options={chartOptions}
+            options={chartOptions3}
             series={[{ data: weekPressure }]}
             type="area"
             height={200}

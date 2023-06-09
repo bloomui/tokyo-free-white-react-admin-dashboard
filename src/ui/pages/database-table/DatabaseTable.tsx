@@ -15,10 +15,10 @@ function DatabaseTable() {
 
   const apiURL =
     sensorName === 'temperature'
-      ? 'http://localhost:3000/sensor/temperature'
+      ? 'http://localhost:3001/sensor/temperature'
       : sensorName === 'humidity'
-      ? 'http://localhost:3000/sensor/humidity'
-      : 'http://localhost:3000/sensor/pressure';
+      ? 'http://localhost:3001/sensor/humidity'
+      : 'http://localhost:3001/sensor/pressure';
 
   const name =
     sensorName === 'temperature'
@@ -60,7 +60,6 @@ function DatabaseTable() {
         .toString()
         .padStart(2, '0')}`;
 
-      // Create an object with dynamic keys based on the sensorName
       const rowData: {
         id: number;
         date: string;
@@ -74,7 +73,6 @@ function DatabaseTable() {
         time
       };
 
-      // Set the value of the appropriate sensor field
       if (sensorName === 'temperature') {
         rowData.temperature = row.temperature;
       } else if (sensorName === 'humidity') {
@@ -93,19 +91,22 @@ function DatabaseTable() {
     loadSensors();
   }, []);
 
+  const seriesData = data.map((item) =>
+    sensorName === 'temperature'
+      ? item.temperature
+      : sensorName === 'humidity'
+      ? item.humidity
+      : item.pressure
+  );
+
+  const uniqueDates = Array.from(new Set(data.map((item) => item.date)));
   const chartOptions: ApexOptions = {
     chart: {
       background: 'transparent',
-      toolbar: {
-        show: false
-      },
-      sparkline: {
-        enabled: true
-      },
-      zoom: {
-        enabled: false
-      }
+      height: 450,
+      type: 'area'
     },
+    colors: [theme.colors.primary.main],
     fill: {
       gradient: {
         shade: 'light',
@@ -117,54 +118,34 @@ function DatabaseTable() {
         stops: [0, 100]
       }
     },
-    colors: [theme.colors.primary.main],
-    dataLabels: {
-      enabled: false
-    },
-    theme: {
-      mode: theme.palette.mode
-    },
     stroke: {
       show: true,
       colors: [theme.colors.primary.main],
-      width: 3
+      width: 3,
+      curve: 'smooth'
     },
-    legend: {
-      show: false
+    dataLabels: {
+      enabled: false
     },
     xaxis: {
+      type: 'category',
+      categories: data.map((item) => item.date + ' ' + item.time),
       labels: {
-        show: false
-      },
-      axisBorder: {
-        show: false
-      },
-      axisTicks: {
-        show: false
-      },
-      categories: data.map((item) => item.date) // Set the x-axis categories from the date values
-    },
-    yaxis: {
-      show: false,
-      tickAmount: 5
+        show: false,
+      }
     },
     tooltip: {
       x: {
-        show: true
-      },
-      marker: {
         show: false
+      },
+      y: {
+        formatter: undefined,
+        title: {
+          formatter: (seriesName) => ''
+        }
       }
     }
   };
-
-  const seriesData = data.map((item) =>
-    sensorName === 'temperature'
-      ? item.temperature
-      : sensorName === 'humidity'
-      ? item.humidity
-      : item.pressure
-  );
 
   return (
     <>

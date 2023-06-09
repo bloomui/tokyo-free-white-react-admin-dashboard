@@ -8,6 +8,7 @@ interface IRegister {
 
 function PageHeader(props: IRegister) {
   const { sensorName } = props;
+  
   return (
     <Box
         display="flex"

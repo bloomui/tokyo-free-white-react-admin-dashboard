@@ -8,7 +8,7 @@ import {
   Typography,
   styled
 } from '@mui/material';
-import SensoresListColumn from './SensoresListColumn';
+import SensoresCards from './SensoresCards';
 
 const EmptyResultsWrapper = styled('img')(
   ({ theme }) => `
@@ -18,7 +18,7 @@ const EmptyResultsWrapper = styled('img')(
 `
 );
 
-function SensoresList() {
+function Sensores() {
   const [tabs, setTab] = useState<string | null>('sensores_list_columns');
 
   const handleViewOrientation = (
@@ -48,9 +48,9 @@ function SensoresList() {
           onChange={handleViewOrientation}
         />
       </Box>
-      <SensoresListColumn />
+      <SensoresCards />
     </>
   );
 }
 
-export default SensoresList;
+export default Sensores;
