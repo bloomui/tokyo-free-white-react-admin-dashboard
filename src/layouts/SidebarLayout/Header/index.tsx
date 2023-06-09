@@ -9,7 +9,8 @@ import {
   IconButton,
   Tooltip,
   styled,
-  useTheme
+  useTheme,
+  Typography
 } from '@mui/material';
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import { SidebarContext } from 'src/contexts/SidebarContext';
@@ -25,16 +26,12 @@ const HeaderWrapper = styled(Box)(
         color: ${theme.header.textColor};
         padding: ${theme.spacing(0, 2)};
         right: 0;
-        z-index: 6;
+        z-index: 1;
         background-color: ${alpha(theme.header.background, 0.95)};
         backdrop-filter: blur(3px);
         position: fixed;
         justify-content: space-between;
         width: 100%;
-        @media (min-width: ${theme.breakpoints.values.lg}px) {
-            left: ${theme.sidebar.width};
-            width: auto;
-        }
 `
 );
 
@@ -68,29 +65,8 @@ function Header() {
         alignItems="center"
         spacing={2}
       >
-        <HeaderMenu />
+        <Typography variant="h3" color="primary">SmartReflect</Typography>
       </Stack>
-      <Box display="flex" alignItems="center">
-        <HeaderButtons />
-        <HeaderUserbox />
-        <Box
-          component="span"
-          sx={{
-            ml: 2,
-            display: { lg: 'none', xs: 'inline-block' }
-          }}
-        >
-          <Tooltip arrow title="Toggle Menu">
-            <IconButton color="primary" onClick={toggleSidebar}>
-              {!sidebarToggle ? (
-                <MenuTwoToneIcon fontSize="small" />
-              ) : (
-                <CloseTwoToneIcon fontSize="small" />
-              )}
-            </IconButton>
-          </Tooltip>
-        </Box>
-      </Box>
     </HeaderWrapper>
   );
 }
